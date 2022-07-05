@@ -1,0 +1,99 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.bg-black,
+.bg-black:hover,
+.bg-black:focus {
+  color: $yellow;
+  background: $black;
+  border-color: $yellow;
+  font-weight: 700;
+}
+
+.bg-black.is-disabled,
+.bg-black.is-disabled:focus,
+.bg-black.is-disabled:hover {
+  color: $yellow;
+  cursor: not-allowed;
+  background-image: none;
+  background-color: #a3a3a3;
+  border-color: #a3a3a3;
+}
+
+
+.bg-yellow,
+.bg-yellow:hover,
+.bg-yellow:focus {
+  color: black;
+  background: $yellow;
+  border-color: $yellow;
+  font-weight: 700;
+}
+
+.bg-yellow.is-disabled,
+.bg-yellow.is-disabled:focus,
+.bg-yellow.is-disabled:hover {
+  color: black;
+  cursor: not-allowed;
+  background-image: none;
+  background-color: #a3a3a3;
+  border-color: #a3a3a3;
+}
+
+.bg-gray,
+.bg-gray:hover,
+.bg-gray:focus {
+  color: #fff;
+  background: $gray;
+  border-color: $gray;
+  font-weight: 700;
+}
+
+.bg-gray.is-disabled,
+.bg-gray.is-disabled:focus,
+.bg-gray.is-disabled:hover {
+  color: black;
+  cursor: not-allowed;
+  background-image: none;
+  background-color: #a3a3a3;
+  border-color: #a3a3a3;
+}
+
+.bg-red,
+.bg-red:hover,
+.bg-red:focus {
+  color: black;
+  background: $red;
+  border-color: $red;
+  font-weight: 700;
+}
+
+.bg-red.is-disabled,
+.bg-red.is-disabled:focus,
+.bg-red.is-disabled:hover {
+  color: black;
+  cursor: not-allowed;
+  background-image: none;
+  background-color: #a3a3a3;
+  border-color: #a3a3a3;
+}

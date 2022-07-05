@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>百家樂規則</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link href="./css/normalize.css" type="text/css" rel="stylesheet">
+        <link href="./css/styles.css" type="text/css" rel="stylesheet">
+    </head>
+    <body class="base">
+      <article>
+        <h2 class="title">百家樂遊戲規則</h2>
+        <article class="content">
+          <br/>
+          <p>
+            本遊戲用 8副牌（每副牌 52張）來進行，遊戲牌數合計416張。
+            <br/>〝閒家〞〝莊家〞各先派兩張牌，以〝閒家〞先發，如第一輪未分出勝負則須再按〝牌例〞發第二輪的牌，最多每方3張牌，最接近9點一方即勝，而相同點數即視為和局。
+          </p>
+          <p>
+            1、所有從2到9的牌，其数值就是他們顯示的點數。
+            <br/>2、A當作是1點，K、Q、J、10是0點，而加起來等於10的也當作是0點當任何一家頭兩張牌面點數總和為8或9，就稱為（天生贏家）。
+            <br/>3、任何一家拿到﹝天生赢家﹞，牌局就算结束，不再補牌。
+            <br/>4、派出兩張牌後，如果需要補牌，將依照補牌規則多發一張牌。
+          </p>
+          <p class="content-title">
+            補牌規則：
+          </p>
+          <table class="content-table" rules = "all">
+            <tr>
+              <th>閒家頭兩張牌<br/>合計點數</th>
+              <th>閒家</th>
+              <th>莊家頭兩張牌<br/>合計點數</th>
+              <th class="last">莊家</th>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>必須補牌</td>
+              <td>0</td>
+              <td>必須補牌</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>必須補牌</td>
+              <td>1</td>
+              <td>必須補牌</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>必須補牌</td>
+              <td>2</td>
+              <td>必須補牌</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>必須補牌</td>
+              <td>3</td>
+              <td>若閒家補得第三張牌是8，不得補牌</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>必須補牌</td>
+              <td>4</td>
+              <td>若閒家補得第三張牌是0,1,8,9，不得補牌</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>必須補牌</td>
+              <td>5</td>
+              <td>若閒家補得第三張牌是0,1,2,3,8,9，不得補牌</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>不得補牌</td>
+              <td>6</td>
+              <td>若閒家補得第三張牌是6,7，必須補牌</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>不得補牌</td>
+              <td>7</td>
+              <td>不得補牌</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>天牌/例牌，即定勝負</td>
+              <td>8</td>
+              <td>天牌/例牌，即定勝負</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>天牌/例牌，即定勝負</td>
+              <td>9</td>
+              <td>天牌/例牌，即定勝負</td>
+            </tr>
+          </table>
+          <p class="notify">閒家起手牌點數為6點或7點，閒家不需補牌，此條件下莊家起手牌點數為5點或5點以下，莊家必須補第三張牌。</p>
+        </article>
+      </article>
+      <article>
+        <h2 class="title">遊戲玩法</h2>
+        <article class="content">
+          <br/>
+          <p>
+            進入百家樂遊戲後，玩家可以在任何接受投注中和未有任何確認下注的主牌桌上啓用或停用免傭金模式。
+            <br/>主牌桌更改後將應用至所有快速下注牌桌，熱門牌桌及好路牌桌。在桌面網頁版主牌桌轉換模式時如任何牌桌的牌局已有確定下注將不受影響，並在新牌局更新所選模式。
+          </p>
+          <p class="content-title">
+            各類投注的說明如下：
+          </p>
+          <table class="content-table" rules="all">
+            <tr>
+              <th style="width:129px">投注種類</th>
+              <th style="width:585px">說明</th>
+              <th style="width:137px" class="last">賠率 (不含本金)</th>
+            </tr>
+            <tr>
+              <td>莊</td>
+              <td>莊家贏，牌局結束後，點數大於閒家，開和局退回下注金額</td>
+              <td>1:0.95</td>
+            </tr>
+            <tr>
+              <td>閒</td>
+              <td>閒家贏，牌局結束後，點數大於莊家，開和局退回下注金額</td>
+              <td>1:1</td>
+            </tr>
+            <tr>
+              <td>和</td>
+              <td>和局，牌局結束後，莊閒點數一樣</td>
+              <td>1:8</td>
+            </tr>
+            <tr>
+              <td>莊對</td>
+              <td>莊家的第一張牌與第二張牌擁有相同的牌面點數（不計花色）則為一對</td>
+              <td>1:11</td>
+            </tr>
+            <tr>
+              <td>閒對</td>
+              <td>閒家的第一張牌與第二張牌擁有相同的牌面點數（不計花色）則為一對</td>
+              <td>1:11</td>
+            </tr>
+            <tr>
+              <td>幸運6</td>
+              <td>賠12 (當莊家以6點2張牌(不需補牌)勝出)
+                <br/>1賠20 (當莊家以6點3張牌(需補牌)勝出)
+              </td>
+              <td>1:12/1:20</td>
+            </tr>
+            <tr>
+              <td>任意對子</td>
+              <td>莊家或閒家(或兩者)的第一張牌與第二張牌擁有相同的牌面點數則為一對</td>
+              <td>1:5</td>
+            </tr>
+            <tr>
+              <td>完美對子</td>
+              <td>莊或閒的前兩張牌的牌面，必須同花同色同數字或同英文字母為依據，即押注「完美對子」者為勝</td>
+              <td>1:25</td>
+            </tr>
+          </table>
+          <article class="note">
+            <p>注意事項：</p>
+            <p>
+              1. 本網站為真人即時視像設置，若有發生特殊情況將依照本網站公告之辦法處理。
+              <br/>2. 洗牌中途如有牌只不慎掉落台底或是離開鏡頭範圍，則監場將即時另取新牌更換,重新洗牌。
+              <br/>3. 派牌中途，荷官不慎拉出2或3張陰牌，則由監場按照正確位置給予更正。
+              <br/>4. 如不需博牌，但荷官又拉多一張牌，則由監場將此牌放置在牌靴底下做為下一局銷牌，然後牌局照舊進行。
+              <br/>5. 如牌局沒有銷牌，而牌已開啓2張或以上(可以看見牌面)，則該局將會取消，並更換新靴。
+              <br/>6. 在遊戲過程中，如果荷官忘記掃描卡，導致在位置上錯誤。我們將重新安排閒和莊初始牌，無效保險，遊戲將繼續正常運行。
+              <br/><span class="notify">本網站為真人現場操作，若有操作失誤，請各位會員見諒。</span>
+            </p>
+          </article>
+        </article>
+      </article>
+      <article>
+        <h2 class="title">百家樂牌路簡介</h2>
+        <article class="content">
+          <br/>
+          <p>所謂牌路，即百家樂開牌的記錄</p>
+        </article>
+      </article>
+      <article>
+        <h2 class="title">百家樂牌路類型</h2>
+        <article class="content">
+          <br/>
+          <table class="content-table content-table-s2" rules="all">
+            <tr>
+              <th style="width:100px">珠盤路</th>
+              <td style="text-align: left">
+                又稱珠子路，紅色珠為莊，藍色珠為閒，綠色珠為和，如果當局出現莊對，則在珠的左上角生成一個紅點，如果當局出現閒對，則在珠的右下角生成一個藍點，如果當局同時出現莊對和閒對，則在珠的左上角和右下角生成紅點和藍點。
+              </td>
+            </tr>
+            <tr>
+              <th>大路</th>
+              <td style="text-align: left">
+                紅圈為莊，藍圈為閒，莊一列，閒一列，如出現和，則在上一局結果的圈里以一條綠色斜線代表，如果連續出現和，則在綠色斜線上添加數字，代表連續出現幾局的和。
+              </td>
+            </tr>
+            <tr>
+              <th>大眼路</th>
+              <td style="text-align: left">
+                又稱大眼仔，大眼路的牌路規則是根據大路來形成的。
+              </td>
+            </tr>
+            <tr>
+              <th>小路</th>
+              <td style="text-align: left">
+                小路的牌路規則同樣是根據大路形成的。
+              </td>
+            </tr>
+            <tr>
+              <th class="last">小強路</th>
+              <td style="text-align: left">
+                又稱曱甴路，小強路的牌路規則也是根據大路形成的。
+              </td>
+            </tr>
+          </table>
+          <article class="score-cards">
+            <img class="img u19" src="./img/u19.png"/>
+            <p>
+              大眼路：
+              <br/>大眼路是從大路的第2列第2行開始分析出來，若該位置沒有結果，則以大路的第3列第1行開始分析。
+              <br/>先從座標1（第2列第2行）分析，若座標1無結果，則以座標2（第3列第1行）開始分析。
+            </p>
+            <div>
+              <div class="score-cards-min">
+                <img class="img u21" src="./img/u21.png"/>
+              </div>
+            </div>
+            <p>大眼路畫藍圈規則：</p>
+            <div>
+              <div class="score-cards-min">
+                <div>1.向下</div>
+                <img src="./img/u24.png" />
+                <div>
+                  以大路最新的結果，水平方向跟前一列作對比，如前一列無結果，則於大眼路畫藍圈
+                </div>
+              </div>
+              <div class="score-cards-min">
+                <div>2.換列</div>
+                <img src="./img/u28.png" />
+                <div>
+                  以大路最新的結果，比對前一列與前二列的結果位置是不齊整，則於大眼路畫藍圈
+                </div>
+              </div>
+            </div>
+            <p>大眼路畫紅圈規則：</p>
+            <div>
+              <div class="score-cards-min">
+                <div>1.向下（情況1）</div>
+                <img src="./img/u33.png" />
+                <div>
+                  以大路最新的結果，水平方向跟前一列作對比， 如前一列有結果，則於大眼路畫紅圈
+                </div>
+              </div>
+              <div class="score-cards-min">
+                <div>2.向下（情況2）</div>
+                <img src="./img/u37.png" />
+                <div>
+                  以大路最新的結果，水平方向跟前一列作對比， 如前一列的前二行或以上都無結果，則於大眼路畫紅圈
+                </div>
+              </div>
+              <div class="score-cards-min">
+                <div>3.換列</div>
+                <img src="./img/u41.png" />
+                <div>
+                  以大路最新的結果，比對前一列和前二列的結果位置是齊整，則於大眼路畫紅圈。
+                </div>
+              </div>
+            </div>
+          </article>
+        </article>
+      </article>
+    </body>
+</html>
