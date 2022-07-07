@@ -72,7 +72,26 @@ export const constantRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-export const asyncRoutes = [];
+export const asyncRoutes = [
+  {
+    // 後台管理
+    path: '/backstageManagement',
+    component: Layout,
+    redirect: '/',
+    name: 'backstageManagement',
+    meta: { title: '__backstageManagement', icon: 'el-icon-s-operation', permission: 'BackStageManage' },
+    displayChildren: true,
+    children: [
+      {
+        // 荷官管理
+        path: 'dealerManagement',
+        name: 'DealerManagement',
+        component: () => import('@/views/backstageManagement/dealerManagement/index'),
+        meta: { title: '__dealerManagement', icon: 'el-icon-s-custom', permission: 'BackStageManage.DealerManage' }
+      }
+    ]
+  }
+];
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

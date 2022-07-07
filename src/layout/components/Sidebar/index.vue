@@ -19,7 +19,7 @@
     >
       <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
     </el-menu>
-    <div class="footer">
+    <div v-if="isOpened" class="footer">
       <div class="version">
         <div>FV: 0.0.1</div>
         <div>BV: 0.0.1</div>
@@ -118,24 +118,10 @@ export default {
   min-height: calc(100vh - 45px);
   background-color: #000;
   transition: transform .3s;
-  transform: translate3d(-($sideBarWidth + 1), 0, 0);
+  transform: translateX(-($sideBarWidth + 1));
 
   .small-option {
     display: none;
-    align-items: center;
-    height: 45px;
-    border-bottom: 1px solid #444;
-
-    .item {
-      display: flex;
-      flex: 1;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .item + .item {
-      border-left: 1px solid #444;
-    }
   }
 
   .el-menu {
@@ -145,23 +131,21 @@ export default {
 
   .footer {
     color: #ccc;
-    margin: 0 auto;
     font-size: 14px;
-    margin-top: 1em;
+    margin: 1em auto 0 auto;
 
     .version {
       display: flex;
 
       & :first-child {
-        margin-right: 1.5em;
+        margin-right: 15px;
       }
     }
   }
 }
 
 .open.sidebar-container {
-  transition: transform .3s;
-  transform: translate3d(0, 0, 0);
+  transform: translateX(0);
 }
 
 @media screen and (min-width: 992px) {
@@ -169,8 +153,23 @@ export default {
     transform: translateX(0);
     width: $hideSidebarWidth;
     transition: width .3s;
+
     .small-option {
       display: flex;
+      align-items: center;
+      height: 45px;
+      border-bottom: 1px solid #444;
+
+      .item {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .item + .item {
+        border-left: 1px solid #444;
+      }
     }
     .el-menu {
       min-height: calc(100vh - 45px - 45px - 80px);
@@ -178,12 +177,12 @@ export default {
 
     .footer {
       display: none;
+      width: 130px;
     }
   }
 
   .open.sidebar-container {
     width: $sideBarWidth;
-    transition: width .3s;
 
     .footer {
       display: block;

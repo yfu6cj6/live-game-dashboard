@@ -1,18 +1,15 @@
 <template>
   <div :class="classObj" class="app-container">
-    <div>
-      <div>
-        <navbar />
-        <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
-        <sidebar class="sidebar" />
-      </div>
-      <app-main />
-    </div>
+    <navbar class="navbar" />
+    <tags-view v-if="tagsView" class="tagsView" />
+    <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
+    <sidebar class="sidebar" />
+    <app-main />
   </div>
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain } from './components'
+import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapGetters } from 'vuex'
 import defaultSettings from '@/settings'
@@ -22,7 +19,8 @@ export default {
   components: {
     Navbar,
     Sidebar,
-    AppMain
+    AppMain,
+    TagsView
   },
   mixins: [ResizeMixin],
   computed: {
@@ -54,24 +52,29 @@ export default {
 
 .app-container {
   @include clearfix;
-  position: relative;
   height: 100%;
   width: 100%;
+
+  .navbar {
+    position: fixed;
+    z-index: 1000;
+  }
 
   .drawer-bg.opened {
     background: #000;
     opacity: 0.3;
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: $navBarHeight;
     height: calc(100% - 45px);
     z-index: 999;
   }
 
   .sidebar {
-    position: absolute;
+    position: fixed;
     z-index: 1000;
     border-right: 2px solid $yellow;
+    margin-top: $navBarHeight;
   }
 }
 

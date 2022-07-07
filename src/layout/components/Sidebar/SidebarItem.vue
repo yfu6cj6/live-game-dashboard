@@ -13,9 +13,9 @@
       </app-link>
     </template>
 
-    <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
+    <el-submenu v-else ref="subMenu" class="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
+        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="$t(item.meta.title)" />
       </template>
       <sidebar-item
         v-for="child in item.children"
@@ -75,6 +75,9 @@ export default {
 
       // When there is only one child router, the child router is displayed by default
       if (showingChildren.length === 1) {
+        if (parent.displayChildren) {
+          this.onlyOneChild = { ... parent, path: '', showChildren: true }
+        }
         return true
       }
 
@@ -98,3 +101,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.subMenu {
+  .el-menu {
+    .nest-menu {
+      .el-menu-item {
+        min-width: 0;
+      }
+    }
+  }
+}
+</style>

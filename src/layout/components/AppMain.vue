@@ -29,10 +29,8 @@ export default {
 @import "~@/styles/variables.scss";
 
 .app-main {
-  /*50 = navbar  */
-  min-height: calc(100vh - 45px);
   position: relative;
-  overflow: hidden;
+  padding-top: $navBarHeight;
 }
 
 @media screen and (min-width: 992px) {

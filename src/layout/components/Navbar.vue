@@ -25,7 +25,7 @@
     </div>
 
     <marquee v-if="marqueeMsg.length > 0" class="marquee">
-      <div v-for="item in marqueeMsg" :key="item" class="marqueeMsg">
+      <div v-for="item in marqueeMsg" :key="item" class="msg">
         {{ item }}
       </div>
     </marquee>
@@ -44,7 +44,8 @@ export default {
     Language
   },
   data: function() {
-    return {}
+    return {
+    }
   },
   computed: {
     ...mapGetters([
@@ -64,8 +65,6 @@ export default {
     curLang() {
       return getLanguage()
     }
-  },
-  created() {
   },
   methods: {
     language(lang) {
@@ -160,7 +159,17 @@ export default {
     }
 
     .marquee {
-      display: inline-block;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background-color: #333;
+      color: #fff;
+      height: 100%;
+
+      .msg {
+        font-size: 20px;
+        display: inline-block;
+      }
     }
   }
 }

@@ -22,7 +22,7 @@ const actions = {
     const bulletinMsg = []
     respone.rows.forEach(element => {
       if (element.is_marquee === '1') {
-        bulletinMsg.push(element.content)
+        bulletinMsg.push(element.fullContent)
       }
       if (element.type === 'game') {
         gameAnnouncements.push(element)
