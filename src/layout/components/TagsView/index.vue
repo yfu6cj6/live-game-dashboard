@@ -19,7 +19,7 @@
         </div>
       </router-link>
     </scroll-pane>
-    <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+    <ul v-show="visible" :style="{left:left+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">{{ $t("__refresh") }}</li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">{{ $t("__close") }}</li>
       <li @click="closeOthersTags">{{ $t("__closeOthers") }}</li>
@@ -38,7 +38,6 @@ export default {
   data() {
     return {
       visible: false,
-      top: 0,
       left: 0,
       selectedTag: {},
       affixTags: []
@@ -184,7 +183,6 @@ export default {
         this.left = left
       }
 
-      this.top = e.clientY
       this.visible = true
       this.selectedTag = tag
     },
@@ -210,15 +208,17 @@ export default {
     .tags-view-item {
       color: #fff;
       font-size: 16px;
-      display: flex;
+      display: inline-block;
       height: $tagsViewHeight;
+      border-right: 1px solid #fff;
+      cursor: pointer;
 
       .content {
-        display: flex;
-        align-items: center;
         padding-left: .5em;
         padding-right: .5em;
-        border-right: 1px solid #fff;
+        display: flex;
+        align-items: center;
+        height: $tagsViewHeight;
 
         .title + .close-icon {
           width: 12px;
@@ -228,7 +228,40 @@ export default {
     }
 
     .tags-view-item.active {
-      color: $yellow
+      color: $yellow;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .contextmenu {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .tags-view-container {
+    position: relative;
+    .contextmenu {
+      background-color: #000;
+      color: $yellow;
+      position: absolute;
+      display: block;
+      box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+      border-radius: 4px;
+      list-style-type: none;
+
+      li {
+        padding: 5px;
+        cursor: pointer;
+        &:hover {
+          background: #444;
+        }
+      }
+
+      li + li {
+        border-top: 1px solid #fff;
+      }
     }
   }
 }
