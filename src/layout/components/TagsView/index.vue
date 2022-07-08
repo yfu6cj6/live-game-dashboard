@@ -1,11 +1,11 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
+  <div class="tags-view-container">
+    <scroll-pane ref="scrollPane" class="scroll-pane" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
         :key="tag.path"
-        :class="isActive(tag)?'active':''"
+        :class="{'active': isActive(tag)}"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
         class="tags-view-item"
@@ -13,8 +13,10 @@
         @dblclick.native="refreshSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
-        {{ $t(tag.title) }}
-        <svg-icon v-if="!isAffix(tag)" icon-class="close" @click.prevent.stop="closeSelectedTag(tag)" />
+        <div class="content">
+          <span class="title">{{ $t(tag.title) }}</span>
+          <svg-icon v-if="!isAffix(tag)" class="close-icon" icon-class="close" @click.prevent.stop="closeSelectedTag(tag)" />
+        </div>
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
@@ -200,62 +202,33 @@ export default {
 @import "~@/styles/variables.scss";
 
 .tags-view-container {
-  height: 100%;
-  background: #000;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
-  .tags-view-wrapper {
+  width: 100vw;
+  height: $tagsViewHeight;
+  background-color: #000;
+
+  .scroll-pane {
     .tags-view-item {
-      display: inline-block;
-      position: relative;
-      cursor: pointer;
-      border-right: 1px solid #fff;
       color: #fff;
-      background: #000;
-      padding: 10px 5px;
-      font-size: 14px;
-      .svg-icon {
-        font-size: 8px;
-        margin-left: 10px;
-        vertical-align: middle;
-      }
-      &:first-of-type {
-        margin-left: 0px;
-      }
-      &:last-of-type {
-        margin-right: 0px;
-      }
-      &.active {
-        background-color: #000;
-        color: $yellow;
+      font-size: 16px;
+      display: flex;
+      height: $tagsViewHeight;
+
+      .content {
+        display: flex;
+        align-items: center;
+        padding-left: .5em;
+        padding-right: .5em;
         border-right: 1px solid #fff;
-        font-weight: 700;
-        &::before {
-          content: '';
-          display: none;
+
+        .title + .close-icon {
+          width: 12px;
+          margin-left: 1em;
         }
       }
     }
-  }
-  .contextmenu {
-    margin: 0;
-    background: #000;
-    position: absolute;
-    list-style-type: none;
-    padding: 5px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 400;
-    color: $yellow;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
-    z-index: 1;
-    li {
-      margin: 0;
-      padding: 5px;
-      border-bottom: 1px solid #fff;
-      cursor: pointer;
-      &:hover {
-        background: #444;
-      }
+
+    .tags-view-item.active {
+      color: $yellow
     }
   }
 }

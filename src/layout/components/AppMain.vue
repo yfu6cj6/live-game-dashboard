@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main" :class="{'open': isOpened}">
+  <section>
     <transition name="fade-transform" mode="out-in">
       <router-view :key="key" />
     </transition>
@@ -7,41 +7,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'AppMain',
   computed: {
-    ...mapGetters([
-      'sidebar'
-    ]),
     key() {
       return this.$route.path
-    },
-    isOpened() {
-      return Boolean(this.sidebar.opened)
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import "~@/styles/variables.scss";
-
-.app-main {
-  position: relative;
-  padding-top: $navBarHeight;
-}
-
-@media screen and (min-width: 992px) {
-  .app-main {
-    transition: margin-left .28s;
-    margin-left: $hideSidebarWidth;
-  }
-
-  .app-main.open {
-    transition: margin-left .28s;
-    margin-left: $sideBarWidth;
-  }
-}
-</style>

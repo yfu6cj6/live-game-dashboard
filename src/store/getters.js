@@ -6,7 +6,6 @@ const getters = {
   agentId: state => state.agentManagement.agentId,
   agentLevelLoading: state => state.agentManagement.agentLevelLoading,
   agentLevelExpandedKeys: state => state.agentManagement.agentLevelExpandedKeys,
-  tagsView: state => state.settings.tagsView,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
   accountStatusType: state => state.common.accountStatusType,

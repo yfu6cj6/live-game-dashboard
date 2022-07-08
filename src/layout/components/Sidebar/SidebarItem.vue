@@ -13,7 +13,7 @@
       </app-link>
     </template>
 
-    <el-submenu v-else ref="subMenu" class="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
+    <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="$t(item.meta.title)" />
       </template>
@@ -101,15 +101,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.subMenu {
-  .el-menu {
-    .nest-menu {
-      .el-menu-item {
-        min-width: 0;
-      }
-    }
-  }
-}
-</style>

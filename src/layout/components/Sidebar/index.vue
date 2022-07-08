@@ -8,6 +8,7 @@
       <hamburger class="item" :is-active="isOpened" @toggleClick="toggleSideBar" />
     </div>
     <el-menu
+      class="mainMenu"
       :default-active="activeMenu"
       :collapse="!isOpened"
       :background-color="variables.menuBg"
@@ -108,7 +109,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@/styles/variables.scss";
 
 .sidebar-container {
@@ -124,9 +125,15 @@ export default {
     display: none;
   }
 
-  .el-menu {
+  .mainMenu {
     border-right: 0px;
     min-height: calc(100vh - 45px - 80px);
+
+    .el-submenu {
+      .el-menu-item {
+        min-width: 0;
+      }
+    }
   }
 
   .footer {
@@ -165,14 +172,24 @@ export default {
         flex: 1;
         align-items: center;
         justify-content: center;
+        height: 30px;
       }
 
       .item + .item {
         border-left: 1px solid #444;
       }
     }
-    .el-menu {
+    .mainMenu {
       min-height: calc(100vh - 45px - 45px - 80px);
+
+      .el-submenu__title {
+        & > span {
+          visibility: hidden;
+        }
+        .el-submenu__icon-arrow {
+          display: none;
+        }
+      }
     }
 
     .footer {
@@ -183,6 +200,17 @@ export default {
 
   .open.sidebar-container {
     width: $sideBarWidth;
+
+    .el-menu {
+      .el-submenu__title {
+        & > span {
+          visibility: visible;
+        }
+        .el-submenu__icon-arrow {
+          display: flex;
+        }
+      }
+    }
 
     .footer {
       display: block;
