@@ -36,6 +36,9 @@ export default {
     },
     moveToTarget(currentTag) {
       const $container = document.getElementsByClassName('scroll-view')[0]
+      if (!$container) {
+        return;
+      }
       const $containerWidth = $container.offsetWidth
       const $scrollWrapper = this.scrollWrapper
       const tagList = this.$parent.$refs.tag

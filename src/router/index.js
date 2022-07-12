@@ -66,10 +66,7 @@ export const constantRoutes = [
       component: () => import('@/views/home/index'),
       meta: { title: '__announcement' }
     }]
-  },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
 
 export const asyncRoutes = [

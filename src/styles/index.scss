@@ -1,6 +1,7 @@
 @import './variables.scss';
 @import './mixin.scss';
 @import './transition.scss';
+@import './element-ui.scss';
 
 html {
   height: 100%;
@@ -96,4 +97,98 @@ body {
   background-image: none;
   background-color: #a3a3a3;
   border-color: #a3a3a3;
+}
+
+.view-container {
+  .view-seachForm {
+    width: 100%;
+    background-color: $black;
+    line-height: 0;
+    padding: 4px 0;
+
+    .seachForm-item {
+      overflow: hidden;
+      transition: height .3s;
+      display: inline-block;
+      width: 100%;
+
+      .group {
+        display: flex;
+        justify-content: space-between;
+
+        .wrap {
+          width: auto;
+        }
+      }
+
+      .wrap {
+        padding: 3px;
+        width: 100%;
+        display: inline-block;
+
+        .el-select {
+          width: 100%;
+        }
+
+        .el-button {
+          width: 120px;
+        }
+
+        .moreSearch {
+          background-color: transparent;
+          border-color: $yellow;
+          color: $yellow;
+        }
+      }
+
+      .wrap.pc {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .view-container {
+    .view-seachForm {
+      .seachForm-item {
+        .group {
+          display: inline-block;
+  
+          .wrap {
+            width: auto;
+          }
+        }
+
+        .wrap {
+          display: inline-block;
+          width: 50%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .view-container {
+    .view-seachForm {
+      .seachForm-item {
+        display: inline-block;
+        width: auto;
+        .wrap {
+          display: inline-block;
+          width: auto;
+          vertical-align: top;
+
+          .moreSearch {
+            display: none;
+          }
+        }
+
+        .wrap.pc {
+          display: inline-block;
+        }
+      }
+    }
+  }
 }

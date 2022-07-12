@@ -1,0 +1,54 @@
+// cover some element-ui styles
+@import "~@/styles/variables.scss";
+
+.el-input {
+  .el-input__inner {
+    height: 2em;
+    line-height: 2em;
+  }
+
+  .el-input__inner:focus {
+    border-color: $yellow;
+  }
+
+  .el-input__icon {
+    line-height: 1;
+  }
+}
+
+.el-select {
+  .el-input.is-focus {
+    .el-input__inner {
+      border-color: $yellow;
+    }
+  }
+}
+
+.el-select-dropdown {
+  background-color: #000;
+}
+
+.el-select-dropdown .el-select-dropdown__item {
+  color: $yellow;
+  background-color: #000;
+  &:hover {
+    background-color: #444;
+  }
+}
+
+.el-select-dropdown.is-multiple .el-select-dropdown__item.selected,
+.el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover {
+  color: $yellow;
+  background-color: #444;
+  &:hover {
+    background-color: #444;
+  }
+}
+
+.el-tag.el-tag--info {
+  background-color: #000;
+  border-color: #000;
+  color: $yellow;
+  text-align: center;
+  width: 100%;
+}
