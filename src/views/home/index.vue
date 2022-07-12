@@ -74,7 +74,7 @@ export default {
       font-weight: bold;
       border-bottom: 1px solid #EBEEF5;
     }
-  
+
     .el-collapse {
       border: none;
 
@@ -85,7 +85,7 @@ export default {
           color: #ca0;
           padding-left: 10px;
         }
-  
+
         .el-collapse-item__content {
           font-size: 16px;
           padding-left: 5px;
@@ -93,7 +93,7 @@ export default {
         }
       }
     }
-  
+
     .noMore {
       display: flex;
       align-items: center;

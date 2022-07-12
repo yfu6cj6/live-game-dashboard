@@ -1,7 +1,7 @@
 <template>
   <div class="view-container">
     <div class="view-seachForm">
-      <div class="seachForm-item" :class="{'open': searchFormOpen}">
+      <div class="seachForm-item seachForm-expand">
         <p class="wrap pc">
           <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
         </p>
@@ -44,19 +44,43 @@
       </div>
     </div>
     <div class="view-wrap">
-      <div />
+      <div
+        v-for="(item, index) in tableData"
+        :key="index"
+        class="row"
+        :class="{'single-row': index % 2 === 0}"
+      >
+        <div>
+          <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.jpg" :alt="$t('__dealerPhoto')">
+          <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
+        </div>
+        <div>
+          <p>ID: {{ item.id }}</p>
+          <p>{{ $t('__account') }}: {{ item.account }}</p>
+          <p>{{ $t('__name') }}: {{ item.name }}</p>
+          <p>{{ $t('__activated') }}: {{ item.statusLabel }}</p>
+          <p>
+            {{ $t('__loginBarcode') }}:
+            <img :src="item.dns1d" :alt="$t('__loginBarcode')">
+          </p>
+          <p>{{ $t('__creator') }}: {{ item.creator }}</p>
+          <p><el-button class="bg-yellow" size="mini" @click="onEditBtnClick(scope.row)">{{ $t("__edit") }}</el-button></p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { dealerSearch } from '@/api/backstageManagement/dealerManagement'
+import common from '@/layout/mixin/common'
 import handlePageChange from '@/layout/mixin/handlePageChange'
+import handleSearchFormOpen from '@/layout/mixin/handleSearchFormOpen'
 
 export default {
   name: 'DealerManagement',
   components: { },
-  mixins: [handlePageChange],
+  mixins: [common, handlePageChange, handleSearchFormOpen],
   data() {
     return {
       dialogEnum: Object.freeze({
@@ -64,21 +88,41 @@ export default {
         'create': 1,
         'edit': 2
       }),
-      searchForm: {},
-      searchItems: {},
-      searchFormOpen: false,
       curDialogIndex: 0
     }
   },
   computed: {
-    advancedSearchIcon() {
-      return this.searchFormOpen ? "el-icon-arrow-up" : "el-icon-arrow-down";
+    statusCollapse() {
+      return this.searchForm.status && this.searchForm.status.length > this.selectCollapseCount
     }
+  },
+  watch: {
   },
   created() {
     this.onSearchBtnClick({}, 1);
   },
   methods: {
+    resizeHandler() {
+      const vw = window.innerWidth;
+      const seachFormItem = document.getElementsByClassName("seachForm-expand");
+      var formHeight = "34px";
+      if (this.searchFormOpen) {
+        if (vw <= 768) {
+          formHeight = `${136 + (this.searchForm.status.length * 32)}px`;
+        } else if (vw > 768 && vw <= 992) {
+          formHeight = `${68 + (this.searchForm.status.length * 32)}px`;
+        } else {
+          formHeight = `${34 + (this.searchForm.status.length * 32)}px`;
+        }
+      } else {
+        if (vw > 992) {
+          formHeight = `${34 + (this.searchForm.status.length * 32)}px`;
+        }
+      }
+      seachFormItem.forEach(item => {
+        item.style.height = formHeight;
+      });
+    },
     onSearchBtnClick(data, page) {
       this.searchForm = data
       this.handleCurrentChange(page)
@@ -117,34 +161,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/variables.scss";
-
 .view-container {
-  .seachForm-item {
-    height: 34px;
-  }
-
-  .seachForm-item.open {
-    height: 136px;
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 992px) {
-  .view-container {
-    .seachForm-item.open {
-      height: 68px;
+  .view-seachForm {
+    .seachForm-item {
+      height: 34px;
     }
   }
-}
-
-@media screen and (min-width: 992px) {
-  .view-container {
-    .view-seachForm {
-      background-color: red;
-      .seachForm-item {
-        height: 50px;
-      }
-      .seachForm-item.open {
+  .view-wrap {
+    .row {
+      display: flex;
+      align-items: center;
+      padding: 3px;
+      .dealerPhoto {
+        vertical-align: middle;
+        width: 150px;
       }
     }
   }

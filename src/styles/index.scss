@@ -111,6 +111,7 @@ body {
       transition: height .3s;
       display: inline-block;
       width: 100%;
+      vertical-align: top;
 
       .group {
         display: flex;
@@ -125,6 +126,7 @@ body {
         padding: 3px;
         width: 100%;
         display: inline-block;
+        vertical-align: top;
 
         .el-select {
           width: 100%;
@@ -144,6 +146,12 @@ body {
       .wrap.pc {
         display: none;
       }
+    }
+  }
+
+  .view-wrap {
+    .single-row {
+      background-color: #f4f4f4;
     }
   }
 }
