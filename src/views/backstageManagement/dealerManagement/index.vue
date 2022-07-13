@@ -1,41 +1,41 @@
 <template>
   <div class="view-container">
-    <div class="view-seachForm">
-      <div class="seachForm-item seachForm-expand">
-        <p class="wrap pc">
+    <div class="view-container-seachForm">
+      <div class="view-container-seachForm-item seachForm-expand">
+        <p class="view-container-seachForm-item-wrap pc">
           <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
         </p>
-        <p class="wrap">
+        <p class="view-container-seachForm-item-wrap">
           <el-input v-model="searchForm.id" type="number" placeholder="ID" />
         </p>
-        <p class="wrap">
+        <p class="view-container-seachForm-item-wrap">
           <el-input v-model="searchForm.account" :placeholder="$t('__account')" />
         </p>
-        <p class="wrap">
+        <p class="view-container-seachForm-item-wrap">
           <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
         </p>
-        <p class="wrap">
+        <p class="view-container-seachForm-item-wrap">
           <el-select v-model="searchForm.status" multiple filterable :collapse-tags="statusCollapse" :placeholder="$t('__status')">
             <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
           </el-select>
         </p>
       </div>
-      <div class="seachForm-item">
-        <div class="group">
-          <p class="wrap pc">
+      <div class="view-container-seachForm-item">
+        <div class="view-container-seachForm-item-group">
+          <p class="view-container-seachForm-item-wrap pc">
             <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
           </p>
-          <p class="wrap">
+          <p class="view-container-seachForm-item-wrap">
             <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
               {{ $t("__search") }}
             </el-button>
           </p>
-          <p class="wrap">
+          <p class="view-container-seachForm-item-wrap">
             <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
               {{ $t("__create") }}
             </el-button>
           </p>
-          <p class="wrap">
+          <p class="view-container-seachForm-item-wrap">
             <el-button class="moreSearch" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
               {{ $t("__moreSearch") }}
             </el-button>
@@ -43,36 +43,71 @@
         </div>
       </div>
     </div>
-    <div class="view-wrap">
+    <div class="view-container-table">
       <div
         v-for="(item, index) in tableData"
         :key="index"
-        class="row"
+        class="view-container-table-row"
         :class="{'single-row': index % 2 === 0}"
       >
-        <div>
-          <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.jpg" :alt="$t('__dealerPhoto')">
-          <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
-        </div>
-        <div>
-          <p>ID: {{ item.id }}</p>
-          <p>{{ $t('__account') }}: {{ item.account }}</p>
-          <p>{{ $t('__name') }}: {{ item.name }}</p>
-          <p>{{ $t('__activated') }}: {{ item.statusLabel }}</p>
-          <p>
-            {{ $t('__loginBarcode') }}:
-            <img :src="item.dns1d" :alt="$t('__loginBarcode')">
-          </p>
-          <p>{{ $t('__creator') }}: {{ item.creator }}</p>
-          <p><el-button class="bg-yellow" size="mini" @click="onEditBtnClick(scope.row)">{{ $t("__edit") }}</el-button></p>
-        </div>
+        <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
+        <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
+        <table>
+          <tr>
+            <td>
+              <span class="header">ID:</span>
+              <span>{{ item.id }}</span>
+            </td>
+            <td>
+              <span class="header">{{ $t('__account') }}:</span>
+              <span>{{ item.account }}</span>
+            </td>
+            <td>
+              <span class="header">{{ $t('__name') }}:</span>
+              <span>{{ item.name }}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="header">{{ $t('__activated') }}:</span>
+              <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+            </td>
+            <td>
+              <span class="header">{{ $t('__creator') }}:</span>
+              <span>{{ item.creator }}</span>
+            </td>
+            <td>
+              <div class="operate">
+                <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(scope.row)">{{ $t("__loginBarcode") }}</el-button>
+                <a :href="item.dns1d" :download="item.name">
+                  <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
+                </a>
+                <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(scope.row)">{{ $t("__edit") }}</el-button>
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
+    </div>
+    <div class="view-container-footer" :class="{'opened': sidebar.opened}">
+      <el-pagination
+        :layout="pagerLayout"
+        :total="totalCount"
+        background
+        :page-size="pageSize"
+        :page-sizes="pageSizes"
+        :pager-count="pagerCount"
+        :current-page.sync="currentPage"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { dealerSearch } from '@/api/backstageManagement/dealerManagement'
+import { mapGetters } from 'vuex'
 import common from '@/layout/mixin/common'
 import handlePageChange from '@/layout/mixin/handlePageChange'
 import handleSearchFormOpen from '@/layout/mixin/handleSearchFormOpen'
@@ -88,12 +123,23 @@ export default {
         'create': 1,
         'edit': 2
       }),
-      curDialogIndex: 0
+      curDialogIndex: 0,
+      paginationPagerCount: 3,
+      paginationLayout: "prev, pager, next, sizes"
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ]),
     statusCollapse() {
-      return this.searchForm.status && this.searchForm.status.length > this.selectCollapseCount
+      return this.searchForm.status && this.searchForm.status.length > this.selectCollapseCount;
+    },
+    pagerCount() {
+      return this.paginationPagerCount;
+    },
+    pagerLayout() {
+      return this.paginationLayout;
     }
   },
   watch: {
@@ -106,19 +152,20 @@ export default {
       const vw = window.innerWidth;
       const seachFormItem = document.getElementsByClassName("seachForm-expand");
       var formHeight = "34px";
-      if (this.searchFormOpen) {
-        if (vw <= 768) {
-          formHeight = `${136 + (this.searchForm.status.length * 32)}px`;
-        } else if (vw > 768 && vw <= 992) {
-          formHeight = `${68 + (this.searchForm.status.length * 32)}px`;
-        } else {
-          formHeight = `${34 + (this.searchForm.status.length * 32)}px`;
-        }
+      if (vw <= 768) {
+        formHeight = this.searchFormOpen ? `${136 + (this.searchForm.status.length * 32)}px` : formHeight;
+        this.paginationPagerCount = 3;
+        this.paginationLayout = "prev, pager, next, sizes";
+      } else if (vw > 768 && vw <= 992) {
+        formHeight = this.searchFormOpen ? `${68 + (this.searchForm.status.length * 32)}px` : formHeight;
+        this.paginationPagerCount = 7;
+        this.paginationLayout = "prev, pager, next, jumper, sizes";
       } else {
-        if (vw > 992) {
-          formHeight = `${34 + (this.searchForm.status.length * 32)}px`;
-        }
+        formHeight = `${34 + (this.searchForm.status.length * 32)}px`;
+        this.paginationPagerCount = 7;
+        this.paginationLayout = "prev, pager, next, jumper, sizes";
       }
+
       seachFormItem.forEach(item => {
         item.style.height = formHeight;
       });
@@ -161,20 +208,109 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view-container {
-  .view-seachForm {
-    .seachForm-item {
-      height: 34px;
+@import "~@/styles/variables.scss";
+
+.view {
+  &-container {
+    &-seachForm {
+      &-item {
+        height: 34px;
+      }
+    }
+    &-table {
+      &-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        .dealerPhoto {
+          vertical-align: middle;
+          width: 105px;
+        }
+        tr {
+          display: flex;
+          flex-direction: column;
+          td {
+            line-height: 20px;
+            .header {
+              font-weight: bold;
+              margin-right: 5px;
+            }
+            .status {
+              color: #f00;
+              font-weight: bold;
+            }
+            .statusOpen {
+              color: #090;
+            }
+            .operate {
+              width: 250px;
+              display: flex;
+              justify-content: space-between;
+              a {
+                .el-button {
+                  height: 100%;
+                  vertical-align: top;
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
-  .view-wrap {
-    .row {
-      display: flex;
-      align-items: center;
-      padding: 3px;
-      .dealerPhoto {
-        vertical-align: middle;
-        width: 150px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          table {
+            display: flex;
+            justify-content: space-evenly;
+            width: 600px;
+            tr {
+              td {
+                line-height: 35px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          justify-content: space-evenly;
+          .dealerPhoto {
+            width: 210px;
+          }
+          table {
+            display: inline-block;
+            tr {
+              display: block;
+              td {
+                display: inline-block;
+                width: 350px;
+                font-size: 20px;
+                line-height: 60px;
+
+                .operate {
+                  width: 100%;
+                  .el-button {
+                    font-size: 20px;
+                  }
+                }
+
+              }
+            }
+          }
+        }
       }
     }
   }

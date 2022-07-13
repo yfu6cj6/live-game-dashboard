@@ -52,3 +52,89 @@
   text-align: center;
   width: 100%;
 }
+
+.el-pagination {
+  display: flex;
+  justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
+
+  .el-pagination__sizes {
+    margin: 0;
+  }
+
+  span:not([class*=suffix]) {
+    height: 35px;
+    line-height: 35px;
+  }
+}
+
+.el-pagination.is-background {
+  .btn-prev,
+  .btn-next {
+    background-color: transparent;
+    color: $yellow;
+    min-width: 35px;
+    height: 35px;
+    line-height: 35px;
+    margin: 0;
+    &:disabled {
+      display: none;
+    }
+  }
+  .el-pager {
+    display: flex;
+    align-items: center;
+    li {
+      background-color: transparent;
+      color: $yellow;
+      min-width: 35px;
+      height: 35px;
+      line-height: 35px;
+      margin: 0;
+    }
+
+    li:not(.disabled) {
+      &.active {
+        background-color: $yellow;
+        color: #000;
+        border-radius: 50%;
+      }
+    }
+
+    .more::before {
+      line-height: 35px;
+    }
+  }
+
+  .el-pagination__sizes {
+    .el-select {
+      .el-input {
+        margin: 0;
+        .el-input__inner {
+          color: $yellow;
+          background-color: #000;
+          border-color: $yellow;
+          &:hover {
+            border-color: $yellow;
+          }
+        }
+        .el-select__caret {
+          color: $yellow;
+        }
+      }
+    }
+  }
+
+  .el-pagination__jump {
+    margin-right: 24px;
+    color: $yellow;
+    .el-input {
+      .el-input__inner {
+        color: $yellow;
+        background-color: #000;
+        border-color: $yellow;
+      }
+    }
+  }
+}
