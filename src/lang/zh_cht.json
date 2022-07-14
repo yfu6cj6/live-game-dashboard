@@ -291,5 +291,6 @@
     "__sort": "排序",
     "__mute": "禁言",
     "__idleRounds": "閒置回合數",
-    "__moreSearch": "更多搜尋"
+    "__moreSearch": "更多搜尋",
+    "__noInformation": "無資料"
 }

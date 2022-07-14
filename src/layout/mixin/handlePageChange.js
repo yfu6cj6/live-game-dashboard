@@ -4,6 +4,7 @@ export default {
     return {
       searchForm: {},
       searchItems: {},
+      selectForm: {},
       tableData: [],
       allDataByClient: [],
       totalCount: 0,

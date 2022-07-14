@@ -119,6 +119,12 @@ div::-webkit-scrollbar {
   border-color: #a3a3a3;
 }
 
+.confirmButton,
+.cancelButton {
+  width: 100px;
+  font-size: 18px;
+}
+
 .view {
   &-container {
     width: 100%;

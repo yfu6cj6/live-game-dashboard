@@ -9,8 +9,8 @@ export default {
       this.$confirm(msg, {
         closeOnClickModal: false,
         closeOnPressEscape: false,
-        confirmButtonClass: 'bg-yellow',
-        cancelButtonClass: 'bg-gray'
+        confirmButtonClass: 'bg-yellow confirmButton',
+        cancelButtonClass: 'bg-gray cancelButton'
       }).then(_ => {
         callBack()
       }).catch(() => {

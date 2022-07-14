@@ -4,12 +4,10 @@
     v-loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
-    :width="formWidth"
     :before-close="onClose"
     :close-on-click-modal="false"
-    :close-on-press-escape="false"
   >
-    <el-form ref="editForm" :model="editForm" :rules="rules" label-width="80px" label-position="left">
+    <el-form ref="editForm" :model="editForm" :rules="rules">
       <el-form-item label="ID" prop="id">
         <el-input v-model="editForm.id" :disabled="true" />
       </el-form-item>
@@ -39,11 +37,9 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-
 export default {
   name: 'EditDialog',
-  mixins: [handleDialogWidth],
+  mixins: [],
   props: {
     title: {
       type: String,
@@ -100,7 +96,7 @@ export default {
   },
   computed: {
     uploadTip() {
-      return `jpg/png，寬度=${this.limitImageWidth}px 高度=${this.limitImageHeight}px`
+      return `jpg/png，寬度${this.limitImageWidth}px 高度${this.limitImageHeight}px`
     }
   },
   watch: {
@@ -123,7 +119,7 @@ export default {
         const _URL = window.URL || window.webkitURL
         const img = new Image()
         img.onload = function() {
-          const valid = img.width == limitSize.width && img.height == limitSize.height
+          const valid = img.width === limitSize.width && img.height === limitSize.height
           resolve(valid)
         }
         img.src = _URL.createObjectURL(file)
@@ -182,11 +178,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-form {
-  margin-bottom: 10px;
-}
-
-.el-input {
-  width: 90%;
-}
 </style>

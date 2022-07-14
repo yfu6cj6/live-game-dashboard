@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="dataLoading">
     <div ref="container" class="view-container">
       <div ref="seachForm" class="view-container-seachForm" :class="{'opened': sidebar.opened}">
         <div ref="seachFormExpand" class="view-container-seachForm-item">
@@ -45,50 +45,53 @@
         </div>
       </div>
       <div ref="table" class="view-container-table">
-        <div
-          v-for="(item, index) in tableData"
-          :key="index"
-          class="view-container-table-row"
-          :class="{'single-row': index % 2 === 0}"
-        >
-          <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
-          <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
-          <table>
-            <tr>
-              <td>
-                <span class="header">ID:</span>
-                <span>{{ item.id }}</span>
-              </td>
-              <td>
-                <span class="header">{{ $t('__account') }}:</span>
-                <span>{{ item.account }}</span>
-              </td>
-              <td>
-                <span class="header">{{ $t('__name') }}:</span>
-                <span>{{ item.name }}</span>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <span class="header">{{ $t('__activated') }}:</span>
-                <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-              </td>
-              <td>
-                <span class="header">{{ $t('__creator') }}:</span>
-                <span>{{ item.creator }}</span>
-              </td>
-              <td>
-                <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(scope.row)">{{ $t("__loginBarcode") }}</el-button>
-                  <a :href="item.dns1d" :download="item.name">
-                    <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
-                  </a>
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(scope.row)">{{ $t("__edit") }}</el-button>
-                </div>
-              </td>
-            </tr>
-          </table>
+        <div v-if="tableData.length > 0">
+          <div
+            v-for="(item, index) in tableData"
+            :key="index"
+            class="view-container-table-row"
+            :class="{'single-row': index % 2 === 0}"
+          >
+            <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
+            <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
+            <table>
+              <tr>
+                <td>
+                  <span class="header">ID:</span>
+                  <span>{{ item.id }}</span>
+                </td>
+                <td>
+                  <span class="header">{{ $t('__account') }}:</span>
+                  <span>{{ item.account }}</span>
+                </td>
+                <td>
+                  <span class="header">{{ $t('__name') }}:</span>
+                  <span>{{ item.name }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="header">{{ $t('__activated') }}:</span>
+                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                </td>
+                <td>
+                  <span class="header">{{ $t('__creator') }}:</span>
+                  <span>{{ item.creator }}</span>
+                </td>
+                <td>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
+                    <a :href="item.dns1d" :download="item.name">
+                      <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
+                    </a>
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
+        <div v-else>{{ $t("__noInformation") }}</div>
       </div>
     </div>
     <div class="view-footer" :class="{'opened': sidebar.opened}">
@@ -104,19 +107,42 @@
         @current-change="handleCurrentChange"
       />
     </div>
+
+    <editDialog
+      ref="createDialog"
+      :title="$t('__create')"
+      :visible="curDialogIndex === dialogEnum.create"
+      :confirm="$t('__confirm')"
+      :form="selectForm"
+      :image-list="imageList"
+      @close="closeDialogEven"
+      @confirm="createDialogConfirmEven"
+    />
+
+    <editDialog
+      ref="editDialog"
+      :title="$t('__edit')"
+      :visible="curDialogIndex === dialogEnum.edit"
+      :confirm="$t('__revise')"
+      :form="selectForm"
+      :image-list="imageList"
+      @close="closeDialogEven"
+      @confirm="editDialogConfirmEven"
+    />
   </div>
 </template>
 
 <script>
-import { dealerSearch } from '@/api/backstageManagement/dealerManagement'
+import { dealerSearch, dealerCreate, dealerEdit } from '@/api/backstageManagement/dealerManagement'
 import { mapGetters } from 'vuex'
 import common from '@/layout/mixin/common'
 import handlePageChange from '@/layout/mixin/handlePageChange'
 import handleSearchFormOpen from '@/layout/mixin/handleSearchFormOpen'
+import EditDialog from './editDialog'
 
 export default {
   name: 'DealerManagement',
-  components: { },
+  components: { EditDialog },
   mixins: [common, handlePageChange, handleSearchFormOpen],
   data() {
     return {
@@ -126,7 +152,8 @@ export default {
         'edit': 2
       }),
       curDialogIndex: 0,
-      paginationPagerCount: 5
+      paginationPagerCount: 5,
+      imageList: []
     }
   },
   computed: {
@@ -199,10 +226,44 @@ export default {
       this.closeLoading()
     },
     closeLoading() {
+      this.$refs.createDialog.setDialogLoading(false)
+      this.$refs.editDialog.setDialogLoading(false)
       this.dataLoading = false
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+    },
+    onCreateBtnClick() {
+      this.selectForm = { status: this.searchItems.status[0].key }
+      this.imageList = []
+      this.curDialogIndex = this.dialogEnum.create
+    },
+    createDialogConfirmEven(data) {
+      this.$refs.createDialog.setDialogLoading(true)
+      dealerCreate(data).then((res) => {
+        this.handleRespone(res)
+      }).catch(() => {
+        this.closeLoading()
+      })
+    },
+    onEditBtnClick(item) {
+      this.selectForm = JSON.parse(JSON.stringify(item))
+      if (this.selectForm.photo_url !== "") {
+        this.imageList = [{ name: this.selectForm.name, url: this.selectForm.photo_url }]
+      } else {
+        this.imageList = []
+      }
+      this.curDialogIndex = this.dialogEnum.edit
+    },
+    editDialogConfirmEven(data) {
+      this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
+        this.$refs.editDialog.setDialogLoading(true)
+        dealerEdit(data).then((res) => {
+          this.handleRespone(res)
+        }).catch(() => {
+          this.closeLoading()
+        })
+      })
     }
   }
 }
