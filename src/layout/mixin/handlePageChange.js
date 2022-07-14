@@ -2,6 +2,8 @@
 export default {
   data() {
     return {
+      searchForm: {},
+      searchItems: {},
       tableData: [],
       allDataByClient: [],
       totalCount: 0,

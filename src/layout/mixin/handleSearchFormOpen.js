@@ -2,8 +2,6 @@
 export default {
   data() {
     return {
-      searchForm: {},
-      searchItems: {},
       searchFormOpen: false
     }
   },
@@ -14,9 +12,6 @@ export default {
   },
   watch: {
     'searchFormOpen'() {
-      this.resizeHandler();
-    },
-    'searchForm.status'() {
       this.resizeHandler();
     }
   },

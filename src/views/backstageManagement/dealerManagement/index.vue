@@ -141,6 +141,9 @@ export default {
     }
   },
   watch: {
+    'searchForm.status'() {
+      this.resizeHandler();
+    }
   },
   created() {
     this.onSearchBtnClick({}, 1);
@@ -161,7 +164,10 @@ export default {
       }
 
       this.$refs.seachFormExpand.style.height = `${formHeight}px`;
-      this.$refs.table.style.top = `${this.$refs.seachForm.clientHeight}px`;
+      setTimeout(() => {
+        this.$refs.table.style.top = `${this.$refs.seachForm.clientHeight}px`;
+        this.$refs.table.style.height = `calc(100vh - 45px - 35px - 40px - ${this.$refs.seachForm.clientHeight}px)`;
+      }, 300);
     },
     onSearchBtnClick(data, page) {
       this.searchForm = data
