@@ -22,6 +22,26 @@ body {
   box-sizing: border-box;
 }
 
+//整個滾動條
+div::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+  background-color: #000;
+  //滾動條軌道
+  &-track {
+    background-color: #000;
+  }
+  //滾動條上的滾動滑塊
+  &-thumb {
+    border-radius: 15px;
+    background-color: $yellow;
+  }
+  //當同時有垂直滾動條和水平滾動條時交彙的部分。通常是瀏覽器窗口
+  &-corner {
+    background-color: #000;
+  }
+}
+
 .bg-black,
 .bg-black:hover,
 .bg-black:focus {
@@ -101,8 +121,12 @@ body {
 
 .view {
   &-container {
+    width: 100%;
+    height: calc(100vh - 45px - 35px - 40px);
+    overflow-y: scroll;
     &-seachForm {
       width: 100%;
+      height: auto;
       background-color: $black;
       line-height: 0;
       padding: 4px 0;
@@ -134,7 +158,10 @@ body {
           justify-content: space-between;
         }
         &-group > &-wrap {
-          width: auto;
+          width: 120px;
+          .el-button {
+            width: 100%;
+          }
         }
         &-wrap.pc {
           display: none;
@@ -142,19 +169,18 @@ body {
       }
     }
     &-table {
-      padding-bottom: 40px;
+      width: 100%;
       .single-row {
         background-color: #f4f4f4;
       }
     }
-    &-footer {
-      position: fixed;
-      bottom: 0;
-      background-color: #262626;
-      text-align: center;
-      width: 100vw;
-      height: 40px;
-    }
+  }
+  &-footer {
+    position: fixed;
+    bottom: 0;
+    background-color: #262626;
+    width: 100%;
+    height: 40px;
   }
 }
 
@@ -170,9 +196,6 @@ body {
           &-group {
             display: inline-block;
           }
-          &-group > &-wrap {
-            width: auto;
-          }
         }
       }
     }
@@ -182,7 +205,13 @@ body {
 @media screen and (min-width: 992px) {
   .view {
     &-container {
+      position: relative;
+      overflow-y: visible;
       &-seachForm {
+        position: fixed;
+        top: $navBarHeight + $tagsViewHeight;
+        width: calc(100vw - 66px);
+        z-index: 1;
         &-item {
           display: inline-block;
           width: auto;
@@ -199,15 +228,20 @@ body {
           }
         }
       }
-      &-footer {
-        text-align: right;
-        width: calc(100vw - 66px);
-        transition: width .3s;
-      }
-
-      &-footer.opened {
+      &-seachForm.opened {
         width: calc(100vw - 170px);
       }
+      &-table {
+        position: absolute;
+        height: calc(100vh - 45px - 35px - 42px - 40px);
+        overflow-y: scroll;
+      }
+    }
+    &-footer {
+      width: calc(100vw - 66px);
+    }
+    &-footer.opened {
+      width: calc(100vw - 170px);
     }
   }
 }

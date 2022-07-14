@@ -127,6 +127,7 @@
   }
 
   .el-pagination__jump {
+    display: none;
     margin-right: 24px;
     color: $yellow;
     .el-input {
@@ -135,6 +136,26 @@
         background-color: #000;
         border-color: $yellow;
       }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .el-pagination.is-background {
+    .el-pagination__jump {
+      display: inline-block;
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .el-pagination {
+    justify-content: flex-end;
+    padding-right: 30px;
+  }
+  .el-pagination.is-background {
+    .el-pagination__jump {
+      display: inline-block;
     }
   }
 }
