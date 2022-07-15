@@ -19,9 +19,11 @@
 </template>
 
 <script>
+import dialogCommon from '@/layout/mixin/dialogCommon'
+
 export default {
   name: 'LoginBarcodeDialog',
-  mixins: [],
+  mixins: [dialogCommon],
   props: {
     title: {
       type: String,
@@ -44,7 +46,6 @@ export default {
   },
   data: function() {
     return {
-      dialogLoading: false
     }
   },
   computed: {
@@ -52,9 +53,6 @@ export default {
   watch: {
   },
   methods: {
-    onClose() {
-      this.$emit('close')
-    }
   }
 }
 </script>

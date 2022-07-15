@@ -85,9 +85,26 @@ export const asyncRoutes = [
         name: 'DealerManagement',
         component: () => import('@/views/backstageManagement/dealerManagement/index'),
         meta: { title: '__dealerManagement', icon: 'el-icon-s-custom', permission: 'BackStageManage.DealerManage' }
+      },
+      {
+        // 贈禮管理
+        path: 'giftManagement',
+        name: 'GiftManagement',
+        component: () => import('@/views/backstageManagement/giftManagement/index'),
+        meta: { title: '__giftManagement', icon: 'el-icon-present', permission: 'BackStageManage.GiftManage' }
       }
     ]
-  }
+  },
+
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: () => import('@/views/logout/index'),
+    meta: { title: '__logout', icon: 'logout' }
+  },
+
+  // 404 pages must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true }
 ];
 
 const createRouter = () => new Router({

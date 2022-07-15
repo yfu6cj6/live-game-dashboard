@@ -4,14 +4,29 @@
     v-loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
+    :width="formWidth"
     :before-close="onClose"
     :close-on-click-modal="false"
+    :close-on-press-escape="false"
   >
-    <el-form ref="editForm" :model="editForm" :rules="rules">
-      <el-form-item :label="$t('__name')" prop="name">
-        <el-input v-model="editForm.name" />
+    <el-form ref="editForm" :model="editForm" :rules="rules" label-width="80px" label-position="left">
+      <el-form-item :label="$t('__giftNickname')" prop="nickname">
+        <el-input v-model="editForm.nickname" />
       </el-form-item>
-      <el-form-item :label="$t('__dealerPhoto')">
+      <el-form-item :label="$t('__currency')" prop="currency_id">
+        <el-select v-model="editForm.currency_id">
+          <el-option v-for="item in searchItems.currency" :key="item.key" :label="item.nickname" :value="item.key" />
+        </el-select>
+      </el-form-item>
+      <el-form-item :label="$t('__status')" prop="status">
+        <el-select v-model="editForm.status">
+          <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
+        </el-select>
+      </el-form-item>
+      <el-form-item :label="$t('__value')" prop="value">
+        <el-input v-model="editForm.value" type="number" />
+      </el-form-item>
+      <el-form-item :label="$t('__giftImage')">
         <el-upload
           action=""
           :http-request="uploadHttpRequest"
@@ -34,11 +49,11 @@
 </template>
 
 <script>
-import dialogCommon from '@/layout/mixin/dialogCommon'
+import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
 
 export default {
   name: 'EditDialog',
-  mixins: [dialogCommon],
+  mixins: [handleDialogWidth],
   props: {
     title: {
       type: String,
@@ -65,6 +80,13 @@ export default {
         return {}
       }
     },
+    searchItems: {
+      type: Object,
+      require: true,
+      default() {
+        return {}
+      }
+    },
     imageList: {
       type: Array,
       require: true,
@@ -77,24 +99,36 @@ export default {
     const validate = (rule, value, callback) => {
       if (!value) {
         callback(new Error(this.$t('__requiredField')))
+      } else if (value.trim().length > 5) {
+        callback(new Error(`${this.$t('__lengthLong')}5`))
+      } else {
+        callback()
+      }
+    }
+    const valueValidate = (rule, value, callback) => {
+      if (!value && value !== 0) {
+        callback(new Error(this.$t('__requiredField')))
+      } else if (value <= 0) {
+        callback(new Error(this.$stringFormat(this.$t('__mustBeGreater'), [0])))
       } else {
         callback()
       }
     }
     return {
       rules: {
-        name: [{ required: true, trigger: 'blur', validator: validate }]
+        nickname: [{ required: true, trigger: 'blur', validator: validate }],
+        value: [{ required: true, trigger: 'blur', validator: valueValidate }]
       },
       editForm: {},
+      dialogLoading: false,
       fromData: new FormData(),
       fileList: this.imageList,
-      limitImageWidth: 420,
-      limitImageHeight: 480
+      limitImageWidth: 73
     }
   },
   computed: {
     uploadTip() {
-      return `jpg/png，寬度${this.limitImageWidth}px 高度${this.limitImageHeight}px`
+      return `jpg/png，Width <= ${this.limitImageWidth}px`
     }
   },
   watch: {
@@ -117,7 +151,7 @@ export default {
         const _URL = window.URL || window.webkitURL
         const img = new Image()
         img.onload = function() {
-          const valid = img.width === limitSize.width && img.height === limitSize.height
+          const valid = (img.width <= limitSize.width || limitSize.width === 0) && (img.height <= limitSize.height || limitSize.height === 0)
           resolve(valid)
         }
         img.src = _URL.createObjectURL(file)
@@ -136,7 +170,7 @@ export default {
               this.$message.error(this.$t('__fileError'))
               return
             }
-            const limitSize = { width: this.limitImageWidth, height: this.limitImageHeight }
+            const limitSize = { width: this.limitImageWidth, height: 0 }
             this.checkImageSize(imageFile, limitSize).then((validSize) => {
               if (validSize) {
                 this.send()
@@ -157,6 +191,9 @@ export default {
       }
       this.$emit('confirm', this.fromData)
     },
+    onClose() {
+      this.$emit('close')
+    },
     onReset() {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.fromData = new FormData()
@@ -164,10 +201,21 @@ export default {
       this.$nextTick(() => {
         this.$refs.editForm.clearValidate()
       })
+    },
+    setDialogLoading(dialogLoading) {
+      this.dialogLoading = dialogLoading
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.el-form {
+  margin-bottom: 10px;
+}
+
+.el-select,
+.el-input {
+  width: 90%;
+}
 </style>
