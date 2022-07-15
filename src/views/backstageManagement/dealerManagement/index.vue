@@ -80,7 +80,7 @@
                 </td>
                 <td>
                   <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
+                    <el-button class="bg-yellow" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
                     <a :href="item.dns1d" :download="item.name">
                       <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
                     </a>
@@ -129,6 +129,13 @@
       @close="closeDialogEven"
       @confirm="editDialogConfirmEven"
     />
+
+    <loginBarcodeDialog
+      :title="$stringFormat(`${$t('__dealer')}${$t('__loginBarcode')} - {0}`, [selectForm.name])"
+      :visible="curDialogIndex === dialogEnum.loginBarcode"
+      :form="selectForm"
+      @close="closeDialogEven"
+    />
   </div>
 </template>
 
@@ -139,17 +146,19 @@ import common from '@/layout/mixin/common'
 import handlePageChange from '@/layout/mixin/handlePageChange'
 import handleSearchFormOpen from '@/layout/mixin/handleSearchFormOpen'
 import EditDialog from './editDialog'
+import LoginBarcodeDialog from './loginBarcodeDialog'
 
 export default {
   name: 'DealerManagement',
-  components: { EditDialog },
+  components: { EditDialog, LoginBarcodeDialog },
   mixins: [common, handlePageChange, handleSearchFormOpen],
   data() {
     return {
       dialogEnum: Object.freeze({
         'none': 0,
         'create': 1,
-        'edit': 2
+        'edit': 2,
+        'loginBarcode': 3
       }),
       curDialogIndex: 0,
       paginationPagerCount: 5,
@@ -164,7 +173,7 @@ export default {
       return this.searchForm.status && this.searchForm.status.length > this.selectCollapseCount;
     },
     pagerCount() {
-      return this.paginationPagerCount
+      return this.paginationPagerCount;
     }
   },
   watch: {
@@ -197,73 +206,77 @@ export default {
       }, 300);
     },
     onSearchBtnClick(data, page) {
-      this.searchForm = data
-      this.handleCurrentChange(page)
+      this.searchForm = data;
+      this.handleCurrentChange(page);
     },
     onSubmit() {
-      this.dataLoading = true
+      this.dataLoading = true;
       dealerSearch(this.searchForm).then((res) => {
-        this.handleRespone(res)
+        this.handleRespone(res);
       }).catch(() => {
-        this.closeLoading()
-      })
+        this.closeLoading();
+      });
     },
     handleRespone(res) {
       this.$refs.container.scrollTop = 0;
       this.$refs.table.scrollTop = 0;
-      this.searchItems = res.searchItems
-      this.totalCount = res.rows.length
-      this.allDataByClient = res.rows
+      this.searchItems = res.searchItems;
+      this.totalCount = res.rows.length;
+      this.allDataByClient = res.rows;
       this.allDataByClient.forEach(element => {
-        const statusItem = this.searchItems.status.find(item => item.key === element.status)
+        const statusItem = this.searchItems.status.find(item => item.key === element.status);
         if (statusItem) {
-          element.statusLabel = statusItem.nickname
+          element.statusLabel = statusItem.nickname;
         }
-      })
-      this.handlePageChangeByClient(this.currentPage)
+      });
+      this.handlePageChangeByClient(this.currentPage);
 
-      this.closeDialogEven()
-      this.closeLoading()
+      this.closeDialogEven();
+      this.closeLoading();
     },
     closeLoading() {
-      this.$refs.createDialog.setDialogLoading(false)
-      this.$refs.editDialog.setDialogLoading(false)
-      this.dataLoading = false
+      this.$refs.createDialog.setDialogLoading(false);
+      this.$refs.editDialog.setDialogLoading(false);
+      this.dataLoading = false;
     },
     closeDialogEven() {
-      this.curDialogIndex = this.dialogEnum.none
+      this.curDialogIndex = this.dialogEnum.none;
     },
     onCreateBtnClick() {
-      this.selectForm = { status: this.searchItems.status[0].key }
-      this.imageList = []
-      this.curDialogIndex = this.dialogEnum.create
+      this.selectForm = { status: this.searchItems.status[0].key };
+      this.imageList = [];
+      this.curDialogIndex = this.dialogEnum.create;
     },
     createDialogConfirmEven(data) {
-      this.$refs.createDialog.setDialogLoading(true)
+      this.$refs.createDialog.setDialogLoading(true);
       dealerCreate(data).then((res) => {
-        this.handleRespone(res)
+        this.handleRespone(res);
       }).catch(() => {
-        this.closeLoading()
-      })
+        this.closeLoading();
+      });
     },
-    onEditBtnClick(item) {
-      this.selectForm = JSON.parse(JSON.stringify(item))
+    onLoginBarcodeBtnClick(tableRowData) {
+      this.selectForm = JSON.parse(JSON.stringify(tableRowData));
+      this.curDialogIndex = this.dialogEnum.loginBarcode;
+    },
+    onEditBtnClick(tableRowData) {
+      this.selectForm = JSON.parse(JSON.stringify(tableRowData));
       if (this.selectForm.photo_url !== "") {
-        this.imageList = [{ name: this.selectForm.name, url: this.selectForm.photo_url }]
+        this.imageList = [{ name: this.selectForm.name, url: this.selectForm.photo_url }];
       } else {
-        this.imageList = []
+        this.imageList = [];
       }
-      this.curDialogIndex = this.dialogEnum.edit
+      this.curDialogIndex = this.dialogEnum.edit;
     },
     editDialogConfirmEven(data) {
       this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-        this.$refs.editDialog.setDialogLoading(true)
+        this.$refs.editDialog.setDialogLoading(true);
         dealerEdit(data).then((res) => {
           this.handleRespone(res)
         }).catch(() => {
           this.closeLoading()
-        })
-      })
+        });
+      });
     }
   }
 }
