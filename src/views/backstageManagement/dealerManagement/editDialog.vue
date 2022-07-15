@@ -8,9 +8,6 @@
     :close-on-click-modal="false"
   >
     <el-form ref="editForm" :model="editForm" :rules="rules">
-      <el-form-item label="ID" prop="id">
-        <el-input v-model="editForm.id" :disabled="true" />
-      </el-form-item>
       <el-form-item :label="$t('__name')" prop="name">
         <el-input v-model="editForm.name" />
       </el-form-item>

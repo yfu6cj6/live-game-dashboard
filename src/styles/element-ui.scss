@@ -155,15 +155,21 @@
   flex-direction: column;
   -ms-flex-direction: column; /* 兼容IE */
   background: #000;
-  top: 50%;
-  transform: translateY(-50%);
   margin: 0 auto !important;
+  overflow-y: auto;
+  top: 80px;
   .el-dialog__header {
     text-align: center;
     .el-dialog__title {
       color: #fff;
+      font-size: 22px;
     }
     .el-dialog__headerbtn {
+      &:hover {
+        .el-dialog__close {
+          color: $yellow;
+        }
+      }
       .el-dialog__close {
         color: #fff;
         transform: scale(1.5);
@@ -204,11 +210,18 @@
   }
 }
 
-.el-upload-dragger {
-  &:hover {
-    border: none;
+.el-upload {
+  &-dragger {
+    &:hover {
+      border: none;
+    }
+    i {
+      color: $yellow;
+    }
   }
-  i {
+  &:focus {
+    // border: none;
+    border-color: $yellow;
     color: $yellow;
   }
 }
@@ -252,6 +265,15 @@
   border: 1px solid $yellow;
   background: black;
   width: calc(100% - 20px);
+  .el-message-box__header {
+    .el-message-box__headerbtn {
+      &:hover {
+        .el-message-box__close {
+          color: $yellow;
+        }
+      }
+    }
+  }
   .el-message-box__content {
     .el-message-box__container {
       .el-message-box__message {
@@ -273,6 +295,24 @@
       display: inline-block;
     }
   }
+
+  .el-dialog {
+    top: 50%;
+    transform: translateY(-50%);
+    .el-dialog__body {
+      .el-form {
+        width: 50%;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .el-upload-list--picture-card {
+    .el-upload-list__item {
+      width: 105px;
+      height: 120px;
+    }
+  }
 }
 
 @media screen and (min-width: 992px) {
@@ -280,9 +320,24 @@
     justify-content: flex-end;
     padding-right: 30px;
   }
+
   .el-pagination.is-background {
     .el-pagination__jump {
       display: inline-block;
     }
+  }
+
+  .el-dialog {
+    max-width: 50%;
+    .el-dialog__body {
+      .el-form {
+        width: 50%;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .el-message-box {
+    max-width: 40%;
   }
 }

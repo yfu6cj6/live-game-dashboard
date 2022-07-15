@@ -110,7 +110,7 @@
 
     <editDialog
       ref="createDialog"
-      :title="$t('__create')"
+      :title="`${$t('__create')}${$t('__dealer')}`"
       :visible="curDialogIndex === dialogEnum.create"
       :confirm="$t('__confirm')"
       :form="selectForm"
@@ -121,7 +121,7 @@
 
     <editDialog
       ref="editDialog"
-      :title="$t('__edit')"
+      :title="$stringFormat(`${$t('__edit')}${$t('__dealer')} - ID:{0}`, [selectForm.id])"
       :visible="curDialogIndex === dialogEnum.edit"
       :confirm="$t('__revise')"
       :form="selectForm"
@@ -193,7 +193,7 @@ export default {
       this.$refs.seachFormExpand.style.height = `${formHeight}px`;
       setTimeout(() => {
         this.$refs.table.style.top = `${this.$refs.seachForm.clientHeight}px`;
-        this.$refs.table.style.height = `calc(100vh - 45px - 35px - 40px - ${this.$refs.seachForm.clientHeight}px)`;
+        this.$refs.table.style.maxHeight = `calc(100vh - 45px - 35px - 40px - ${this.$refs.seachForm.clientHeight}px)`;
       }, 300);
     },
     onSearchBtnClick(data, page) {
