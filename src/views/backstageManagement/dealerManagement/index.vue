@@ -91,7 +91,7 @@
             </table>
           </div>
         </div>
-        <div v-else>{{ $t("__noInformation") }}</div>
+        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
       </div>
     </div>
     <div class="view-footer" :class="{'opened': sidebar.opened}">
