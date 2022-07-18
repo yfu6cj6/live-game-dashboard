@@ -1,28 +1,396 @@
 <template>
-  <div v-loading="dataLoading" class="view-container">
-    -
+  <div v-loading="dataLoading">
+    <div ref="container" class="view-container">
+      <div ref="seachForm" class="view-container-seachForm" :class="{'opened': sidebar.opened}">
+        <div ref="seachFormExpand" class="view-container-seachForm-item">
+          <p class="view-container-seachForm-item-wrap pc">
+            <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
+          </p>
+          <p class="view-container-seachForm-item-wrap">
+            <el-input v-model="searchForm.id" type="number" placeholder="ID" />
+          </p>
+          <p class="view-container-seachForm-item-wrap">
+            <el-input v-model="searchForm.nickname" :placeholder="$t('__giftNickname')" />
+          </p>
+          <p class="view-container-seachForm-item-wrap">
+            <el-select v-model="searchForm.currency" multiple filterable :collapse-tags="currencyCollapse" :placeholder="$t('__currency')">
+              <el-option v-for="item in searchItems.currency" :key="item.key" :label="item.nickname" :value="item.key" />
+            </el-select>
+          </p>
+          <p class="view-container-seachForm-item-wrap">
+            <el-input v-model="searchForm.value" type="number" :placeholder="$t('__value')" />
+          </p>
+          <p class="view-container-seachForm-item-wrap">
+            <el-select v-model="searchForm.status" multiple filterable :collapse-tags="statusCollapse" :placeholder="$t('__status')">
+              <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
+            </el-select>
+          </p>
+        </div>
+        <div class="view-container-seachForm-item">
+          <div class="view-container-seachForm-item-group">
+            <p class="view-container-seachForm-item-wrap pc">
+              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
+            </p>
+            <p class="view-container-seachForm-item-wrap">
+              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+                {{ $t("__search") }}
+              </el-button>
+            </p>
+            <p class="view-container-seachForm-item-wrap">
+              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
+                {{ $t("__create") }}
+              </el-button>
+            </p>
+            <p class="view-container-seachForm-item-wrap">
+              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+                {{ $t("__sort") }}
+              </el-button>
+            </p>
+            <p class="view-container-seachForm-item-wrap">
+              <el-button class="moreSearch" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
+                {{ $t("__moreSearch") }}
+              </el-button>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div ref="table" class="view-container-table">
+        <div v-if="tableData.length > 0">
+          <div
+            v-for="(item, index) in tableData"
+            :key="index"
+            class="view-container-table-row"
+            :class="{'single-row': index % 2 === 0}"
+          >
+            <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+            <table>
+              <tr>
+                <td>
+                  <span class="header">ID:</span>
+                  <span>{{ item.id }}</span>
+                </td>
+                <td>
+                  <span class="header">{{ $t('__giftNickname') }}:</span>
+                  <span>{{ item.nickname }}</span>
+                </td>
+                <td>
+                  <span class="header">{{ $t('__currency') }}:</span>
+                  <span>{{ item.currency }}</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="header">{{ $t('__value') }}:</span>
+                  <span>{{ item.valueLabel }}</span>
+                </td>
+                <td>
+                  <span class="header">{{ $t('__activated') }}:</span>
+                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                </td>
+                <td>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+      </div>
+    </div>
+    <div class="view-footer" :class="{'opened': sidebar.opened}">
+      <el-pagination
+        layout="prev, pager, next, jumper, sizes"
+        :total="totalCount"
+        background
+        :page-size="pageSize"
+        :page-sizes="pageSizes"
+        :pager-count="pagerCount"
+        :current-page.sync="currentPage"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
+    </div>
+
+    <editDialog
+      ref="createDialog"
+      :title="`${$t('__create')}${$t('__gift')}`"
+      :visible="curDialogIndex === dialogEnum.create"
+      :confirm="$t('__confirm')"
+      :form="selectForm"
+      :search-items="searchItems"
+      :image-list="imageList"
+      @close="closeDialogEven"
+      @confirm="createDialogConfirmEven"
+    />
+
+    <editDialog
+      ref="editDialog"
+      :title="$stringFormat(`${$t('__edit')}${$t('__gift')} - ID:{0}`, [selectForm.id])"
+      :visible="curDialogIndex === dialogEnum.edit"
+      :confirm="$t('__revise')"
+      :form="selectForm"
+      :search-items="searchItems"
+      :image-list="imageList"
+      @close="closeDialogEven"
+      @confirm="editDialogConfirmEven"
+    />
   </div>
 </template>
 
 <script>
+import { giftSearch, giftCreate, giftEdit } from '@/api/backstageManagement/giftManagement';
+import { mapGetters } from 'vuex';
+import common from '@/mixin/common';
+import handlePageChange from '@/mixin/handlePageChange';
+import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
+import { numberFormat } from '@/utils/numberFormat';
+import EditDialog from './editDialog';
 
 export default {
   name: 'GiftManagement',
-  components: { },
-  mixins: [],
+  components: { EditDialog },
+  mixins: [common, handlePageChange, handleSearchFormOpen],
   data() {
     return {
+      dialogEnum: Object.freeze({
+        'none': 0,
+        'create': 1,
+        'edit': 2
+      }),
+      curDialogIndex: 0,
+      paginationPagerCount: 5,
+      imageList: []
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ]),
+    currencyCollapse() {
+      return this.searchForm.currency && this.searchForm.currency.length > this.selectCollapseCount;
+    },
+    statusCollapse() {
+      return this.searchForm.status && this.searchForm.status.length > this.selectCollapseCount;
+    },
+    pagerCount() {
+      return this.paginationPagerCount;
+    }
+  },
+  watch: {
+    'searchForm.currency'() {
+      this.resizeHandler();
+    },
+    'searchForm.status'() {
+      this.resizeHandler();
+    }
   },
   created() {
+    this.onSearchBtnClick({}, 1);
   },
   methods: {
+    resizeHandler() {
+      const vw = window.innerWidth;
+      var formHeight = 34;
+      const currencyHeight = this.currencyCollapse ? 32 : (this.searchForm.currency.length * 32);
+      const statusHeight = this.statusCollapse ? 32 : (this.searchForm.status.length * 32);
+      if (vw <= 768) {
+        formHeight = this.searchFormOpen ? (170 + currencyHeight + statusHeight) : formHeight;
+        this.paginationPagerCount = 5;
+      } else if (vw > 768 && vw <= 992) {
+        formHeight = this.searchFormOpen ? (102 + currencyHeight + statusHeight) : formHeight;
+        this.paginationPagerCount = 7;
+      } else {
+        formHeight = 34 + currencyHeight + statusHeight;
+        this.paginationPagerCount = 7;
+      }
+
+      this.$refs.seachFormExpand.style.height = `${formHeight}px`;
+      setTimeout(() => {
+        this.$refs.table.style.top = `${this.$refs.seachForm.clientHeight}px`;
+        this.$refs.table.style.maxHeight = `calc(100vh - 45px - 35px - 40px - ${this.$refs.seachForm.clientHeight}px)`;
+      }, 300);
+    },
+    onSearchBtnClick(data, page) {
+      this.searchForm = data;
+      this.handleCurrentChange(page);
+    },
+    onSubmit() {
+      this.dataLoading = true;
+      giftSearch(this.searchForm).then((res) => {
+        this.handleRespone(res);
+      }).catch(() => {
+        this.closeLoading();
+      });
+    },
+    handleRespone(res) {
+      res.searchItems.currency.sort((a, b) => { return a.key - b.key });
+      this.searchItems = res.searchItems;
+      this.totalCount = res.rows.length;
+      this.allDataByClient = res.rows;
+      this.allDataByClient.forEach(element => {
+        const currencyItem = this.searchItems.currency.find(item => item.key === element.currency_id);
+        if (currencyItem) {
+          element.currency = currencyItem.nickname;
+        }
+        const statusItem = this.searchItems.status.find(item => item.key === element.status);
+        if (statusItem) {
+          element.statusLabel = statusItem.nickname;
+        }
+        element.valueLabel = numberFormat(element.value);
+      });
+      this.handlePageChangeByClient(this.currentPage);
+
+      this.closeDialogEven();
+      this.closeLoading();
+    },
+    closeLoading() {
+      this.$refs.createDialog.setDialogLoading(false);
+      this.$refs.editDialog.setDialogLoading(false);
+      this.dataLoading = false;
+    },
+    closeDialogEven() {
+      this.curDialogIndex = this.dialogEnum.none;
+    },
+    onCreateBtnClick() {
+      this.selectForm = { currency_id: this.searchItems.currency[0].key, status: this.searchItems.status[0].key };
+      this.imageList = [];
+      this.curDialogIndex = this.dialogEnum.create;
+    },
+    createDialogConfirmEven(data) {
+      this.$refs.createDialog.setDialogLoading(true);
+      giftCreate(data).then((res) => {
+        this.handleRespone(res);
+      }).catch(() => {
+        this.closeLoading();
+      });
+    },
+    onEditBtnClick(tableRowData) {
+      this.selectForm = JSON.parse(JSON.stringify(tableRowData));
+      this.imageList = [{ name: this.selectForm.nickname, url: this.selectForm.img_address }];
+      this.curDialogIndex = this.dialogEnum.edit;
+    },
+    editDialogConfirmEven(data) {
+      this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
+        this.$refs.editDialog.setDialogLoading(true);
+        giftEdit(data).then((res) => {
+          this.handleRespone(res)
+        }).catch(() => {
+          this.closeLoading()
+        });
+      });
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/variables.scss";
 
+.view {
+  &-container {
+    &-seachForm {
+      &-item {
+        height: 34px;
+      }
+    }
+    &-table {
+      &-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        .giftPhoto {
+          vertical-align: middle;
+          max-width: 73px;
+        }
+        table {
+          tr {
+            display: flex;
+            flex-direction: column;
+            td {
+              line-height: 20px;
+              .header {
+                font-weight: bold;
+                margin-right: 5px;
+              }
+              .status {
+                color: #f00;
+                font-weight: bold;
+              }
+              .statusOpen {
+                color: #090;
+              }
+              .operate {
+                width: 250px;
+                display: flex;
+                justify-content: space-between;
+                a {
+                  .el-button {
+                    height: 100%;
+                    vertical-align: top;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          table {
+            display: flex;
+            justify-content: space-evenly;
+            width: 600px;
+            tr {
+              td {
+                line-height: 35px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          justify-content: space-evenly;
+          .giftPhoto {
+            width: 210px;
+          }
+          table {
+            display: inline-block;
+            tr {
+              display: block;
+              td {
+                display: inline-block;
+                width: 350px;
+                font-size: 20px;
+                line-height: 60px;
+                .operate {
+                  width: 100%;
+                  .el-button {
+                    font-size: 20px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </style>

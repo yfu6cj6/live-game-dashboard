@@ -4,12 +4,10 @@
     v-loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
-    :width="formWidth"
     :before-close="onClose"
     :close-on-click-modal="false"
-    :close-on-press-escape="false"
   >
-    <el-form ref="editForm" :model="editForm" :rules="rules" label-width="80px" label-position="left">
+    <el-form ref="editForm" :model="editForm" :rules="rules">
       <el-form-item :label="$t('__giftNickname')" prop="nickname">
         <el-input v-model="editForm.nickname" />
       </el-form-item>
@@ -28,6 +26,7 @@
       </el-form-item>
       <el-form-item :label="$t('__giftImage')">
         <el-upload
+          class="giftUpload"
           action=""
           :http-request="uploadHttpRequest"
           list-type="picture-card"
@@ -49,11 +48,11 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon'
 
 export default {
   name: 'EditDialog',
-  mixins: [handleDialogWidth],
+  mixins: [dialogCommon],
   props: {
     title: {
       type: String,
@@ -120,7 +119,6 @@ export default {
         value: [{ required: true, trigger: 'blur', validator: valueValidate }]
       },
       editForm: {},
-      dialogLoading: false,
       fromData: new FormData(),
       fileList: this.imageList,
       limitImageWidth: 73
@@ -151,7 +149,7 @@ export default {
         const _URL = window.URL || window.webkitURL
         const img = new Image()
         img.onload = function() {
-          const valid = (img.width <= limitSize.width || limitSize.width === 0) && (img.height <= limitSize.height || limitSize.height === 0)
+          const valid = img.width === limitSize.width && img.height === limitSize.height
           resolve(valid)
         }
         img.src = _URL.createObjectURL(file)
@@ -191,9 +189,6 @@ export default {
       }
       this.$emit('confirm', this.fromData)
     },
-    onClose() {
-      this.$emit('close')
-    },
     onReset() {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.fromData = new FormData()
@@ -201,21 +196,18 @@ export default {
       this.$nextTick(() => {
         this.$refs.editForm.clearValidate()
       })
-    },
-    setDialogLoading(dialogLoading) {
-      this.dialogLoading = dialogLoading
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.el-form {
-  margin-bottom: 10px;
-}
-
-.el-select,
-.el-input {
-  width: 90%;
+<style lang="scss">
+.giftUpload {
+  .el-upload-list--picture-card {
+    .el-upload-list__item {
+      width: 73px;
+      height: 73px;
+    }
+  }
 }
 </style>

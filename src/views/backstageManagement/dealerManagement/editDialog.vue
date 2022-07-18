@@ -13,6 +13,7 @@
       </el-form-item>
       <el-form-item :label="$t('__dealerPhoto')">
         <el-upload
+          class="dealerUpload"
           action=""
           :http-request="uploadHttpRequest"
           list-type="picture-card"
@@ -94,7 +95,7 @@ export default {
   },
   computed: {
     uploadTip() {
-      return `jpg/png，寬度${this.limitImageWidth}px 高度${this.limitImageHeight}px`
+      return `jpg/png，Width = ${this.limitImageWidth}px Height = ${this.limitImageHeight}px`
     }
   },
   watch: {
@@ -169,5 +170,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.dealerUpload {
+  .el-upload-list--picture-card {
+    .el-upload-list__item {
+      width: 210px;
+      height: 240px;
+    }
+  }
+}
 </style>

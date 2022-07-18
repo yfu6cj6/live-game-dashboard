@@ -140,13 +140,13 @@
 </template>
 
 <script>
-import { dealerSearch, dealerCreate, dealerEdit } from '@/api/backstageManagement/dealerManagement'
-import { mapGetters } from 'vuex'
-import common from '@/mixin/common'
-import handlePageChange from '@/mixin/handlePageChange'
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen'
-import EditDialog from './editDialog'
-import LoginBarcodeDialog from './loginBarcodeDialog'
+import { dealerSearch, dealerCreate, dealerEdit } from '@/api/backstageManagement/dealerManagement';
+import { mapGetters } from 'vuex';
+import common from '@/mixin/common';
+import handlePageChange from '@/mixin/handlePageChange';
+import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
+import EditDialog from './editDialog';
+import LoginBarcodeDialog from './loginBarcodeDialog';
 
 export default {
   name: 'DealerManagement',
@@ -189,10 +189,10 @@ export default {
       const vw = window.innerWidth;
       var formHeight = 34;
       if (vw <= 768) {
-        formHeight = this.searchFormOpen ? 136 + (this.searchForm.status.length * 32) : formHeight;
+        formHeight = this.searchFormOpen ? (136 + (this.searchForm.status.length * 32)) : formHeight;
         this.paginationPagerCount = 5;
       } else if (vw > 768 && vw <= 992) {
-        formHeight = this.searchFormOpen ? 68 + (this.searchForm.status.length * 32) : formHeight;
+        formHeight = this.searchFormOpen ? (68 + (this.searchForm.status.length * 32)) : formHeight;
         this.paginationPagerCount = 7;
       } else {
         formHeight = 34 + (this.searchForm.status.length * 32);
