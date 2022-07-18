@@ -42,7 +42,7 @@
 <script>
 import { giftSearch, giftSort } from '@/api/backstageManagement/giftManagement'
 import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-import handlePageChange from '@/layout/mixin/handlePageChange'
+import handlePageChange from '@/mixin/handlePageChange'
 import handleViewResize from '@/layout/mixin/handleViewResize'
 import { numberFormat } from '@/utils/numberFormat'
 import Sortable from "sortablejs"

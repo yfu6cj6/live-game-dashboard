@@ -89,7 +89,7 @@
 <script>
 import { login, generateCaptcha } from "@/api/user";
 import { mapGetters } from "vuex";
-import ResizeMixin from '@/layout/mixin/ResizeHandler'
+import ResizeMixin from '@/mixin/ResizeHandler'
 import { browserVersion, clientIP } from '@/utils/clientInfo'
 
 export default {

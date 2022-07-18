@@ -142,9 +142,9 @@
 <script>
 import { dealerSearch, dealerCreate, dealerEdit } from '@/api/backstageManagement/dealerManagement'
 import { mapGetters } from 'vuex'
-import common from '@/layout/mixin/common'
-import handlePageChange from '@/layout/mixin/handlePageChange'
-import handleSearchFormOpen from '@/layout/mixin/handleSearchFormOpen'
+import common from '@/mixin/common'
+import handlePageChange from '@/mixin/handlePageChange'
+import handleSearchFormOpen from '@/mixin/handleSearchFormOpen'
 import EditDialog from './editDialog'
 import LoginBarcodeDialog from './loginBarcodeDialog'
 
