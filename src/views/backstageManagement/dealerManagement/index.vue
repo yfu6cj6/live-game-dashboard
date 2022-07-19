@@ -141,7 +141,6 @@
 
 <script>
 import { dealerSearch, dealerCreate, dealerEdit } from '@/api/backstageManagement/dealerManagement';
-import { mapGetters } from 'vuex';
 import common from '@/mixin/common';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
@@ -166,9 +165,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'sidebar'
-    ]),
     statusCollapse() {
       return this.searchForm.status && this.searchForm.status.length > this.selectCollapseCount;
     },
@@ -187,19 +183,19 @@ export default {
   methods: {
     resizeHandler() {
       const vw = window.innerWidth;
-      var formHeight = 34;
+      var formHeight = "34px";
       if (vw <= 768) {
-        formHeight = this.searchFormOpen ? (136 + (this.searchForm.status.length * 32)) : formHeight;
+        formHeight = this.searchFormOpen ? `${(136 + (this.searchForm.status.length * 32))}px` : formHeight;
         this.paginationPagerCount = 5;
       } else if (vw > 768 && vw <= 992) {
-        formHeight = this.searchFormOpen ? (68 + (this.searchForm.status.length * 32)) : formHeight;
+        formHeight = this.searchFormOpen ? `${(68 + (this.searchForm.status.length * 32))}px` : formHeight;
         this.paginationPagerCount = 7;
       } else {
-        formHeight = 34 + (this.searchForm.status.length * 32);
+        formHeight = "auto";
         this.paginationPagerCount = 7;
       }
 
-      this.$refs.seachFormExpand.style.height = `${formHeight}px`;
+      this.$refs.seachFormExpand.style.height = `${formHeight}`;
       setTimeout(() => {
         this.$refs.table.style.top = `${this.$refs.seachForm.clientHeight}px`;
         this.$refs.table.style.maxHeight = `calc(100vh - 45px - 35px - 40px - ${this.$refs.seachForm.clientHeight}px)`;

@@ -42,7 +42,7 @@
               </el-button>
             </p>
             <p class="view-container-seachForm-item-wrap">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+              <el-button class="bg-yellow" size="mini" @click="onSortBtnClick()">
                 {{ $t("__sort") }}
               </el-button>
             </p>
@@ -136,28 +136,40 @@
       @close="closeDialogEven"
       @confirm="editDialogConfirmEven"
     />
+
+    <sortDialog
+      ref="sortDialog"
+      :title="$t('__sort')"
+      :visible="curDialogIndex === dialogEnum.sort"
+      :confirm="$t('__confirm')"
+      :form="selectForm"
+      :currency="searchItems.currency"
+      @close="closeDialogEven"
+      @confirm="handleRespone"
+    />
   </div>
 </template>
 
 <script>
 import { giftSearch, giftCreate, giftEdit } from '@/api/backstageManagement/giftManagement';
-import { mapGetters } from 'vuex';
 import common from '@/mixin/common';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { numberFormat } from '@/utils/numberFormat';
 import EditDialog from './editDialog';
+import SortDialog from './sortDialog';
 
 export default {
   name: 'GiftManagement',
-  components: { EditDialog },
+  components: { EditDialog, SortDialog },
   mixins: [common, handlePageChange, handleSearchFormOpen],
   data() {
     return {
       dialogEnum: Object.freeze({
         'none': 0,
         'create': 1,
-        'edit': 2
+        'edit': 2,
+        'sort': 3
       }),
       curDialogIndex: 0,
       paginationPagerCount: 5,
@@ -165,9 +177,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'sidebar'
-    ]),
     currencyCollapse() {
       return this.searchForm.currency && this.searchForm.currency.length > this.selectCollapseCount;
     },
@@ -192,21 +201,21 @@ export default {
   methods: {
     resizeHandler() {
       const vw = window.innerWidth;
-      var formHeight = 34;
+      var formHeight = "34px";
       const currencyHeight = this.currencyCollapse ? 32 : (this.searchForm.currency.length * 32);
       const statusHeight = this.statusCollapse ? 32 : (this.searchForm.status.length * 32);
       if (vw <= 768) {
-        formHeight = this.searchFormOpen ? (170 + currencyHeight + statusHeight) : formHeight;
+        formHeight = this.searchFormOpen ? `${(170 + currencyHeight + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 5;
       } else if (vw > 768 && vw <= 992) {
-        formHeight = this.searchFormOpen ? (102 + currencyHeight + statusHeight) : formHeight;
+        formHeight = this.searchFormOpen ? `${(102 + currencyHeight + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 7;
       } else {
-        formHeight = 34 + currencyHeight + statusHeight;
+        formHeight = "auto";
         this.paginationPagerCount = 7;
       }
 
-      this.$refs.seachFormExpand.style.height = `${formHeight}px`;
+      this.$refs.seachFormExpand.style.height = `${formHeight}`;
       setTimeout(() => {
         this.$refs.table.style.top = `${this.$refs.seachForm.clientHeight}px`;
         this.$refs.table.style.maxHeight = `calc(100vh - 45px - 35px - 40px - ${this.$refs.seachForm.clientHeight}px)`;
@@ -280,6 +289,10 @@ export default {
           this.closeLoading()
         });
       });
+    },
+    onSortBtnClick() {
+      this.selectForm = { currency: this.searchItems.currency[0].key };
+      this.curDialogIndex = this.dialogEnum.sort;
     }
   }
 }

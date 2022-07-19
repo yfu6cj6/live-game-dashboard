@@ -149,7 +149,7 @@
 
 .el-dialog {
   width: calc(100% - 20px);
-  max-height: calc(100% - 20px);
+  max-height: calc(100% - 160px);
   border: 2px solid $yellow;
   display: flex;
   display: -ms-flex; /* 兼容IE */
@@ -298,6 +298,7 @@
   }
 
   .el-dialog {
+    max-height: calc(100% - 20px);
     top: 50%;
     transform: translateY(-50%);
     .el-dialog__body {

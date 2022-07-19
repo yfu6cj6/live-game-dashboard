@@ -1,4 +1,6 @@
 // => 換頁相關變數與函式都放這
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
@@ -6,11 +8,17 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ]),
     advancedSearchIcon() {
       return this.searchFormOpen ? "el-icon-arrow-up" : "el-icon-arrow-down";
     }
   },
   watch: {
+    'sidebar.opened'() {
+      this.resizeHandler();
+    },
     'searchFormOpen'() {
       this.resizeHandler();
     }

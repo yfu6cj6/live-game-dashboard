@@ -4,52 +4,46 @@
     v-loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
-    :width="formWidth"
     :before-close="onClose"
     :close-on-click-modal="false"
-    :close-on-press-escape="false"
   >
-    <el-form ref="searchForm" :model="searchForm" label-width="80px" label-position="left">
+    <el-form :model="searchForm">
       <el-form-item :label="$t('__currency')" prop="currency">
         <el-select v-model="searchForm.currency">
-          <el-option v-for="item in searchItems.currency" :key="item.key" :label="item.nickname" :value="item.key" />
+          <el-option v-for="item in currency" :key="item.key" :label="item.nickname" :value="item.key" />
         </el-select>
-        <el-button class="bg-yellow" @click="onSearch">{{ $t('__search') }}</el-button>
+        <el-button class="bg-yellow search" @click="onSearch()">{{ $t('__search') }}</el-button>
       </el-form-item>
     </el-form>
-
-    <el-table v-if="searched" :data="tableData" border stripe row-key="id" :max-height="viewHeight">
-      <af-table-column prop="id" label="ID" align="center" :fontSize="20" />
-      <af-table-column :label="$t('__giftImage')" align="center" :width="150">
-        <template slot-scope="scope">
-          <img class="giftImage" :src="scope.row.img_address" :alt="$t('__giftImage')">
-        </template>
-      </af-table-column>
-      <af-table-column prop="nickname" :label="$t('__giftNickname')" align="center" :fontSize="20" />
-      <af-table-column :label="$t('__value')" align="center" :width="150">
-        <template slot-scope="scope">
-          <span>{{ numberFormatStr(scope.row.value) }}</span>
-        </template>
-      </af-table-column>
-    </el-table>
-
+    <template v-if="searched">
+      <draggable :list="tableData" v-bind="$attrs" class="test" :set-data="setData">
+        <div
+          v-for="(item, index) in tableData"
+          :key="index"
+        >
+          <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+          <span>{{ item.id }}</span>
+          <span>{{ item.nickname }}</span>
+          <span>{{ item.value }}</span>
+        </div>
+      </draggable>
+    </template>
     <span v-if="searched && !dialogLoading" slot="footer">
-      <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
+      <el-button class="bg-yellow" @click="onSubmit()">{{ confirm }}</el-button>
     </span>
   </el-dialog>
 </template>
 
 <script>
-import { giftSearch, giftSort } from '@/api/backstageManagement/giftManagement'
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import { giftSearch } from '@/api/backstageManagement/giftManagement'
+import draggable from 'vuedraggable'
+import dialogCommon from '@/mixin/dialogCommon'
 import handlePageChange from '@/mixin/handlePageChange'
-import handleViewResize from '@/layout/mixin/handleViewResize'
-import { numberFormat } from '@/utils/numberFormat'
-import Sortable from "sortablejs"
 
 export default {
   name: 'SortDialog',
-  mixins: [handleDialogWidth, handlePageChange, handleViewResize],
+  components: { draggable },
+  mixins: [dialogCommon, handlePageChange],
   props: {
     title: {
       type: String,
@@ -76,18 +70,16 @@ export default {
         return {}
       }
     },
-    searchItems: {
-      type: Object,
+    currency: {
+      type: Array,
       require: true,
       default() {
-        return {}
+        return [];
       }
     }
   },
   data: function() {
     return {
-      searchForm: {},
-      dialogLoading: false,
       searched: false
     }
   },
@@ -99,28 +91,8 @@ export default {
     }
   },
   methods: {
-    initSort() {
-      const el = document.querySelectorAll(".el-dialog__body .el-table .el-table__body-wrapper > table > tbody")[0] // 獲取拖拽的容器 .table-list 一定是table上的class 如果是其他上的class名稱，可能會無法拖拽
-      this.sortable = Sortable.create(el, {
-        ghostClass: "sortable-ghost",
-        // handle: ".drag-item", // 指定推拽列
-        setData: function (dataTransfer) {
-          dataTransfer.setData("Text", "")
-        },
-        onEnd: evt => {
-          this.$nextTick(() => {
-          	// 實現推拽的程式碼，先在原陣列中刪除當前推拽的物件，然後在將它新增到對應的位置
-          	// targetObj當前推拽的物件，evt.oldIndex推拽物件原來的下標，evt.newIndex推拽物件要推拽到的下標
-            let targetObj = this.tableData.splice(evt.oldIndex, 1)[0]
-            this.tableData.splice(evt.newIndex, 0, targetObj)
-          })
-        }
-      })
-    },
-    numberFormatStr(number) {
-      return numberFormat(number)
-    },
     handleRespone(res) {
+      this.searchItems = res.searchItems;
       this.totalCount = res.rows.length
       res.rows.sort((a, b) => { return a.sort_key - b.sort_key })
       this.allDataByClient = res.rows
@@ -137,31 +109,14 @@ export default {
       this.handlePageChangeByClient(this.currentPage)
       this.searched = true;
 
-      this.$nextTick(() => {
-        this.initSort()
-      })
-
       this.dialogLoading = false
     },
     onSearch() {
-      this.dialogLoading = true
-      giftSearch({ currency: [this.searchForm.currency] }).then((res) => {
-        this.handleRespone(res)
+      this.dialogLoading = true;
+      giftSearch({ currency: [this.form.currency] }).then((res) => {
+        this.handleRespone(res);
       }).catch(() => {
-        this.dialogLoading = false
-      })
-    },
-    onSubmit() {
-      var gifts = []
-      this.tableData.forEach(element => {
-        gifts.push(element.id)
-      })
-      this.dialogLoading = true
-      giftSort({ gifts: gifts }).then((res) => {
-        this.$emit('confirm', res)
-        this.dialogLoading = false
-      }).catch(() => {
-        this.dialogLoading = false
+        this.dialogLoading = false;
       })
     },
     onReset() {
@@ -170,8 +125,10 @@ export default {
       this.handlePageChangeByClient(this.currentPage)
       this.searched = false;
     },
-    onClose() {
-      this.$emit('close')
+    setData(dataTransfer) {
+      // to avoid Firefox bug
+      // Detail see : https://github.com/RubaXa/Sortable/issues/1012
+      dataTransfer.setData('Text', '')
     }
   }
 }
@@ -179,11 +136,18 @@ export default {
 
 <style lang="scss" scoped>
 .el-form {
-  margin-bottom: 10px;
+  .el-select {
+    max-width: calc(100% - 70px);
+    padding-right: 10px;
+  }
+  .search {
+    height: 30px;
+    line-height: 0;
+  }
 }
 
-.el-select {
-  width: 80%;
-  margin-right: 10px;
+.test {
+  height: 200px;
+  overflow: hidden;
 }
 </style>
