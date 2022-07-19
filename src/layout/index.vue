@@ -104,13 +104,12 @@ export default {
     }
 
     .appMain {
-      transition: margin-left .3s;
-      margin-left: $hideSidebarWidth;
+      padding-left: $hideSidebarWidth;
+      transition: padding-left .3s;
     }
 
     .appMain.opened {
-      transition: margin-left .3s;
-      margin-left: $sideBarWidth;
+      padding-left: $sideBarWidth;
     }
   }
 }

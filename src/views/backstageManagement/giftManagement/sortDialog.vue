@@ -15,19 +15,38 @@
         <el-button class="bg-yellow search" @click="onSearch()">{{ $t('__search') }}</el-button>
       </el-form-item>
     </el-form>
-    <template v-if="searched">
-      <draggable :list="tableData" v-bind="$attrs" class="test" :set-data="setData">
-        <div
-          v-for="(item, index) in tableData"
-          :key="index"
-        >
-          <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
-          <span>{{ item.id }}</span>
-          <span>{{ item.nickname }}</span>
-          <span>{{ item.value }}</span>
-        </div>
-      </draggable>
-    </template>
+    <draggable v-if="searched" class="view-container-table" :list="allDataByClient" v-bind="$attrs" :set-data="setData">
+      <div
+        v-for="(item, index) in allDataByClient"
+        :key="index"
+        class="view-container-table-row"
+        :class="{'single-row': index % 2 === 0}"
+      >
+        <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+        <table>
+          <tr>
+            <td>
+              <span class="header">ID:</span>
+              <span>{{ item.id }}</span>
+            </td>
+            <td>
+              <span class="header">{{ $t('__giftNickname') }}:</span>
+              <span>{{ item.nickname }}</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="header">{{ $t('__value') }}:</span>
+              <span>{{ item.valueLabel }}</span>
+            </td>
+            <td>
+              <span class="header">{{ $t('__activated') }}:</span>
+              <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </draggable>
     <span v-if="searched && !dialogLoading" slot="footer">
       <el-button class="bg-yellow" @click="onSubmit()">{{ confirm }}</el-button>
     </span>
@@ -35,8 +54,9 @@
 </template>
 
 <script>
-import { giftSearch } from '@/api/backstageManagement/giftManagement'
+import { giftSearch, giftSort } from '@/api/backstageManagement/giftManagement'
 import draggable from 'vuedraggable'
+import { numberFormat } from '@/utils/numberFormat';
 import dialogCommon from '@/mixin/dialogCommon'
 import handlePageChange from '@/mixin/handlePageChange'
 
@@ -86,30 +106,31 @@ export default {
   watch: {
     visible() {
       if (this.visible) {
-        this.onReset()
+        this.onReset();
       }
     }
   },
   methods: {
     handleRespone(res) {
       this.searchItems = res.searchItems;
-      this.totalCount = res.rows.length
-      res.rows.sort((a, b) => { return a.sort_key - b.sort_key })
-      this.allDataByClient = res.rows
+      this.totalCount = res.rows.length;
+      res.rows.sort((a, b) => { return a.sort_key - b.sort_key });
+      this.allDataByClient = res.rows;
       this.allDataByClient.forEach(element => {
-        const currencyItem = this.searchItems.currency.find(item => item.key === element.currency_id)
+        const currencyItem = this.searchItems.currency.find(item => item.key === element.currency_id);
         if (currencyItem) {
-          element.currency = currencyItem.nickname
+          element.currency = currencyItem.nickname;
         }
-        const statusItem = this.searchItems.status.find(item => item.key === element.status)
+        const statusItem = this.searchItems.status.find(item => item.key === element.status);
         if (statusItem) {
-          element.statusLabel = statusItem.nickname
+          element.statusLabel = statusItem.nickname;
         }
-      })
-      this.handlePageChangeByClient(this.currentPage)
+        element.valueLabel = numberFormat(element.value);
+      });
+      this.handlePageChangeByClient(this.currentPage);
       this.searched = true;
 
-      this.dialogLoading = false
+      this.dialogLoading = false;
     },
     onSearch() {
       this.dialogLoading = true;
@@ -117,18 +138,29 @@ export default {
         this.handleRespone(res);
       }).catch(() => {
         this.dialogLoading = false;
-      })
+      });
+    },
+    onSubmit() {
+      var gifts = [];
+      this.allDataByClient.forEach(element => {
+        gifts.push(element.id);
+      });
+      this.dialogLoading = true;
+      giftSort({ gifts: gifts }).then((res) => {
+        this.$emit('confirm', res);
+        this.dialogLoading = false;
+      }).catch(() => {
+        this.dialogLoading = false;
+      });
     },
     onReset() {
-      this.searchForm = JSON.parse(JSON.stringify(this.form))
-      this.allDataByClient = []
-      this.handlePageChangeByClient(this.currentPage)
+      this.searchForm = JSON.parse(JSON.stringify(this.form));
+      this.allDataByClient = [];
+      this.handlePageChangeByClient(this.currentPage);
       this.searched = false;
     },
     setData(dataTransfer) {
-      // to avoid Firefox bug
-      // Detail see : https://github.com/RubaXa/Sortable/issues/1012
-      dataTransfer.setData('Text', '')
+      dataTransfer.setData('Text', '');
     }
   }
 }
@@ -146,8 +178,73 @@ export default {
   }
 }
 
-.test {
-  height: 200px;
-  overflow: hidden;
+.view-container-table {
+  &-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    .giftPhoto {
+      vertical-align: middle;
+      max-width: 73px;
+    }
+    table {
+      width: 150px;
+      tr {
+        display: flex;
+        flex-direction: column;
+        td {
+          line-height: 20px;
+          .header {
+            font-weight: bold;
+            margin-right: 5px;
+          }
+          .status {
+            color: #f00;
+            font-weight: bold;
+          }
+          .statusOpen {
+            color: #090;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .view-container-table {
+    &-row {
+      table {
+        display: flex;
+        justify-content: space-between;
+        width: 350px;
+        tr {
+          td {
+            font-size: 18px;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .view-container-table {
+    position: relative;
+    &-row {
+      table {
+        display: flex;
+        justify-content: space-between;
+        width: 350px;
+        tr {
+          td {
+            font-size: 20px;
+            line-height: 30px;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

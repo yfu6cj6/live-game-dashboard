@@ -108,8 +108,8 @@
         :page-sizes="pageSizes"
         :pager-count="pagerCount"
         :current-page.sync="currentPage"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
+        @size-change="handleSizeChangeByClient"
+        @current-change="handlePageChangeByClient"
       />
     </div>
 
@@ -202,8 +202,8 @@ export default {
     resizeHandler() {
       const vw = window.innerWidth;
       var formHeight = "34px";
-      const currencyHeight = this.currencyCollapse ? 32 : (this.searchForm.currency.length * 32);
-      const statusHeight = this.statusCollapse ? 32 : (this.searchForm.status.length * 32);
+      const currencyHeight = this.currencyCollapse ? 32 : ((this.searchForm.currency && this.searchForm.currency.length) * 32);
+      const statusHeight = this.statusCollapse ? 32 : ((this.searchForm.status && this.searchForm.status.length) * 32);
       if (vw <= 768) {
         formHeight = this.searchFormOpen ? `${(170 + currencyHeight + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 5;
@@ -380,9 +380,6 @@ export default {
       &-table {
         &-row {
           justify-content: space-evenly;
-          .giftPhoto {
-            width: 210px;
-          }
           table {
             display: inline-block;
             tr {

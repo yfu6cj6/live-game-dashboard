@@ -103,8 +103,8 @@
         :page-sizes="pageSizes"
         :pager-count="pagerCount"
         :current-page.sync="currentPage"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
+        @size-change="handleSizeChangeByClient"
+        @current-change="handlePageChangeByClient"
       />
     </div>
 
@@ -184,11 +184,12 @@ export default {
     resizeHandler() {
       const vw = window.innerWidth;
       var formHeight = "34px";
+      const statusHeight = this.statusCollapse ? 32 : ((this.searchForm.status && this.searchForm.status.length) * 32);
       if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(136 + (this.searchForm.status.length * 32))}px` : formHeight;
+        formHeight = this.searchFormOpen ? `${(136 + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 5;
       } else if (vw > 768 && vw <= 992) {
-        formHeight = this.searchFormOpen ? `${(68 + (this.searchForm.status.length * 32))}px` : formHeight;
+        formHeight = this.searchFormOpen ? `${(68 + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 7;
       } else {
         formHeight = "auto";
