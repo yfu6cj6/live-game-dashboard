@@ -11,7 +11,13 @@ export default {
       pageSize: 10,
       currentPage: 1,
       pageSizes: [10, 20, 30, 40],
-      dataLoading: false
+      dataLoading: false,
+      paginationPagerCount: 5
+    }
+  },
+  computed: {
+    pagerCount() {
+      return this.paginationPagerCount;
     }
   },
   methods: {

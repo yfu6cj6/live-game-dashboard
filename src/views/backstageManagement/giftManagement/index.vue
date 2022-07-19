@@ -172,7 +172,6 @@ export default {
         'sort': 3
       }),
       curDialogIndex: 0,
-      paginationPagerCount: 5,
       imageList: []
     }
   },
@@ -182,9 +181,6 @@ export default {
     },
     statusCollapse() {
       return this.searchForm.status && this.searchForm.status.length > this.selectCollapseCount;
-    },
-    pagerCount() {
-      return this.paginationPagerCount;
     }
   },
   watch: {

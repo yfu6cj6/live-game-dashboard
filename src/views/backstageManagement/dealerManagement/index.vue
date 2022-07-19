@@ -160,16 +160,12 @@ export default {
         'loginBarcode': 3
       }),
       curDialogIndex: 0,
-      paginationPagerCount: 5,
       imageList: []
     }
   },
   computed: {
     statusCollapse() {
       return this.searchForm.status && this.searchForm.status.length > this.selectCollapseCount;
-    },
-    pagerCount() {
-      return this.paginationPagerCount;
     }
   },
   watch: {
