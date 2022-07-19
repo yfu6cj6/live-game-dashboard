@@ -15,40 +15,43 @@
         <el-button class="bg-yellow search" @click="onSearch()">{{ $t('__search') }}</el-button>
       </el-form-item>
     </el-form>
-    <draggable v-if="searched" class="view-container-table" :list="allDataByClient" v-bind="$attrs" :set-data="setData">
-      <div
-        v-for="(item, index) in allDataByClient"
-        :key="index"
-        class="view-container-table-row"
-        :class="{'single-row': index % 2 === 0}"
-      >
-        <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
-        <table>
-          <tr>
-            <td>
-              <span class="header">ID:</span>
-              <span>{{ item.id }}</span>
-            </td>
-            <td>
-              <span class="header">{{ $t('__giftNickname') }}:</span>
-              <span>{{ item.nickname }}</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span class="header">{{ $t('__value') }}:</span>
-              <span>{{ item.valueLabel }}</span>
-            </td>
-            <td>
-              <span class="header">{{ $t('__activated') }}:</span>
-              <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </draggable>
-    <span v-if="searched && !dialogLoading" slot="footer">
-      <el-button class="bg-yellow" @click="onSubmit()">{{ confirm }}</el-button>
+    <div class="view-container-table">
+      <draggable v-if="allDataByClient.length > 0" class="view-container-table" :list="allDataByClient" v-bind="$attrs" :set-data="setData">
+        <div
+          v-for="(item, index) in allDataByClient"
+          :key="index"
+          class="view-container-table-row"
+          :class="{'single-row': index % 2 === 0}"
+        >
+          <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+          <table>
+            <tr>
+              <td>
+                <span class="header">ID:</span>
+                <span>{{ item.id }}</span>
+              </td>
+              <td>
+                <span class="header">{{ $t('__giftNickname') }}:</span>
+                <span>{{ item.nickname }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="header">{{ $t('__value') }}:</span>
+                <span>{{ item.valueLabel }}</span>
+              </td>
+              <td>
+                <span class="header">{{ $t('__activated') }}:</span>
+                <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </draggable>
+      <div v-else-if="searched && allDataByClient.length === 0" class="noInformation">{{ $t("__noInformation") }}</div>
+    </div>
+    <span v-if="allDataByClient.length > 0 && !dialogLoading" slot="footer">
+      <el-button class="bg-yellow confirm" @click="onSubmit()">{{ confirm }}</el-button>
     </span>
   </el-dialog>
 </template>
@@ -134,7 +137,7 @@ export default {
     },
     onSearch() {
       this.dialogLoading = true;
-      giftSearch({ currency: [this.form.currency] }).then((res) => {
+      giftSearch({ currency: [this.searchForm.currency] }).then((res) => {
         this.handleRespone(res);
       }).catch(() => {
         this.dialogLoading = false;
@@ -178,50 +181,45 @@ export default {
   }
 }
 
-.view-container-table {
-  &-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    .giftPhoto {
-      vertical-align: middle;
-      max-width: 73px;
-    }
-    table {
-      width: 150px;
-      tr {
-        display: flex;
-        flex-direction: column;
-        td {
-          line-height: 20px;
-          .header {
-            font-weight: bold;
-            margin-right: 5px;
-          }
-          .status {
-            color: #f00;
-            font-weight: bold;
-          }
-          .statusOpen {
-            color: #090;
-          }
+.view {
+  &-container {
+    &-table {
+      &-row {
+        .giftPhoto {
+          vertical-align: middle;
+          max-width: 73px;
         }
+        table {
+          width: 150px;
+        }
+      }
+      .noInformation {
+        color: #fff;
+        font-size: 18px;
+        padding-bottom: 20px;
       }
     }
   }
 }
 
+.confirm {
+  width: 120px;
+  font-size: 18px;
+}
+
 @media screen and (min-width: 768px) and (max-width: 992px) {
-  .view-container-table {
-    &-row {
-      table {
-        display: flex;
-        justify-content: space-between;
-        width: 350px;
-        tr {
-          td {
-            font-size: 18px;
-            line-height: 30px;
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          table {
+            width: 350px;
+            tr {
+              td {
+                font-size: 18px;
+                line-height: 30px;
+              }
+            }
           }
         }
       }
@@ -230,17 +228,22 @@ export default {
 }
 
 @media screen and (min-width: 992px) {
-  .view-container-table {
-    position: relative;
-    &-row {
-      table {
-        display: flex;
-        justify-content: space-between;
-        width: 350px;
-        tr {
-          td {
-            font-size: 20px;
-            line-height: 30px;
+  .view {
+    &-container {
+      &-table {
+        position: relative;
+        &-row {
+          table {
+            display: flex;
+            justify-content: space-between;
+            width: 350px;
+            tr {
+              td {
+                width: 250px;
+                font-size: 20px;
+                line-height: 30px;
+              }
+            }
           }
         }
       }

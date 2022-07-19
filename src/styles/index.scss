@@ -130,7 +130,6 @@ div::-webkit-scrollbar {
     width: 100%;
     height: calc(100vh - 45px - 35px - 40px);
     overflow-y: auto;
-    background-color: #262626;
     &-seachForm {
       width: 100%;
       height: auto;
@@ -138,6 +137,7 @@ div::-webkit-scrollbar {
       line-height: 0;
       padding: 4px 0;
       &-item {
+        height: 34px;
         overflow: hidden;
         transition: height .3s;
         display: inline-block;
@@ -178,7 +178,41 @@ div::-webkit-scrollbar {
     &-table {
       width: 100%;
       &-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
         background-color: #fff;
+        table {
+          tr {
+            display: flex;
+            flex-direction: column;
+            td {
+              line-height: 20px;
+              .header {
+                font-weight: bold;
+                margin-right: 5px;
+              }
+              .status {
+                color: #f00;
+                font-weight: bold;
+              }
+              .statusOpen {
+                color: #090;
+              }
+              .operate {
+                width: 250px;
+                display: flex;
+                justify-content: space-between;
+                a {
+                  .el-button {
+                    height: 100%;
+                    vertical-align: top;
+                  }
+                }
+              }
+            }
+          }
+        }
       }
       .single-row {
         background-color: #f4f4f4;
@@ -209,6 +243,20 @@ div::-webkit-scrollbar {
           }
           &-group {
             display: inline-block;
+          }
+        }
+      }
+      &-table {
+        &-row {
+          table {
+            display: flex;
+            justify-content: space-evenly;
+            width: 600px;
+            tr {
+              td {
+                line-height: 35px;
+              }
+            }
           }
         }
       }
@@ -248,6 +296,27 @@ div::-webkit-scrollbar {
       &-table {
         position: absolute;
         overflow-y: scroll;
+        &-row {
+          justify-content: space-evenly;
+          table {
+            display: inline-block;
+            tr {
+              display: block;
+              td {
+                display: inline-block;
+                width: 350px;
+                font-size: 20px;
+                line-height: 60px;
+                .operate {
+                  width: 100%;
+                  .el-button {
+                    font-size: 20px;
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
     &-footer {

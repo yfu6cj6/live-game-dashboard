@@ -303,101 +303,11 @@ export default {
 
 .view {
   &-container {
-    &-seachForm {
-      &-item {
-        height: 34px;
-      }
-    }
     &-table {
       &-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
         .giftPhoto {
           vertical-align: middle;
           max-width: 73px;
-        }
-        table {
-          tr {
-            display: flex;
-            flex-direction: column;
-            td {
-              line-height: 20px;
-              .header {
-                font-weight: bold;
-                margin-right: 5px;
-              }
-              .status {
-                color: #f00;
-                font-weight: bold;
-              }
-              .statusOpen {
-                color: #090;
-              }
-              .operate {
-                width: 250px;
-                display: flex;
-                justify-content: space-between;
-                a {
-                  .el-button {
-                    height: 100%;
-                    vertical-align: top;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          table {
-            display: flex;
-            justify-content: space-evenly;
-            width: 600px;
-            tr {
-              td {
-                line-height: 35px;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          justify-content: space-evenly;
-          table {
-            display: inline-block;
-            tr {
-              display: block;
-              td {
-                display: inline-block;
-                width: 350px;
-                font-size: 20px;
-                line-height: 60px;
-                .operate {
-                  width: 100%;
-                  .el-button {
-                    font-size: 20px;
-                  }
-                }
-              }
-            }
-          }
         }
       }
     }
