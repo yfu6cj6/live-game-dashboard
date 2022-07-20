@@ -178,38 +178,35 @@ div::-webkit-scrollbar {
     &-table {
       width: 100%;
       &-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-evenly;
         background-color: #fff;
-        table {
-          tr {
-            display: flex;
-            flex-direction: column;
-            td {
-              line-height: 20px;
-              .header {
-                font-weight: bold;
-                margin-right: 5px;
-              }
-              .status {
-                color: #f00;
-                font-weight: bold;
-              }
-              .statusOpen {
-                color: #090;
-              }
-              .operate {
-                width: 250px;
-                display: flex;
-                justify-content: space-between;
-                a {
-                  .el-button {
-                    height: 100%;
-                    vertical-align: top;
-                  }
-                }
-              }
+        padding: 10px;
+        .wrap {
+          display: flex;
+        }
+        .header {
+          font-weight: bold;
+          display: inline-block;
+          margin-right: 10px;
+          position: relative;
+          &::after {
+            position: absolute;
+            content: ":";
+          }
+        }
+        .status {
+          color: #f00;
+          font-weight: bold;
+        }
+        .statusOpen {
+          color: #090;
+        }
+        .operate {
+          display: flex;
+          justify-content: space-between;
+          a {
+            .el-button {
+              height: 100%;
+              vertical-align: top;
             }
           }
         }
@@ -243,20 +240,6 @@ div::-webkit-scrollbar {
           }
           &-group {
             display: inline-block;
-          }
-        }
-      }
-      &-table {
-        &-row {
-          table {
-            display: flex;
-            justify-content: space-evenly;
-            width: 600px;
-            tr {
-              td {
-                line-height: 35px;
-              }
-            }
           }
         }
       }
@@ -295,25 +278,23 @@ div::-webkit-scrollbar {
       }
       &-table {
         position: absolute;
-        overflow-y: scroll;
+        overflow-y: auto;
         &-row {
-          justify-content: space-evenly;
-          table {
-            display: inline-block;
-            tr {
-              display: block;
-              td {
-                display: inline-block;
-                width: 350px;
-                font-size: 20px;
-                line-height: 60px;
-                .operate {
-                  width: 100%;
-                  .el-button {
-                    font-size: 20px;
-                  }
+          .wrap {
+            .item {
+              display: inline-block;
+              overflow: auto;
+              .header {
+                display: block;
+                &::after {
+                  content: "";
                 }
               }
+            }
+          }
+          .operate {
+            .el-button {
+              font-size: 20px;
             }
           }
         }

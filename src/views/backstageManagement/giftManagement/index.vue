@@ -62,38 +62,43 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
-            <table>
-              <tr>
-                <td>
-                  <span class="header">ID:</span>
-                  <span>{{ item.id }}</span>
-                </td>
-                <td>
-                  <span class="header">{{ $t('__giftNickname') }}:</span>
-                  <span>{{ item.nickname }}</span>
-                </td>
-                <td>
-                  <span class="header">{{ $t('__currency') }}:</span>
-                  <span>{{ item.currency }}</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="header">{{ $t('__value') }}:</span>
-                  <span>{{ item.valueLabel }}</span>
-                </td>
-                <td>
-                  <span class="header">{{ $t('__activated') }}:</span>
-                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-                </td>
-                <td>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+            <div class="wrap">
+              <template v-if="device === 'mobile'">
+                <div class="left">
+                  <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+                </div>
+              </template>
+              <div class="right">
+                <template v-if="device !== 'mobile'">
+                  <div class="item">
+                    <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
                   </div>
-                </td>
-              </tr>
-            </table>
+                </template>
+                <div class="item">
+                  <span class="header">ID</span>
+                  <span>{{ item.id }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__giftNickname') }}</span>
+                  <span>{{ item.nickname }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__currency') }}</span>
+                  <span>{{ item.currency }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__value') }}</span>
+                  <span>{{ item.valueLabel }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__activated') }}</span>
+                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -295,15 +300,71 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/variables.scss";
-
 .view {
   &-container {
     &-table {
       &-row {
-        .giftPhoto {
-          vertical-align: middle;
-          max-width: 73px;
+        .wrap {
+          .left,
+          .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: auto;
+          }
+          .left {
+            align-items: center;
+            margin-right: 10px;
+          }
+          .operate {
+            width: auto;
+          }
+          .giftPhoto {
+            vertical-align: middle;
+            width: 73px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          .wrap {
+            .left,
+            .right {
+              width: 50%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          .wrap {
+            .right {
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-evenly;
+              width: 100%;
+            }
+            .item {
+              width: 110px;
+            }
+            .operate {
+              width: 110px;
+            }
+          }
         }
       }
     }

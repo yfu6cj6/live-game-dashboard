@@ -52,43 +52,49 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
-            <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
-            <table>
-              <tr>
-                <td>
-                  <span class="header">ID:</span>
-                  <span>{{ item.id }}</span>
-                </td>
-                <td>
-                  <span class="header">{{ $t('__account') }}:</span>
-                  <span>{{ item.account }}</span>
-                </td>
-                <td>
-                  <span class="header">{{ $t('__name') }}:</span>
-                  <span>{{ item.name }}</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <span class="header">{{ $t('__activated') }}:</span>
-                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-                </td>
-                <td>
-                  <span class="header">{{ $t('__creator') }}:</span>
-                  <span>{{ item.creator }}</span>
-                </td>
-                <td>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
-                    <a :href="item.dns1d" :download="item.name">
-                      <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
-                    </a>
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+            <div class="wrap">
+              <template v-if="device === 'mobile'">
+                <div class="left">
+                  <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
+                  <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
+                </div>
+              </template>
+              <div class="right">
+                <template v-if="device !== 'mobile'">
+                  <div class="item">
+                    <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
+                    <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
                   </div>
-                </td>
-              </tr>
-            </table>
+                </template>
+                <div class="item">
+                  <span class="header">ID</span>
+                  <span>{{ item.id }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__account') }}</span>
+                  <span>{{ item.account }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__name') }}</span>
+                  <span>{{ item.name }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__activated') }}</span>
+                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__creator') }}</span>
+                  <span>{{ item.creator }}</span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
+                  <a :href="item.dns1d" :download="item.name">
+                    <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
+                  </a>
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -282,9 +288,67 @@ export default {
   &-container {
     &-table {
       &-row {
-        .dealerPhoto {
-          vertical-align: middle;
-          width: 105px;
+        .wrap {
+          .left,
+          .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: auto;
+          }
+          .left {
+            align-items: center;
+            margin-right: 10px;
+          }
+          .operate {
+            width: 250px;
+          }
+          .dealerPhoto {
+            vertical-align: middle;
+            width: 105px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          .wrap {
+            .left,
+            .right {
+              width: 50%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          .wrap {
+            .right {
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-evenly;
+              width: 100%;
+            }
+            .item {
+              width: 110px;
+            }
+            .operate {
+              width: 400px;
+            }
+          }
         }
       }
     }

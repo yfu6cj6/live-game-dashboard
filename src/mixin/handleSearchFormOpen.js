@@ -9,7 +9,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      'device'
     ]),
     advancedSearchIcon() {
       return this.searchFormOpen ? "el-icon-arrow-up" : "el-icon-arrow-down";

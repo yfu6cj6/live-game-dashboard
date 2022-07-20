@@ -16,36 +16,43 @@
       </el-form-item>
     </el-form>
     <div class="view-container-table">
-      <draggable v-if="allDataByClient.length > 0" class="view-container-table" :list="allDataByClient" v-bind="$attrs" :set-data="setData">
+      <draggable v-if="allDataByClient.length > 0" :list="allDataByClient" v-bind="$attrs" :set-data="setData">
         <div
           v-for="(item, index) in allDataByClient"
           :key="index"
           class="view-container-table-row"
           :class="{'single-row': index % 2 === 0}"
         >
-          <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
-          <table>
-            <tr>
-              <td>
-                <span class="header">ID:</span>
+          <div class="wrap">
+            <template v-if="device === 'mobile'">
+              <div class="left">
+                <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+              </div>
+            </template>
+            <div class="right">
+              <template v-if="device !== 'mobile'">
+                <div class="item">
+                  <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+                </div>
+              </template>
+              <div class="item">
+                <span class="header">ID</span>
                 <span>{{ item.id }}</span>
-              </td>
-              <td>
-                <span class="header">{{ $t('__giftNickname') }}:</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__giftNickname') }}</span>
                 <span>{{ item.nickname }}</span>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <span class="header">{{ $t('__value') }}:</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__value') }}</span>
                 <span>{{ item.valueLabel }}</span>
-              </td>
-              <td>
-                <span class="header">{{ $t('__activated') }}:</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__activated') }}</span>
                 <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-              </td>
-            </tr>
-          </table>
+              </div>
+            </div>
+          </div>
         </div>
       </draggable>
       <div v-else-if="searched && allDataByClient.length === 0" class="noInformation">{{ $t("__noInformation") }}</div>
@@ -185,12 +192,22 @@ export default {
   &-container {
     &-table {
       &-row {
-        .giftPhoto {
-          vertical-align: middle;
-          max-width: 73px;
-        }
-        table {
-          width: 150px;
+        .wrap {
+          .left,
+          .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: auto;
+          }
+          .left {
+            align-items: center;
+            margin-right: 10px;
+          }
+          .giftPhoto {
+            vertical-align: middle;
+            width: 73px;
+          }
         }
       }
       .noInformation {
@@ -202,23 +219,15 @@ export default {
   }
 }
 
-.confirm {
-  width: 120px;
-  font-size: 18px;
-}
-
 @media screen and (min-width: 768px) and (max-width: 992px) {
   .view {
     &-container {
       &-table {
         &-row {
-          table {
-            width: 350px;
-            tr {
-              td {
-                font-size: 18px;
-                line-height: 30px;
-              }
+          .wrap {
+            .left,
+            .right {
+              width: 50%;
             }
           }
         }
@@ -231,18 +240,16 @@ export default {
   .view {
     &-container {
       &-table {
-        position: relative;
         &-row {
-          table {
-            display: flex;
-            justify-content: space-between;
-            width: 350px;
-            tr {
-              td {
-                width: 250px;
-                font-size: 20px;
-                line-height: 30px;
-              }
+          .wrap {
+            .right {
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-evenly;
+              width: 100%;
+            }
+            .item {
+              width: 110px;
             }
           }
         }

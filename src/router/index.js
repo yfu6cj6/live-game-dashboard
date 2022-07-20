@@ -92,6 +92,13 @@ export const asyncRoutes = [
         name: 'GiftManagement',
         component: () => import('@/views/backstageManagement/giftManagement/index'),
         meta: { title: '__giftManagement', icon: 'el-icon-present', permission: 'BackStageManage.GiftManage' }
+      },
+      {
+        // 真人玩法管理
+        path: 'liveBetAreaManagement',
+        name: 'LiveBetAreaManagement',
+        component: () => import('@/views/backstageManagement/liveBetAreaManagement/index'),
+        meta: { title: '__liveBetAreaManagement', icon: 'el-icon-user', permission: 'BackStageManage.LiveBetAreaManage' }
       }
     ]
   },

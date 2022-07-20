@@ -1,8 +1,15 @@
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
       dialogLoading: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'device'
+    ])
   },
   methods: {
     onClose() {
