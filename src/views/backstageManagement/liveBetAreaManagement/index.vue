@@ -96,7 +96,7 @@
                   </div>
                   <div class="operate">
                     <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(scope.row)">{{ $t("__delete") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                   </div>
                 </template>
               </div>
@@ -116,7 +116,7 @@
                   </div>
                   <div class="item">
                     <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(scope.row)">{{ $t("__delete") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                   </div>
                 </div>
               </template>
@@ -139,6 +139,30 @@
         @current-change="handlePageChangeByClient"
       />
     </div>
+
+    <editDialog
+      ref="createDialog"
+      :title="`${$t('__create')}`"
+      :visible="curDialogIndex === dialogEnum.create"
+      :confirm="$t('__confirm')"
+      :form="selectForm"
+      :currency="currency"
+      :activated="activated"
+      @close="closeDialogEven"
+      @confirm="createDialogConfirmEven"
+    />
+
+    <editDialog
+      ref="editDialog"
+      :title="$stringFormat(`${$t('__edit')} - ID:{0}`, [selectForm.id])"
+      :visible="curDialogIndex === dialogEnum.edit"
+      :confirm="$t('__revise')"
+      :form="selectForm"
+      :currency="currency"
+      :activated="activated"
+      @close="closeDialogEven"
+      @confirm="editDialogConfirmEven"
+    />
   </div>
 </template>
 
@@ -147,10 +171,11 @@ import { liveBetAreaSearch, liveBetAreaCreate, liveBetAreaEdit, liveBetAreaDelet
 import common from '@/mixin/common';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
+import EditDialog from './editDialog';
 
 export default {
   name: 'LiveBetAreaManagement',
-  components: { },
+  components: { EditDialog },
   mixins: [common, handlePageChange, handleSearchFormOpen],
   data() {
     return {
@@ -235,8 +260,8 @@ export default {
       this.closeLoading()
     },
     closeLoading() {
-      // this.$refs.createDialog.setDialogLoading(false)
-      // this.$refs.editDialog.setDialogLoading(false)
+      this.$refs.createDialog.setDialogLoading(false)
+      this.$refs.editDialog.setDialogLoading(false)
       this.dataLoading = false
     },
     closeDialogEven() {

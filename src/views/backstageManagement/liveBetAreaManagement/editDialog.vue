@@ -4,15 +4,10 @@
     v-loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
-    :width="formWidth"
     :before-close="onClose"
     :close-on-click-modal="false"
-    :close-on-press-escape="false"
   >
-    <el-form ref="editForm" :model="editForm" :rules="rules" label-width="80px" label-position="left">
-      <el-form-item label="ID" prop="id">
-        <el-input v-model="editForm.id" :disabled="true" />
-      </el-form-item>
+    <el-form ref="editForm" :model="editForm" :rules="rules">
       <el-form-item :label="$t('__name')" prop="area_name">
         <el-input v-model="editForm.area_name" />
       </el-form-item>
@@ -47,45 +42,45 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon'
 
 export default {
   name: 'EditDialog',
-  mixins: [handleDialogWidth],
+  mixins: [dialogCommon],
   props: {
-    'title': {
+    title: {
       type: String,
       require: true,
       default() {
         return ''
       }
     },
-    'visible': {
+    visible: {
       type: Boolean,
       require: true
     },
-    'confirm': {
+    confirm: {
       type: String,
       require: true,
       default() {
         return ''
       }
     },
-    'form': {
+    form: {
       type: Object,
       require: true,
       default() {
         return {}
       }
     },
-    'currency': {
+    currency: {
       type: Array,
       require: true,
       default() {
         return []
       }
     },
-    'activated': {
+    activated: {
       type: Array,
       require: true,
       default() {
@@ -109,8 +104,7 @@ export default {
         bet_min: [{ required: true, trigger: 'blur', validator: validate }],
         bet_max: [{ required: true, trigger: 'blur', validator: validate }]
       },
-      editForm: {},
-      dialogLoading: false
+      editForm: {}
     }
   },
   computed: {
@@ -130,29 +124,15 @@ export default {
         }
       })
     },
-    onClose() {
-      this.$emit('close')
-    },
     onReset() {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.$nextTick(() => {
         this.$refs.editForm.clearValidate()
       })
-    },
-    setDialogLoading(dialogLoading) {
-      this.dialogLoading = dialogLoading
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.el-form {
-  margin-bottom: 10px;
-}
-
-.el-select,
-.el-input {
-  width: 90%;
-}
 </style>
