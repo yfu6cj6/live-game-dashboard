@@ -99,6 +99,20 @@ export const asyncRoutes = [
         name: 'LiveBetAreaManagement',
         component: () => import('@/views/backstageManagement/liveBetAreaManagement/index'),
         meta: { title: '__liveBetAreaManagement', icon: 'el-icon-user', permission: 'BackStageManage.LiveBetAreaManage' }
+      },
+      {
+        // 遊戲桌管理
+        path: 'gameTableManagement',
+        name: 'GameTableManagement',
+        component: () => import('@/views/backstageManagement/gameTableManagement/index'),
+        meta: { title: '__gameTableManagement', icon: 'el-icon-set-up', permission: 'BackStageManage.GameTableManage' }
+      },
+      {
+        // 角色管理
+        path: 'roleManagement',
+        name: 'RoleManagement',
+        component: () => import('@/views/backstageManagement/roleManagement/index'),
+        meta: { title: '__roleManagement', icon: 'people', permission: 'BackStageManage.RoleManage' }
       }
     ]
   },

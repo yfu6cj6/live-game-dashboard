@@ -79,7 +79,7 @@
                   <span>{{ item.name }}</span>
                 </div>
                 <div class="item">
-                  <span class="header">{{ $t('__activated') }}</span>
+                  <span class="header">{{ $t('__status') }}</span>
                   <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
                 </div>
                 <div class="item">
@@ -282,8 +282,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/variables.scss";
-
 .view {
   &-container {
     &-table {

@@ -28,7 +28,7 @@
           <el-option v-for="item in currency" :key="item.key" :label="item.nickname" :value="item.key" />
         </el-select>
       </el-form-item>
-      <el-form-item :label="$t('__activated')" prop="activated">
+      <el-form-item :label="$t('__status')" prop="activated">
         <el-select v-model="editForm.activated">
           <el-option v-for="item in activated" :key="item.key" :label="item.nickname" :value="item.key" />
         </el-select>

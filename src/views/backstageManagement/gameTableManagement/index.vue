@@ -7,23 +7,27 @@
             <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
           </p>
           <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.id" type="number" placeholder="ID" />
+            <el-input v-model="searchForm.id" type="number" :placeholder="$t('__tableId')" />
           </p>
           <p class="view-container-seachForm-item-wrap">
             <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
           </p>
           <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.area" :placeholder="$t('__code')" />
+            <el-input v-model="searchForm.streaming_url" :placeholder="$t('__streamingUrl')" />
           </p>
           <p class="view-container-seachForm-item-wrap">
-            <el-select v-model="searchForm.currency" multiple filterable :collapse-tags="currencyCollapse" :placeholder="$t('__currency')">
-              <el-option v-for="item in currency" :key="item.key" :label="item.nickname" :value="item.key" />
+            <el-input v-model="searchForm.app_name" placeholder="app_name" />
+          </p>
+          <p class="view-container-seachForm-item-wrap">
+            <el-input v-model="searchForm.streaming_name" placeholder="streaming_name" />
+          </p>
+          <p class="view-container-seachForm-item-wrap">
+            <el-select v-model="searchForm.status" multiple filterable :collapse-tags="stateCollapse" :placeholder="$t('__status')">
+              <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
             </el-select>
           </p>
           <p class="view-container-seachForm-item-wrap">
-            <el-select v-model="searchForm.activated" multiple filterable :collapse-tags="activatedCollapse" :placeholder="$t('__status')">
-              <el-option v-for="item in activated" :key="item.key" :label="item.nickname" :value="item.key" />
-            </el-select>
+            <el-input v-model="searchForm.description" :placeholder="$t('__description')" />
           </p>
         </div>
         <div class="view-container-seachForm-item">
@@ -60,41 +64,42 @@
             <div class="wrap">
               <div class="left">
                 <div class="item">
-                  <span class="header">ID</span>
+                  <span class="header">{{ $t('__tableId') }}</span>
                   <span>{{ item.id }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ $t('__name') }}</span>
-                  <span>{{ item.area_name }}</span>
+                  <span>{{ item.name }}</span>
                 </div>
                 <div class="item">
-                  <span class="header">{{ $t('__code') }}</span>
-                  <span>{{ item.area }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__odds') }}</span>
-                  <span>{{ item.odds }}</span>
+                  <span class="header">{{ $t('__idleRounds') }}</span>
+                  <span>{{ item.idle_rounds }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ $t('__status') }}</span>
                   <span class="status" :class="{'statusOpen': item.activated === '1' }">
-                    {{ item.activatedLabel }}
+                    {{ item.statusLabel }}
                   </span>
+                </div>
+                <div class="item">
+                  <span class="header description">{{ $t('__description') }}</span>
+                  <span>{{ item.description }}</span>
                 </div>
                 <template v-if="device !== 'mobile'">
                   <div class="item">
-                    <span class="header">{{ $t('__currency') }}</span>
-                    <span>{{ item.currency }}</span>
+                    <span class="header streamingUrl">{{ $t('__streamingUrl') }}</span>
+                    <span>{{ item.streaming_url }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ $t('__betMin') }}</span>
-                    <span>{{ item.bet_min }}</span>
+                    <span class="header">app_name</span>
+                    <span>{{ item.app_name }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ $t('__betMax') }}</span>
-                    <span>{{ item.bet_max }}</span>
+                    <span class="header">streaming_name</span>
+                    <span>{{ item.streaming_name }}</span>
                   </div>
                   <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(scope.row)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
                     <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                     <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                   </div>
@@ -103,18 +108,19 @@
               <template v-if="device === 'mobile'">
                 <div class="right">
                   <div class="item">
-                    <span class="header">{{ $t('__currency') }}</span>
-                    <span>{{ item.currency }}</span>
+                    <span class="header streamingUrl">{{ $t('__streamingUrl') }}</span>
+                    <span>{{ item.streaming_url }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ $t('__betMin') }}</span>
-                    <span>{{ item.bet_min }}</span>
+                    <span class="header">app_name</span>
+                    <span>{{ item.app_name }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ $t('__betMax') }}</span>
-                    <span>{{ item.bet_max }}</span>
+                    <span class="header">streaming_name</span>
+                    <span>{{ item.streaming_name }}</span>
                   </div>
                   <div class="item">
+                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(scope.row)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
                     <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                     <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                   </div>
@@ -139,86 +145,58 @@
         @current-change="handlePageChangeByClient"
       />
     </div>
-
-    <editDialog
-      ref="createDialog"
-      :title="`${$t('__create')}`"
-      :visible="curDialogIndex === dialogEnum.create"
-      :confirm="$t('__confirm')"
-      :form="selectForm"
-      :currency="currency"
-      :activated="activated"
-      @close="closeDialogEven"
-      @confirm="createDialogConfirmEven"
-    />
-
-    <editDialog
-      ref="editDialog"
-      :title="$stringFormat(`${$t('__edit')} - ID:{0}`, [selectForm.id])"
-      :visible="curDialogIndex === dialogEnum.edit"
-      :confirm="$t('__revise')"
-      :form="selectForm"
-      :currency="currency"
-      :activated="activated"
-      @close="closeDialogEven"
-      @confirm="editDialogConfirmEven"
-    />
   </div>
 </template>
 
 <script>
-import { liveBetAreaSearch, liveBetAreaCreate, liveBetAreaEdit, liveBetAreaDelete } from '@/api/backstageManagement/liveBetAreaManagement'
+import { gameTableSearch, gameTableCreate, gameTableEdit, gameTableDelete,
+  gameTableChipsSearch, gameTableChipsCreate, gameTableChipsEdit, gameTableChipsDelete } from '@/api/backstageManagement/gameTableManagement'
 import common from '@/mixin/common';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
-import EditDialog from './editDialog';
 
 export default {
-  name: 'LiveBetAreaManagement',
-  components: { EditDialog },
+  name: 'GameTableManagement',
+  components: { },
   mixins: [common, handlePageChange, handleSearchFormOpen],
   data() {
     return {
       dialogEnum: Object.freeze({
         'none': 0,
         'create': 1,
-        'edit': 2
+        'edit': 2,
+        'chipsSetting': 3,
+        'chipsCreate': 4,
+        'chipsEdit': 5
       }),
       curDialogIndex: 0,
-      currency: [],
-      activated: []
+      chipsData: [],
+      chipEditForm: {}
     }
   },
   computed: {
-    currencyCollapse() {
-      return this.searchForm.currency && this.searchForm.currency.length > this.selectCollapseCount;
-    },
-    activatedCollapse() {
-      return this.searchForm.activated && this.searchForm.activated.length > this.selectCollapseCount;
+    stateCollapse() {
+      return this.searchForm.status && this.searchForm.status.length > this.selectCollapseCount
     }
   },
   watch: {
-    'searchForm.currency'() {
-      this.resizeHandler();
-    },
-    'searchForm.activated'() {
+    'searchForm.status'() {
       this.resizeHandler();
     }
   },
   created() {
-    this.onSearchBtnClick({}, 1);
+    this.onSearchBtnClick({}, 1)
   },
   methods: {
     resizeHandler() {
       const vw = window.innerWidth;
       var formHeight = "34px";
-      const currencyHeight = this.currencyCollapse ? 32 : ((this.searchForm.currency && this.searchForm.currency.length) * 32);
-      const activatedHeight = this.activatedCollapse ? 32 : ((this.searchForm.activated && this.searchForm.activated.length) * 32);
+      const statusHeight = this.stateCollapse ? 32 : ((this.searchForm.status && this.searchForm.status.length) * 32);
       if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(170 + currencyHeight + activatedHeight)}px` : formHeight;
+        formHeight = this.searchFormOpen ? `${(238 + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 5;
       } else if (vw > 768 && vw <= 992) {
-        formHeight = this.searchFormOpen ? `${(102 + currencyHeight + activatedHeight)}px` : formHeight;
+        formHeight = this.searchFormOpen ? `${(136 + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 7;
       } else {
         formHeight = "auto";
@@ -237,21 +215,17 @@ export default {
     },
     onSubmit() {
       this.dataLoading = true
-      liveBetAreaSearch(this.searchForm).then((res) => {
+      gameTableSearch(this.searchForm).then((res) => {
         this.handleRespone(res)
       }).catch(() => {
         this.closeLoading()
       })
     },
     handleRespone(res) {
-      this.currency = res.searchItems.currency
-      this.activated = res.searchItems.activated
+      this.searchItems = res.searchItems
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
-        const activatedLabel = this.activated.find(active => active.key === element.activated)
-        if (activatedLabel) {
-          element.activatedLabel = activatedLabel.nickname
-        }
+        element.statusLabel = this.searchItems.status.find(state => state.key === element.status).nickname
       })
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)
@@ -260,20 +234,20 @@ export default {
       this.closeLoading()
     },
     closeLoading() {
-      this.$refs.createDialog.setDialogLoading(false)
-      this.$refs.editDialog.setDialogLoading(false)
+      // this.$refs.createDialog.setDialogLoading(false)
+      // this.$refs.editDialog.setDialogLoading(false)
       this.dataLoading = false
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
     },
     onCreateBtnClick() {
-      this.selectForm = { currency: this.currency[0].key, activated: this.activated[0].key }
+      this.selectForm = { status: this.searchItems.status[0].key, idle_rounds: 3 }
       this.curDialogIndex = this.dialogEnum.create
     },
     createDialogConfirmEven(data) {
       this.$refs.createDialog.setDialogLoading(true)
-      liveBetAreaCreate(data).then((res) => {
+      gameTableCreate(data).then((res) => {
         this.handleRespone(res)
       }).catch(() => {
         this.closeLoading()
@@ -286,7 +260,9 @@ export default {
     editDialogConfirmEven(data) {
       this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
         this.$refs.editDialog.setDialogLoading(true)
-        liveBetAreaEdit(data).then((res) => {
+        data.table_id = undefined
+        data.live_bet_area_id = undefined
+        gameTableEdit(data).then((res) => {
           this.handleRespone(res)
         }).catch(() => {
           this.closeLoading()
@@ -296,11 +272,71 @@ export default {
     onDeleteBtnClick(item) {
       this.confirmMsg(this.$stringFormat(`${this.$t('__confirmDeletion')}?`, [`"ID: ${item.id}"`]), () => {
         this.dataLoading = true
-        liveBetAreaDelete(item.id).then((res) => {
+        gameTableDelete(item.id).then((res) => {
           this.handleRespone(res)
         }).catch(() => {
           this.closeLoading()
         })
+      })
+    },
+    onChipsSettingBtnClick(item) {
+      this.dataLoading = true
+      this.selectForm = JSON.parse(JSON.stringify(item))
+      gameTableChipsSearch({ table_id: this.selectForm.id }).then((res) => {
+        this.chipsData = res.rows
+        this.curDialogIndex = this.dialogEnum.chipsSetting
+        this.dataLoading = false
+      }).catch(() => {
+        this.closeLoading()
+      })
+    },
+    chipSearch() {
+      this.$refs.chipSettingDialog.setDialogLoading(true)
+      gameTableChipsSearch({ table_id: this.selectForm.id }).then((res) => {
+        this.chipsData = res.rows
+        this.$refs.chipSettingDialog.setDialogLoading(false)
+      }).catch(() => {
+        this.$refs.chipSettingDialog.setDialogLoading(false)
+      })
+    },
+    chipCreate() {
+      this.chipEditForm = {}
+      this.curDialogIndex = this.dialogEnum.chipsCreate
+    },
+    chipCreateDialogConfirmEven(data) {
+      this.$refs.chipCreateDialog.setDialogLoading(true)
+      data.table_id = this.selectForm.id
+      gameTableChipsCreate(data).then((res) => {
+        this.chipsData = res.rows
+        this.$refs.chipCreateDialog.setDialogLoading(false)
+        this.curDialogIndex = this.dialogEnum.chipsSetting
+      }).catch(() => {
+        this.$refs.chipCreateDialog.setDialogLoading(false)
+      })
+    },
+    chipEdit(item) {
+      this.chipEditForm = JSON.parse(JSON.stringify(item))
+      this.curDialogIndex = this.dialogEnum.chipsEdit
+    },
+    chipEditDialogConfirmEven(data) {
+      this.$refs.chipEditDialog.setDialogLoading(true)
+      data.table_id = this.selectForm.id
+      gameTableChipsEdit(data).then((res) => {
+        this.chipsData = res.rows
+        this.$refs.chipEditDialog.setDialogLoading(false)
+        this.curDialogIndex = this.dialogEnum.chipsSetting
+      }).catch(() => {
+        this.$refs.chipEditDialog.setDialogLoading(false)
+      })
+    },
+    chipDelete(item) {
+      this.$refs.chipSettingDialog.setDialogLoading(true)
+      item.table_id = this.selectForm.id
+      gameTableChipsDelete(item).then((res) => {
+        this.chipsData = res.rows
+        this.$refs.chipSettingDialog.setDialogLoading(false)
+      }).catch(() => {
+        this.$refs.chipSettingDialog.setDialogLoading(false)
       })
     }
   }
@@ -313,8 +349,29 @@ export default {
     &-table {
       &-row {
         .wrap {
-          .left {
-            width: 50%;
+          flex-direction: column;
+          .item {
+            line-height: 20px;
+          }
+          .streamingUrl {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          .wrap {
+            flex-direction: row;
+            .left {
+              width: 50%;
+            }
           }
         }
       }
@@ -328,20 +385,26 @@ export default {
       &-table {
         &-row {
           .wrap {
+            flex-direction: row;
             .left {
               display: flex;
+              justify-content: space-between;
               width: 100%;
             }
             .item {
-              width: 200px;
+              width: auto;
             }
-          }
-          .operate {
-            width: 200px;
+            .operate {
+              width: 300px;
+            }
+            .description {
+              min-width: 240px;
+            }
           }
         }
       }
     }
   }
 }
+
 </style>

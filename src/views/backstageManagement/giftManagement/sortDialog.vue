@@ -48,7 +48,7 @@
                 <span>{{ item.valueLabel }}</span>
               </div>
               <div class="item">
-                <span class="header">{{ $t('__activated') }}</span>
+                <span class="header">{{ $t('__status') }}</span>
                 <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
               </div>
             </div>
@@ -240,6 +240,7 @@ export default {
   .view {
     &-container {
       &-table {
+        position: relative;
         &-row {
           .wrap {
             .right {
