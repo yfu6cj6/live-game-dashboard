@@ -240,7 +240,6 @@ export default {
   .view {
     &-container {
       &-table {
-        position: relative;
         &-row {
           .wrap {
             .right {

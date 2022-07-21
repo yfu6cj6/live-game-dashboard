@@ -128,13 +128,11 @@ div::-webkit-scrollbar {
 .view {
   &-container {
     width: 100%;
-    height: calc(100vh - 45px - 35px - 40px);
     overflow-y: auto;
     &-seachForm {
       width: 100%;
       height: auto;
       background-color: $black;
-      line-height: 0;
       padding: 4px 0;
       &-item {
         height: 34px;
@@ -221,8 +219,6 @@ div::-webkit-scrollbar {
     }
   }
   &-footer {
-    position: fixed;
-    bottom: 0;
     background-color: #262626;
     width: 100%;
     height: 40px;
@@ -250,16 +246,12 @@ div::-webkit-scrollbar {
 @media screen and (min-width: 992px) {
   .view {
     &-container {
-      position: relative;
       overflow-y: hidden;
       &-seachForm {
-        position: fixed;
-        top: $navBarHeight + $tagsViewHeight;
-        width: calc(100vw - 66px);
-        z-index: 1;
         &-item {
           display: inline-block;
           width: auto;
+          transition: none;
           &-wrap {
             display: inline-block;
             width: auto;
@@ -273,11 +265,7 @@ div::-webkit-scrollbar {
           }
         }
       }
-      &-seachForm.opened {
-        width: calc(100vw - 170px);
-      }
       &-table {
-        position: absolute;
         overflow-y: auto;
         &-row {
           .wrap {
@@ -299,12 +287,6 @@ div::-webkit-scrollbar {
           }
         }
       }
-    }
-    &-footer {
-      width: calc(100vw - 66px);
-    }
-    &-footer.opened {
-      width: calc(100vw - 170px);
     }
   }
 }

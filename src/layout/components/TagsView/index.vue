@@ -201,7 +201,6 @@ export default {
 
 .tags-view-container {
   width: 100vw;
-  height: $tagsViewHeight;
   background-color: #000;
 
   .scroll-pane {

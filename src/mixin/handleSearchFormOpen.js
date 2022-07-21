@@ -10,13 +10,17 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'device'
+      'device',
+      'visitedViews'
     ]),
     advancedSearchIcon() {
       return this.searchFormOpen ? "el-icon-arrow-up" : "el-icon-arrow-down";
     }
   },
   watch: {
+    'visitedViews'() {
+      this.resizeHandler();
+    },
     'sidebar.opened'() {
       this.resizeHandler();
     },
@@ -30,6 +34,16 @@ export default {
   beforeDestroy() {
     window.removeEventListener('resize', this.resizeHandler)
   },
+  activated() {
+    this.resizeHandler();
+  },
   methods: {
+    setHeight() {
+      const tagsView = document.getElementsByClassName("tagsView");
+      if (tagsView && tagsView.length > 0) {
+        this.$refs.container.style.height = `calc(100vh - 45px - ${tagsView[0].clientHeight}px - 40px)`;
+      }
+      this.$refs.table.style.height = `${this.$refs.container.clientHeight - this.$refs.seachForm.clientHeight}px`;
+    }
   }
 }

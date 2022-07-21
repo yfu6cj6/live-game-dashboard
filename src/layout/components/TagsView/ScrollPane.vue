@@ -82,7 +82,6 @@ export default {
 <style lang="scss" scoped>
 .scroll-container {
   overflow: auto;
-  overflow-x: auto;
   white-space: nowrap;
   width: 100%;
 }

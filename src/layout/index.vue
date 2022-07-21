@@ -1,6 +1,6 @@
 <template>
   <div :class="classObj" class="app-container">
-    <navbar class="navbar" />
+    <navbar />
     <tags-view class="tagsView" :class="{'opened': sidebar.opened}" />
     <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
     <sidebar class="sidebar" />
@@ -53,18 +53,6 @@ export default {
   @include clearfix;
   height: 100%;
   width: 100%;
-
-  .navbar {
-    position: fixed;
-    z-index: 1000;
-  }
-
-  .tagsView {
-    position: fixed;
-    z-index: 999;
-    top: $navBarHeight;
-  }
-
   .drawer-bg.opened {
     background: #000;
     opacity: 0.3;
@@ -74,17 +62,14 @@ export default {
     height: calc(100% - 45px);
     z-index: 998;
   }
-
   .sidebar {
     position: fixed;
     z-index: 999;
     border-right: 2px solid $yellow;
     top: $navBarHeight;
   }
-
   .appMain {
-    position: relative;
-    padding-top: $navBarHeight + $tagsViewHeight;
+    overflow: auto;
   }
 }
 

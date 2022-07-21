@@ -1,7 +1,7 @@
 <template>
   <div v-loading="dataLoading">
     <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm" :class="{'opened': sidebar.opened}">
+      <div ref="seachForm" class="view-container-seachForm">
         <div ref="seachFormExpand" class="view-container-seachForm-item">
           <p class="view-container-seachForm-item-wrap pc">
             <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
@@ -126,7 +126,7 @@
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
       </div>
     </div>
-    <div class="view-footer" :class="{'opened': sidebar.opened}">
+    <div class="view-footer">
       <el-pagination
         layout="prev, pager, next, jumper, sizes"
         :total="totalCount"
@@ -226,10 +226,7 @@ export default {
       }
 
       this.$refs.seachFormExpand.style.height = `${formHeight}`;
-      setTimeout(() => {
-        this.$refs.table.style.top = `${this.$refs.seachForm.clientHeight}px`;
-        this.$refs.table.style.maxHeight = `calc(100vh - 45px - 35px - 40px - ${this.$refs.seachForm.clientHeight}px)`;
-      }, 300);
+      this.setHeight();
     },
     onSearchBtnClick(data, page) {
       this.searchForm = data
