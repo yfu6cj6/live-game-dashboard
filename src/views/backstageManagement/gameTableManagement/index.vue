@@ -145,6 +145,30 @@
         @current-change="handlePageChangeByClient"
       />
     </div>
+
+    <editDialog
+      ref="createDialog"
+      :title="`${$t('__create')}${$t('__gameTable')}`"
+      :visible="curDialogIndex === dialogEnum.create"
+      :confirm="$t('__confirm')"
+      :form="selectForm"
+      :status="searchItems.status"
+      :is-edit="false"
+      @close="closeDialogEven"
+      @confirm="createDialogConfirmEven"
+    />
+
+    <editDialog
+      ref="editDialog"
+      :title="$stringFormat(`${$t('__edit')}${$t('__gameTable')} - ID:{0}`, [selectForm.id])"
+      :visible="curDialogIndex === dialogEnum.edit"
+      :confirm="$t('__revise')"
+      :form="selectForm"
+      :status="searchItems.status"
+      :is-edit="true"
+      @close="closeDialogEven"
+      @confirm="editDialogConfirmEven"
+    />
   </div>
 </template>
 
@@ -154,10 +178,11 @@ import { gameTableSearch, gameTableCreate, gameTableEdit, gameTableDelete,
 import common from '@/mixin/common';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
+import EditDialog from './editDialog'
 
 export default {
   name: 'GameTableManagement',
-  components: { },
+  components: { EditDialog },
   mixins: [common, handlePageChange, handleSearchFormOpen],
   data() {
     return {
@@ -231,8 +256,8 @@ export default {
       this.closeLoading()
     },
     closeLoading() {
-      // this.$refs.createDialog.setDialogLoading(false)
-      // this.$refs.editDialog.setDialogLoading(false)
+      this.$refs.createDialog.setDialogLoading(false)
+      this.$refs.editDialog.setDialogLoading(false)
       this.dataLoading = false
     },
     closeDialogEven() {
@@ -359,7 +384,7 @@ export default {
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 992px) {
+@media screen and (min-width: 768px) and (max-width: 991px) {
   .view {
     &-container {
       &-table {

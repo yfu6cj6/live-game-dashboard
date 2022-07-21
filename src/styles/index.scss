@@ -225,7 +225,7 @@ div::-webkit-scrollbar {
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 992px) {
+@media screen and (min-width: 768px) and (max-width: 991px) {
   .view {
     &-container {
       &-seachForm {
@@ -271,7 +271,7 @@ div::-webkit-scrollbar {
           .wrap {
             .item {
               display: inline-block;
-              overflow: auto;
+              overflow: visible;
               .header {
                 display: block;
                 &::after {

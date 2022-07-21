@@ -142,7 +142,7 @@
 
     <editDialog
       ref="createDialog"
-      :title="`${$t('__create')}`"
+      :title="`${$t('__create')}${$t('__liveBetAreaId')}`"
       :visible="curDialogIndex === dialogEnum.create"
       :confirm="$t('__confirm')"
       :form="selectForm"
@@ -154,7 +154,7 @@
 
     <editDialog
       ref="editDialog"
-      :title="$stringFormat(`${$t('__edit')} - ID:{0}`, [selectForm.id])"
+      :title="$stringFormat(`${$t('__edit')}${$t('__liveBetAreaId')} - ID:{0}`, [selectForm.id])"
       :visible="curDialogIndex === dialogEnum.edit"
       :confirm="$t('__revise')"
       :form="selectForm"

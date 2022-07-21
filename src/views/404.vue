@@ -70,7 +70,7 @@ export default {
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 992px) {
+@media screen and (min-width: 768px) and (max-width: 991px) {
   .http404-container {
     .wrap {
       .pic {
