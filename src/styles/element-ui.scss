@@ -43,6 +43,10 @@
   }
 }
 
+.el-textarea__inner:focus {
+  border-color: $yellow;
+}
+
 .el-select-dropdown.is-multiple .el-select-dropdown__item.selected,
 .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover {
   color: $yellow;

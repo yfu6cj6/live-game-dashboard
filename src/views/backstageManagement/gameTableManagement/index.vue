@@ -410,14 +410,9 @@ export default {
             flex-direction: row;
             .left {
               display: flex;
-              justify-content: space-between;
+              flex-wrap: wrap;
               width: 100%;
-            }
-            .item {
-              width: auto;
-            }
-            .operate {
-              width: 300px;
+              justify-content: space-between;
             }
             .description {
               min-width: 240px;
