@@ -99,7 +99,7 @@
                     <span>{{ item.streaming_name }}</span>
                   </div>
                   <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(scope.row)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
+                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
                     <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                     <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                   </div>
@@ -120,7 +120,7 @@
                     <span>{{ item.streaming_name }}</span>
                   </div>
                   <div class="item">
-                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(scope.row)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
+                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
                     <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                     <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                   </div>
@@ -169,6 +169,39 @@
       @close="closeDialogEven"
       @confirm="editDialogConfirmEven"
     />
+
+    <chipSettingDialog
+      ref="chipSettingDialog"
+      :title="$stringFormat($t('__chipsSetting'), [selectForm.name])"
+      :visible="curDialogIndex === dialogEnum.chipsSetting"
+      :chips-data="chipsData"
+      @search="chipSearch"
+      @create="chipCreate"
+      @edit="chipEdit"
+      @delete="chipDelete"
+      @close="closeDialogEven"
+    />
+
+    <chipEditDialog
+      ref="chipCreateDialog"
+      :title="$stringFormat($t('__createChips'), [selectForm.name])"
+      :visible="curDialogIndex === dialogEnum.chipsCreate"
+      :confirm="$t('__confirm')"
+      :form="chipEditForm"
+      @close="chipEditCloseDialogEven"
+      @confirm="chipCreateDialogConfirmEven"
+    />
+
+    <chipEditDialog
+      ref="chipEditDialog"
+      :title="$stringFormat($t('__editChips'), [selectForm.name])"
+      :visible="curDialogIndex === dialogEnum.chipsEdit"
+      :confirm="$t('__revise')"
+      :form="chipEditForm"
+      @close="chipEditCloseDialogEven"
+      @confirm="chipEditDialogConfirmEven"
+    />
+
   </div>
 </template>
 
@@ -179,10 +212,12 @@ import common from '@/mixin/common';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import EditDialog from './editDialog'
+import ChipSettingDialog from './chipSettingDialog'
+import ChipEditDialog from './chipEditDialog'
 
 export default {
   name: 'GameTableManagement',
-  components: { EditDialog },
+  components: { EditDialog, ChipSettingDialog, ChipEditDialog },
   mixins: [common, handlePageChange, handleSearchFormOpen],
   data() {
     return {
@@ -360,6 +395,9 @@ export default {
       }).catch(() => {
         this.$refs.chipSettingDialog.setDialogLoading(false)
       })
+    },
+    chipEditCloseDialogEven() {
+      this.curDialogIndex = this.dialogEnum.chipsSetting
     }
   }
 }

@@ -4,12 +4,10 @@
     v-loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
-    :width="formWidth"
     :before-close="onClose"
     :close-on-click-modal="false"
-    :close-on-press-escape="false"
   >
-    <el-form ref="editForm" class="row" :model="editForm" :rules="rules" label-width="120px" label-position="left">
+    <el-form ref="editForm" :model="editForm" :rules="rules">
       <el-form-item :label="$t('__amount')" prop="amount">
         <el-input v-model="editForm.amount" type="number" />
       </el-form-item>
@@ -22,11 +20,11 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon'
 
 export default {
   name: 'ChipEditDialog',
-  mixins: [handleDialogWidth],
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,
@@ -87,28 +85,15 @@ export default {
         }
       })
     },
-    onClose() {
-      this.$emit('close')
-    },
     onReset() {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.$nextTick(() => {
         this.$refs.editForm.clearValidate()
       })
-    },
-    setDialogLoading(dialogLoading) {
-      this.dialogLoading = dialogLoading
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.el-form {
-  margin-bottom: 10px;
-}
-
-.el-input {
-  width: 90%;
-}
 </style>

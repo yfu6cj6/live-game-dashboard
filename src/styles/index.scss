@@ -125,6 +125,17 @@ div::-webkit-scrollbar {
   font-size: 18px;
 }
 
+.operate {
+  display: flex;
+  justify-content: space-between;
+  a {
+    .el-button {
+      height: 100%;
+      vertical-align: top;
+    }
+  }
+}
+
 .view {
   &-container {
     width: 100%;
@@ -198,16 +209,6 @@ div::-webkit-scrollbar {
         .statusOpen {
           color: #090;
         }
-        .operate {
-          display: flex;
-          justify-content: space-between;
-          a {
-            .el-button {
-              height: 100%;
-              vertical-align: top;
-            }
-          }
-        }
       }
       .single-row {
         background-color: #f4f4f4;
@@ -244,6 +245,12 @@ div::-webkit-scrollbar {
 }
 
 @media screen and (min-width: 992px) {
+  .operate {
+    .el-button {
+      font-size: 20px;
+    }
+  }
+
   .view {
     &-container {
       overflow-y: hidden;
@@ -278,11 +285,6 @@ div::-webkit-scrollbar {
                   content: "";
                 }
               }
-            }
-          }
-          .operate {
-            .el-button {
-              font-size: 20px;
             }
           }
         }
