@@ -3,47 +3,75 @@
     <div v-loading="dataLoading">
       <div ref="container" class="view-container">
         <div ref="seachForm" class="view-container-seachForm" :class="{'opened': sidebar.opened}">
-          <div ref="seachFormExpand" class="view-container-seachForm-item">
-            <p class="view-container-seachForm-item-wrap pc">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
-            </p>
-            <p class="view-container-seachForm-item-wrap">
-              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
-            </p>
-            <p class="view-container-seachForm-item-wrap">
-              <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
-            </p>
-            <p class="view-container-seachForm-item-wrap">
-              <el-input v-model="searchForm.nickname" :placeholder="$t('__nickname')" />
-            </p>
-            <p class="view-container-seachForm-item-wrap">
-              <el-select v-model="searchForm.type" filterable :placeholder="$t('__type')" multiple :collapse-tags="typeCollapse">
-                <el-option v-for="item in searchTypes" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-          </div>
-          <div class="view-container-seachForm-item">
-            <div class="view-container-seachForm-item-group">
-              <p class="view-container-seachForm-item-wrap pc">
-                <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
+          <template v-if="device === 'mobile'">
+            <div ref="seachFormExpand" class="view-container-seachForm-option">
+              <p class="optionItem">
+                <el-input v-model="searchForm.id" type="number" placeholder="ID" />
               </p>
-              <p class="view-container-seachForm-item-wrap">
+              <p class="optionItem">
+                <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
+              </p>
+              <p class="optionItem">
+                <el-input v-model="searchForm.nickname" :placeholder="$t('__nickname')" />
+              </p>
+              <p class="optionItem">
+                <el-select v-model="searchForm.type" filterable :placeholder="$t('__type')" multiple :collapse-tags="typeCollapse">
+                  <el-option v-for="item in searchTypes" :key="item.key" :label="item.nickname" :value="item.key" />
+                </el-select>
+              </p>
+            </div>
+            <div class="view-container-seachForm-operate">
+              <p class="operateItem">
                 <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
                   {{ $t("__search") }}
                 </el-button>
               </p>
-              <p class="view-container-seachForm-item-wrap">
+              <p class="operateItem">
                 <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
                   {{ $t("__create") }}
                 </el-button>
               </p>
-              <p class="view-container-seachForm-item-wrap">
-                <el-button class="moreSearch" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
+              <p class="operateItem">
+                <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
                   {{ $t("__moreSearch") }}
                 </el-button>
               </p>
             </div>
-          </div>
+          </template>
+          <template v-else>
+            <div ref="seachFormExpand" class="view-container-seachForm-option">
+              <p class="optionItem">
+                <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
+              </p>
+              <p class="optionItem">
+                <el-input v-model="searchForm.id" type="number" placeholder="ID" />
+              </p>
+              <p class="optionItem">
+                <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
+              </p>
+              <p class="optionItem">
+                <el-input v-model="searchForm.nickname" :placeholder="$t('__nickname')" />
+              </p>
+              <p class="optionItem">
+                <el-select v-model="searchForm.type" filterable :placeholder="$t('__type')" multiple :collapse-tags="typeCollapse">
+                  <el-option v-for="item in searchTypes" :key="item.key" :label="item.nickname" :value="item.key" />
+                </el-select>
+              </p>
+              <p class="optionItem">
+                <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
+              </p>
+              <p class="optionItem">
+                <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+                  {{ $t("__search") }}
+                </el-button>
+              </p>
+              <p class="optionItem">
+                <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
+                  {{ $t("__create") }}
+                </el-button>
+              </p>
+            </div>
+          </template>
         </div>
         <div ref="table" class="view-container-table">
           <div v-if="tableData.length > 0">
@@ -54,20 +82,22 @@
               :class="{'single-row': index % 2 === 0}"
             >
               <div class="wrap">
-                <div class="left">
-                  <div class="item item_id">
-                    <span class="header">ID</span>
-                    <span>{{ item.id }}</span>
+                <template v-if="device === 'mobile'">
+                  <div class="left">
+                    <div class="item">
+                      <span class="header">ID</span>
+                      <span>{{ item.id }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__name') }}</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__nickname') }}</span>
+                      <span>{{ item.nickname }}</span>
+                    </div>
                   </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__name') }}</span>
-                    <span>{{ item.name }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__nickname') }}</span>
-                    <span>{{ item.nickname }}</span>
-                  </div>
-                  <template v-if="device !== 'mobile'">
+                  <div class="right">
                     <div class="item">
                       <span class="header">{{ $t('__type') }}</span>
                       <span>{{ item.typeNickname }}</span>
@@ -77,19 +107,33 @@
                       <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                       <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                     </div>
-                  </template>
-                </div>
-                <div v-if="device === 'mobile'" class="right">
-                  <div class="item">
-                    <span class="header">{{ $t('__type') }}</span>
-                    <span>{{ item.typeNickname }}</span>
                   </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onPermissionBtnClick(item)">{{ $t("__permission") }}</el-button>
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                </template>
+                <template v-else>
+                  <div class="left">
+                    <div class="item id">
+                      <span class="header">ID</span>
+                      <span>{{ item.id }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__name') }}</span>
+                      <span>{{ item.name }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__nickname') }}</span>
+                      <span>{{ item.nickname }}</span>
+                    </div>
+                    <div class="item type">
+                      <span class="header">{{ $t('__type') }}</span>
+                      <span>{{ item.typeNickname }}</span>
+                    </div>
+                    <div class="operate">
+                      <el-button class="bg-yellow" size="mini" @click="onPermissionBtnClick(item)">{{ $t("__permission") }}</el-button>
+                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                      <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                    </div>
                   </div>
-                </div>
+                </template>
               </div>
             </div>
           </div>
@@ -110,26 +154,27 @@
         />
       </div>
     </div>
-    <editDialog
-      ref="editDialog"
-      :title="$t('__edit')"
-      :visible="curDialogIndex === dialogEnum.edit"
-      :confirm="$t('__revise')"
-      :form="selectForm"
-      :types="searchTypes"
-      @close="closeDialogEven"
-      @confirm="editDialogConfirmEven"
-    />
 
     <editDialog
       ref="createDialog"
-      :title="$t('__create')"
+      :title="`${$t('__create')}${$t('__role')}`"
       :visible="curDialogIndex === dialogEnum.create"
       :confirm="$t('__confirm')"
       :form="selectForm"
       :types="searchTypes"
       @close="closeDialogEven"
       @confirm="createDialogConfirmEven"
+    />
+
+    <editDialog
+      ref="editDialog"
+      :title="$stringFormat(`${$t('__edit')}${$t('__role')} - ID:{0}`, [selectForm.id])"
+      :visible="curDialogIndex === dialogEnum.edit"
+      :confirm="$t('__revise')"
+      :form="selectForm"
+      :types="searchTypes"
+      @close="closeDialogEven"
+      @confirm="editDialogConfirmEven"
     />
 
     <rolePermissionDialog
@@ -145,7 +190,7 @@
 </template>
 
 <script>
-import { roleSearch, roleCreate, roleEdit, setPermissions /* roleDelete, getPermissions */ } from '@/api/backstageManagement/roleManagement';
+import { roleSearch, roleCreate, roleEdit, roleDelete, getPermissions, setPermissions } from '@/api/backstageManagement/roleManagement';
 import common from '@/mixin/common';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
@@ -189,16 +234,17 @@ export default {
       if (vw <= 768) {
         formHeight = this.searchFormOpen ? `${(136 + typeHeight)}px` : formHeight;
         this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw <= 992) {
+      } else if (vw > 768 && vw < 992) {
         formHeight = this.searchFormOpen ? `${(68 + typeHeight)}px` : formHeight;
         this.paginationPagerCount = 7;
       } else {
         formHeight = "auto";
         this.paginationPagerCount = 7;
       }
-
-      this.$refs.seachFormExpand.style.height = `${formHeight}`;
-      this.setHeight();
+      this.$nextTick(() => {
+        this.$refs.seachFormExpand.style.height = `${formHeight}`;
+        this.setHeight();
+      });
     },
     onSearchBtnClick(data, page) {
       this.searchForm = data
@@ -263,6 +309,27 @@ export default {
         })
       })
     },
+    onDeleteBtnClick(item) {
+      this.confirmMsg(this.$stringFormat(`${this.$t('__confirmDeletion')}?`, [`"ID: ${item.id}"`]), () => {
+        this.dataLoading = true
+        roleDelete(item.id).then((res) => {
+          this.handleRespone(res)
+        }).catch(() => {
+          this.closeLoading()
+        })
+      })
+    },
+    onPermissionBtnClick(item) {
+      this.selectForm = JSON.parse(JSON.stringify(item))
+      this.dataLoading = true
+      getPermissions(item).then((res) => {
+        this.curDialogIndex = this.dialogEnum.permission
+        this.$refs.permissionDialog.setData(res)
+        this.closeLoading()
+      }).catch(() => {
+        this.closeLoading()
+      })
+    },
     permissionDialogConfirmEven(selection) {
       this.$refs.permissionDialog.setDialogLoading(true)
       const requestData = { id: this.selectForm.id, permissions: selection.map(element => { return element.name }) }
@@ -287,10 +354,6 @@ export default {
             flex-direction: column;
             width: 50%;
           }
-          .item {
-            display: flex;
-            flex-wrap: wrap;
-          }
         }
       }
     }
@@ -308,13 +371,15 @@ export default {
               width: 100%;
               justify-content: space-between;
               align-items: center;
-            }
-            .item {
-              flex-direction: column;
-              width: 200px;
-            }
-            .item_id {
-              width: 60px;
+              .item {
+                width: 200px;
+              }
+              .id {
+                width: 60px;
+              }
+              .type {
+                width: 80px;
+              }
             }
           }
         }
