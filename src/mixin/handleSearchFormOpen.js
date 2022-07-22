@@ -4,6 +4,7 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
+      tempRoute: {},
       searchFormOpen: false
     }
   },
@@ -19,7 +20,9 @@ export default {
   },
   watch: {
     'visitedViews'() {
-      this.resizeHandler();
+      if (this.$route.path === this.tempRoute.path) {
+        this.resizeHandler();
+      }
     },
     'sidebar.opened'() {
       this.resizeHandler();
@@ -29,13 +32,13 @@ export default {
     }
   },
   beforeMount() {
-    window.addEventListener('resize', this.resizeHandler)
+    window.addEventListener('resize', this.resizeHandler);
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.resizeHandler)
+    window.removeEventListener('resize', this.resizeHandler);
   },
-  activated() {
-    this.resizeHandler();
+  created() {
+    this.tempRoute = Object.assign({}, this.$route);
   },
   methods: {
     setHeight() {
@@ -43,7 +46,9 @@ export default {
       if (tagsView && tagsView.length > 0) {
         this.$refs.container.style.height = `calc(100vh - 45px - ${tagsView[0].clientHeight}px - 40px)`;
       }
-      this.$refs.table.style.height = `${this.$refs.container.clientHeight - this.$refs.seachForm.clientHeight}px`;
+      setTimeout(() => {
+        this.$refs.table.style.height = `${this.$refs.container.clientHeight - this.$refs.seachForm.clientHeight}px`;
+      }, 300);
     }
   }
 }

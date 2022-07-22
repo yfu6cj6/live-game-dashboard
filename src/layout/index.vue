@@ -68,9 +68,6 @@ export default {
     border-right: 2px solid $yellow;
     top: $navBarHeight;
   }
-  .appMain {
-    overflow: auto;
-  }
 }
 
 @media screen and (min-width: 992px) {

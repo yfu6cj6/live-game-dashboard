@@ -116,7 +116,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: $sideBarWidth;
-  min-height: calc(100vh - 45px);
+  height: calc(100vh - 45px);
   background-color: #000;
   transition: transform .3s;
   transform: translateX(-($sideBarWidth + 1));
@@ -127,7 +127,9 @@ export default {
 
   .mainMenu {
     border-right: 0px;
-    min-height: calc(100vh - 45px - 80px);
+    height: calc(100vh - 45px - 80px);
+    overflow-x: hidden;
+    overflow-y: auto;
 
     .el-submenu {
       .el-menu-item {
@@ -195,6 +197,7 @@ export default {
     .footer {
       display: none;
       width: 130px;
+      margin: 1em auto;
     }
   }
 

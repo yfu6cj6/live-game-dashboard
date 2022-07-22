@@ -23,9 +23,9 @@ body {
 }
 
 //整個滾動條
-div::-webkit-scrollbar {
-  width: 15px;
-  height: 15px;
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
   background-color: #000;
   //滾動條軌道
   &-track {
@@ -40,6 +40,25 @@ div::-webkit-scrollbar {
   &-corner {
     background-color: #000;
   }
+}
+
+.bg-parent,
+.bg-parent:hover,
+.bg-parent:focus {
+  color: $yellow;
+  background: transparent;
+  border-color: $yellow;
+  font-weight: 700;
+}
+
+.bg-parent.is-disabled,
+.bg-parent.is-disabled:focus,
+.bg-parent.is-disabled:hover {
+  color: $yellow;
+  cursor: not-allowed;
+  background-image: none;
+  background-color: #a3a3a3;
+  border-color: #a3a3a3;
 }
 
 .bg-black,
@@ -145,42 +164,34 @@ div::-webkit-scrollbar {
       height: auto;
       background-color: $black;
       padding: 4px 0;
-      &-item {
+      &-option {
         height: 34px;
         overflow: hidden;
         transition: height .3s;
-        display: inline-block;
-        width: 100%;
-        vertical-align: top;
-        &-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        .optionItem {
           padding: 3px;
           width: 100%;
-          display: inline-block;
-          vertical-align: top;
           .el-select {
             width: 100%;
           }
           .el-button {
             width: 120px;
           }
-          .moreSearch {
-            background-color: transparent;
-            border-color: $yellow;
-            color: $yellow;
-          }
         }
-        &-group {
-          display: flex;
-          justify-content: space-between;
-        }
-        &-group > &-wrap {
-          width: 120px;
+      }
+      &-operate {
+        height: 34px;
+        overflow: hidden;
+        display: flex;
+        justify-content: space-between;
+        .operateItem {
+          padding: 3px;
+          width: 100%;
           .el-button {
             width: 100%;
           }
-        }
-        &-wrap.pc {
-          display: none;
         }
       }
     }
@@ -191,15 +202,20 @@ div::-webkit-scrollbar {
         padding: 10px;
         .wrap {
           display: flex;
-        }
-        .header {
-          font-weight: bold;
-          display: inline-block;
-          margin-right: 10px;
-          position: relative;
-          &::after {
-            position: absolute;
-            content: ":";
+          .item {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            .header {
+              font-weight: bold;
+              display: inline-block;
+              margin-right: 10px;
+              position: relative;
+              &::after {
+                position: absolute;
+                content: ":";
+              }
+            }
           }
         }
         .status {
@@ -230,13 +246,9 @@ div::-webkit-scrollbar {
   .view {
     &-container {
       &-seachForm {
-        &-item {
-          &-wrap {
-            display: inline-block;
+        &-option {
+          .optionItem {
             width: 50%;
-          }
-          &-group {
-            display: inline-block;
           }
         }
       }
@@ -255,20 +267,11 @@ div::-webkit-scrollbar {
     &-container {
       overflow-y: hidden;
       &-seachForm {
-        &-item {
-          display: inline-block;
-          width: auto;
+        &-option {
+          height: auto;
           transition: none;
-          &-wrap {
-            display: inline-block;
+          .optionItem {
             width: auto;
-            vertical-align: top;
-            .moreSearch {
-              display: none;
-            }
-          }
-          &-wrap.pc {
-            display: inline-block;
           }
         }
       }
@@ -277,8 +280,6 @@ div::-webkit-scrollbar {
         &-row {
           .wrap {
             .item {
-              display: inline-block;
-              overflow: visible;
               .header {
                 display: block;
                 &::after {

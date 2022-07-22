@@ -4,12 +4,10 @@
     v-loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
-    :width="formWidth"
     :before-close="onClose"
     :close-on-click-modal="false"
-    :close-on-press-escape="false"
   >
-    <el-form ref="editForm" class="row" :model="editForm" :rules="rules" label-width="60px" label-position="left">
+    <el-form ref="editForm" :model="editForm" :rules="rules">
       <el-form-item label="ID" prop="id">
         <el-input v-model="editForm.id" :disabled="true" />
       </el-form-item>
@@ -33,11 +31,11 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon'
 
 export default {
   name: 'EditDialog',
-  mixins: [handleDialogWidth],
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,
@@ -106,25 +104,16 @@ export default {
         }
       })
     },
-    onClose() {
-      this.$emit('close')
-    },
     onReset() {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.$nextTick(() => {
         this.$refs.editForm.clearValidate()
       })
-    },
-    setDialogLoading(dialogLoading) {
-      this.dialogLoading = dialogLoading
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.el-select,
-.el-input{
-  width: 90%;
-}
+
 </style>
