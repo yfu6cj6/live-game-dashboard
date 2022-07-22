@@ -113,6 +113,13 @@ export const asyncRoutes = [
         name: 'RoleManagement',
         component: () => import('@/views/backstageManagement/roleManagement/index'),
         meta: { title: '__roleManagement', icon: 'people', permission: 'BackStageManage.RoleManage' }
+      },
+      {
+        // 時區管理
+        path: 'timeZoneManagement',
+        name: 'TimeZoneManagement',
+        component: () => import('@/views/backstageManagement/timeZoneManagement/index'),
+        meta: { title: '__timeZoneManagement', icon: 'international', permission: 'BackStageManage.TimeZoneManage' }
       }
     ]
   },
