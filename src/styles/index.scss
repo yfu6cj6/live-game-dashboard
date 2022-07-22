@@ -138,6 +138,20 @@ body {
   border-color: #a3a3a3;
 }
 
+.red-tick {
+  .el-checkbox__input {
+    &.is-checked {
+      .el-checkbox__inner {
+        &::after {
+          border: 3px solid $red;
+          border-left: 0;
+          border-top: 0;
+        }
+      }
+    }
+  }
+}
+
 .confirmButton,
 .cancelButton {
   width: 100px;

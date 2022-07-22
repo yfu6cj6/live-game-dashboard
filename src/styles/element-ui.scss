@@ -56,6 +56,37 @@
   }
 }
 
+.el-checkbox__input {
+  .el-checkbox__inner {
+    &:hover {
+      border-color: #DCDFE6;
+    }
+  }
+}
+
+.el-checkbox__input {
+  &.is-checked {
+    .el-checkbox__inner {
+      background-color: transparent;
+      border-color: #DCDFE6;
+      &::after {
+        border: 3px solid #000;
+        border-left: 0;
+        border-top: 0;
+        width: 8px;
+        height: 20px;
+        top: -10px;
+        left: 3px;
+      }
+    }
+  }
+  &.is-focus {
+    .el-checkbox__inner {
+      border-color: #DCDFE6;
+    }
+  }
+}
+
 .el-tag.el-tag--info {
   background-color: #000;
   border-color: #000;
