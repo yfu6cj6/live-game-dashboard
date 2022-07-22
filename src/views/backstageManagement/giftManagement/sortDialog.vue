@@ -28,30 +28,48 @@
               <div class="left">
                 <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
               </div>
+              <div class="right">
+                <div class="item">
+                  <span class="header">ID</span>
+                  <span>{{ item.id }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__giftNickname') }}</span>
+                  <span>{{ item.nickname }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__value') }}</span>
+                  <span>{{ item.valueLabel }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__status') }}</span>
+                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                </div>
+              </div>
             </template>
-            <div class="right">
-              <template v-if="device !== 'mobile'">
+            <template v-else>
+              <div class="left">
                 <div class="item">
                   <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
                 </div>
-              </template>
-              <div class="item">
-                <span class="header">ID</span>
-                <span>{{ item.id }}</span>
+                <div class="item">
+                  <span class="header">ID</span>
+                  <span>{{ item.id }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__giftNickname') }}</span>
+                  <span>{{ item.nickname }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__value') }}</span>
+                  <span>{{ item.valueLabel }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__status') }}</span>
+                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                </div>
               </div>
-              <div class="item">
-                <span class="header">{{ $t('__giftNickname') }}</span>
-                <span>{{ item.nickname }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__value') }}</span>
-                <span>{{ item.valueLabel }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__status') }}</span>
-                <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-              </div>
-            </div>
+            </template>
           </div>
         </div>
       </draggable>
@@ -242,7 +260,7 @@ export default {
       &-table {
         &-row {
           .wrap {
-            .right {
+            .left {
               flex-direction: row;
               align-items: center;
               justify-content: space-evenly;

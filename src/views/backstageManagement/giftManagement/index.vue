@@ -2,57 +2,92 @@
   <div v-loading="dataLoading">
     <div ref="container" class="view-container">
       <div ref="seachForm" class="view-container-seachForm">
-        <div ref="seachFormExpand" class="view-container-seachForm-item">
-          <p class="view-container-seachForm-item-wrap pc">
-            <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.id" type="number" placeholder="ID" />
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.nickname" :placeholder="$t('__giftNickname')" />
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-select v-model="searchForm.currency" multiple filterable :collapse-tags="currencyCollapse" :placeholder="$t('__currency')">
-              <el-option v-for="item in searchItems.currency" :key="item.key" :label="item.nickname" :value="item.key" />
-            </el-select>
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.value" type="number" :placeholder="$t('__value')" />
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-select v-model="searchForm.status" multiple filterable :collapse-tags="statusCollapse" :placeholder="$t('__status')">
-              <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
-            </el-select>
-          </p>
-        </div>
-        <div class="view-container-seachForm-item">
-          <div class="view-container-seachForm-item-group">
-            <p class="view-container-seachForm-item-wrap pc">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
+        <template v-if="device === 'mobile'">
+          <div ref="seachFormExpand" class="view-container-seachForm-option">
+            <p class="optionItem">
+              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
             </p>
-            <p class="view-container-seachForm-item-wrap">
+            <p class="optionItem">
+              <el-input v-model="searchForm.nickname" :placeholder="$t('__giftNickname')" />
+            </p>
+            <p class="optionItem">
+              <el-select v-model="searchForm.currency" multiple filterable :collapse-tags="currencyCollapse" :placeholder="$t('__currency')">
+                <el-option v-for="item in searchItems.currency" :key="item.key" :label="item.nickname" :value="item.key" />
+              </el-select>
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.value" type="number" :placeholder="$t('__value')" />
+            </p>
+            <p class="optionItem">
+              <el-select v-model="searchForm.status" multiple filterable :collapse-tags="statusCollapse" :placeholder="$t('__status')">
+                <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
+              </el-select>
+            </p>
+          </div>
+          <div class="view-container-seachForm-operate">
+            <p class="operateItem">
               <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
                 {{ $t("__search") }}
               </el-button>
             </p>
-            <p class="view-container-seachForm-item-wrap">
+            <p class="operateItem">
               <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
                 {{ $t("__create") }}
               </el-button>
             </p>
-            <p class="view-container-seachForm-item-wrap">
+            <p class="operateItem">
               <el-button class="bg-yellow" size="mini" @click="onSortBtnClick()">
                 {{ $t("__sort") }}
               </el-button>
             </p>
-            <p class="view-container-seachForm-item-wrap">
-              <el-button class="moreSearch" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
+            <p class="operateItem">
+              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
                 {{ $t("__moreSearch") }}
               </el-button>
             </p>
           </div>
-        </div>
+        </template>
+        <template v-else>
+          <div ref="seachFormExpand" class="view-container-seachForm-option">
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.nickname" :placeholder="$t('__giftNickname')" />
+            </p>
+            <p class="optionItem">
+              <el-select v-model="searchForm.currency" multiple filterable :collapse-tags="currencyCollapse" :placeholder="$t('__currency')">
+                <el-option v-for="item in searchItems.currency" :key="item.key" :label="item.nickname" :value="item.key" />
+              </el-select>
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.value" type="number" :placeholder="$t('__value')" />
+            </p>
+            <p class="optionItem">
+              <el-select v-model="searchForm.status" multiple filterable :collapse-tags="statusCollapse" :placeholder="$t('__status')">
+                <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
+              </el-select>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+                {{ $t("__search") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
+                {{ $t("__create") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onSortBtnClick()">
+                {{ $t("__sort") }}
+              </el-button>
+            </p>
+          </div>
+        </template>
       </div>
       <div ref="table" class="view-container-table">
         <div v-if="tableData.length > 0">
@@ -67,37 +102,62 @@
                 <div class="left">
                   <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
                 </div>
+                <div class="right">
+                  <div class="item">
+                    <span class="header">ID</span>
+                    <span>{{ item.id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__giftNickname') }}</span>
+                    <span>{{ item.nickname }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__currency') }}</span>
+                    <span>{{ item.currency }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__value') }}</span>
+                    <span>{{ item.valueLabel }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__status') }}</span>
+                    <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                  </div>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  </div>
+                </div>
               </template>
-              <div class="right">
-                <template v-if="device !== 'mobile'">
+              <template v-else>
+                <div class="left">
                   <div class="item">
                     <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
                   </div>
-                </template>
-                <div class="item">
-                  <span class="header">ID</span>
-                  <span>{{ item.id }}</span>
+                  <div class="item">
+                    <span class="header">ID</span>
+                    <span>{{ item.id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__giftNickname') }}</span>
+                    <span>{{ item.nickname }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__currency') }}</span>
+                    <span>{{ item.currency }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__value') }}</span>
+                    <span>{{ item.valueLabel }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__status') }}</span>
+                    <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                  </div>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  </div>
                 </div>
-                <div class="item">
-                  <span class="header">{{ $t('__giftNickname') }}</span>
-                  <span>{{ item.nickname }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__currency') }}</span>
-                  <span>{{ item.currency }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__value') }}</span>
-                  <span>{{ item.valueLabel }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__status') }}</span>
-                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-                </div>
-                <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                </div>
-              </div>
+              </template>
             </div>
           </div>
         </div>
@@ -208,7 +268,7 @@ export default {
       if (vw <= 768) {
         formHeight = this.searchFormOpen ? `${(170 + currencyHeight + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw <= 992) {
+      } else if (vw > 768 && vw < 992) {
         formHeight = this.searchFormOpen ? `${(102 + currencyHeight + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 7;
       } else {
@@ -216,8 +276,10 @@ export default {
         this.paginationPagerCount = 7;
       }
 
-      this.$refs.seachFormExpand.style.height = `${formHeight}`;
-      this.setHeight();
+      this.$nextTick(() => {
+        this.$refs.seachFormExpand.style.height = `${formHeight}`;
+        this.setHeight();
+      });
     },
     onSearchBtnClick(data, page) {
       this.searchForm = data;
@@ -314,7 +376,7 @@ export default {
             margin-right: 10px;
           }
           .operate {
-            width: auto;
+            width: 250px;
           }
           .giftPhoto {
             vertical-align: middle;
@@ -349,7 +411,7 @@ export default {
       &-table {
         &-row {
           .wrap {
-            .right {
+            .left {
               flex-direction: row;
               align-items: center;
               justify-content: space-evenly;
