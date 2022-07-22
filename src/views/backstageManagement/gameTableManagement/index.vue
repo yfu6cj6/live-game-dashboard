@@ -2,56 +2,93 @@
   <div v-loading="dataLoading">
     <div ref="container" class="view-container">
       <div ref="seachForm" class="view-container-seachForm">
-        <div ref="seachFormExpand" class="view-container-seachForm-item">
-          <p class="view-container-seachForm-item-wrap pc">
-            <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.id" type="number" :placeholder="$t('__tableId')" />
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.streaming_url" :placeholder="$t('__streamingUrl')" />
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.app_name" placeholder="app_name" />
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.streaming_name" placeholder="streaming_name" />
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-select v-model="searchForm.status" multiple filterable :collapse-tags="stateCollapse" :placeholder="$t('__status')">
-              <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
-            </el-select>
-          </p>
-          <p class="view-container-seachForm-item-wrap">
-            <el-input v-model="searchForm.description" :placeholder="$t('__description')" />
-          </p>
-        </div>
-        <div class="view-container-seachForm-item">
-          <div class="view-container-seachForm-item-group">
-            <p class="view-container-seachForm-item-wrap pc">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
+        <template v-if="device === 'mobile'">
+          <div ref="seachFormExpand" class="view-container-seachForm-option">
+            <p class="optionItem">
+              <el-input v-model="searchForm.id" type="number" :placeholder="$t('__tableId')" />
             </p>
-            <p class="view-container-seachForm-item-wrap">
+            <p class="optionItem">
+              <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.streaming_url" :placeholder="$t('__streamingUrl')" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.app_name" placeholder="app_name" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.streaming_name" placeholder="streaming_name" />
+            </p>
+            <p class="optionItem">
+              <el-select v-model="searchForm.status" multiple filterable :collapse-tags="stateCollapse" :placeholder="$t('__status')">
+                <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
+              </el-select>
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.description" :placeholder="$t('__description')" />
+            </p>
+          </div>
+          <div class="view-container-seachForm-operate">
+            <p class="operateItem">
               <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
                 {{ $t("__search") }}
               </el-button>
             </p>
-            <p class="view-container-seachForm-item-wrap">
+            <p class="operateItem">
               <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
                 {{ $t("__create") }}
               </el-button>
             </p>
-            <p class="view-container-seachForm-item-wrap">
-              <el-button class="moreSearch" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
+            <p class="operateItem">
+              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
                 {{ $t("__moreSearch") }}
               </el-button>
             </p>
           </div>
-        </div>
+        </template>
+        <template v-else>
+          <div ref="seachFormExpand" class="view-container-seachForm-option">
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.id" type="number" :placeholder="$t('__tableId')" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.streaming_url" :placeholder="$t('__streamingUrl')" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.app_name" placeholder="app_name" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.streaming_name" placeholder="streaming_name" />
+            </p>
+            <p class="optionItem">
+              <el-select v-model="searchForm.status" multiple filterable :collapse-tags="stateCollapse" :placeholder="$t('__status')">
+                <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
+              </el-select>
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.description" :placeholder="$t('__description')" />
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+                {{ $t("__search") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
+                {{ $t("__create") }}
+              </el-button>
+            </p>
+          </div>
+        </template>
       </div>
       <div ref="table" class="view-container-table">
         <div v-if="tableData.length > 0">
@@ -62,32 +99,77 @@
             :class="{'single-row': index % 2 === 0}"
           >
             <div class="wrap">
-              <div class="left">
-                <div class="item">
-                  <span class="header">{{ $t('__tableId') }}</span>
-                  <span>{{ item.id }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__name') }}</span>
-                  <span>{{ item.name }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__idleRounds') }}</span>
-                  <span>{{ item.idle_rounds }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__status') }}</span>
-                  <span class="status" :class="{'statusOpen': item.activated === '1' }">
-                    {{ item.statusLabel }}
-                  </span>
-                </div>
-                <div class="item">
-                  <span class="header description">{{ $t('__description') }}</span>
-                  <span>{{ item.description }}</span>
-                </div>
-                <template v-if="device !== 'mobile'">
+              <template v-if="device === 'mobile'">
+                <div class="left">
                   <div class="item">
-                    <span class="header streamingUrl">{{ $t('__streamingUrl') }}</span>
+                    <span class="header">{{ $t('__tableId') }}</span>
+                    <span>{{ item.id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__name') }}</span>
+                    <span>{{ item.name }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__idleRounds') }}</span>
+                    <span>{{ item.idle_rounds }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__status') }}</span>
+                    <span class="status" :class="{'statusOpen': item.activated === '1' }">
+                      {{ item.statusLabel }}
+                    </span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__description') }}</span>
+                    <span>{{ item.description }}</span>
+                  </div>
+                </div>
+                <div class="right">
+                  <div class="item">
+                    <span class="header">{{ $t('__streamingUrl') }}</span>
+                    <span>{{ item.streaming_url }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">app_name</span>
+                    <span>{{ item.app_name }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">streaming_name</span>
+                    <span>{{ item.streaming_name }}</span>
+                  </div>
+                  <div class="item">
+                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="left">
+                  <div class="item">
+                    <span class="header">{{ $t('__tableId') }}</span>
+                    <span>{{ item.id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__name') }}</span>
+                    <span>{{ item.name }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__idleRounds') }}</span>
+                    <span>{{ item.idle_rounds }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__status') }}</span>
+                    <span class="status" :class="{'statusOpen': item.activated === '1' }">
+                      {{ item.statusLabel }}
+                    </span>
+                  </div>
+                  <div class="item">
+                    <span class="header description">{{ $t('__description') }}</span>
+                    <span>{{ item.description }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header streaming_url">{{ $t('__streamingUrl') }}</span>
                     <span>{{ item.streaming_url }}</span>
                   </div>
                   <div class="item">
@@ -99,27 +181,6 @@
                     <span>{{ item.streaming_name }}</span>
                   </div>
                   <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                  </div>
-                </template>
-              </div>
-              <template v-if="device === 'mobile'">
-                <div class="right">
-                  <div class="item">
-                    <span class="header streamingUrl">{{ $t('__streamingUrl') }}</span>
-                    <span>{{ item.streaming_url }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">app_name</span>
-                    <span>{{ item.app_name }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">streaming_name</span>
-                    <span>{{ item.streaming_name }}</span>
-                  </div>
-                  <div class="item">
                     <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
                     <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                     <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
@@ -255,16 +316,17 @@ export default {
       if (vw <= 768) {
         formHeight = this.searchFormOpen ? `${(238 + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw <= 992) {
+      } else if (vw > 768 && vw < 992) {
         formHeight = this.searchFormOpen ? `${(136 + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 7;
       } else {
         formHeight = "auto";
         this.paginationPagerCount = 7;
       }
-
-      this.$refs.seachFormExpand.style.height = `${formHeight}`;
-      this.setHeight();
+      this.$nextTick(() => {
+        this.$refs.seachFormExpand.style.height = `${formHeight}`;
+        this.setHeight();
+      });
     },
     onSearchBtnClick(data, page) {
       this.searchForm = data
@@ -409,12 +471,13 @@ export default {
     &-table {
       &-row {
         .wrap {
-          flex-direction: column;
-          .item {
-            line-height: 20px;
-          }
-          .streamingUrl {
-            display: block;
+          flex-wrap: wrap;
+          .left,
+          .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
           }
         }
       }
@@ -428,8 +491,8 @@ export default {
       &-table {
         &-row {
           .wrap {
-            flex-direction: row;
-            .left {
+            .left,
+            .right {
               width: 50%;
             }
           }
@@ -445,15 +508,20 @@ export default {
       &-table {
         &-row {
           .wrap {
-            flex-direction: row;
             .left {
-              display: flex;
+              flex-direction: row;
               flex-wrap: wrap;
               width: 100%;
               justify-content: space-between;
             }
-            .description {
-              min-width: 240px;
+            .item {
+              width: auto;
+              .description {
+                width: 240px;
+              }
+              .streaming_url {
+                width: 340px;
+              }
             }
           }
         }
