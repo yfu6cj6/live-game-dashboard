@@ -280,6 +280,7 @@ body {
         &-row {
           .wrap {
             .item {
+              flex-direction: column;
               .header {
                 display: block;
                 &::after {
