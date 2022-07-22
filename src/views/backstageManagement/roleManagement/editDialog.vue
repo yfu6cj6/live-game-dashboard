@@ -80,8 +80,7 @@ export default {
         name: [{ required: true, trigger: 'blur', validator: validate }],
         nickname: [{ required: true, trigger: 'blur', validator: validate }]
       },
-      editForm: {},
-      dialogLoading: false
+      editForm: {}
     }
   },
   computed: {
