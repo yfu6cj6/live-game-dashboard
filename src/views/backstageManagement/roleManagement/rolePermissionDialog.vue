@@ -10,7 +10,7 @@
     <div ref="table" class="view-container-table">
       <div v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0">
         <div class="view-container-table-row">
-          <div class="wrap">
+          <div class="wrap header">
             <div class="item selection">
               <el-checkbox v-model="selectAll" class="red-tick" @change="selection" />
             </div>
@@ -139,6 +139,10 @@ export default {
       &-row {
         .wrap {
           justify-content: space-between;
+          &.header {
+            font-weight: bold;
+            font-size: 18px;
+          }
           .item {
             display: flex;
             align-items: center;
@@ -185,6 +189,10 @@ export default {
       &-table {
         &-row {
           .wrap {
+            &.header {
+              font-weight: bold;
+              font-size: 22px;
+            }
             .item {
               width: auto;
             }

@@ -293,5 +293,6 @@
     "__idleRounds": "閒置回合數",
     "__moreSearch": "更多搜尋",
     "__noInformation": "無資料",
-    "__gameTable": "遊戲桌"
+    "__gameTable": "遊戲桌",
+    "__gameArea": "遊戲區"
 }
