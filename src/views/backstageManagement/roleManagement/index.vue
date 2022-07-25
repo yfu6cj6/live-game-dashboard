@@ -353,6 +353,12 @@ export default {
             flex-direction: column;
             width: 50%;
           }
+          .right{
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
         }
       }
     }
