@@ -115,6 +115,13 @@ export const asyncRoutes = [
         meta: { title: '__gameAreaManagement', icon: 'poker', permission: 'BackStageManage.GameAreaManage' }
       },
       {
+        // 帳號管理
+        path: 'accountManagement',
+        name: 'AccountManagement',
+        component: () => import('@/views/backstageManagement/accountManagement/index'),
+        meta: { title: '__accountManagement', icon: 'el-icon-postcard', permission: 'BackStageManage.AccountManage' }
+      },
+      {
         // 角色管理
         path: 'roleManagement',
         name: 'RoleManagement',

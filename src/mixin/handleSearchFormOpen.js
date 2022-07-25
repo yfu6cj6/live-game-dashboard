@@ -40,6 +40,11 @@ export default {
   created() {
     this.tempRoute = Object.assign({}, this.$route);
   },
+  activated() {
+    if (this.$route.path === this.tempRoute.path) {
+      this.resizeHandler();
+    }
+  },
   methods: {
     setHeight() {
       const tagsView = document.getElementsByClassName("tagsView");
