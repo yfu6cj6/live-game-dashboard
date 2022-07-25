@@ -72,8 +72,7 @@ export default {
         code: [{ required: true, trigger: 'blur', validator: validate }],
         symbol: [{ required: true, trigger: 'blur', validator: validate }]
       },
-      editForm: {},
-      dialogLoading: false
+      editForm: {}
     }
   },
   computed: {

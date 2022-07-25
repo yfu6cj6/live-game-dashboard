@@ -68,8 +68,7 @@ export default {
         time_zone: [{ required: true, trigger: 'blur', validator: validate }],
         city_name: [{ required: true, trigger: 'blur', validator: validate }]
       },
-      editForm: {},
-      dialogLoading: false
+      editForm: {}
     }
   },
   computed: {
