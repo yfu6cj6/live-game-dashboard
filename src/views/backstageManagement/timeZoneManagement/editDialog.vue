@@ -8,9 +8,6 @@
     :close-on-click-modal="false"
   >
     <el-form ref="editForm" :model="editForm" :rules="rules">
-      <el-form-item label="ID" prop="id">
-        <el-input v-model="editForm.id" :disabled="true" />
-      </el-form-item>
       <el-form-item :label="$t('__timeZone')" prop="time_zone">
         <el-input v-model="editForm.time_zone" />
       </el-form-item>

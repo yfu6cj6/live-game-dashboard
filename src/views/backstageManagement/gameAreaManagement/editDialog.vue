@@ -140,7 +140,7 @@ export default {
     padding: 5px 0 0 125px;
     display: block;
     line-height: 14px;
-    color: #bbb;
+    color: #f00;
     top: calc(-100% + 7px);
     right: 0;
   }

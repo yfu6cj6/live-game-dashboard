@@ -134,7 +134,7 @@
     </div>
     <editDialog
       ref="createDialog"
-      :title="`${$t('__create')}${$t('__liveBetAreaId')}`"
+      :title="`${$t('__create')}${$t('__timeZone')}`"
       :visible="curDialogIndex === dialogEnum.create"
       :confirm="$t('__confirm')"
       :form="selectForm"
@@ -146,7 +146,7 @@
 
     <editDialog
       ref="editDialog"
-      :title="$stringFormat(`${$t('__edit')}${$t('__liveBetAreaId')} - ID:{0}`, [selectForm.id])"
+      :title="$stringFormat(`${$t('__edit')}${$t('__timeZone')} - ID:{0}`, [selectForm.id])"
       :visible="curDialogIndex === dialogEnum.edit"
       :confirm="$t('__revise')"
       :form="selectForm"
@@ -281,7 +281,7 @@ export default {
         .wrap {
           .left {
             width: 50%;
-            .item{
+            .item {
               line-height: 20px;
             }
           }
@@ -311,7 +311,7 @@ export default {
           .wrap {
             .left {
               display: flex;
-              justify-content: space-evenly;
+              justify-content: space-between;
               width: 100%;
             }
           }

@@ -5,12 +5,12 @@
         <template v-if="device === 'mobile'">
           <div ref="seachFormExpand" class="view-container-seachForm-option">
             <p class="optionItem">
-              <el-select v-model="searchForm.table_id" multiple filterable :collapse-tags="tableIdCollapse" :placeholder="$t('__tableId')">
+              <el-select v-model="searchForm.table_id" multiple :collapse-tags="tableIdCollapse" :placeholder="$t('__tableId')">
                 <el-option v-for="item in searchItems.tables" :key="item.key" :label="item.nickname" :value="item.key" />
               </el-select>
             </p>
             <p class="optionItem">
-              <el-select v-model="searchForm.live_bet_area_id" multiple filterable :collapse-tags="liveBetAreaIdCollapse" :placeholder="$t('__liveBetAreaId')">
+              <el-select v-model="searchForm.live_bet_area_id" multiple :collapse-tags="liveBetAreaIdCollapse" :placeholder="$t('__liveBetAreaId')">
                 <el-option v-for="item in searchItems.liveBetArea" :key="item.key" :label="item.nickname" :value="item.key" />
               </el-select>
             </p>
@@ -22,6 +22,7 @@
             </p>
             <p class="optionItem">
               <el-input v-model="searchForm.total_bet_max" type="number" :placeholder="$t('__totalBetMax')" />
+              <span class="zeroMeansNoLimit">{{ `${$t('__totalBetMax')}${$t('__zeroMeansNoLimit')}` }}</span>
             </p>
           </div>
           <div class="view-container-seachForm-operate">
@@ -44,7 +45,42 @@
         </template>
         <template v-else>
           <div ref="seachFormExpand" class="view-container-seachForm-option">
-            -
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
+            </p>
+            <p class="optionItem">
+              <el-select v-model="searchForm.table_id" multiple filterable :collapse-tags="tableIdCollapse" :placeholder="$t('__tableId')">
+                <el-option v-for="item in searchItems.tables" :key="item.key" :label="item.nickname" :value="item.key" />
+              </el-select>
+            </p>
+            <p class="optionItem">
+              <el-select v-model="searchForm.live_bet_area_id" multiple filterable :collapse-tags="liveBetAreaIdCollapse" :placeholder="$t('__liveBetAreaId')">
+                <el-option v-for="item in searchItems.liveBetArea" :key="item.key" :label="item.nickname" :value="item.key" />
+              </el-select>
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.bet_min" type="number" :placeholder="$t('__betMin')" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.bet_max" type="number" :placeholder="$t('__betMax')" />
+            </p>
+            <p class="optionItem totalBetMax">
+              <el-input v-model="searchForm.total_bet_max" type="number" :placeholder="$t('__totalBetMax')" />
+              <span class="zeroMeansNoLimit">{{ `${$t('__totalBetMax')}${$t('__zeroMeansNoLimit')}` }}</span>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+                {{ $t("__search") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
+                {{ $t("__create") }}
+              </el-button>
+            </p>
           </div>
         </template>
       </div>
@@ -94,8 +130,37 @@
                 </div>
               </template>
               <template v-else>
-                <div>
-                  -
+                <div class="left">
+                  <div class="item id">
+                    <span class="header">ID</span>
+                    <span>{{ item.id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__tableId') }}</span>
+                    <span>{{ item.table_id }}</span>
+                  </div>
+                  <div class="item liveBetAreaId">
+                    <span class="header">{{ $t('__liveBetAreaId') }}</span>
+                    <span>{{ item.live_bet_area_id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__betMin') }}</span>
+                    <span>{{ item.bet_min }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__betMax') }}</span>
+                    <span>{{ item.bet_max }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__totalBetMax') }}</span>
+                    <span :class="{'status': item.total_bet_max === '0.00' }">
+                      {{ item.totalBetMaxLabel }}
+                    </span>
+                  </div>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                  </div>
                 </div>
               </template>
             </div>
@@ -177,9 +242,15 @@ export default {
   },
   watch: {
     'searchForm.table_id'() {
+      if (this.searchForm.table_id && this.searchForm.table_id.length > 0) {
+        this.searchFormOpen = true;
+      }
       this.resizeHandler();
     },
     'searchForm.live_bet_area_id'() {
+      if (this.searchForm.live_bet_area_id && this.searchForm.live_bet_area_id.length > 0) {
+        this.searchFormOpen = true;
+      }
       this.resizeHandler();
     }
   },
@@ -190,13 +261,15 @@ export default {
     resizeHandler() {
       const vw = window.innerWidth;
       var formHeight = "34px";
-      const tableIdHeight = this.statusCollapse ? 32 : ((this.searchForm.table_id && this.searchForm.table_id.length) * 32);
-      const liveBetAreaIdHeight = this.statusCollapse ? 32 : ((this.searchForm.live_bet_area_id && this.searchForm.live_bet_area_id.length) * 32);
+      const tableIdLength = (this.searchForm.table_id && this.searchForm.table_id.length);
+      const tableIdHeight = this.tableIdCollapse ? 64 : (tableIdLength > 1 ? ((tableIdLength - 1) * 34) : 0);
+      const liveBetAreaIdLength = (this.searchForm.live_bet_area_id && this.searchForm.live_bet_area_id.length);
+      const liveBetAreaIdHeight = this.liveBetAreaIdCollapse ? 64 : (liveBetAreaIdLength > 1 ? ((liveBetAreaIdLength - 1) * 34) : 0);
       if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(170 + tableIdHeight + liveBetAreaIdHeight)}px` : formHeight;
+        formHeight = this.searchFormOpen ? `${(170 + 14 + tableIdHeight + liveBetAreaIdHeight)}px` : formHeight;
         this.paginationPagerCount = 5;
       } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `${(102 + tableIdHeight + liveBetAreaIdHeight)}px` : formHeight;
+        formHeight = this.searchFormOpen ? `${(102 + 14 + ((tableIdHeight > liveBetAreaIdHeight) ? tableIdHeight : liveBetAreaIdHeight))}px` : formHeight;
         this.paginationPagerCount = 7;
       } else {
         formHeight = "auto";
@@ -295,6 +368,44 @@ export default {
           }
           .operate {
             width: 100px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.totalBetMax {
+  width: 208px;
+}
+.zeroMeansNoLimit {
+  color: #f00;
+}
+
+@media screen and (min-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          .wrap {
+            .left {
+              display: flex;
+              flex-wrap: wrap;
+              width: 100%;
+              justify-content: space-between;
+              .item {
+                width: auto;
+              }
+              .id {
+                width: 50px;
+              }
+              .liveBetAreaId {
+                width: 160px;
+              }
+              .operate {
+                width: 150px;
+              }
+            }
           }
         }
       }

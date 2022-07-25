@@ -14,7 +14,7 @@
               <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
             </p>
             <p class="optionItem">
-              <el-select v-model="searchForm.status" multiple filterable :collapse-tags="statusCollapse" :placeholder="$t('__status')">
+              <el-select v-model="searchForm.status" multiple :collapse-tags="statusCollapse" :placeholder="$t('__status')">
                 <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
               </el-select>
             </p>
@@ -243,7 +243,8 @@ export default {
     resizeHandler() {
       const vw = window.innerWidth;
       var formHeight = "34px";
-      const statusHeight = this.statusCollapse ? 32 : ((this.searchForm.status && this.searchForm.status.length) * 32);
+      const statusLength = (this.searchForm.status && this.searchForm.status.length);
+      const statusHeight = this.statusCollapse ? 64 : (statusLength > 1 ? ((statusLength - 1) * 34) : 0);
       if (vw <= 768) {
         formHeight = this.searchFormOpen ? `${(136 + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 5;

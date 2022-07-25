@@ -14,12 +14,12 @@
               <el-input v-model="searchForm.area" :placeholder="$t('__code')" />
             </p>
             <p class="optionItem">
-              <el-select v-model="searchForm.currency" multiple filterable :collapse-tags="currencyCollapse" :placeholder="$t('__currency')">
+              <el-select v-model="searchForm.currency" multiple :collapse-tags="currencyCollapse" :placeholder="$t('__currency')">
                 <el-option v-for="item in currency" :key="item.key" :label="item.nickname" :value="item.key" />
               </el-select>
             </p>
             <p class="optionItem">
-              <el-select v-model="searchForm.activated" multiple filterable :collapse-tags="activatedCollapse" :placeholder="$t('__status')">
+              <el-select v-model="searchForm.activated" multiple :collapse-tags="activatedCollapse" :placeholder="$t('__status')">
                 <el-option v-for="item in activated" :key="item.key" :label="item.nickname" :value="item.key" />
               </el-select>
             </p>
@@ -269,8 +269,10 @@ export default {
     resizeHandler() {
       const vw = window.innerWidth;
       var formHeight = "34px";
-      const currencyHeight = this.currencyCollapse ? 32 : ((this.searchForm.currency && this.searchForm.currency.length) * 32);
-      const activatedHeight = this.activatedCollapse ? 32 : ((this.searchForm.activated && this.searchForm.activated.length) * 32);
+      const currencyLength = (this.searchForm.currency && this.searchForm.currency.length);
+      const currencyHeight = this.currencyCollapse ? 64 : (currencyLength > 1 ? ((currencyLength - 1) * 34) : 0);
+      const activatedLength = (this.searchForm.activated && this.searchForm.activated.length);
+      const activatedHeight = this.activatedCollapse ? 64 : (activatedLength > 1 ? ((activatedLength - 1) * 34) : 0);
       if (vw <= 768) {
         formHeight = this.searchFormOpen ? `${(170 + currencyHeight + activatedHeight)}px` : formHeight;
         this.paginationPagerCount = 5;
@@ -385,7 +387,7 @@ export default {
           .wrap {
             .left {
               display: flex;
-              justify-content: space-evenly;
+              justify-content: space-between;
               width: 100%;
             }
             .id {

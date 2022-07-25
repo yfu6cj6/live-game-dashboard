@@ -11,7 +11,7 @@
               <el-input v-model="searchForm.nickname" :placeholder="$t('__giftNickname')" />
             </p>
             <p class="optionItem">
-              <el-select v-model="searchForm.currency" multiple filterable :collapse-tags="currencyCollapse" :placeholder="$t('__currency')">
+              <el-select v-model="searchForm.currency" multiple :collapse-tags="currencyCollapse" :placeholder="$t('__currency')">
                 <el-option v-for="item in searchItems.currency" :key="item.key" :label="item.nickname" :value="item.key" />
               </el-select>
             </p>
@@ -19,7 +19,7 @@
               <el-input v-model="searchForm.value" type="number" :placeholder="$t('__value')" />
             </p>
             <p class="optionItem">
-              <el-select v-model="searchForm.status" multiple filterable :collapse-tags="statusCollapse" :placeholder="$t('__status')">
+              <el-select v-model="searchForm.status" multiple :collapse-tags="statusCollapse" :placeholder="$t('__status')">
                 <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
               </el-select>
             </p>
@@ -263,8 +263,10 @@ export default {
     resizeHandler() {
       const vw = window.innerWidth;
       var formHeight = "34px";
-      const currencyHeight = this.currencyCollapse ? 32 : ((this.searchForm.currency && this.searchForm.currency.length) * 32);
-      const statusHeight = this.statusCollapse ? 32 : ((this.searchForm.status && this.searchForm.status.length) * 32);
+      const currencyLength = (this.searchForm.currency && this.searchForm.currency.length);
+      const currencyHeight = this.currencyCollapse ? 64 : (currencyLength > 1 ? ((currencyLength - 1) * 34) : 0);
+      const statusLength = (this.searchForm.status && this.searchForm.status.length);
+      const statusHeight = this.statusCollapse ? 64 : (statusLength > 1 ? ((statusLength - 1) * 34) : 0);
       if (vw <= 768) {
         formHeight = this.searchFormOpen ? `${(170 + currencyHeight + statusHeight)}px` : formHeight;
         this.paginationPagerCount = 5;
