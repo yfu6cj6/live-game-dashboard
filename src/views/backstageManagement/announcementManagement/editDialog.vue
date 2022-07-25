@@ -4,15 +4,10 @@
     v-loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
-    :width="formWidth"
     :before-close="onClose"
     :close-on-click-modal="false"
-    :close-on-press-escape="false"
   >
-    <el-form ref="editForm" class="row" :model="editForm" :rules="rules" label-width="80px" label-position="left">
-      <el-form-item label="ID" prop="id">
-        <el-input v-model="editForm.id" :disabled="true" />
-      </el-form-item>
+    <el-form ref="editForm" :model="editForm" :rules="rules">
       <el-form-item class="inputTitle" :label="$t('__marquee')" prop="is_marquee">
         <el-select v-model="editForm.is_marquee">
           <el-option v-for="item in announcementMarqueeStatusType" :key="item.key" :label="$t(item.nickname)" :value="item.key" />
@@ -62,11 +57,11 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon'
 
 export default {
   name: 'EditDialog',
-  mixins: [handleDialogWidth],
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,
@@ -129,8 +124,7 @@ export default {
         announcementedAt: [{ required: true, trigger: 'blur', validator: validate }],
         maintainedAt: [{ required: true, trigger: 'blur', validator: validate }]
       },
-      editForm: {},
-      dialogLoading: false
+      editForm: {}
     }
   },
   computed: {
@@ -150,27 +144,15 @@ export default {
         }
       })
     },
-    onClose() {
-      this.$emit('close')
-    },
     onReset() {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.$nextTick(() => {
         this.$refs.editForm.clearValidate()
       })
-    },
-    setDialogLoading(dialogLoading) {
-      this.dialogLoading = dialogLoading
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.el-date-editor--datetimerange.el-input__inner,
-.el-select,
-.el-input,
-.el-textarea {
-  width: 90%;
-}
 </style>

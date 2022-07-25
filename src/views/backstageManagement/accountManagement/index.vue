@@ -136,7 +136,7 @@
                     </div>
                     <div class="operate">
                       <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                      <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(scope.row)">{{ $t("__resetPassword") }}</el-button>
+                      <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
                     </div>
                   </div>
                 </div>
@@ -185,7 +185,7 @@
                       </div>
                       <div class="operate">
                         <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                        <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(scope.row)">{{ $t("__resetPassword") }}</el-button>
+                        <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
                       </div>
                     </div>
                   </div>
@@ -369,7 +369,6 @@ export default {
         })
         const statusNickname = this.accountStatusType.find(statusType => statusType.key === element.status).nickname
         element.statusLabel = this.$t(statusNickname)
-        element.open = false
       })
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)

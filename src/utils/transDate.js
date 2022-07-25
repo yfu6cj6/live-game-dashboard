@@ -118,7 +118,7 @@ export function getLastMonthDateTime() {
   const end = new Date()
   end.setDate(1)
   end.setDate(end.getDate() - end.getDay() + 1)
-  if (end.getMonth() != new Date().getMonth()) {
+  if (end.getMonth() !== new Date().getMonth()) {
     end.setDate(end.getDate() + 7)
   }
   end.setHours(11)
@@ -133,7 +133,7 @@ export function getThisMonthDateTime() {
   const start = new Date()
   start.setDate(1)
   start.setDate(start.getDate() - start.getDay() + 1)
-  if (start.getMonth() != new Date().getMonth()) {
+  if (start.getMonth() !== new Date().getMonth()) {
     start.setDate(start.getDate() + 7)
   }
   start.setHours(12)
@@ -144,7 +144,7 @@ export function getThisMonthDateTime() {
   end.setMonth(end.getMonth() + 1)
   end.setDate(1)
   end.setDate(end.getDate() - end.getDay() + 1)
-  if (end.getMonth() != new Date().getMonth() + 1) {
+  if (end.getMonth() !== new Date().getMonth() + 1) {
     end.setDate(end.getDate() + 7)
   }
   end.setHours(11)
