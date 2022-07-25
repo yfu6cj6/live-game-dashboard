@@ -127,6 +127,13 @@ export const asyncRoutes = [
         name: 'TimeZoneManagement',
         component: () => import('@/views/backstageManagement/timeZoneManagement/index'),
         meta: { title: '__timeZoneManagement', icon: 'international', permission: 'BackStageManage.TimeZoneManage' }
+      },
+      {
+        // 幣別管理
+        path: 'currencyManagement',
+        name: 'CurrencyManagement',
+        component: () => import('@/views/backstageManagement/currencyManagement/index'),
+        meta: { title: '__currencyManagement', icon: 'money', permission: 'BackStageManage.CurrencyManage' }
       }
     ]
   },
