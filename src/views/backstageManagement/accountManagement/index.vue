@@ -478,18 +478,19 @@ export default {
 
 @media screen and (min-width: 992px) {
   .view {
-  &-container {
-    &-table {
-      &-row {
-        .content {
-          display: flex;
-          flex-direction: column;
-          .wrap {
-            .left {
-              width: 100%;
-              flex-direction: row;
-              .remark {
-                width: 50px;
+    &-container {
+      &-table {
+        &-row {
+          .content {
+            display: flex;
+            flex-direction: column;
+            .wrap {
+              .left {
+                width: 100%;
+                flex-direction: row;
+                .remark {
+                  width: 50px;
+                }
               }
             }
           }
@@ -497,6 +498,5 @@ export default {
       }
     }
   }
-}
 }
 </style>
