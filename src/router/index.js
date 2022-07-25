@@ -129,6 +129,13 @@ export const asyncRoutes = [
         meta: { title: '__roleManagement', icon: 'people', permission: 'BackStageManage.RoleManage' }
       },
       {
+        // 權限管理
+        path: 'permissionManagement',
+        name: 'PermissionManagement',
+        component: () => import('@/views/backstageManagement/permissionManagement/index'),
+        meta: { title: '__permissionManagement', icon: 'el-icon-s-check', permission: 'BackStageManage.PermissionManage' }
+      },
+      {
         // 時區管理
         path: 'timeZoneManagement',
         name: 'TimeZoneManagement',
@@ -141,6 +148,13 @@ export const asyncRoutes = [
         name: 'CurrencyManagement',
         component: () => import('@/views/backstageManagement/currencyManagement/index'),
         meta: { title: '__currencyManagement', icon: 'money', permission: 'BackStageManage.CurrencyManage' }
+      },
+      {
+        // 公告管理
+        path: 'announcementManagement',
+        name: 'AnnouncementManagement',
+        component: () => import('@/views/backstageManagement/announcementManagement/index'),
+        meta: { title: '__announcementManagement', icon: 'el-icon-s-order', permission: 'BackStageManage.AnnouncementManage' }
       }
     ]
   },
