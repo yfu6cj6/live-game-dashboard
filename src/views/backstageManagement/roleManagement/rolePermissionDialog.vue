@@ -98,7 +98,7 @@ export default {
       if (administerIndex >= 0) {
         this.serverData.allPermissions.splice(administerIndex, 1)
       }
-      const isAdminister = this.serverData.existPermissions.some(exist => exist === this.administer);
+      const isAdminister = this.serverData.existPermissions.some(exist => exist.id === this.administer.id);
       this.selectAll = isAdminister;
       this.serverData.allPermissions.forEach(element => {
         element.exist = isAdminister ? true : this.serverData.existPermissions.some(exist => element.id === exist.id);

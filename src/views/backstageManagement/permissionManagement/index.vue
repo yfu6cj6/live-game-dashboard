@@ -121,7 +121,7 @@
                       </div>
                       <div>
                         <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                        <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(scope.row)">{{ $t("__resetPassword") }}</el-button>
+                        <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                       </div>
                     </div>
                   </div>
@@ -136,7 +136,7 @@
                   <div class="item">
                     <span class="header">response_content</span>
                     <span>
-                     {{ item.response_content }}
+                      {{ item.response_content }}
                     </span>
                   </div>
                 </div>
@@ -171,7 +171,7 @@
                       </div>
                       <div class="operate">
                         <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                        <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(scope.row)">{{ $t("__resetPassword") }}</el-button>
+                        <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                       </div>
                     </div>
                   </div>

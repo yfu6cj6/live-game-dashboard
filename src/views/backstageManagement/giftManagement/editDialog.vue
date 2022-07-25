@@ -26,7 +26,6 @@
       </el-form-item>
       <el-form-item :label="$t('__giftImage')">
         <el-upload
-          class="giftUpload"
           action=""
           :http-request="uploadHttpRequest"
           list-type="picture-card"
@@ -149,7 +148,7 @@ export default {
         const _URL = window.URL || window.webkitURL
         const img = new Image()
         img.onload = function() {
-          const valid = img.width === limitSize.width && img.height === limitSize.height
+          const valid = (img.width <= limitSize.width || limitSize.width === 0) && (img.height <= limitSize.height || limitSize.height === 0)
           resolve(valid)
         }
         img.src = _URL.createObjectURL(file)
@@ -201,13 +200,5 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.giftUpload {
-  .el-upload-list--picture-card {
-    .el-upload-list__item {
-      width: 73px;
-      height: 73px;
-    }
-  }
-}
+<style lang="scss" scoped>
 </style>
