@@ -94,45 +94,110 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="wrap">
+            <div class="content">
               <template v-if="device === 'mobile'">
-                <div class="left">
-                  <div class="item">
-                    <span class="header">{{ $t('__account') }}</span>
-                    <span>{{ item.account }}</span>
+                <div class="wrap">
+                  <div class="left">
+                    <div class="item">
+                      <span class="header">{{ $t('__account') }}</span>
+                      <span>{{ item.account }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__nickname') }}</span>
+                      <span>{{ item.nickname }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__role') }}</span>
+                      <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role + ((roleIndex + 1 === item.rolesNickname.length) ? '' : '、') }}</span>
+                    </div>
+                    <div class="item">
+                      <el-button v-if="item.open" class="bg-yellow" size="mini" icon="el-icon-arrow-up" @click="test(item)">
+                        {{ $t("__remark") }}
+                      </el-button>
+                      <el-button v-else class="bg-yellow" size="mini" icon="el-icon-arrow-down" @click="test(item)">
+                        {{ $t("__remark") }}
+                      </el-button>
+                    </div>
                   </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__nickname') }}</span>
-                    <span>{{ item.nickname }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__role') }}</span>
-                    <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role + ((roleIndex + 1 === item.rolesNickname.length) ? '' : '、') }}</span>
+                  <div class="right">
+                    <div class="item">
+                      <span class="header">{{ $t('__agentName') }}</span>
+                      <span>{{ item.agentName }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__cityName') }}</span>
+                      <span>{{ item.cityNameLabel }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__accountStatus') }}</span>
+                      <span class="status" :class="{'statusOpen': item.status === '1' }">
+                        {{ item.statusLabel }}
+                      </span>
+                    </div>
+                    <div class="operate">
+                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                      <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(scope.row)">{{ $t("__resetPassword") }}</el-button>
+                    </div>
                   </div>
                 </div>
-                <div class="right">
+                <div v-if="item.open" class="wrap">
                   <div class="item">
-                    <span class="header">{{ $t('__agentName') }}</span>
-                    <span>{{ item.agentName }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__cityName') }}</span>
-                    <span>{{ item.cityNameLabel }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__accountStatus') }}</span>
-                    <span class="status" :class="{'statusOpen': item.status === '1' }">
-                      {{ item.statusLabel }}
+                    <span class="header">{{ $t('__remark') }}</span>
+                    <span>
+                      {{ item.remark }}
                     </span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(scope.row)">{{ $t("__resetPassword") }}</el-button>
                   </div>
                 </div>
               </template>
               <template v-else>
-                -
+                <div class="content">
+                  <div class="wrap">
+                    <div class="left">
+                      <div class="item remark">
+                        <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="test(item)" />
+                        <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="test(item)" />
+                      </div>
+                      <div class="item">
+                        <span class="header">{{ $t('__account') }}</span>
+                        <span>{{ item.account }}</span>
+                      </div>
+                      <div class="item">
+                        <span class="header">{{ $t('__nickname') }}</span>
+                        <span>{{ item.nickname }}</span>
+                      </div>
+                      <div class="item">
+                        <span class="header">{{ $t('__role') }}</span>
+                        <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role + ((roleIndex + 1 === item.rolesNickname.length) ? '' : '、') }}</span>
+                      </div>
+                      <div class="item">
+                        <span class="header">{{ $t('__agentName') }}</span>
+                        <span>{{ item.agentName }}</span>
+                      </div>
+                      <div class="item">
+                        <span class="header">{{ $t('__cityName') }}</span>
+                        <span>{{ item.cityNameLabel }}</span>
+                      </div>
+                      <div class="item">
+                        <span class="header">{{ $t('__accountStatus') }}</span>
+                        <span class="status" :class="{'statusOpen': item.status === '1' }">
+                          {{ item.statusLabel }}
+                        </span>
+                      </div>
+                      <div class="operate">
+                        <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                        <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(scope.row)">{{ $t("__resetPassword") }}</el-button>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-if="item.open" class="wrap">
+                    <div class="item">
+                      <span class="header">{{ $t('__remark') }}</span>
+                      <span>
+                        {{ item.remark }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </template>
             </div>
           </div>
@@ -257,6 +322,13 @@ export default {
     this.onSearchBtnClick({}, 1);
   },
   methods: {
+    test(row) {
+      const obj = this.tableData.find(item => item.id === row.id);
+      this.$nextTick(() => {
+        obj.open = !obj.open;
+        this.tableData = JSON.parse(JSON.stringify(this.tableData))
+      })
+    },
     resizeHandler() {
       const vw = window.innerWidth;
       var formHeight = "34px";
@@ -297,6 +369,7 @@ export default {
         })
         const statusNickname = this.accountStatusType.find(statusType => statusType.key === element.status).nickname
         element.statusLabel = this.$t(statusNickname)
+        element.open = false
       })
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)
@@ -380,20 +453,51 @@ export default {
   &-container {
     &-table {
       &-row {
-        .wrap {
-          .left,
-          .right {
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        .content {
+          display: flex;
+          flex-direction: column;
+          .wrap {
+            .left,
+            .right {
+              width: 50%;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+            }
+            .operate {
+              justify-content: start;
+            }
           }
-          .operate {
-            justify-content: start;
+          .wrap + .wrap {
+            margin-top: 10px;
           }
         }
       }
     }
   }
+}
+
+@media screen and (min-width: 992px) {
+  .view {
+  &-container {
+    &-table {
+      &-row {
+        .content {
+          display: flex;
+          flex-direction: column;
+          .wrap {
+            .left {
+              width: 100%;
+              flex-direction: row;
+              .remark {
+                width: 50px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 }
 </style>

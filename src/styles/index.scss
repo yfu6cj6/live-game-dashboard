@@ -42,6 +42,25 @@ body {
   }
 }
 
+.bg-normal,
+.bg-normal:hover,
+.bg-normal:focus {
+  color: #000;
+  background: transparent;
+  border: none;
+  font-weight: 700;
+}
+
+.bg-normal.is-disabled,
+.bg-normal.is-disabled:focus,
+.bg-normal.is-disabled:hover {
+  color: #000;
+  cursor: not-allowed;
+  background-image: none;
+  background-color: #a3a3a3;
+  border: none;
+}
+
 .bg-parent,
 .bg-parent:hover,
 .bg-parent:focus {
@@ -295,6 +314,7 @@ body {
           .wrap {
             .item {
               flex-direction: column;
+              line-height: 20px;
               .header {
                 display: block;
                 &::after {
