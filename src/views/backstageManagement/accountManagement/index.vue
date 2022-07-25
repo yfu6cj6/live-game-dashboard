@@ -96,7 +96,40 @@
           >
             <div class="wrap">
               <template v-if="device === 'mobile'">
-                -
+                <div class="left">
+                  <div class="item">
+                    <span class="header">{{ $t('__account') }}</span>
+                    <span>{{ item.account }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__nickname') }}</span>
+                    <span>{{ item.nickname }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__role') }}</span>
+                    <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role + ((roleIndex + 1 === item.rolesNickname.length) ? '' : '、') }}</span>
+                  </div>
+                </div>
+                <div class="right">
+                  <div class="item">
+                    <span class="header">{{ $t('__agentName') }}</span>
+                    <span>{{ item.agentName }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__cityName') }}</span>
+                    <span>{{ item.cityNameLabel }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__accountStatus') }}</span>
+                    <span class="status" :class="{'statusOpen': item.status === '1' }">
+                      {{ item.statusLabel }}
+                    </span>
+                  </div>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(scope.row)">{{ $t("__resetPassword") }}</el-button>
+                  </div>
+                </div>
               </template>
               <template v-else>
                 -
@@ -343,4 +376,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.view {
+  &-container {
+    &-table {
+      &-row {
+        .wrap {
+          .left,
+          .right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .operate {
+            justify-content: start;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

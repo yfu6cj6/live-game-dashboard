@@ -370,8 +370,15 @@ export default {
     &-table {
       &-row {
         .wrap {
-          .left {
+          .left,
+          .right {
             width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .operate {
+            justify-content: start;
           }
         }
       }

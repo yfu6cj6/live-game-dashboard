@@ -365,9 +365,12 @@ export default {
           .left,
           .right {
             width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
           }
           .operate {
-            width: 100px;
+            justify-content: start;
           }
         }
       }
