@@ -393,8 +393,7 @@ export default {
         &-row {
           .wrap {
             .left {
-              display: flex;
-              justify-content: space-between;
+              flex-direction: row;
               width: 100%;
             }
             .id {

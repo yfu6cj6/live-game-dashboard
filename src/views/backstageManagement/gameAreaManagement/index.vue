@@ -392,10 +392,9 @@ export default {
         &-row {
           .wrap {
             .left {
-              display: flex;
               flex-wrap: wrap;
               width: 100%;
-              justify-content: space-between;
+              flex-direction: row;
               .item {
                 width: auto;
               }
