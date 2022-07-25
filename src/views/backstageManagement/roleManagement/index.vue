@@ -358,6 +358,9 @@ export default {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            .operate{
+              justify-content: flex-start;
+            }
           }
         }
       }

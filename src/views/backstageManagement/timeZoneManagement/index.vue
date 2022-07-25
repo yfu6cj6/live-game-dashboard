@@ -281,9 +281,6 @@ export default {
         .wrap {
           .left {
             width: 50%;
-            .item {
-              line-height: 20px;
-            }
           }
           .right {
             width: 50%;
