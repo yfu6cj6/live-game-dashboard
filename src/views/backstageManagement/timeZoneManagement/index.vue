@@ -287,15 +287,9 @@ export default {
           }
           .right {
             width: 50%;
-            .operate {
-              float: right;
-              flex-direction: column;
-              justify-content: space-between;
-              height: 100%;
-              .el-button + .el-button {
-                margin-left: 0;
-              }
-            }
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
           }
         }
       }
