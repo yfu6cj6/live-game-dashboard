@@ -111,10 +111,10 @@
                       <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role + ((roleIndex + 1 === item.rolesNickname.length) ? '' : '、') }}</span>
                     </div>
                     <div class="item">
-                      <el-button v-if="item.open" class="bg-yellow" size="mini" icon="el-icon-arrow-up" @click="test(item)">
+                      <el-button v-if="item.open" class="bg-yellow" size="mini" icon="el-icon-arrow-up" @click="remarkExpand(item)">
                         {{ $t("__remark") }}
                       </el-button>
-                      <el-button v-else class="bg-yellow" size="mini" icon="el-icon-arrow-down" @click="test(item)">
+                      <el-button v-else class="bg-yellow" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)">
                         {{ $t("__remark") }}
                       </el-button>
                     </div>
@@ -154,8 +154,8 @@
                   <div class="wrap">
                     <div class="left">
                       <div class="item remark">
-                        <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="test(item)" />
-                        <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="test(item)" />
+                        <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
+                        <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
                       </div>
                       <div class="item">
                         <span class="header">{{ $t('__account') }}</span>
@@ -221,7 +221,7 @@
 
     <editDialog
       ref="editDialog"
-      :title="`${$t('__edit')} [${selectForm.account}]`"
+      :title="$stringFormat(`${$t('__edit')}${$t('__account')} - {0}`, [selectForm.account])"
       :visible="curDialogIndex === dialogEnum.edit"
       :confirm="$t('__revise')"
       :form="selectForm"
@@ -236,7 +236,7 @@
 
     <editDialog
       ref="createDialog"
-      :title="$t('__create')"
+      :title="`${$t('__create')}${$t('__account')}`"
       :visible="curDialogIndex === dialogEnum.create"
       :confirm="$t('__confirm')"
       :form="selectForm"
@@ -322,7 +322,7 @@ export default {
     this.onSearchBtnClick({}, 1);
   },
   methods: {
-    test(row) {
+    remarkExpand(row) {
       const obj = this.tableData.find(item => item.id === row.id);
       this.$nextTick(() => {
         obj.open = !obj.open;
