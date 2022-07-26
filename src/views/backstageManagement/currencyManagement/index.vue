@@ -171,7 +171,7 @@
 </template>
 
 <script>
-import { currencySearch, currencyCreate, currencyEdit, currencyDelete } from '@/api/backstageManagement/currencyManagement'
+import { currencySearch, currencyCreate, currencyEdit, currencyDelete } from '@/api/backstageManagement/currencyManagement';
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';

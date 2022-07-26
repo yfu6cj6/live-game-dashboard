@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import dialogCommon from '@/mixin/dialogCommon'
+import dialogCommon from '@/mixin/dialogCommon';
 
 export default {
   name: 'EditDialog',
