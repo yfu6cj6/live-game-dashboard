@@ -17,7 +17,7 @@
               <el-input v-model="searchForm.uri" placeholder="Uri" />
             </p>
             <p class="optionItem">
-              <el-select v-model="searchForm.methodType" multiple filterable :collapse-tags="methodTypeCollapse" :placeholder="$t('__method')">
+              <el-select v-model="searchForm.methodType" multiple :collapse-tags="methodTypeCollapse" :placeholder="$t('__method')">
                 <el-option v-for="item in searchMethodType" :key="item" :label="item" :value="item" />
               </el-select>
             </p>
@@ -264,9 +264,11 @@ export default {
   computed: {
     methodTypeCollapse() {
       return this.searchForm.methodType && this.searchForm.methodType.length > this.selectCollapseCount
-    },
-    sortable() {
-      return this.allDataByClient.length > 0
+    }
+  },
+  watch: {
+    'searchForm.methodType'() {
+      this.resizeHandler();
     }
   },
   created() {
@@ -283,7 +285,7 @@ export default {
     resizeHandler() {
       const vw = window.innerWidth;
       var formHeight = "34px";
-      const methodLength = (this.searchForm.status && this.searchForm.status.length);
+      const methodLength = (this.searchForm.methodType && this.searchForm.methodType.length);
       const methodHeight = this.methodTypeCollapse ? 64 : (methodLength > 1 ? ((methodLength - 1) * 34) : 0);
       if (vw <= 768) {
         formHeight = this.searchFormOpen ? `${(170 + methodHeight)}px` : formHeight;

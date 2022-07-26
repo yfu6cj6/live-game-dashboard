@@ -108,7 +108,7 @@
                     </div>
                     <div class="item">
                       <span class="header">{{ $t('__role') }}</span>
-                      <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role + ((roleIndex + 1 === item.rolesNickname.length) ? '' : '、') }}</span>
+                      <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role }}</span>
                     </div>
                     <div class="item">
                       <el-button v-if="item.open" class="bg-yellow" size="mini" icon="el-icon-arrow-up" @click="remarkExpand(item)">
@@ -167,7 +167,7 @@
                       </div>
                       <div class="item">
                         <span class="header">{{ $t('__role') }}</span>
-                        <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role + ((roleIndex + 1 === item.rolesNickname.length) ? '' : '、') }}</span>
+                        <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role }}</span>
                       </div>
                       <div class="item">
                         <span class="header">{{ $t('__agentName') }}</span>

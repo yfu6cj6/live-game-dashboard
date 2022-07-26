@@ -315,6 +315,7 @@ body {
             .item {
               flex-direction: column;
               line-height: 20px;
+              justify-content: center;
               .header {
                 display: block;
                 &::after {

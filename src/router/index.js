@@ -160,6 +160,35 @@ export const asyncRoutes = [
   },
 
   {
+    // IP白名單
+    path: '/ipWhitelist',
+    component: Layout,
+    redirect: '/ipWhitelist',
+    meta: { title: '__ipWhitelist', icon: 'ipWhitelistIcon', permission: 'WhitelistManage' },
+    children: [{
+      path: 'ipWhitelist',
+      name: 'IpWhitelist',
+      component: () => import('@/views/ipWhitelist/index'),
+      meta: { title: '__ipWhitelist' }
+    }]
+  },
+
+  {
+    // 日誌管理
+    path: '/logManagement',
+    component: Layout,
+    redirect: '/logManagement',
+    meta: { title: '__logManagement', icon: 'el-icon-document', permission: 'LogManage' },
+    children: [{
+      // 操作日誌
+      path: 'operationLog',
+      name: 'OperationLog',
+      component: () => import('@/views/logManagement/operationLog/index'),
+      meta: { title: '__operationLog', icon: 'operationLogIcon', permission: 'LogManage.OperationLog' }
+    }]
+  },
+
+  {
     path: '/logout',
     name: 'Logout',
     component: () => import('@/views/logout/index'),

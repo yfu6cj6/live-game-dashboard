@@ -122,7 +122,8 @@ export default {
       rules: {
         title: [{ required: true, trigger: 'blur', validator: validate }],
         announcementedAt: [{ required: true, trigger: 'blur', validator: validate }],
-        maintainedAt: [{ required: true, trigger: 'blur', validator: validate }]
+        maintainedAt: [{ required: true, trigger: 'blur', validator: validate }],
+        content: [{ required: true, trigger: 'blur', validator: validate }]
       },
       editForm: {}
     }

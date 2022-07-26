@@ -11,12 +11,12 @@
               <el-input v-model="searchForm.content" :placeholder="$t('__announcementContent')" />
             </p>
             <p class="optionItem">
-              <el-select v-model="searchForm.type" multiple filterable :collapse-tags="typeCollapse" :placeholder="$t('__announcementType')">
+              <el-select v-model="searchForm.type" multiple :collapse-tags="typeCollapse" :placeholder="$t('__announcementType')">
                 <el-option v-for="item in methodType" :key="item.key" :label="$t(item.nickname)" :value="item.key" />
               </el-select>
             </p>
             <p class="optionItem">
-              <el-select v-model="searchForm.is_marquee" multiple filterable :collapse-tags="isMarqueeCollapse" :placeholder="$t('__marquee')">
+              <el-select v-model="searchForm.is_marquee" multiple :collapse-tags="isMarqueeCollapse" :placeholder="$t('__marquee')">
                 <el-option v-for="item in announcementMarqueeStatusType" :key="item.key" :label="$t(item.nickname)" :value="item.key" />
               </el-select>
             </p>
