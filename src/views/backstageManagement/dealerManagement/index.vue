@@ -205,6 +205,7 @@
 <script>
 import { dealerSearch, dealerCreate, dealerEdit } from '@/api/backstageManagement/dealerManagement';
 import common from '@/mixin/common';
+import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import EditDialog from './editDialog';
@@ -213,7 +214,7 @@ import LoginBarcodeDialog from './loginBarcodeDialog';
 export default {
   name: 'DealerManagement',
   components: { EditDialog, LoginBarcodeDialog },
-  mixins: [common, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
   data() {
     return {
       dialogEnum: Object.freeze({

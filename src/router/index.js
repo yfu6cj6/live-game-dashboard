@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import store from '@/store'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -157,6 +158,27 @@ export const asyncRoutes = [
         meta: { title: '__announcementManagement', icon: 'el-icon-s-order', permission: 'BackStageManage.AnnouncementManage' }
       }
     ]
+  },
+
+  {
+    // 代理管理
+    path: '/agentManagement',
+    component: Layout,
+    redirect: '/agentManagement',
+    meta: { title: '__agentManagement', icon: 'tree', permission: 'AgentManage' },
+    children: [{
+      path: 'agentManagement',
+      name: 'AgentManagement',
+      meta: { title: '__agentManagement' },
+      click: () => { store.dispatch('agentManagement/agentSearch') }
+    },
+    {
+      path: 'agentManagement/:id(\\d+)',
+      name: 'AgentManagement{0}',
+      component: () => import('@/views/agentManagement/index'),
+      meta: { title: '__agentManagement', activeMenu: '/agentManagement/agentManagement' },
+      hidden: true
+    }]
   },
 
   {

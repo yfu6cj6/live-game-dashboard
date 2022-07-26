@@ -4,7 +4,6 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      tempRoute: {},
       searchFormOpen: false
     }
   },
@@ -36,9 +35,6 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resizeHandler);
-  },
-  created() {
-    this.tempRoute = Object.assign({}, this.$route);
   },
   activated() {
     if (this.$route.path === this.tempRoute.path) {

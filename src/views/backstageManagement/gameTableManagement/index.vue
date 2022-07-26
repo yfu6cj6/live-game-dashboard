@@ -270,6 +270,7 @@
 import { gameTableSearch, gameTableCreate, gameTableEdit, gameTableDelete,
   gameTableChipsSearch, gameTableChipsCreate, gameTableChipsEdit, gameTableChipsDelete } from '@/api/backstageManagement/gameTableManagement'
 import common from '@/mixin/common';
+import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import EditDialog from './editDialog'
@@ -279,7 +280,7 @@ import ChipEditDialog from './chipEditDialog'
 export default {
   name: 'GameTableManagement',
   components: { EditDialog, ChipSettingDialog, ChipEditDialog },
-  mixins: [common, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
   data() {
     return {
       dialogEnum: Object.freeze({

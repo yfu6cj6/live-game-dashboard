@@ -4,12 +4,13 @@
     <tags-view class="tagsView" :class="{'opened': sidebar.opened}" />
     <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
     <sidebar class="sidebar" />
+    <agent-level class="agentLevel" />
     <app-main class="appMain" :class="{'opened': sidebar.opened}" />
   </div>
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain, TagsView } from './components'
+import { Navbar, Sidebar, AppMain, TagsView, AgentLevel } from './components'
 import ResizeMixin from '@/mixin/ResizeHandler'
 import { mapGetters } from 'vuex'
 import defaultSettings from '@/settings'
@@ -20,7 +21,8 @@ export default {
     Navbar,
     Sidebar,
     AppMain,
-    TagsView
+    TagsView,
+    AgentLevel
   },
   mixins: [ResizeMixin],
   computed: {
@@ -65,6 +67,13 @@ export default {
   .sidebar {
     position: fixed;
     z-index: 999;
+    border-right: 2px solid $yellow;
+    top: $navBarHeight;
+  }
+
+  .agentLevel {
+    position: fixed;
+    z-index: 1000;
     border-right: 2px solid $yellow;
     top: $navBarHeight;
   }

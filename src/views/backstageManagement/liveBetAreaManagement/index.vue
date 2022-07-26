@@ -226,6 +226,7 @@
 <script>
 import { liveBetAreaSearch, liveBetAreaCreate, liveBetAreaEdit, liveBetAreaDelete } from '@/api/backstageManagement/liveBetAreaManagement'
 import common from '@/mixin/common';
+import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import EditDialog from './editDialog';
@@ -233,7 +234,7 @@ import EditDialog from './editDialog';
 export default {
   name: 'LiveBetAreaManagement',
   components: { EditDialog },
-  mixins: [common, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
   data() {
     return {
       dialogEnum: Object.freeze({
