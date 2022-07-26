@@ -1,319 +1,55 @@
 <template>
   <div>
-    <el-table class="agentManagement-agentTable" :data="tableData" border stripe :max-height="viewHeight">
-      <af-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" inline>
-            <el-form-item :label="$t('__remark')">
-              <span>{{ props.row.remark }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </af-table-column>
-      <el-table-column align="center" :width="200">
-        <template slot-scope="scope">
-          <router-link :to="`/agentManagement/agentManagement/${scope.row.id}`">
-            <el-button class="agentBtn" size="mini">
-              {{ scope.row.fullName }}
-            </el-button>
-          </router-link>
-          <br>
-          <el-button v-if="!isAgentSubAccount" class="iconButton" size="mini" icon="el-icon-setting" @click="onEditBtnClick(scope.row)" />
-          <el-button v-if="!isAgentSubAccount" class="iconButton" size="mini" icon="el-icon-unlock" @click="onModPasswordBtnClick(scope.row)" />
-        </template>
-        <template #header>
-          <span>{{ $t('__agent') }}</span>
-          <el-popover
-            v-model="popover"
-            placement="right"
-            :visible-arrow="false"
-            @show="showPopover"
+    <div ref="container" class="view-container">
+      <div ref="table" class="view-container-table">
+        <div v-if="tableData.length > 0">
+          <div
+            v-for="(item, index) in tableData"
+            :key="index"
+            class="view-container-table-row"
+            :class="{'single-row': index % 2 === 0}"
           >
-            <span class="fullNameSearchTitle">{{ $t('__agent') }}</span>
-            <input ref="fullNameSearchInput" v-model="searchForm.account" :placeholder="$t('__enterKeys')" @keyup.enter.exact="onFullNameSearchBtnClick">
-            <el-button class="bg-yellow" style="margin-left: 10px;" size="mini" @click="onFullNameSearchBtnClick">{{ $t("__search") }}</el-button>
-            <el-button class="bg-gray" size="mini" @click="onFullNameResetBtnClick">{{ $t("__reset") }}</el-button>
-            <el-button slot="reference" class="search" size="mini">
-              <svg-icon class="icon" icon-class="search" />
-            </el-button>
-          </el-popover>
-        </template>
-      </el-table-column>
-      <af-table-column prop="currency" :label="$t('__currency')" align="center" />
-      <af-table-column :label="$t('__balance')" align="center" :width="160">
-        <template slot-scope="scope">
-          <span class="scope-content">{{ numberFormatStr(scope.row.balance) }}</span>
-          <br>
-          <el-button v-if="!isAgentSubAccount" class="labelButton bg-yellow" size="mini" @click="onDepositBtnClick(scope.row)">{{ $t("__deposit") }}</el-button>
-          <el-button v-if="!isAgentSubAccount" class="labelButton bg-yellow" size="mini" @click="onWithdrawBtnClick(scope.row)">{{ $t("__withdraw") }}</el-button>
-          <el-button
-            v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'"
-            class="labelButton bg-yellow"
-            size="mini"
-            :title="$t('__agentOneClickRecyclingTitle')"
-            @click="onOneClickRecyclingBtnClick(scope.row)"
-          >
-            {{ $t("__oneClickRecycling") }}
-          </el-button>
-        </template>
-      </af-table-column>
-      <af-table-column prop="cityNameLabel" :label="$t('__timeZone')" align="center" />
-      <af-table-column :label="$t('_handicapLimit')" align="center" :width="100">
-        <template slot-scope="scope">
-          <el-button class="labelButton bg-yellow" size="mini" @click="onLimitBtnClick(scope.row.handicaps)">{{ $t("_handicapLimit") }}</el-button>
-        </template>
-      </af-table-column>
-      <af-table-column prop="directAgentCount" :label="$t('__directAgentCount')" align="center" />
-      <af-table-column prop="directPlayerCount" :label="$t('__directPlayerCount')" align="center" />
-      <af-table-column :label="$t('__liveGame')" align="center" :width="170">
-        <template slot-scope="scope">
-          <div class="liveGameGroup">
-            <span class="scope-content">{{ `${$t('__commissionRate')}: ${numberFormatStr(scope.row.live_commission_rate)}%` }}</span>
-            <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click="onCommissionRateLogBtnClick(scope.row)" />
-            <br>
-            <span class="scope-content">{{ `${$t('__rollingRate')}: ${numberFormatStr(scope.row.live_rolling_rate)}%` }}</span>
-            <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click="onRollingRateLogBtnClick(scope.row)" />
-            <br>
-            <span class="scope-content">{{ `${$t('__giftRate')}: ${numberFormatStr(scope.row.live_gift_rate)}%` }}</span>
-            <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click="onGiftRateLogBtnClick(scope.row)" />
-          </div>
-        </template>
-      </af-table-column>
-      <af-table-column prop="created_at" :label="$t('__createdAt')" align="center" />
-      <af-table-column prop="lastLoginAt" :label="$t('__lastLoginAt')" align="center" />
-      <af-table-column v-if="!isAgentSubAccount" :label="$t('__operate')" align="center" :width="180">
-        <template slot-scope="scope">
-          <div class="checkboxGroup">
-            <el-checkbox
-              v-model="scope.row.totallyDisabled"
-              class="red-tick agentManagement-agentCheckbox"
-              :label="$t('__totallyDisabled')"
-              :disabled="agentInfoTotallyDisabled"
-              @mousedown.native="onOperateCheckboxClick(dialogEnum.totallyDisabled, scope.row)"
-            />
-            <el-checkbox
-              v-model="scope.row.lockLogin"
-              class="red-tick agentManagement-agentCheckbox"
-              :label="$t('__lockLogin')"
-              @mousedown.native="onOperateCheckboxClick(dialogEnum.lockLogin, scope.row)"
-            />
-            <el-checkbox
-              v-model="scope.row.debarBet"
-              class="red-tick agentManagement-agentCheckbox"
-              :label="$t('__debarBet')"
-              :disabled="agentInfoBetStatusDisabled"
-              @mousedown.native="onOperateCheckboxClick(dialogEnum.debarBet, scope.row)"
-            />
-            <template v-if="agentInfo.weekly_loss_settlement === '1'">
-              <el-checkbox
-                v-model="scope.row.weeklyLossSettlement"
-                class="red-tick agentManagement-agentCheckbox"
-                :label="$t('__weeklyLossSettlement')"
-                @mousedown.native="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, scope.row)"
-              />
-            </template>
-            <template v-if="agentInfo.one_click_recycling === '1'">
-              <el-checkbox
-                v-model="scope.row.oneClickRecycling"
-                class="red-tick agentManagement-agentCheckbox"
-                :label="$t('__oneClickRecycling')"
-                @mousedown.native="onOperateCheckboxClick(dialogEnum.oneClickRecycling, scope.row)"
-              />
-            </template>
-            <template v-if="agentInfo.gift_status === '1'">
-              <el-checkbox
-                v-model="scope.row.giftEffect"
-                class="red-tick agentManagement-agentCheckbox"
-                :label="$t('__giftEffect')"
-                @mousedown.native="onOperateCheckboxClick(dialogEnum.giftEffect, scope.row)"
-              />
+            <template v-if="device === 'mobile'">
+              <div class="wrap">
+                <div class="item">
+                  <div>
+                    <svg-icon icon-class="user" />
+                  </div>
+                  <div class="column">
+                    <router-link :to="`/agentManagement/agentManagement/${item.id}`">
+                      <el-button class="bg-normal stroke" size="mini">
+                        {{ item.account }}
+                      </el-button>
+                    </router-link>
+                    {{ `(${$t('__nickname')} : ${item.nickname})` }}
+                  </div>
+                </div>
+                <div class="item">
+                  <div class="column">
+                    <span>{{ item.live_commission_rate }}</span>
+                    <span>{{ `${$t('__liveGame')}${$t('__rate')}` }}</span>
+                  </div>
+                </div>
+              </div>
             </template>
           </div>
-        </template>
-      </af-table-column>
-      <af-table-column :label="$t('__winLossReport')" align="center" :width="100">
-        <template slot-scope="scope">
-          <router-link :to="`/winLossReport/winLossReport/${scope.row.id}`">
-            <el-button class="labelButton bg-yellow" size="mini">{{ $t("__winLossReport") }}</el-button>
-          </router-link>
-        </template>
-      </af-table-column>
-    </el-table>
-
-    <el-pagination
-      layout="prev, pager, next, jumper, sizes"
-      class="agent-pagination"
-      :total="totalCount"
-      background
-      :page-size="pageSize"
-      :page-sizes="pageSizes"
-      :current-page.sync="currentPage"
-      @size-change="handleSizeChangeByClient"
-      @current-change="handlePageChangeByClient"
-    />
-
-    <modPasswordDialog
-      ref="modPasswordDialog"
-      :title="$t('__modPassword')"
-      :visible="curDialogIndex === dialogEnum.modPassword"
-      :confirm="$t('__revise')"
-      :name-label="`${$t('__agent')}: `"
-      :form="editForm"
-      @close="closeDialogEven"
-      @modPassword="modPassword"
-    />
-
-    <agentRateLogDialog
-      :title="`${$t('__liveGame')} ${$t('__commissionRate')}`"
-      :visible="curDialogIndex === dialogEnum.liveCommissionRate"
-      :list-data="rateData"
-      :operation-type="1"
-      @close="closeDialogEven"
-    />
-
-    <agentRateLogDialog
-      :title="`${$t('__liveGame')} ${$t('__rollingRate')}`"
-      :visible="curDialogIndex === dialogEnum.liveRollingRate"
-      :list-data="rateData"
-      :operation-type="2"
-      @close="closeDialogEven"
-    />
-
-    <agentRateLogDialog
-      :title="`${$t('__liveGame')} ${$t('__giftRate')}`"
-      :visible="curDialogIndex === dialogEnum.liveGiftRate"
-      :list-data="rateData"
-      :operation-type="3"
-      @close="closeDialogEven"
-    />
-
-    <limitDialog
-      :title="$t('_handicapLimit')"
-      :visible="curDialogIndex === dialogEnum.limit"
-      :handicaps="handicaps"
-      @close="closeDialogEven"
-    />
-
-    <balanceDialog
-      ref="depositBalanceDialog"
-      :title="$t('__depositBalance')"
-      :visible="curDialogIndex === dialogEnum.depositBalance"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      :operation-type="1"
-      :mode-type="1"
-      @close="closeDialogEven"
-      @depositBalance="depositBalance"
-    />
-
-    <balanceDialog
-      ref="withdrawBalanceDialog"
-      :title="$t('__withdrawBalance')"
-      :visible="curDialogIndex === dialogEnum.withdrawBalance"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      :operation-type="2"
-      :mode-type="1"
-      @close="closeDialogEven"
-      @withdrawBalance="withdrawBalance"
-    />
-
-    <operateDialog
-      ref="balanceOneClickRecyclingDialog"
-      :visible="curDialogIndex === dialogEnum.balanceOneClickRecycling"
-      :content="$stringFormat($t('__agentBalanceOneClickRecyclingMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <agentEditDialog
-      ref="editDialog"
-      :title="$t('__editSubAgent')"
-      :visible="curDialogIndex === dialogEnum.edit"
-      :operation-type="2"
-      :agent-info="agentInfo"
-      :confirm="$t('__revise')"
-      :form="editForm"
-      :step-enum="editStepEnum"
-      @close="closeDialogEven"
-      @editSuccess="handleRespone"
-    />
-
-    <agentEditDialog
-      ref="createDialog"
-      :title="$t('__addSubAgent')"
-      :visible="curDialogIndex === dialogEnum.create"
-      :operation-type="1"
-      :agent-info="agentInfo"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      :step-enum="editStepEnum"
-      @close="closeDialogEven"
-      @editSuccess="createDialogEditSuccess"
-    />
-
-    <operateDialog
-      ref="totallyDisabledDialog"
-      :visible="curDialogIndex === dialogEnum.totallyDisabled"
-      :content="$stringFormat($t('__agentTotallyDisabledMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="lockLoginDialog"
-      :visible="curDialogIndex === dialogEnum.lockLogin"
-      :content="$stringFormat($t('__agentLockLoginMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="debarBetDialog"
-      :visible="curDialogIndex === dialogEnum.debarBet"
-      :content="$stringFormat($t('__agentDebarBetMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="weeklyLossSettlementDialog"
-      :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
-      :content="$stringFormat($t('__agentWeeklyLossSettlement'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="oneClickRecyclingDialog"
-      :visible="curDialogIndex === dialogEnum.oneClickRecycling"
-      :content="$stringFormat($t('__agentOneClickRecyclingMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="giftEffectDialog"
-      :visible="curDialogIndex === dialogEnum.giftEffect"
-      :content="$stringFormat($t('__agentGiftEffectMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <passwordTipDialog
-      :title="$t('__tip')"
-      :visible="curDialogIndex === dialogEnum.passwordTip"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      @close="closeDialogEven"
-    />
+        </div>
+        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+      </div>
+    </div>
+    <div class="view-footer">
+      <el-pagination
+        layout="prev, pager, next, jumper, sizes"
+        :total="totalCount"
+        background
+        :page-size="pageSize"
+        :page-sizes="pageSizes"
+        :pager-count="pagerCount"
+        :current-page.sync="currentPage"
+        @size-change="handleSizeChangeByClient"
+        @current-change="handlePageChangeByClient"
+      />
+    </div>
   </div>
 </template>
 
@@ -324,14 +60,7 @@ import { agentSearch, agentCommissionRateLog, agentRollingRateLog, agentGiftRate
   agentModOneClickRecycling, agentModGiftStatus } from '@/api/agentManagement/agent'
 import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
 import { currencySearch } from '@/api/backstageManagement/currencyManagement'
-import handlePageChange from '@/layout/mixin/handlePageChange'
-import AgentEditDialog from './agentEditDialog'
-import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
-import LimitDialog from '@/views/agentManagement/limitDialog'
-import AgentRateLogDialog from './agentRateLogDialog'
-import BalanceDialog from '@/views/agentManagement/balanceDialog'
-import OperateDialog from '@/views/agentManagement/operateDialog'
-import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
+import handlePageChange from '@/mixin/handlePageChange';
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
 
@@ -360,16 +89,8 @@ const editFormStepEnum = Object.freeze({ 'agentInfo': 0, 'rate': 1, 'limit': 2, 
 
 export default {
   name: 'Agent',
-  components: { AgentEditDialog, ModPasswordDialog, LimitDialog, AgentRateLogDialog, BalanceDialog, OperateDialog, PasswordTipDialog },
   mixins: [handlePageChange],
   props: {
-    'viewHeight': {
-      type: Number,
-      require: true,
-      default() {
-        return 0
-      }
-    }
   },
   data() {
     return {
@@ -406,7 +127,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'isAgentSubAccount'
+      'isAgentSubAccount',
+      'device'
     ]),
     agentInfoTotallyDisabled() {
       return this.agentInfo.totally_disabled === '1'
@@ -715,106 +437,35 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.agentManagement-agentCheckbox {
-  .el-checkbox__input+.el-checkbox__label {
-    padding-left: 5px;
-  }
-}
-
-.agentManagement-agentTable td .cell {
-  line-height: 2em;
-  padding: 0;
-  margin: 0.1em;
-}
-</style>
-
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
 
-.agent {
-  &-pagination {
-    padding: 1em;
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
+.view {
+  &-container {
+    &-table {
+      &-row {
+        .wrap {
+          font-size: 14px;
+          .stroke {
+            padding: 0;
+            font-size: 14px;
+            color: #ce9600;
+            font-weight: bold;
+            border-bottom: 1px solid #ce9600;
+            vertical-align: top;
+          }
+          .item {
+            .column {
+              display: flex;
+              flex-direction: column;
+              span {
+                margin: 0 auto;
+              }
+            }
+          }
+        }
+      }
+    }
   }
-}
-
-.agentBtn {
-  padding: 0;
-  background: transparent;
-  color: #000;
-  -webkit-text-stroke: 0.5px $yellow;
-  border: none;
-  font-size: 14px;
-}
-
-.scope-content {
-  margin-right: 2px;
-}
-
-.search {
-  margin-left: 3px;
-  padding: 4px;
-  background-color: $yellow;
-  border-color: $yellow;
-  color: #000;
-}
-
-.search:focus,
-.search:hover {
-  color: #000;
-}
-
-.fullNameSearchTitle {
-  color: $yellow;
-  margin-right: 10px;
-  font-weight: 400;
-}
-
-.iconButton {
-  padding: 0;
-  background: transparent;
-  color: #000;
-  -webkit-text-stroke: 0.5px $yellow;
-  border: none;
-  font-size: 16px;
-  margin-left: 0;
-
-  .icon {
-    color: $yellow;
-    margin-left: 5px;
-  }
-}
-
-.labelButton {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.el-button+.el-button {
-  margin-left: 5px;
-}
-
-.agentManagement-agentCheckbox {
-  width: 50%;
-}
-
-.liveGameGroup {
-  text-align: left;
-  padding-left: 10px;
-  .iconButton {
-    margin-top: 6px;
-    margin-right: 10px;
-    float: right;
-  }
-}
-
-.checkboxGroup {
-  text-align: left;
-  padding-left: 10px;
 }
 </style>

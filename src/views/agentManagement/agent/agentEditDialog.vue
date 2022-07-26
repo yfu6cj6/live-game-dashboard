@@ -205,7 +205,7 @@
 <script>
 import colors from '@/styles/variables.scss'
 import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-import common from '@/layout/mixin/common'
+import common from '@/mixin/common'
 import { agentCreateAccount, agentGetSetBalanceInfo, agentCreate, agentEdit } from '@/api/agentManagement/agent'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'

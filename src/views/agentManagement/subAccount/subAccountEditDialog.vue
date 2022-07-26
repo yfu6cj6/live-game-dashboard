@@ -55,7 +55,7 @@
 <script>
 import colors from '@/styles/variables.scss'
 import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-import common from '@/layout/mixin/common'
+import common from '@/mixin/common'
 import { subAccountCreateAccount, subAccountCreate, subAccountEdit } from '@/api/agentManagement/subAccount'
 import { mapGetters } from 'vuex'
 

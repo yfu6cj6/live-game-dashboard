@@ -21,6 +21,13 @@
         </div>
       </div>
     </div>
+
+    <agent
+      v-show="curTableIndex === tableEnum.agent"
+      ref="agent"
+      @serverResponse="handleRespone"
+      @setDataLoading="setDataLoading"
+    />
   </div>
 </template>
 
@@ -29,10 +36,11 @@ import { agentTotalPlayerCount } from '@/api/agentManagement/agent'
 import viewCommon from '@/mixin/viewCommon';
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
+import Agent from './agent/index'
 
 export default {
   name: 'AgentManagement',
-  components: { },
+  components: { Agent },
   mixins: [viewCommon],
   data() {
     return {
@@ -80,9 +88,9 @@ export default {
       this.agentInfo.id = parseInt(this.tempRoute.params.id)
       this.$router.name = this.$stringFormat(this.tempRoute.name, [`${this.agentId}`])
     }
-    // this.$nextTick(() => {
-    //   this.onTableBtnClick(this.tableEnum.agent)
-    // })
+    this.$nextTick(() => {
+      this.onTableBtnClick(this.tableEnum.agent)
+    })
   },
   methods: {
     setTagsViewTitle() {

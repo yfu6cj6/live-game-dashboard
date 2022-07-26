@@ -182,6 +182,34 @@ export const asyncRoutes = [
   },
 
   {
+    // 代理額度記錄
+    path: '/agentBalanceRecord',
+    component: Layout,
+    redirect: '/agentBalanceRecord',
+    meta: { title: '__agentBalanceRecord', icon: 'agentBalanceRecordIcon', permission: 'AgentManage.Balance.Record' },
+    children: [{
+      path: 'agentBalanceRecord',
+      name: 'AgentBalanceRecord',
+      component: () => import('@/views/agentBalanceRecord/index'),
+      meta: { title: '__agentBalanceRecord' }
+    }]
+  },
+
+  {
+    // 玩家額度記錄
+    path: '/memberBalanceRecord',
+    component: Layout,
+    redirect: '/memberBalanceRecord',
+    meta: { title: '__memberBalanceRecord', icon: 'memberBalanceRecordIcon', permission: 'MemberManage.Balance.Record' },
+    children: [{
+      path: 'memberBalanceRecord',
+      name: 'MemberBalanceRecord',
+      component: () => import('@/views/memberBalanceRecord/index'),
+      meta: { title: '__memberBalanceRecord' }
+    }]
+  },
+
+  {
     // IP白名單
     path: '/ipWhitelist',
     component: Layout,

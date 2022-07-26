@@ -178,7 +178,7 @@
 <script>
 import colors from '@/styles/variables.scss'
 import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-import common from '@/layout/mixin/common'
+import common from '@/mixin/common'
 import { memberCreateAccount, memberCreate, memberEdit } from '@/api/agentManagement/member'
 import { agentGetSetBalanceInfo } from '@/api/agentManagement/agent'
 import { mapGetters } from 'vuex'

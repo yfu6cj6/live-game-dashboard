@@ -153,12 +153,10 @@
                       <span>{{ item.title }}</span>
                     </div>
                     <div class="item">
-                      <el-button v-if="item.open" class="bg-yellow" size="mini" icon="el-icon-arrow-up" @click="remarkExpand(item)">
-                        {{ $t("__content") }}
-                      </el-button>
-                      <el-button v-else class="bg-yellow" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)">
-                        {{ $t("__content") }}
-                      </el-button>
+                      <div class="expand">
+                        <svg-icon v-if="item.open" icon-class="up" @click="remarkExpand(item)" />
+                        <svg-icon v-else icon-class="more" @click="remarkExpand(item)" />
+                      </div>
                     </div>
                   </div>
                   <div class="right">

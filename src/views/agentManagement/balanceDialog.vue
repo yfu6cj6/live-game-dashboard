@@ -33,12 +33,11 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-import common from '@/layout/mixin/common'
+import common from '@/mixin/common'
 
 export default {
   name: 'BalanceDialog',
-  mixins: [handleDialogWidth, common],
+  mixins: [common],
   props: {
     'title': {
       type: String,

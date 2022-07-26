@@ -16,7 +16,7 @@
 
 <script>
 import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-import common from '@/layout/mixin/common'
+import common from '@/mixin/common'
 
 export default {
   name: 'OperateDialog',
