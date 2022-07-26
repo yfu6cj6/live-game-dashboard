@@ -146,11 +146,11 @@
               </template>
               <template v-else>
                 <div class="left">
-                  <div class="item">
+                  <div class="item tableId">
                     <span class="header">{{ $t('__tableId') }}</span>
                     <span>{{ item.id }}</span>
                   </div>
-                  <div class="item">
+                  <div class="item tableName">
                     <span class="header">{{ $t('__name') }}</span>
                     <span>{{ item.name }}</span>
                   </div>
@@ -164,15 +164,15 @@
                       {{ item.statusLabel }}
                     </span>
                   </div>
-                  <div class="item">
-                    <span class="header description">{{ $t('__description') }}</span>
+                  <div class="item description">
+                    <span class="header">{{ $t('__description') }}</span>
                     <span>{{ item.description }}</span>
                   </div>
-                  <div class="item">
-                    <span class="header streaming_url">{{ $t('__streamingUrl') }}</span>
+                  <div class="item streaming_url">
+                    <span class="header">{{ $t('__streamingUrl') }}</span>
                     <span>{{ item.streaming_url }}</span>
                   </div>
-                  <div class="item">
+                  <div class="item appName">
                     <span class="header">app_name</span>
                     <span>{{ item.app_name }}</span>
                   </div>
@@ -517,12 +517,24 @@ export default {
             }
             .item {
               width: auto;
-              .description {
+              &.tableId {
+                width: 60px;
+              }
+              &.tableName {
+                width: 130px;
+              }
+              &.description {
                 width: 240px;
               }
-              .streaming_url {
+              &.streaming_url {
                 width: 340px;
               }
+              &.appName {
+                width: 100px;
+              }
+            }
+            .operate{
+              align-items: center;
             }
           }
         }
