@@ -6,32 +6,33 @@
           <div ref="seachFormExpand" class="view-container-seachForm-option">
             <p class="optionItem">
               <el-date-picker
-                v-model="searchForm.announcementedAt"
+                v-model="searchForm.searchTime"
                 type="datetimerange"
                 align="right"
                 unlink-panels
                 :range-separator="$t('__to')"
-                :start-placeholder="`${$t('__announcementDate')}(${$t('__start')})`"
-                :end-placeholder="`${$t('__announcementDate')}(${$t('__end')})`"
+                :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
+                :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
                 :picker-options="pickerOptions"
+                :default-time="['12:00:00', '11:59:59']"
               />
             </p>
             <p class="optionItem">
-              <el-input v-model="searchForm.title" placeholder="IP" />
+              <el-input v-model="searchForm.ip" placeholder="IP" />
             </p>
             <p class="optionItem">
-              <el-input v-model="searchForm.content" :placeholder="$t('__description')" />
+              <el-input v-model="searchForm.description" :placeholder="$t('__description')" />
             </p>
           </div>
           <div class="view-container-seachForm-operate">
             <p class="operateItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+              <el-button class="bg-gray" size="mini" @click="handleCurrentChange(1)">
                 {{ $t("__search") }}
               </el-button>
             </p>
             <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
+              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">
+                {{ $t("__searchAndExport") }}
               </el-button>
             </p>
             <p class="operateItem">
@@ -44,37 +45,38 @@
         <template v-else>
           <div ref="seachFormExpand" class="view-container-seachForm-option">
             <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
+              <el-button class="bg-yellow" size="mini" @click="handleCurrentChange(currentPage)">{{ $t("__refresh") }}</el-button>
             </p>
             <p class="optionItem">
               <el-date-picker
-                v-model="searchForm.announcementedAt"
+                v-model="searchForm.searchTime"
                 type="datetimerange"
                 align="right"
                 unlink-panels
                 :range-separator="$t('__to')"
-                :start-placeholder="`${$t('__announcementDate')}(${$t('__start')})`"
-                :end-placeholder="`${$t('__announcementDate')}(${$t('__end')})`"
+                :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
+                :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
                 :picker-options="pickerOptions"
+                :default-time="['12:00:00', '11:59:59']"
               />
             </p>
             <p class="optionItem">
-              <el-input v-model="searchForm.title" placeholder="IP" />
+              <el-input v-model="searchForm.ip" placeholder="IP" />
             </p>
             <p class="optionItem">
-              <el-input v-model="searchForm.content" :placeholder="$t('__description')" />
+              <el-input v-model="searchForm.description" :placeholder="$t('__description')" />
             </p>
             <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
+              <el-button class="bg-gray" size="mini" @click="onReset()">{{ $t("__reset") }}</el-button>
             </p>
             <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+              <el-button class="bg-gray" size="mini" @click="handleCurrentChange(1)">
                 {{ $t("__search") }}
               </el-button>
             </p>
             <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
+              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">
+                {{ $t("__searchAndExport") }}
               </el-button>
             </p>
           </div>
@@ -196,7 +198,7 @@
         :pager-count="pagerCount"
         :current-page.sync="currentPage"
         @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
+        @current-change="handleCurrentChange"
       />
     </div>
 
