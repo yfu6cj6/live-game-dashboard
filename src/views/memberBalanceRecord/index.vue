@@ -29,7 +29,7 @@
               <el-input v-model="searchForm.orderNumber" :placeholder="$t('__transactionNumber')" />
             </p>
             <p class="optionItem">
-              <el-checkbox v-model="fuzzyMatchingByOrderNumber" class="red-tick" :label="$t('__fuzzyMatching')" />
+              <el-checkbox v-model="fuzzyMatchingByOrderNumber" class="red-tick checkbox" :label="$t('__fuzzyMatching')" />
             </p>
             <p class="optionItem">
               <el-input v-model="searchForm.betOrderNumber" :placeholder="$t('__orderNumber')" />
@@ -82,7 +82,7 @@
               <el-input v-model="searchForm.orderNumber" :placeholder="$t('__transactionNumber')" />
             </p>
             <p class="optionItem">
-              <el-checkbox v-model="fuzzyMatchingByOrderNumber" class="red-tick" :label="$t('__fuzzyMatching')" />
+              <el-checkbox v-model="fuzzyMatchingByOrderNumber" class="red-tick checkbox" :label="$t('__fuzzyMatching')" />
             </p>
             <p class="optionItem">
               <el-input v-model="searchForm.betOrderNumber" :placeholder="$t('__orderNumber')" />
@@ -427,6 +427,15 @@ export default {
 <style lang="scss" scoped>
 .view {
   &-container {
+    &-seachForm{
+      &-option{
+        .checkbox{
+          position: relative;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+    }
     &-table {
       &-row {
         position: relative;

@@ -216,6 +216,15 @@ body {
           .el-button {
             width: 120px;
           }
+          .el-checkbox {
+            .el-checkbox__inner {
+              border-color: $yellow;
+              background-color: $black;
+            }
+            .el-checkbox__label {
+              color: $yellow;
+            }
+          }
         }
       }
       &-operate {
