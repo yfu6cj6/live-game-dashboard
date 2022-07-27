@@ -279,26 +279,6 @@ export default {
         this.tableData = JSON.parse(JSON.stringify(this.tableData))
       })
     },
-    resizeHandler() {
-      const vw = window.innerWidth;
-      var formHeight = "34px";
-      const methodLength = (this.searchForm.methodType && this.searchForm.methodType.length);
-      const methodHeight = this.methodTypeCollapse ? 64 : (methodLength > 1 ? ((methodLength - 1) * 34) : 0);
-      if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(170 + methodHeight)}px` : formHeight;
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `${(102 + methodHeight)}px` : formHeight;
-        this.paginationPagerCount = 7;
-      } else {
-        formHeight = "auto";
-        this.paginationPagerCount = 7;
-      }
-      this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
-        this.setHeight();
-      });
-    },
     handleRespone(res) {
       this.allDataByClient = res.rows
       this.totalCount = res.rows.length

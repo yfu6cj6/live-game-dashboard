@@ -310,26 +310,6 @@ export default {
     this.onSearchBtnClick({}, 1)
   },
   methods: {
-    resizeHandler() {
-      const vw = window.innerWidth;
-      var formHeight = "34px";
-      const statusLength = (this.searchForm.status && this.searchForm.status.length);
-      const statusHeight = this.statusCollapse ? 64 : (statusLength > 1 ? ((statusLength - 1) * 34) : 0);
-      if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(238 + statusHeight)}px` : formHeight;
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `${(136 + statusHeight)}px` : formHeight;
-        this.paginationPagerCount = 7;
-      } else {
-        formHeight = "auto";
-        this.paginationPagerCount = 7;
-      }
-      this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
-        this.setHeight();
-      });
-    },
     onSearchBtnClick(data, page) {
       this.searchForm = data
       this.handleCurrentChange(page)

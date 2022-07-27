@@ -378,28 +378,6 @@ export default {
         this.tableData = JSON.parse(JSON.stringify(this.tableData))
       })
     },
-    resizeHandler() {
-      const vw = window.innerWidth;
-      var formHeight = "34px";
-      const typeLength = (this.searchForm.type && this.searchForm.type.length);
-      const typeHeight = this.typeCollapse ? 64 : (typeLength > 1 ? ((typeLength - 1) * 34) : 0);
-      const isMarqueeLength = (this.searchForm.is_marquee && this.searchForm.is_marquee.length);
-      const isMarqueeHeight = this.isMarqueeCollapse ? 64 : (isMarqueeLength > 1 ? ((isMarqueeLength - 1) * 34) : 0);
-      if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(204 + typeHeight + isMarqueeHeight)}px` : formHeight;
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `${(102 + ((typeHeight > isMarqueeHeight) ? typeHeight : isMarqueeHeight))}px` : formHeight;
-        this.paginationPagerCount = 7;
-      } else {
-        formHeight = "auto";
-        this.paginationPagerCount = 7;
-      }
-      this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
-        this.setHeight();
-      });
-    },
     handleRequest(data) {
       if (data.announcementedAt) {
         for (let i = 0, max = data.announcementedAt.length; i < max; i++) {

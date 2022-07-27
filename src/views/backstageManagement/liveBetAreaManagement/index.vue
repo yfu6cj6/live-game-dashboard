@@ -267,28 +267,6 @@ export default {
     this.onSearchBtnClick({}, 1);
   },
   methods: {
-    resizeHandler() {
-      const vw = window.innerWidth;
-      var formHeight = "34px";
-      const currencyLength = (this.searchForm.currency && this.searchForm.currency.length);
-      const currencyHeight = this.currencyCollapse ? 64 : (currencyLength > 1 ? ((currencyLength - 1) * 34) : 0);
-      const activatedLength = (this.searchForm.activated && this.searchForm.activated.length);
-      const activatedHeight = this.activatedCollapse ? 64 : (activatedLength > 1 ? ((activatedLength - 1) * 34) : 0);
-      if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(170 + currencyHeight + activatedHeight)}px` : formHeight;
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `${(102 + currencyHeight + activatedHeight)}px` : formHeight;
-        this.paginationPagerCount = 7;
-      } else {
-        formHeight = "auto";
-        this.paginationPagerCount = 7;
-      }
-      this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
-        this.setHeight();
-      });
-    },
     onSearchBtnClick(data, page) {
       this.searchForm = data
       this.handleCurrentChange(page)

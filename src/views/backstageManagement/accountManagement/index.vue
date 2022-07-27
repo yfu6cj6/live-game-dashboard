@@ -328,30 +328,6 @@ export default {
         this.tableData = JSON.parse(JSON.stringify(this.tableData))
       })
     },
-    resizeHandler() {
-      const vw = window.innerWidth;
-      var formHeight = "34px";
-      const rolesLength = (this.searchForm.roles && this.searchForm.roles.length);
-      const rolesHeight = this.rolesCollapse ? 64 : (rolesLength > 1 ? ((rolesLength - 1) * 34) : 0);
-      const agentLength = (this.searchForm.agent && this.searchForm.agent.length);
-      const agentHeight = this.agentCollapse ? 64 : (agentLength > 1 ? ((agentLength - 1) * 34) : 0);
-      const statusLength = (this.searchForm.status && this.searchForm.status.length);
-      const statusHeight = this.statusCollapse ? 64 : (statusLength > 1 ? ((statusLength - 1) * 34) : 0);
-      if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(170 + rolesHeight + agentHeight + statusHeight)}px` : formHeight;
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `${(102 + ((rolesHeight > agentHeight) ? rolesHeight : agentHeight) + statusHeight)}px` : formHeight;
-        this.paginationPagerCount = 7;
-      } else {
-        formHeight = "auto";
-        this.paginationPagerCount = 7;
-      }
-      this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
-        this.setHeight();
-      });
-    },
     handleRespone(res) {
       this.roles = res.roles
       this.agents = res.agents
@@ -369,7 +345,7 @@ export default {
         const statusNickname = this.accountStatusType.find(statusType => statusType.key === element.status).nickname
         element.statusLabel = this.$t(statusNickname)
       })
-      this.totalCount = res.rows.length
+      this.totalCount = this.allDataByClient.length
       this.handlePageChangeByClient(this.currentPage)
 
       this.closeDialogEven()

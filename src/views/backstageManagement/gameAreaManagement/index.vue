@@ -259,28 +259,6 @@ export default {
     this.onSearchBtnClick({}, 1)
   },
   methods: {
-    resizeHandler() {
-      const vw = window.innerWidth;
-      var formHeight = "34px";
-      const tableIdLength = (this.searchForm.table_id && this.searchForm.table_id.length);
-      const tableIdHeight = this.tableIdCollapse ? 64 : (tableIdLength > 1 ? ((tableIdLength - 1) * 34) : 0);
-      const liveBetAreaIdLength = (this.searchForm.live_bet_area_id && this.searchForm.live_bet_area_id.length);
-      const liveBetAreaIdHeight = this.liveBetAreaIdCollapse ? 64 : (liveBetAreaIdLength > 1 ? ((liveBetAreaIdLength - 1) * 34) : 0);
-      if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(170 + 14 + tableIdHeight + liveBetAreaIdHeight)}px` : formHeight;
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `${(102 + 14 + ((tableIdHeight > liveBetAreaIdHeight) ? tableIdHeight : liveBetAreaIdHeight))}px` : formHeight;
-        this.paginationPagerCount = 7;
-      } else {
-        formHeight = "auto";
-        this.paginationPagerCount = 7;
-      }
-      this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
-        this.setHeight();
-      });
-    },
     onSearchBtnClick(data, page) {
       this.searchForm = data
       this.handleCurrentChange(page)

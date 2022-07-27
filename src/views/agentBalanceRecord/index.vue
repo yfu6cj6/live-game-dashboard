@@ -84,14 +84,14 @@
                 <el-option v-for="item in searchItems.agents" :key="item.key" :label="item.nickname" :value="item.key" />
               </el-select>
             </p>
-            <p class="operateItem">
+            <p class="optionItem">
               <el-button class="bg-gray" size="mini" @click="onReset()">{{ $t("__reset") }}</el-button>
             </p>
-            <p class="operateItem">
+            <p class="optionItem">
               <el-button class="bg-yellow" size="mini" @click="handleCurrentChange(1)">{{ $t("__search") }}</el-button>
             </p>
-            <p class="operateItem">
-              <el-button class="bg-parent" size="mini" @click="onExportBtnClick()">{{ $t("__searchAndExport") }}</el-button>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">{{ $t("__searchAndExport") }}</el-button>
             </p>
           </div>
         </template>
@@ -343,28 +343,6 @@ export default {
         obj.open = !obj.open;
         this.tableData = JSON.parse(JSON.stringify(this.tableData))
       })
-    },
-    resizeHandler() {
-      const vw = window.innerWidth;
-      var formHeight = "34px";
-      const typeLength = (this.searchForm.type && this.searchForm.type.length);
-      const typeHeight = this.typeCollapse ? 64 : (typeLength > 1 ? ((typeLength - 1) * 34) : 0);
-      const isMarqueeLength = (this.searchForm.is_marquee && this.searchForm.is_marquee.length);
-      const isMarqueeHeight = this.isMarqueeCollapse ? 64 : (isMarqueeLength > 1 ? ((isMarqueeLength - 1) * 34) : 0);
-      if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(204 + typeHeight + isMarqueeHeight)}px` : formHeight;
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `${(102 + ((typeHeight > isMarqueeHeight) ? typeHeight : isMarqueeHeight))}px` : formHeight;
-        this.paginationPagerCount = 7;
-      } else {
-        formHeight = "auto";
-        this.paginationPagerCount = 7;
-      }
-      this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
-        this.setHeight();
-      });
     },
     numberFormatStr(number) {
       return numberFormat(number)

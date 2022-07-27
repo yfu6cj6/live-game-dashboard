@@ -200,24 +200,6 @@ export default {
     this.onSearchBtnClick({}, 1)
   },
   methods: {
-    resizeHandler() {
-      const vw = window.innerWidth;
-      var formHeight = "34px";
-      if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `136px` : formHeight;
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `68px` : formHeight;
-        this.paginationPagerCount = 7;
-      } else {
-        formHeight = "auto";
-        this.paginationPagerCount = 7;
-      }
-      this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
-        this.setHeight();
-      });
-    },
     handleRespone(res) {
       this.allDataByClient = res
       this.totalCount = res.length
