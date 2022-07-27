@@ -96,7 +96,7 @@
           >
             <div class="content">
               <template v-if="device === 'mobile'">
-                <div class="wrap">
+                <div class="wrap" @click="remarkExpand(item)">
                   <div class="left">
                     <div class="item">
                       <span class="header">{{ $t('__account') }}</span>
@@ -111,12 +111,10 @@
                       <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role }}</span>
                     </div>
                     <div class="item">
-                      <el-button v-if="item.open" class="bg-yellow" size="mini" icon="el-icon-arrow-up" @click="remarkExpand(item)">
-                        {{ $t("__remark") }}
-                      </el-button>
-                      <el-button v-else class="bg-yellow" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)">
-                        {{ $t("__remark") }}
-                      </el-button>
+                      <div class="expand" @click.stop="remarkExpand(item)">
+                        <svg-icon v-if="item.open" icon-class="up" />
+                        <svg-icon v-else icon-class="more" />
+                      </div>
                     </div>
                   </div>
                   <div class="right">
@@ -140,7 +138,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="item.open" class="wrap">
+                <div v-if="item.open" class="wrap" @click="remarkExpand(item)">
                   <div class="item">
                     <span class="header">{{ $t('__remark') }}</span>
                     <span>
@@ -453,6 +451,7 @@ export default {
   &-container {
     &-table {
       &-row {
+        position: relative;
         .content {
           display: flex;
           flex-direction: column;
@@ -466,6 +465,11 @@ export default {
             }
             .operate {
               justify-content: start;
+            }
+            .expand {
+              position: absolute;
+              top: 5px;
+              right: 5px;
             }
           }
           .wrap + .wrap {

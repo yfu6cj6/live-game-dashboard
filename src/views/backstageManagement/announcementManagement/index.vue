@@ -134,7 +134,7 @@
           >
             <div class="content">
               <template v-if="device === 'mobile'">
-                <div class="wrap">
+                <div class="wrap" @click="remarkExpand(item)">
                   <div class="left">
                     <div class="item">
                       <span class="header">ID</span>
@@ -153,9 +153,9 @@
                       <span>{{ item.title }}</span>
                     </div>
                     <div class="item">
-                      <div class="expand">
-                        <svg-icon v-if="item.open" icon-class="up" @click="remarkExpand(item)" />
-                        <svg-icon v-else icon-class="more" @click="remarkExpand(item)" />
+                      <div class="expand" @click.stop="remarkExpand(item)">
+                        <svg-icon v-if="item.open" icon-class="up" />
+                        <svg-icon v-else icon-class="more" />
                       </div>
                     </div>
                   </div>
@@ -182,7 +182,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="item.open" class="wrap">
+                <div v-if="item.open" class="wrap" @click="remarkExpand(item)">
                   <div class="item">
                     <span class="header">{{ $t('__content') }}</span>
                     <span>
@@ -506,6 +506,7 @@ export default {
   &-container {
     &-table {
       &-row {
+        position: relative;
         .content {
           display: flex;
           flex-direction: column;
@@ -519,6 +520,11 @@ export default {
             }
             .operate {
               justify-content: start;
+            }
+            .expand {
+              position: absolute;
+              top: 5px;
+              right: 5px;
             }
           }
           .wrap + .wrap {
