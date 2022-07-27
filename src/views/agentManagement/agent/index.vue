@@ -11,23 +11,78 @@
           >
             <template v-if="device === 'mobile'">
               <div class="wrap">
-                <div class="item">
-                  <div>
-                    <svg-icon icon-class="user" />
+                <div class="visible">
+                  <div class="top">
+                    <div class="user">
+                      <div>
+                        <svg-icon icon-class="user" />
+                      </div>
+                      <div class="column">
+                        <router-link :to="`/agentManagement/agentManagement/${item.id}`">
+                          <el-button class="bg-normal stroke" size="mini">
+                            {{ item.account }}
+                          </el-button>
+                        </router-link>
+                        {{ `(${$t('__nickname')} : ${item.nickname})` }}
+                      </div>
+                    </div>
+                    <div class="column liveCommissionRate">
+                      <span class="conten">{{ item.live_commission_rate }}</span>
+                      <span class="header">{{ `${$t('__liveGame')}${$t('__rate')}` }}</span>
+                    </div>
+                    <div class="column state">
+                      <span v-if="item.status === '1'" class="statusOpen">
+                        <svg-icon icon-class="enable" />
+                      </span>
+                      <span v-else class="status">
+                        <svg-icon icon-class="disable" />
+                      </span>
+                      <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                    </div>
+                    <div class="expand">
+                      <svg-icon v-if="item.open" icon-class="up" @click="remarkExpand(item)" />
+                      <svg-icon v-else icon-class="more" @click="remarkExpand(item)" />
+                    </div>
                   </div>
-                  <div class="column">
-                    <router-link :to="`/agentManagement/agentManagement/${item.id}`">
-                      <el-button class="bg-normal stroke" size="mini">
-                        {{ item.account }}
-                      </el-button>
-                    </router-link>
-                    {{ `(${$t('__nickname')} : ${item.nickname})` }}
+                  <div class="bottom">
+                    <div class="currency">
+                      <span class="header">{{ $t('__currency') }}</span>
+                      <span class="conten">{{ item.currency }}</span>
+                    </div>
+                    <div class="balance">
+                      <span class="header">{{ $t('__balance') }}</span>
+                      <svg-icon icon-class="coin" />
+                      <span class="conten">{{ item.balance }}</span>
+                    </div>
+                    <div class="timeZone">
+                      <span class="header">{{ $t('__timeZone') }}</span>
+                      <span class="conten">{{ item.cityNameLabel }}</span>
+                    </div>
                   </div>
                 </div>
-                <div class="item">
-                  <div class="column">
-                    <span>{{ item.live_commission_rate }}</span>
-                    <span>{{ `${$t('__liveGame')}${$t('__rate')}` }}</span>
+                <div class="inVisible">
+                  <div class="">
+                    <el-button v-if="!isAgentSubAccount" class="bg-yellow" size="mini" @click="onDepositBtnClick(item)">{{ $t("__deposit") }}</el-button>
+                    <el-button v-if="!isAgentSubAccount" class="bg-yellow" size="mini" @click="onWithdrawBtnClick(item)">{{ $t("__withdraw") }}</el-button>
+                    <el-button
+                      v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'"
+                      class="bg-yellow"
+                      size="mini"
+                      :title="$t('__agentOneClickRecyclingTitle')"
+                      @click="onOneClickRecyclingBtnClick(item)"
+                    >
+                      {{ $t("__oneClickRecycling") }}
+                    </el-button>
+                    <span class="winLossReport">
+                      <router-link :to="`/winLossReport/winLossReport/${item.id}`">
+                        <el-button class="bg-yellow" size="mini">{{ $t("__winLossReport") }}</el-button>
+                      </router-link>
+                    </span>
+                  </div>
+                  <div class="handicapLimit">
+                    <span>
+                      <el-button class="bg-yellow" size="mini" @click="onLimitBtnClick(item.handicaps)">{{ $t("_handicapLimit") }}</el-button>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -128,7 +183,8 @@ export default {
   computed: {
     ...mapGetters([
       'isAgentSubAccount',
-      'device'
+      'device',
+      'statusType'
     ]),
     agentInfoTotallyDisabled() {
       return this.agentInfo.totally_disabled === '1'
@@ -138,6 +194,13 @@ export default {
     }
   },
   methods: {
+    remarkExpand(row) {
+      const obj = this.tableData.find(item => item.id === row.id);
+      this.$nextTick(() => {
+        obj.open = !obj.open;
+        this.tableData = JSON.parse(JSON.stringify(this.tableData))
+      })
+    },
     showPopover() {
       this.$nextTick(() => {
         this.$refs.fullNameSearchInput.focus()
@@ -285,6 +348,8 @@ export default {
         element.weeklyLossSettlement = element.weekly_loss_settlement === '1'
         element.oneClickRecycling = element.one_click_recycling === '1'
         element.giftEffect = element.gift_status === '1'
+        const statusNickname = this.statusType.find(type => type.key === element.status).nickname
+        element.statusLabel = this.$t(statusNickname)
       })
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)
@@ -445,27 +510,87 @@ export default {
     &-table {
       &-row {
         .wrap {
-          font-size: 14px;
-          .stroke {
-            padding: 0;
-            font-size: 14px;
-            color: #ce9600;
-            font-weight: bold;
-            border-bottom: 1px solid #ce9600;
-            vertical-align: top;
-          }
-          .item {
+          flex-direction: column;
+          position: relative;
+          .visible {
+            display: flex;
+            flex-direction: column;
+            .top {
+              display: flex;
+              .user {
+                display: flex;
+                width: 50%;
+              }
+              .liveCommissionRate {
+                width: 22%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                .header {
+                  font-size: 12px;
+                  color: #a3a3a3;
+                }
+                .conten {
+                  font-weight: bold;
+                }
+              }
+              .state {
+                width: 15%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+              }
+            }
+            .bottom {
+              display: flex;
+              flex-wrap: wrap;
+              margin-top: 3px;
+              color: #a3a3a3;
+              .conten {
+                margin-left: 3px;
+              }
+              .balance {
+                margin-left: 15px;
+                display: flex;
+                align-items: center;
+              }
+              .timeZone {
+                margin-left: 15px;
+              }
+            }
             .column {
               display: flex;
               flex-direction: column;
-              span {
-                margin: 0 auto;
-              }
+            }
+          }
+          .inVisible {
+            display: flex;
+            flex-direction: column;
+            margin-top: 5px;
+            .handicapLimit {
+              margin-top: 5px;
+            }
+            .winLossReport {
+              margin-left: 10px;
             }
           }
         }
       }
     }
   }
+}
+
+.expand {
+  position: absolute;
+  right: 0;
+}
+
+.stroke {
+  padding: 0;
+  font-size: 16px;
+  color: #ce9600;
+  font-weight: bold;
+  border-bottom: 1px solid #ce9600;
+  vertical-align: top;
 }
 </style>

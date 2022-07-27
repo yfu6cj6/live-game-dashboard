@@ -244,13 +244,11 @@ export default {
     resizeHandler() {
       const vw = window.innerWidth;
       var formHeight = "34px";
-      const statusLength = (this.searchForm.status && this.searchForm.status.length);
-      const statusHeight = this.statusCollapse ? 64 : (statusLength > 1 ? ((statusLength - 1) * 34) : 0);
       if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `${(136 + statusHeight)}px` : formHeight;
+        formHeight = this.searchFormOpen ? `auto` : formHeight;
         this.paginationPagerCount = 5;
       } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `${(68 + statusHeight)}px` : formHeight;
+        formHeight = this.searchFormOpen ? `auto` : formHeight;
         this.paginationPagerCount = 7;
       } else {
         formHeight = "auto";

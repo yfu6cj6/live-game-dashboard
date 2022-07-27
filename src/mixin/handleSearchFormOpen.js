@@ -47,9 +47,7 @@ export default {
       if (tagsView && tagsView.length > 0) {
         this.$refs.container.style.height = `calc(100vh - 45px - ${tagsView[0].clientHeight}px - 40px)`;
       }
-      setTimeout(() => {
-        this.$refs.table.style.height = `${this.$refs.container.clientHeight - this.$refs.seachForm.clientHeight}px`;
-      }, 300);
+      this.$refs.table.style.height = `${this.$refs.container.clientHeight - this.$refs.seachForm.clientHeight}px`;
     }
   }
 }

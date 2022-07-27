@@ -205,7 +205,6 @@ body {
       &-option {
         height: 34px;
         overflow: hidden;
-        transition: height .3s;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -307,8 +306,6 @@ body {
       overflow-y: hidden;
       &-seachForm {
         &-option {
-          height: auto;
-          transition: none;
           .optionItem {
             width: auto;
           }

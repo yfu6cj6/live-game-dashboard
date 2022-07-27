@@ -182,6 +182,27 @@ export const asyncRoutes = [
   },
 
   {
+    // 輸贏報表
+    path: '/winLossReport',
+    component: Layout,
+    redirect: '/winLossReport',
+    meta: { title: '__winLossReport', icon: 'winLossReportIcon', permission: 'AgentManage.WinLoss.Report' },
+    children: [{
+      path: 'winLossReport',
+      name: 'WinLossReport',
+      component: () => import('@/views/winLossReport/index'),
+      meta: { title: '__winLossReport' }
+    },
+    {
+      path: 'winLossReport/:id(\\d+)',
+      name: 'WinLossReport{0}',
+      component: () => import('@/views/winLossReport/index'),
+      meta: { title: '__winLossReport', activeMenu: '/winLossReport/winLossReport' },
+      hidden: true
+    }]
+  },
+
+  {
     // 代理額度記錄
     path: '/agentBalanceRecord',
     component: Layout,
