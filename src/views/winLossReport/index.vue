@@ -207,70 +207,72 @@
           </template>
           <template v-else>
             <div class="wrap">
-              <div class="item remark">
+              <div class="item c0">
                 <el-button v-if="agentInfo.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click.stop="remarkExpand()" />
                 <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click.stop="remarkExpand()" />
               </div>
-              <div class="item agent">
+              <div class="item c1">
                 <svg-icon icon-class="user" />
                 <span class="agentName">{{ agentInfo.agent }}</span>
               </div>
-              <div class="item gameType">
+              <div class="item c2">
                 <span class="header">{{ `${$t('__gameType')}` }}</span>
                 <span>{{ agentInfo.gameType }}</span>
               </div>
-              <div class="item betAmount">
+              <div class="item c3">
                 <span class="header">{{ `${$t('__betAmount')}` }}</span>
                 <span>{{ agentInfo.betAmount }}</span>
               </div>
-              <div class="item validBetAmount">
+              <div class="item c4">
                 <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
                 <span>{{ agentInfo.validBetAmount }}</span>
               </div>
-              <div class="item winLoss">
+              <div class="item c5">
                 <span class="header">{{ `${$t('__winLoss')}` }}</span>
                 <span>{{ agentInfo.winLoss }}</span>
               </div>
-              <div class="item winLossRate">
+              <div class="item c6">
                 <span class="header">{{ `${$t('__winLossRate')}` }}</span>
                 <span>{{ agentInfo.winLossRate }}</span>
               </div>
-              <template v-if="agentInfo.open">
-                <div class="item rollingRate">
-                  <span class="header">{{ `${$t('__rollingRate')}` }}</span>
-                  <span>{{ agentInfo.rollingRate }}</span>
+            </div>
+            <div v-if="agentInfo.open" class="wrap">
+              <div class="item c1">
+                <span class="header">{{ `${$t('__rollingRate')}` }}</span>
+                <span>{{ agentInfo.rollingRate }}</span>
+              </div>
+              <div class="item c2">
+                <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
+                <span>{{ agentInfo.rollingCommission }}</span>
+              </div>
+              <div class="item c3">
+                <span class="header">{{ `${$t('__totalAmount')}` }}</span>
+                <span>{{ agentInfo.netPL }}</span>
+              </div>
+              <div class="item c4">
+                <span class="header">{{ `${$t('__commissionRate')}` }}</span>
+                <span>{{ agentInfo.commissionRate }}</span>
+              </div>
+              <div class="item c5">
+                <span class="header">{{ `${$t('__toSuperior')}` }}</span>
+                <span>{{ agentInfo.toSuperior }}</span>
+              </div>
+              <div class="item c6">
+                <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
+                <span>{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
+              </div>
+            </div>
+            <div v-if="agentInfo.open" class="wrap">
+              <div class="item c1 betMemberCount" size="mini" @click.stop="onBetMemberCount()">
+                <div>
+                  <span class="header">{{ `${$t('__betMemberCount')} ` }}</span>
                 </div>
-                <div class="item rollingCommission">
-                  <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
-                  <span>{{ agentInfo.rollingCommission }}</span>
-                </div>
-                <div class="item netPL">
-                  <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                  <span>{{ agentInfo.netPL }}</span>
-                </div>
-                <div class="item commissionRate">
-                  <span class="header">{{ `${$t('__commissionRate')}` }}</span>
-                  <span>{{ agentInfo.commissionRate }}</span>
-                </div>
-                <div class="item toSuperior">
-                  <span class="header">{{ `${$t('__toSuperior')}` }}</span>
-                  <span>{{ agentInfo.toSuperior }}</span>
-                </div>
-                <div class="item commitSuperiorsValidBetAmount">
-                  <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
-                  <span>{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
-                </div>
-                <div class="item betMemberCount" size="mini" @click.stop="onBetMemberCount()">
-                  <div>
-                    <span class="header">{{ `${$t('__betMemberCount')} ` }}</span>
-                  </div>
-                  <span>{{ agentInfo.betMemberCount }}</span>
-                </div>
-                <div class="item myProfit">
-                  <span class="header">{{ `${$t('__myProfit')}` }}</span>
-                  <span>{{ agentInfo.myProfit }}</span>
-                </div>
-              </template>
+                <span>{{ agentInfo.betMemberCount }}</span>
+              </div>
+              <div class="item c2">
+                <span class="header">{{ `${$t('__myProfit')}` }}</span>
+                <span>{{ agentInfo.myProfit }}</span>
+              </div>
             </div>
           </template>
         </div>
@@ -641,61 +643,38 @@ export default {
           .wrap {
             display: grid;
             grid-template-columns: 50px repeat(6, 1fr);
-            grid-template-areas:
-            "remark agent  gameType betAmount validBetAmount winLoss winLossRate"
-            ". rollingRate rollingCommission netPL commissionRate toSuperior commitSuperiorsValidBetAmount"
-            ". betMemberCount myProfit . . . .";
-            grid-row-gap: 10px;
-            .remark {
-              grid-area: remark;
+            grid-template-areas: "c0 c1 c2 c3 c4 c5 c6";
+            .c0 {
+              grid-area: c0;
             }
-            .agent {
-              grid-area: agent;
+            .c1 {
+              grid-area: c1;
             }
-            .gameType {
-              grid-area: gameType;
+            .c2 {
+              grid-area: c2;
             }
-            .betAmount {
-              grid-area: betAmount;
+            .c3 {
+              grid-area: c3;
             }
-            .validBetAmount {
-              grid-area: validBetAmount;
+            .c4 {
+              grid-area: c4;
             }
-            .winLoss {
-              grid-area: winLoss;
+            .c5 {
+              grid-area: c5;
             }
-            .winLossRate {
-              grid-area: winLossRate;
-            }
-            .rollingRate {
-              grid-area: rollingRate;
-            }
-            .rollingCommission {
-              grid-area: rollingCommission;
-            }
-            .netPL {
-              grid-area: netPL;
-            }
-            .commissionRate {
-              grid-area: commissionRate;
-            }
-            .toSuperior {
-              grid-area: toSuperior;
-            }
-            .commitSuperiorsValidBetAmount {
-              grid-area: commitSuperiorsValidBetAmount;
+            .c6 {
+              grid-area: c6;
             }
             .betMemberCount {
-              grid-area: betMemberCount;
               cursor: pointer;
               .header {
                 display: inline-block;
                 background-color: $yellow;
               }
             }
-            .myProfit {
-              grid-area: myProfit;
-            }
+          }
+          .wrap + .wrap {
+            margin-top: 10px;
           }
         }
       }

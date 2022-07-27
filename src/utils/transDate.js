@@ -74,14 +74,14 @@ export function getTodayDateTime() {
 // 上周
 export function getLastWeekDateTime() {
   const start = new Date()
-  start.setDate(start.getDate() - 7 - start.getDay() + 1)
-  start.setHours(12)
+  start.setDate(start.getDate() - 14 - start.getDay() + 1)
+  start.setHours(0)
   start.setMinutes(0)
   start.setSeconds(0)
 
   const end = new Date()
-  end.setDate(end.getDate() - end.getDay() + 1)
-  end.setHours(11)
+  end.setDate(end.getDate() - 7 - end.getDay())
+  end.setHours(23)
   end.setMinutes(59)
   end.setSeconds(59)
 
@@ -91,14 +91,14 @@ export function getLastWeekDateTime() {
 // 本週
 export function getThisWeekDateTime() {
   const start = new Date()
-  start.setDate(start.getDate() - start.getDay() + 1)
-  start.setHours(12)
+  start.setDate(start.getDate() - 7 - start.getDay() + 1)
+  start.setHours(0)
   start.setMinutes(0)
   start.setSeconds(0)
 
   const end = new Date()
-  end.setDate(end.getDate() + 7 - end.getDay() + 1)
-  end.setHours(11)
+  end.setDate(end.getDate() - end.getDay())
+  end.setHours(23)
   end.setMinutes(59)
   end.setSeconds(59)
 
@@ -107,49 +107,29 @@ export function getThisWeekDateTime() {
 
 // 上月
 export function getLastMonthDateTime() {
-  const start = new Date()
-  start.setMonth(start.getMonth() - 1)
-  start.setDate(1)
-  start.setDate(start.getDate() - start.getDay() + 1)
-  start.setHours(12)
-  start.setMinutes(0)
-  start.setSeconds(0)
-
-  const end = new Date()
-  end.setDate(1)
-  end.setDate(end.getDate() - end.getDay() + 1)
-  if (end.getMonth() !== new Date().getMonth()) {
-    end.setDate(end.getDate() + 7)
-  }
-  end.setHours(11)
-  end.setMinutes(59)
-  end.setSeconds(59)
-
-  return [start, end]
+  var date = new Date();
+  date.setMonth(date.getMonth() - 1)
+  var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  firstDay.setHours(0)
+  firstDay.setMinutes(0)
+  firstDay.setSeconds(0)
+  var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  lastDay.setHours(23)
+  lastDay.setMinutes(59)
+  lastDay.setSeconds(59)
+  return [firstDay, lastDay]
 }
 
 // 本月
 export function getThisMonthDateTime() {
-  const start = new Date()
-  start.setDate(1)
-  start.setDate(start.getDate() - start.getDay() + 1)
-  if (start.getMonth() !== new Date().getMonth()) {
-    start.setDate(start.getDate() + 7)
-  }
-  start.setHours(12)
-  start.setMinutes(0)
-  start.setSeconds(0)
-
-  const end = new Date()
-  end.setMonth(end.getMonth() + 1)
-  end.setDate(1)
-  end.setDate(end.getDate() - end.getDay() + 1)
-  if (end.getMonth() !== new Date().getMonth() + 1) {
-    end.setDate(end.getDate() + 7)
-  }
-  end.setHours(11)
-  end.setMinutes(59)
-  end.setSeconds(59)
-
-  return [start, end]
+  var date = new Date();
+  var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+  firstDay.setHours(0)
+  firstDay.setMinutes(0)
+  firstDay.setSeconds(0)
+  var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  lastDay.setHours(23)
+  lastDay.setMinutes(59)
+  lastDay.setSeconds(59)
+  return [firstDay, lastDay]
 }
