@@ -228,7 +228,7 @@ export default {
 .login-container {
   background-position: center !important;
   background-size: cover !important;
-  background-image: url("/static/images/logo/loginBG.jpg");
+  background-image: url("/static/images/logo/loginBG.png");
   width: 100vw;
   height: 100vh;
   min-height: 600px;

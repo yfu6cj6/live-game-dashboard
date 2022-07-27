@@ -18,21 +18,106 @@
                 :default-time="['12:00:00', '11:59:59']"
               />
             </p>
+            <p class="optionItem">
+              <span>
+                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.yesterday)">
+                  {{ $t("__yesterday") }}
+                </el-button>
+              </span>
+              <span>
+                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.today)">
+                  {{ $t("__today") }}
+                </el-button>
+              </span>
+              <span>
+                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.lastWeek)">
+                  {{ $t("__lastWeek") }}
+                </el-button>
+              </span>
+              <span>
+                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.thisWeek)">
+                  {{ $t("__thisWeek") }}
+                </el-button>
+              </span>
+              <span>
+                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.lastMonth)">
+                  {{ $t("__lastMonth") }}
+                </el-button>
+              </span>
+              <span>
+                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.thisMonth)">
+                  {{ $t("__thisMonth") }}
+                </el-button>
+              </span>
+            </p>
           </div>
           <div class="view-container-seachForm-operate">
             <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+              <el-button class="bg-yellow" size="mini" @click="onTableBtnClick(curTableIndex)">
                 {{ $t("__search") }}
               </el-button>
             </p>
             <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
+              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">
+                {{ $t("__searchAndExport") }}
               </el-button>
             </p>
-            <p class="operateItem">
-              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
-                {{ $t("__moreSearch") }}
+          </div>
+        </template>
+        <template v-else>
+          <div ref="seachFormExpand" class="view-container-seachForm-option">
+            <p class="optionItem">
+              <el-date-picker
+                v-model="searchTime"
+                class="date-picker"
+                type="datetimerange"
+                align="right"
+                unlink-panels
+                :range-separator="$t('__to')"
+                :start-placeholder="$t('__startDate')"
+                :end-placeholder="$t('__endDate')"
+                :picker-options="pickerOptions"
+                :default-time="['12:00:00', '11:59:59']"
+              />
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onTableBtnClick(curTableIndex)">
+                {{ $t("__search") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.yesterday)">
+                {{ $t("__yesterday") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.today)">
+                {{ $t("__today") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.lastWeek)">
+                {{ $t("__lastWeek") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.thisWeek)">
+                {{ $t("__thisWeek") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.lastMonth)">
+                {{ $t("__lastMonth") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.thisMonth)">
+                {{ $t("__thisMonth") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">
+                {{ $t("__searchAndExport") }}
               </el-button>
             </p>
           </div>
@@ -40,8 +125,8 @@
       </div>
       <div ref="table" class="view-container-table">
         <div class="view-container-table-row">
-          <div class="wrap" @click="remarkExpand()">
-            <template v-if="device === 'mobile'">
+          <template v-if="device === 'mobile'">
+            <div class="wrap" @click="remarkExpand()">
               <div>
                 <svg-icon icon-class="user" />
                 <span class="agentName">{{ agentInfo.agent }}</span>
@@ -103,7 +188,7 @@
                 </div>
                 <div class="group">
                   <div class="item">
-                    <div class="betMemberCount" size="mini" @click.stop="onBetMemberCount()">
+                    <div class="betMember" size="mini" @click.stop="onBetMemberCount()">
                       <span>{{ `${$t('__betMemberCount')} ` }}</span>
                       <span>{{ agentInfo.betMemberCount }}</span>
                     </div>
@@ -118,8 +203,76 @@
                 <svg-icon v-if="agentInfo.open" icon-class="up" @click.stop="remarkExpand()" />
                 <svg-icon v-else icon-class="more" @click.stop="remarkExpand()" />
               </div>
-            </template>
-          </div>
+            </div>
+          </template>
+          <template v-else>
+            <div class="wrap">
+              <div class="item remark">
+                <el-button v-if="agentInfo.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click.stop="remarkExpand()" />
+                <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click.stop="remarkExpand()" />
+              </div>
+              <div class="item agent">
+                <svg-icon icon-class="user" />
+                <span class="agentName">{{ agentInfo.agent }}</span>
+              </div>
+              <div class="item gameType">
+                <span class="header">{{ `${$t('__gameType')}` }}</span>
+                <span>{{ agentInfo.gameType }}</span>
+              </div>
+              <div class="item betAmount">
+                <span class="header">{{ `${$t('__betAmount')}` }}</span>
+                <span>{{ agentInfo.betAmount }}</span>
+              </div>
+              <div class="item validBetAmount">
+                <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
+                <span>{{ agentInfo.validBetAmount }}</span>
+              </div>
+              <div class="item winLoss">
+                <span class="header">{{ `${$t('__winLoss')}` }}</span>
+                <span>{{ agentInfo.winLoss }}</span>
+              </div>
+              <div class="item winLossRate">
+                <span class="header">{{ `${$t('__winLossRate')}` }}</span>
+                <span>{{ agentInfo.winLossRate }}</span>
+              </div>
+              <template v-if="agentInfo.open">
+                <div class="item rollingRate">
+                  <span class="header">{{ `${$t('__rollingRate')}` }}</span>
+                  <span>{{ agentInfo.rollingRate }}</span>
+                </div>
+                <div class="item rollingCommission">
+                  <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
+                  <span>{{ agentInfo.rollingCommission }}</span>
+                </div>
+                <div class="item netPL">
+                  <span class="header">{{ `${$t('__totalAmount')}` }}</span>
+                  <span>{{ agentInfo.netPL }}</span>
+                </div>
+                <div class="item commissionRate">
+                  <span class="header">{{ `${$t('__commissionRate')}` }}</span>
+                  <span>{{ agentInfo.commissionRate }}</span>
+                </div>
+                <div class="item toSuperior">
+                  <span class="header">{{ `${$t('__toSuperior')}` }}</span>
+                  <span>{{ agentInfo.toSuperior }}</span>
+                </div>
+                <div class="item commitSuperiorsValidBetAmount">
+                  <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
+                  <span>{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
+                </div>
+                <div class="item betMemberCount" size="mini" @click.stop="onBetMemberCount()">
+                  <div>
+                    <span class="header">{{ `${$t('__betMemberCount')} ` }}</span>
+                  </div>
+                  <span>{{ agentInfo.betMemberCount }}</span>
+                </div>
+                <div class="item myProfit">
+                  <span class="header">{{ `${$t('__myProfit')}` }}</span>
+                  <span>{{ agentInfo.myProfit }}</span>
+                </div>
+              </template>
+            </div>
+          </template>
         </div>
         <div class="btnGroup">
           <div class="btn">
@@ -228,10 +381,6 @@ export default {
       curTableIndex: 0,
       searchTime: defaultSearchTime,
       agentId: null,
-      totalData: {
-        index: 1,
-        totalLabel: '__totalCount'
-      },
       firstCreate: true
     }
   },
@@ -417,6 +566,20 @@ export default {
 
 .view {
   &-container {
+    &-seachForm {
+      &-option {
+        .optionItem {
+          display: flex;
+          justify-content: space-between;
+          span {
+            width: calc(100% / 6 - 2px);
+            .el-button {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
     &-table {
       &-row {
         .wrap {
@@ -435,7 +598,7 @@ export default {
     }
   }
 }
-.betMemberCount {
+.betMember {
   font-weight: bold;
   background-color: $yellow;
   padding: 2px 5px;
@@ -468,5 +631,75 @@ export default {
 .expand {
   position: absolute;
   right: 0;
+}
+
+@media screen and (min-width: 992px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          .wrap {
+            display: grid;
+            grid-template-columns: 50px repeat(6, 1fr);
+            grid-template-areas:
+            "remark agent  gameType betAmount validBetAmount winLoss winLossRate"
+            ". rollingRate rollingCommission netPL commissionRate toSuperior commitSuperiorsValidBetAmount"
+            ". betMemberCount myProfit . . . .";
+            grid-row-gap: 10px;
+            .remark {
+              grid-area: remark;
+            }
+            .agent {
+              grid-area: agent;
+            }
+            .gameType {
+              grid-area: gameType;
+            }
+            .betAmount {
+              grid-area: betAmount;
+            }
+            .validBetAmount {
+              grid-area: validBetAmount;
+            }
+            .winLoss {
+              grid-area: winLoss;
+            }
+            .winLossRate {
+              grid-area: winLossRate;
+            }
+            .rollingRate {
+              grid-area: rollingRate;
+            }
+            .rollingCommission {
+              grid-area: rollingCommission;
+            }
+            .netPL {
+              grid-area: netPL;
+            }
+            .commissionRate {
+              grid-area: commissionRate;
+            }
+            .toSuperior {
+              grid-area: toSuperior;
+            }
+            .commitSuperiorsValidBetAmount {
+              grid-area: commitSuperiorsValidBetAmount;
+            }
+            .betMemberCount {
+              grid-area: betMemberCount;
+              cursor: pointer;
+              .header {
+                display: inline-block;
+                background-color: $yellow;
+              }
+            }
+            .myProfit {
+              grid-area: myProfit;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 </style>
