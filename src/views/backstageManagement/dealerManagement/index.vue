@@ -241,24 +241,6 @@ export default {
     this.onSearchBtnClick({}, 1);
   },
   methods: {
-    resizeHandler() {
-      const vw = window.innerWidth;
-      var formHeight = "34px";
-      if (vw <= 768) {
-        formHeight = this.searchFormOpen ? `auto` : formHeight;
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? `auto` : formHeight;
-        this.paginationPagerCount = 7;
-      } else {
-        formHeight = "auto";
-        this.paginationPagerCount = 7;
-      }
-      this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
-        this.setHeight();
-      });
-    },
     onSearchBtnClick(data, page) {
       this.searchForm = data;
       this.handleCurrentChange(page);
@@ -272,8 +254,6 @@ export default {
       });
     },
     handleRespone(res) {
-      this.$refs.container.scrollTop = 0;
-      this.$refs.table.scrollTop = 0;
       this.searchItems = res.searchItems;
       this.totalCount = res.rows.length;
       this.allDataByClient = res.rows;

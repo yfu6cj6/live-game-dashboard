@@ -207,7 +207,6 @@ body {
         overflow: hidden;
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
         .optionItem {
           padding: 3px;
           width: 100%;
@@ -277,6 +276,9 @@ body {
     background-color: #262626;
     width: 100%;
     height: 40px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
   }
 }
 

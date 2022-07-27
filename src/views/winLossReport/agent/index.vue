@@ -86,6 +86,19 @@
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
       </div>
     </div>
+    <div class="view-footer">
+      <el-pagination
+        layout="prev, pager, next, jumper, sizes"
+        :total="totalCount"
+        background
+        :page-size="pageSize"
+        :page-sizes="pageSizes"
+        :pager-count="pagerCount"
+        :current-page.sync="currentPage"
+        @size-change="handleSizeChangeByClient"
+        @current-change="handlePageChangeByClient"
+      />
+    </div>
   </div>
 </template>
 

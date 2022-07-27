@@ -4,7 +4,8 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      searchFormOpen: false
+      searchFormOpen: false,
+      searchFormNormalHeight: "34px"
     }
   },
   computed: {
@@ -42,12 +43,24 @@ export default {
     }
   },
   methods: {
-    setHeight() {
-      const tagsView = document.getElementsByClassName("tagsView");
-      if (tagsView && tagsView.length > 0) {
-        this.$refs.container.style.height = `calc(100vh - 45px - ${tagsView[0].clientHeight}px - 40px)`;
+    resizeHandler() {
+      const vw = window.innerWidth;
+      var formHeight = this.searchFormNormalHeight;
+      if (vw <= 768) {
+        formHeight = this.searchFormOpen ? `auto` : formHeight;
+      } else if (vw > 768 && vw < 992) {
+        formHeight = this.searchFormOpen ? `auto` : formHeight;
+      } else {
+        formHeight = "auto";
       }
-      this.$refs.table.style.height = `${this.$refs.container.clientHeight - this.$refs.seachForm.clientHeight}px`;
+      this.$nextTick(() => {
+        this.$refs.seachFormExpand.style.height = `${formHeight}`;
+        const tagsView = document.getElementsByClassName("tagsView");
+        if (tagsView && tagsView.length > 0) {
+          this.$refs.container.style.height = `calc(100vh - 45px - ${tagsView[0].clientHeight}px - 40px)`;
+        }
+        this.$refs.table.style.height = `${this.$refs.container.clientHeight - this.$refs.seachForm.clientHeight}px`;
+      });
     }
   }
 }

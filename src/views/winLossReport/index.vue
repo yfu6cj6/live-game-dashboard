@@ -39,126 +39,124 @@
         </template>
       </div>
       <div ref="table" class="view-container-table">
-        <div>
-          <div class="view-container-table-row">
-            <div class="wrap" @click="remarkExpand()">
-              <template v-if="device === 'mobile'">
-                <div>
-                  <svg-icon icon-class="user" />
-                  <span class="agentName">{{ agentInfo.agent }}</span>
+        <div class="view-container-table-row">
+          <div class="wrap" @click="remarkExpand()">
+            <template v-if="device === 'mobile'">
+              <div>
+                <svg-icon icon-class="user" />
+                <span class="agentName">{{ agentInfo.agent }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ `${$t('__gameType')}` }}</span>
+                <span>{{ agentInfo.gameType }}</span>
+              </div>
+              <div class="group">
+                <div class="item">
+                  <span class="header">{{ `${$t('__betAmount')}` }}</span>
+                  <span>{{ agentInfo.betAmount }}</span>
                 </div>
                 <div class="item">
-                  <span class="header">{{ `${$t('__gameType')}` }}</span>
-                  <span>{{ agentInfo.gameType }}</span>
+                  <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
+                  <span>{{ agentInfo.validBetAmount }}</span>
+                </div>
+              </div>
+              <div class="group">
+                <div class="item">
+                  <span class="header">{{ `${$t('__winLoss')}` }}</span>
+                  <span>{{ agentInfo.winLoss }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ `${$t('__winLossRate')}` }}</span>
+                  <span>{{ agentInfo.winLossRate }}</span>
+                </div>
+              </div>
+              <div v-if="agentInfo.open">
+                <div class="group">
+                  <div class="item">
+                    <span class="header">{{ `${$t('__rollingRate')}` }}</span>
+                    <span>{{ agentInfo.rollingRate }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
+                    <span>{{ agentInfo.rollingCommission }}</span>
+                  </div>
                 </div>
                 <div class="group">
                   <div class="item">
-                    <span class="header">{{ `${$t('__betAmount')}` }}</span>
-                    <span>{{ agentInfo.betAmount }}</span>
+                    <span class="header">{{ `${$t('__totalAmount')}` }}</span>
+                    <span>{{ agentInfo.netPL }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
-                    <span>{{ agentInfo.validBetAmount }}</span>
+                    <span class="header">{{ `${$t('__commissionRate')}` }}</span>
+                    <span>{{ agentInfo.commissionRate }}</span>
                   </div>
                 </div>
                 <div class="group">
                   <div class="item">
-                    <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                    <span>{{ agentInfo.winLoss }}</span>
+                    <span class="header">{{ `${$t('__toSuperior')}` }}</span>
+                    <span>{{ agentInfo.toSuperior }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                    <span>{{ agentInfo.winLossRate }}</span>
+                    <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
+                    <span>{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
                   </div>
                 </div>
-                <div v-if="agentInfo.open">
-                  <div class="group">
-                    <div class="item">
-                      <span class="header">{{ `${$t('__rollingRate')}` }}</span>
-                      <span>{{ agentInfo.rollingRate }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
-                      <span>{{ agentInfo.rollingCommission }}</span>
+                <div class="group">
+                  <div class="item">
+                    <div class="betMemberCount" size="mini" @click.stop="onBetMemberCount()">
+                      <span>{{ `${$t('__betMemberCount')} ` }}</span>
+                      <span>{{ agentInfo.betMemberCount }}</span>
                     </div>
                   </div>
-                  <div class="group">
-                    <div class="item">
-                      <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                      <span>{{ agentInfo.netPL }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ `${$t('__commissionRate')}` }}</span>
-                      <span>{{ agentInfo.commissionRate }}</span>
-                    </div>
-                  </div>
-                  <div class="group">
-                    <div class="item">
-                      <span class="header">{{ `${$t('__toSuperior')}` }}</span>
-                      <span>{{ agentInfo.toSuperior }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
-                      <span>{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
-                    </div>
-                  </div>
-                  <div class="group">
-                    <div class="item">
-                      <div class="betMemberCount" size="mini" @click.stop="onBetMemberCount()">
-                        <span>{{ `${$t('__betMemberCount')} ` }}</span>
-                        <span>{{ agentInfo.betMemberCount }}</span>
-                      </div>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ `${$t('__myProfit')}` }}</span>
-                      <span>{{ agentInfo.myProfit }}</span>
-                    </div>
+                  <div class="item">
+                    <span class="header">{{ `${$t('__myProfit')}` }}</span>
+                    <span>{{ agentInfo.myProfit }}</span>
                   </div>
                 </div>
-                <div class="expand">
-                  <svg-icon v-if="agentInfo.open" icon-class="up" @click.stop="remarkExpand()" />
-                  <svg-icon v-else icon-class="more" @click.stop="remarkExpand()" />
-                </div>
-              </template>
-            </div>
+              </div>
+              <div class="expand">
+                <svg-icon v-if="agentInfo.open" icon-class="up" @click.stop="remarkExpand()" />
+                <svg-icon v-else icon-class="more" @click.stop="remarkExpand()" />
+              </div>
+            </template>
           </div>
         </div>
+        <div class="btnGroup">
+          <div class="btn">
+            <el-button
+              class="agentBtn"
+              :class="{'focus': curTableIndex === tableEnum.agent}"
+              @click="onTableBtnClick(tableEnum.agent)"
+            >
+              {{ $t("__agent") }}
+            </el-button>
+          </div>
+          <div class="btn">
+            <el-button
+              class="memberBtn"
+              :class="{'focus': curTableIndex === tableEnum.member}"
+              @click="onTableBtnClick(tableEnum.member)"
+            >
+              {{ $t("__member") }}
+            </el-button>
+          </div>
+        </div>
+        <agent
+          v-show="curTableIndex === tableEnum.agent"
+          ref="agent"
+          :payout-time="searchTime"
+          @handleRespone="handleAgentRespone"
+          @setDataLoading="setDataLoading"
+        />
+        <member
+          v-show="curTableIndex === tableEnum.member"
+          ref="member"
+          :payout-time="searchTime"
+          @handleRespone="handleMemberRespone"
+          @setDataLoading="setDataLoading"
+        />
       </div>
     </div>
-    <div class="btnGroup">
-      <div class="btn">
-        <el-button
-          class="agentBtn"
-          :class="{'focus': curTableIndex === tableEnum.agent}"
-          @click="onTableBtnClick(tableEnum.agent)"
-        >
-          {{ $t("__agent") }}
-        </el-button>
-      </div>
-      <div class="btn">
-        <el-button
-          class="memberBtn"
-          :class="{'focus': curTableIndex === tableEnum.member}"
-          @click="onTableBtnClick(tableEnum.member)"
-        >
-          {{ $t("__member") }}
-        </el-button>
-      </div>
-    </div>
-    <agent
-      v-show="curTableIndex === tableEnum.agent"
-      ref="agent"
-      :payout-time="searchTime"
-      @handleRespone="handleAgentRespone"
-      @setDataLoading="setDataLoading"
-    />
-    <member
-      v-show="curTableIndex === tableEnum.member"
-      ref="member"
-      :payout-time="searchTime"
-      @handleRespone="handleMemberRespone"
-      @setDataLoading="setDataLoading"
-    />
   </div>
 </template>
 
@@ -260,9 +258,8 @@ export default {
       }
     }
   },
-  mounted() {
-    this.formClassName = ['agentInfoFormData', 'agentInfoForm']
-    this.otherHeight = 130 // 上面的table高度
+  created() {
+    this.searchFormNormalHeight = "auto";
 
     if (this.tempRoute.params?.id !== undefined) {
       this.agentId = parseInt(this.tempRoute.params.id)
@@ -283,19 +280,6 @@ export default {
         this.agentInfo.open = !this.agentInfo.open;
         this.agentInfo = JSON.parse(JSON.stringify(this.agentInfo))
       })
-    },
-    resizeHandler() {
-      const vw = window.innerWidth;
-      if (vw <= 768) {
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        this.paginationPagerCount = 7;
-      } else {
-        this.paginationPagerCount = 7;
-      }
-      // this.$nextTick(() => {
-      //   this.setHeight();
-      // });
     },
     setTagsViewTitle() {
       const title = this.$t(this.tempRoute.meta.title)
