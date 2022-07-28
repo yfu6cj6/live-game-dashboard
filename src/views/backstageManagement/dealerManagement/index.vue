@@ -124,23 +124,23 @@
                   </div>
                   <div class="item">
                     <span class="header">ID</span>
-                    <span>{{ item.id }}</span>
+                    <span class="content">{{ item.id }}</span>
                   </div>
                   <div class="item account">
                     <span class="header">{{ $t('__account') }}</span>
-                    <span>{{ item.account }}</span>
+                    <span class="content">{{ item.account }}</span>
                   </div>
                   <div class="item name">
                     <span class="header">{{ $t('__name') }}</span>
-                    <span>{{ item.name }}</span>
+                    <span class="content">{{ item.name }}</span>
                   </div>
                   <div class="item status">
                     <span class="header">{{ $t('__status') }}</span>
-                    <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                    <span class="status content" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
                   </div>
                   <div class="item creator">
                     <span class="header">{{ $t('__creator') }}</span>
-                    <span>{{ item.creator }}</span>
+                    <span class="content">{{ item.creator }}</span>
                   </div>
                   <div class="operate">
                     <div class="loginBar">
