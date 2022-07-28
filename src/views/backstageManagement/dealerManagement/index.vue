@@ -122,38 +122,32 @@
                     <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
                     <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
                   </div>
-                </div>
-                <div class="right">
-                  <div class="top">
-                    <div class="item">
-                      <span class="header">ID</span>
-                      <span>{{ item.id }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__account') }}</span>
-                      <span>{{ item.account }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__name') }}</span>
-                      <span>{{ item.name }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__status') }}</span>
-                      <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__creator') }}</span>
-                      <span>{{ item.creator }}</span>
-                    </div>
+                  <div class="item">
+                    <span class="header">ID</span>
+                    <span>{{ item.id }}</span>
                   </div>
-                  <div class="bottom">
-                    <div class="operate">
-                      <el-button class="bg-yellow" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
-                      <a :href="item.dns1d" :download="item.name">
-                        <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
-                      </a>
-                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__account') }}</span>
+                    <span>{{ item.account }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__name') }}</span>
+                    <span>{{ item.name }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__status') }}</span>
+                    <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__creator') }}</span>
+                    <span>{{ item.creator }}</span>
+                  </div>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
+                    <a :href="item.dns1d" :download="item.name">
+                      <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
+                    </a>
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                   </div>
                 </div>
               </template>
@@ -376,17 +370,10 @@ export default {
         &-row {
           .wrap {
             .left {
-              width: 20%;
-            }
-            .right {
-              width: 80%;
-              flex-direction: column;
+              flex-direction: row;
+              align-items: center;
               justify-content: space-evenly;
-              .top {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-              }
+              width: 100%;
             }
             .item {
               width: 110px;
