@@ -89,23 +89,23 @@
                 <div class="right">
                   <div class="item">
                     <span class="header">ID</span>
-                    <span>{{ item.id }}</span>
+                    <span class="content">{{ item.id }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ $t('__account') }}</span>
-                    <span>{{ item.account }}</span>
+                    <span class="content">{{ item.account }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ $t('__name') }}</span>
-                    <span>{{ item.name }}</span>
+                    <span class="content">{{ item.name }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ $t('__status') }}</span>
-                    <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                    <span class="content status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ $t('__creator') }}</span>
-                    <span>{{ item.creator }}</span>
+                    <span class="content">{{ item.creator }}</span>
                   </div>
                   <div class="operate">
                     <el-button class="bg-yellow" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
@@ -339,6 +339,12 @@ export default {
             justify-content: left;
             align-items: center;
             margin-right: 10px;
+          }
+          .item {
+            .header {
+              width: 60px;
+              min-width: 60px;
+            }
           }
           .operate {
             width: 250px;

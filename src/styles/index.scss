@@ -171,6 +171,21 @@ body {
   }
 }
 
+.banker {
+  color: #f07;
+  font-weight: bolder;
+}
+
+.player {
+  color: #09f;
+  font-weight: bolder;
+}
+
+.tie {
+  color: #090;
+  font-weight: bolder;
+}
+
 .confirmButton,
 .cancelButton {
   width: 100px;
@@ -250,18 +265,19 @@ body {
           display: flex;
           .item {
             display: flex;
-            flex-wrap: wrap;
             width: 100%;
             .header {
+              display: flex;
+              align-items: center;
               font-weight: bold;
-              display: inline-block;
-              margin-right: 10px;
-              position: relative;
-              &::after {
-                position: absolute;
-                content: ":";
-              }
             }
+            .content {
+              word-break: break-all;
+            }
+          }
+          .item + .item,
+          .item + .operate {
+            margin-top: 10px;
           }
         }
         .status {
@@ -332,9 +348,6 @@ body {
               justify-content: center;
               .header {
                 display: block;
-                &::after {
-                  content: "";
-                }
               }
             }
           }
