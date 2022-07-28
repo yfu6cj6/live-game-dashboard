@@ -73,7 +73,7 @@
         </template>
       </div>
       <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
+        <template v-if="tableData.length > 0">
           <div
             v-for="(item, index) in tableData"
             :key="index"
@@ -126,34 +126,40 @@
                     <span class="header">ID</span>
                     <span>{{ item.id }}</span>
                   </div>
-                  <div class="item">
+                  <div class="item account">
                     <span class="header">{{ $t('__account') }}</span>
                     <span>{{ item.account }}</span>
                   </div>
-                  <div class="item">
+                  <div class="item name">
                     <span class="header">{{ $t('__name') }}</span>
                     <span>{{ item.name }}</span>
                   </div>
-                  <div class="item">
+                  <div class="item status">
                     <span class="header">{{ $t('__status') }}</span>
                     <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
                   </div>
-                  <div class="item">
+                  <div class="item creator">
                     <span class="header">{{ $t('__creator') }}</span>
                     <span>{{ item.creator }}</span>
                   </div>
                   <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
-                    <a :href="item.dns1d" :download="item.name">
-                      <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
-                    </a>
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <div class="loginBar">
+                      <el-button class="bg-yellow loginBar" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
+                    </div>
+                    <div class="download">
+                      <a :href="item.dns1d" :download="item.name">
+                        <el-button class="bg-yellow download" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
+                      </a>
+                    </div>
+                    <div class="edit">
+                      <el-button class="bg-yellow edit" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    </div>
                   </div>
                 </div>
               </template>
             </div>
           </div>
-        </div>
+        </template>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
       </div>
     </div>
@@ -330,6 +336,7 @@ export default {
             width: auto;
           }
           .left {
+            justify-content: left;
             align-items: center;
             margin-right: 10px;
           }
@@ -372,14 +379,48 @@ export default {
             .left {
               flex-direction: row;
               align-items: center;
-              justify-content: space-evenly;
+              justify-content: left;
               width: 100%;
             }
             .item {
+              margin-right: 50px;
+              min-width: 110px;
               width: 110px;
+              &.account {
+                min-width: 120px;
+                width: 120px;
+              }
+              &.name {
+                min-width: 120px;
+                width: 120px;
+              }
+              &.status {
+                min-width: 80px;
+                width: 80px;
+              }
+              &.creator {
+                min-width: 120px;
+                width: 120px;
+              }
             }
             .operate {
+              justify-content: flex-start;
               width: 400px;
+              .loginBar {
+                width: 112px;
+                min-width: 112px;
+                margin-right: 32px;
+              }
+              .download {
+                width: 152px;
+                min-width: 152px;
+                margin-right: 32px;
+              }
+              .edit {
+                width: 72px;
+                min-width: 72px;
+                margin-right: 32px;
+              }
             }
           }
         }
