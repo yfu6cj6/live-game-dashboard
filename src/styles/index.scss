@@ -339,6 +339,8 @@ body {
         overflow-y: auto;
         &-row {
           display: flex;
+          width: max-content;
+          min-width: 100%;
           .item {
             flex-direction: column;
             line-height: 20px;

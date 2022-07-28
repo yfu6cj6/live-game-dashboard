@@ -11,6 +11,10 @@
           >
             <template v-if="device === 'mobile'">
               <div class="wrap" @click="remarkExpand(item)">
+                <div class="expand">
+                  <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
+                  <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />
+                </div>
                 <div>
                   <svg-icon icon-class="user" />
                   <router-link :to="`/winLossReport/winLossReport/${item.agentId}?searchTime=${searchTime}`">
@@ -23,61 +27,67 @@
                   <span class="header">{{ `${$t('__gameType')}` }}</span>
                   <span>{{ item.gameType }}</span>
                 </div>
-                <div class="group">
-                  <div class="item">
-                    <span class="header">{{ `${$t('__betAmount')}` }}</span>
-                    <span>{{ item.betAmount }}</span>
+                <div class="wrap-layout">
+                  <div class="left">
+                    <div class="item">
+                      <span class="header">{{ `${$t('__betAmount')}` }}</span>
+                      <span class="content">{{ agentInfo.betAmount }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ `${$t('__winLoss')}` }}</span>
+                      <span class="content">{{ agentInfo.winLoss }}</span>
+                    </div>
                   </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
-                    <span>{{ item.validBetAmount }}</span>
+                  <div class="right">
+                    <div class="item">
+                      <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
+                      <span class="content">{{ agentInfo.validBetAmount }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ `${$t('__winLossRate')}` }}</span>
+                      <span class="content">{{ agentInfo.winLossRate }}</span>
+                    </div>
                   </div>
                 </div>
-                <div class="group">
-                  <div class="item">
-                    <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                    <span>{{ item.winLoss }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                    <span>{{ item.winLossRate }}</span>
-                  </div>
-                </div>
-                <div v-if="item.open">
-                  <div class="group">
+                <div v-if="agentInfo.open" class="wrap-layout">
+                  <div class="left">
                     <div class="item">
                       <span class="header">{{ `${$t('__rollingRate')}` }}</span>
-                      <span>{{ item.rollingRate }}</span>
+                      <span class="content">{{ agentInfo.rollingRate }}</span>
                     </div>
-                    <div class="item">
-                      <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
-                      <span>{{ item.rollingCommission }}</span>
-                    </div>
-                  </div>
-                  <div class="group">
                     <div class="item">
                       <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                      <span>{{ item.netPL }}</span>
+                      <span class="content">{{ agentInfo.netPL }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ `${$t('__toSuperior')}` }}</span>
+                      <span class="content">{{ agentInfo.toSuperior }}</span>
+                    </div>
+                    <div class="item">
+                      <div class="betMember" size="mini" @click.stop="onBetMemberCount()">
+                        <span>{{ `${$t('__betMemberCount')} ` }}</span>
+                        <span>{{ agentInfo.betMemberCount }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="right">
+                    <div class="item">
+                      <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
+                      <span class="content">{{ agentInfo.rollingCommission }}</span>
                     </div>
                     <div class="item">
                       <span class="header">{{ `${$t('__commissionRate')}` }}</span>
-                      <span>{{ item.commissionRate }}</span>
-                    </div>
-                  </div>
-                  <div class="group">
-                    <div class="item">
-                      <span class="header">{{ `${$t('__toSuperior')}` }}</span>
-                      <span>{{ item.toSuperior }}</span>
+                      <span class="content">{{ agentInfo.commissionRate }}</span>
                     </div>
                     <div class="item">
                       <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
-                      <span>{{ item.commitSuperiorsValidBetAmount }}</span>
+                      <span class="content">{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ `${$t('__myProfit')}` }}</span>
+                      <span>{{ agentInfo.myProfit }}</span>
                     </div>
                   </div>
-                </div>
-                <div class="expand">
-                  <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
-                  <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />
                 </div>
               </div>
             </template>

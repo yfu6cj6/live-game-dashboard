@@ -120,7 +120,7 @@
                 <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
                 <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
               </div>
-              <div class="item">
+              <div class="item id">
                 <span class="header">ID</span>
                 <span class="content">{{ item.id }}</span>
               </div>
@@ -132,7 +132,7 @@
                 <span class="header">{{ $t('__name') }}</span>
                 <span class="content">{{ item.name }}</span>
               </div>
-              <div class="item status">
+              <div class="item state">
                 <span class="header">{{ $t('__status') }}</span>
                 <span class="status content" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
               </div>
@@ -377,15 +377,20 @@ export default {
           .item {
             min-width: 110px;
             width: 110px;
+            margin-right: 50px;
+            &.id {
+              min-width: 60px;
+              width: 60px;
+            }
             &.account {
-              min-width: 120px;
-              width: 120px;
+              min-width: 140px;
+              width: 140px;
             }
             &.name {
               min-width: 120px;
               width: 120px;
             }
-            &.status {
+            &.state {
               min-width: 80px;
               width: 80px;
             }
@@ -400,10 +405,12 @@ export default {
             .loginBar {
               width: 112px;
               min-width: 112px;
+              margin-right: 32px;
             }
             .download {
               width: 152px;
               min-width: 152px;
+              margin-right: 32px;
             }
             .edit {
               width: 72px;
