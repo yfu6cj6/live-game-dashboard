@@ -9,8 +9,12 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="wrap" @click="remarkExpand(item)">
-              <template v-if="device === 'mobile'">
+            <template v-if="device === 'mobile'">
+              <div class="wrap" @click="remarkExpand(item)">
+                <div class="expand">
+                  <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
+                  <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />
+                </div>
                 <div>
                   <router-link :to="`/memberBet/memberBet/${item.member_id}?searchTime=${searchTime}`">
                     <el-button class="bg-normal stroke" size="mini">
@@ -20,52 +24,40 @@
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__gameType')}` }}</span>
-                  <span>{{ item.gameType }}</span>
+                  <span class="content">{{ item.gameType }}</span>
                 </div>
-                <div class="group">
+                <div class="item">
+                  <span class="header">{{ `${$t('__betAmount')}` }}</span>
+                  <span class="content">{{ item.betAmount }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ `${$t('__winLoss')}` }}</span>
+                  <span class="content">{{ item.winLoss }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ `${$t('__winLossRate')}` }}</span>
+                  <span class="content">{{ item.winLossRate }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
+                  <span class="content">{{ item.validBetAmount }}</span>
+                </div>
+                <template v-if="item.open">
                   <div class="item">
-                    <span class="header">{{ `${$t('__betAmount')}` }}</span>
-                    <span>{{ item.betAmount }}</span>
+                    <span class="header">{{ `${$t('__rollingRate')}` }}</span>
+                    <span class="content">{{ item.rollingRate }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
-                    <span>{{ item.validBetAmount }}</span>
-                  </div>
-                </div>
-                <div class="group">
-                  <div class="item">
-                    <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                    <span>{{ item.winLoss }}</span>
+                    <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
+                    <span class="content">{{ item.rollingCommission }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                    <span>{{ item.winLossRate }}</span>
+                    <span class="header">{{ `${$t('__totalAmount')}` }}</span>
+                    <span class="content">{{ item.netPL }}</span>
                   </div>
-                </div>
-                <div v-if="item.open">
-                  <div class="group">
-                    <div class="item">
-                      <span class="header">{{ `${$t('__rollingRate')}` }}</span>
-                      <span>{{ item.rollingRate }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
-                      <span>{{ item.rollingCommission }}</span>
-                    </div>
-                  </div>
-                  <div class="group">
-                    <div class="item">
-                      <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                      <span>{{ item.netPL }}</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="expand">
-                  <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
-                  <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />
-                </div>
-              </template>
-            </div>
+                </template>
+              </div>
+            </template>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -175,11 +167,11 @@ export default {
     &-table {
       &-row {
         .wrap {
-          flex-direction: column;
           position: relative;
-          .group {
-            display: flex;
-            justify-content: space-between;
+          .item {
+            .header {
+              width: 50%;
+            }
           }
         }
       }

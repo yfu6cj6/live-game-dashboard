@@ -139,68 +139,58 @@
                 <span class="header">{{ `${$t('__gameType')}` }}</span>
                 <span class="content">{{ agentInfo.gameType }}</span>
               </div>
-              <div class="wrap-layout">
-                <div class="left">
-                  <div class="item">
-                    <span class="header">{{ `${$t('__betAmount')}` }}</span>
-                    <span class="content">{{ agentInfo.betAmount }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                    <span class="content">{{ agentInfo.winLoss }}</span>
-                  </div>
-                </div>
-                <div class="right">
-                  <div class="item">
-                    <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
-                    <span class="content">{{ agentInfo.validBetAmount }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                    <span class="content">{{ agentInfo.winLossRate }}</span>
-                  </div>
-                </div>
+              <div class="item">
+                <span class="header">{{ `${$t('__betAmount')}` }}</span>
+                <span class="content">{{ agentInfo.betAmount }}</span>
               </div>
-              <div v-if="agentInfo.open" class="wrap-layout">
-                <div class="left">
-                  <div class="item">
-                    <span class="header">{{ `${$t('__rollingRate')}` }}</span>
-                    <span class="content">{{ agentInfo.rollingRate }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                    <span class="content">{{ agentInfo.netPL }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__toSuperior')}` }}</span>
-                    <span class="content">{{ agentInfo.toSuperior }}</span>
-                  </div>
-                  <div class="item">
-                    <div class="betMember" size="mini" @click.stop="onBetMemberCount()">
-                      <span>{{ `${$t('__betMemberCount')} ` }}</span>
-                      <span>{{ agentInfo.betMemberCount }}</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="right">
-                  <div class="item">
-                    <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
-                    <span class="content">{{ agentInfo.rollingCommission }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__commissionRate')}` }}</span>
-                    <span class="content">{{ agentInfo.commissionRate }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
-                    <span class="content">{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__myProfit')}` }}</span>
-                    <span>{{ agentInfo.myProfit }}</span>
-                  </div>
-                </div>
+              <div class="item">
+                <span class="header">{{ `${$t('__winLoss')}` }}</span>
+                <span class="content">{{ agentInfo.winLoss }}</span>
               </div>
+              <div class="item">
+                <span class="header">{{ `${$t('__winLossRate')}` }}</span>
+                <span class="content">{{ agentInfo.winLossRate }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
+                <span class="content">{{ agentInfo.validBetAmount }}</span>
+              </div>
+              <template v-if="agentInfo.open">
+                <div class="item">
+                  <span class="header">{{ `${$t('__rollingRate')}` }}</span>
+                  <span class="content">{{ agentInfo.rollingRate }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
+                  <span class="content">{{ agentInfo.rollingCommission }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ `${$t('__totalAmount')}` }}</span>
+                  <span class="content">{{ agentInfo.netPL }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ `${$t('__commissionRate')}` }}</span>
+                  <span class="content">{{ agentInfo.commissionRate }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ `${$t('__toSuperior')}` }}</span>
+                  <span class="content">{{ agentInfo.toSuperior }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
+                  <span class="content">{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
+                </div>
+                <div class="item">
+                  <div class="header" size="mini" @click.stop="onBetMemberCount()">
+                    <span class="betMember">{{ `${$t('__betMemberCount')} ` }}</span>
+                  </div>
+                  <span class="content">{{ agentInfo.betMemberCount }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ `${$t('__myProfit')}` }}</span>
+                  <span class="content">{{ agentInfo.myProfit }}</span>
+                </div>
+              </template>
             </div>
           </template>
           <template v-else>
@@ -547,26 +537,9 @@ export default {
           .agentName {
             vertical-align: top;
           }
-          .wrap-layout {
-            display: flex;
-            .left,
-            .right {
-              display: flex;
-              flex-direction: column;
-              width: 50%;
-              margin-top: 5px;
-            }
-            .right {
-              .item {
-                .header {
-                  width: 120px;
-                }
-              }
-            }
-          }
           .item {
             .header {
-              width: 100px;
+              width: 50%;
             }
           }
         }
