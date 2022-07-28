@@ -203,6 +203,27 @@ export const asyncRoutes = [
   },
 
   {
+    // 投注記錄
+    path: '/memberBet',
+    component: Layout,
+    redirect: '/memberBet',
+    meta: { title: '__memberBet', icon: 'memberBet', permission: 'MemberManage.Bet.Record' },
+    children: [{
+      path: 'memberBet',
+      name: 'MemberBet',
+      component: () => import('@/views/memberBet/index'),
+      meta: { title: '__memberBet' }
+    },
+    {
+      path: 'memberBet/:id(\\d+)',
+      name: 'MemberBet{0}',
+      component: () => import('@/views/memberBet/index'),
+      meta: { title: '__memberBet', activeMenu: '/memberBet/memberBet' },
+      hidden: true
+    }]
+  },
+
+  {
     // 代理額度記錄
     path: '/agentBalanceRecord',
     component: Layout,

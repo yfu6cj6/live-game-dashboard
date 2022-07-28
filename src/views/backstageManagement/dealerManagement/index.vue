@@ -80,8 +80,8 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="wrap">
-              <template v-if="device === 'mobile'">
+            <template v-if="device === 'mobile'">
+              <div class="wrap">
                 <div class="left">
                   <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
                   <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
@@ -115,49 +115,47 @@
                     <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                   </div>
                 </div>
-              </template>
-              <template v-else>
-                <div class="left">
-                  <div class="item">
-                    <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
-                    <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
-                  </div>
-                  <div class="item">
-                    <span class="header">ID</span>
-                    <span class="content">{{ item.id }}</span>
-                  </div>
-                  <div class="item account">
-                    <span class="header">{{ $t('__account') }}</span>
-                    <span class="content">{{ item.account }}</span>
-                  </div>
-                  <div class="item name">
-                    <span class="header">{{ $t('__name') }}</span>
-                    <span class="content">{{ item.name }}</span>
-                  </div>
-                  <div class="item status">
-                    <span class="header">{{ $t('__status') }}</span>
-                    <span class="status content" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-                  </div>
-                  <div class="item creator">
-                    <span class="header">{{ $t('__creator') }}</span>
-                    <span class="content">{{ item.creator }}</span>
-                  </div>
-                  <div class="operate">
-                    <div class="loginBar">
-                      <el-button class="bg-yellow loginBar" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
-                    </div>
-                    <div class="download">
-                      <a :href="item.dns1d" :download="item.name">
-                        <el-button class="bg-yellow download" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
-                      </a>
-                    </div>
-                    <div class="edit">
-                      <el-button class="bg-yellow edit" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    </div>
-                  </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="item">
+                <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
+                <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
+              </div>
+              <div class="item">
+                <span class="header">ID</span>
+                <span class="content">{{ item.id }}</span>
+              </div>
+              <div class="item account">
+                <span class="header">{{ $t('__account') }}</span>
+                <span class="content">{{ item.account }}</span>
+              </div>
+              <div class="item name">
+                <span class="header">{{ $t('__name') }}</span>
+                <span class="content">{{ item.name }}</span>
+              </div>
+              <div class="item status">
+                <span class="header">{{ $t('__status') }}</span>
+                <span class="status content" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+              </div>
+              <div class="item creator">
+                <span class="header">{{ $t('__creator') }}</span>
+                <span class="content">{{ item.creator }}</span>
+              </div>
+              <div class="operate">
+                <div class="loginBar">
+                  <el-button class="bg-yellow loginBar" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
                 </div>
-              </template>
-            </div>
+                <div class="download">
+                  <a :href="item.dns1d" :download="item.name">
+                    <el-button class="bg-yellow download" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
+                  </a>
+                </div>
+                <div class="edit">
+                  <el-button class="bg-yellow edit" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                </div>
+              </div>
+            </template>
           </div>
         </template>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -327,31 +325,31 @@ export default {
   &-container {
     &-table {
       &-row {
+        .dealerPhoto {
+          vertical-align: middle;
+          width: 105px;
+        }
+        .item {
+          .header {
+            width: 60px;
+            min-width: 60px;
+          }
+        }
         .wrap {
-          .left,
+          .left {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+          }
           .right {
             display: flex;
             flex-direction: column;
             justify-content: center;
             width: auto;
           }
-          .left {
-            justify-content: left;
-            align-items: center;
-            margin-right: 10px;
-          }
-          .item {
-            .header {
-              width: 60px;
-              min-width: 60px;
-            }
-          }
           .operate {
             width: 250px;
-          }
-          .dealerPhoto {
-            vertical-align: middle;
-            width: 105px;
           }
         }
       }
@@ -381,52 +379,40 @@ export default {
     &-container {
       &-table {
         &-row {
-          .wrap {
-            .left {
-              flex-direction: row;
-              align-items: center;
-              justify-content: left;
-              width: 100%;
+          .item {
+            min-width: 110px;
+            width: 110px;
+            &.account {
+              min-width: 120px;
+              width: 120px;
             }
-            .item {
-              margin-right: 50px;
-              min-width: 110px;
-              width: 110px;
-              &.account {
-                min-width: 120px;
-                width: 120px;
-              }
-              &.name {
-                min-width: 120px;
-                width: 120px;
-              }
-              &.status {
-                min-width: 80px;
-                width: 80px;
-              }
-              &.creator {
-                min-width: 120px;
-                width: 120px;
-              }
+            &.name {
+              min-width: 120px;
+              width: 120px;
             }
-            .operate {
-              justify-content: flex-start;
-              width: 400px;
-              .loginBar {
-                width: 112px;
-                min-width: 112px;
-                margin-right: 32px;
-              }
-              .download {
-                width: 152px;
-                min-width: 152px;
-                margin-right: 32px;
-              }
-              .edit {
-                width: 72px;
-                min-width: 72px;
-                margin-right: 32px;
-              }
+            &.status {
+              min-width: 80px;
+              width: 80px;
+            }
+            &.creator {
+              min-width: 120px;
+              width: 120px;
+            }
+          }
+          .operate {
+            justify-content: flex-start;
+            width: 400px;
+            .loginBar {
+              width: 112px;
+              min-width: 112px;
+            }
+            .download {
+              width: 152px;
+              min-width: 152px;
+            }
+            .edit {
+              width: 72px;
+              min-width: 72px;
             }
           }
         }

@@ -200,9 +200,9 @@ body {
 .operate {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   a {
     .el-button {
-      height: 100%;
       vertical-align: top;
     }
   }
@@ -261,24 +261,24 @@ body {
       &-row {
         background-color: #fff;
         padding: 10px;
+        .item {
+          display: flex;
+          width: 100%;
+          .header {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+          }
+          .content {
+            word-break: break-all;
+          }
+        }
+        .item + .item,
+        .item + .operate {
+          margin-top: 5px;
+        }
         .wrap {
           display: flex;
-          .item {
-            display: flex;
-            width: 100%;
-            .header {
-              display: flex;
-              align-items: center;
-              font-weight: bold;
-            }
-            .content {
-              word-break: break-all;
-            }
-          }
-          .item + .item,
-          .item + .operate {
-            margin-top: 10px;
-          }
         }
         .status {
           color: #f00;
@@ -341,14 +341,13 @@ body {
       &-table {
         overflow-y: auto;
         &-row {
-          .wrap {
-            .item {
-              flex-direction: column;
-              line-height: 20px;
-              justify-content: center;
-              .header {
-                display: block;
-              }
+          display: flex;
+          .item {
+            flex-direction: column;
+            line-height: 20px;
+            justify-content: center;
+            .header {
+              display: block;
             }
           }
         }

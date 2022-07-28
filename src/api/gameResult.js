@@ -16,6 +16,14 @@ export function gameResultGetPlaybackUrl(data) {
   })
 }
 
+export function gameResultGetPlaybackPic(data) {
+  return request({
+    url: '/game/result/getPlaybackPic',
+    method: 'post',
+    data: data
+  })
+}
+
 export function gameResultGetScoreCards(data) {
   return request({
     url: '/game/result/getScoreCards',
@@ -24,9 +32,9 @@ export function gameResultGetScoreCards(data) {
   })
 }
 
-export function gameRoundInvalid(data) {
+export function gameResultModBillingStatus(data) {
   return request({
-    url: '/game/result/getScoreCards',
+    url: '/game/result/modBillingStatus',
     method: 'post',
     data: data
   })

@@ -133,57 +133,57 @@
               </div>
               <div class="item">
                 <span class="header">{{ `${$t('__gameType')}` }}</span>
-                <span>{{ agentInfo.gameType }}</span>
+                <span class="content">{{ agentInfo.gameType }}</span>
               </div>
               <div class="group">
                 <div class="item">
                   <span class="header">{{ `${$t('__betAmount')}` }}</span>
-                  <span>{{ agentInfo.betAmount }}</span>
+                  <span class="content">{{ agentInfo.betAmount }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
-                  <span>{{ agentInfo.validBetAmount }}</span>
+                  <span class="content">{{ agentInfo.validBetAmount }}</span>
                 </div>
               </div>
               <div class="group">
                 <div class="item">
                   <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                  <span>{{ agentInfo.winLoss }}</span>
+                  <span class="content">{{ agentInfo.winLoss }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                  <span>{{ agentInfo.winLossRate }}</span>
+                  <span class="content">{{ agentInfo.winLossRate }}</span>
                 </div>
               </div>
               <div v-if="agentInfo.open">
                 <div class="group">
                   <div class="item">
                     <span class="header">{{ `${$t('__rollingRate')}` }}</span>
-                    <span>{{ agentInfo.rollingRate }}</span>
+                    <span class="content">{{ agentInfo.rollingRate }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
-                    <span>{{ agentInfo.rollingCommission }}</span>
+                    <span class="content">{{ agentInfo.rollingCommission }}</span>
                   </div>
                 </div>
                 <div class="group">
                   <div class="item">
                     <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                    <span>{{ agentInfo.netPL }}</span>
+                    <span class="content">{{ agentInfo.netPL }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ `${$t('__commissionRate')}` }}</span>
-                    <span>{{ agentInfo.commissionRate }}</span>
+                    <span class="content">{{ agentInfo.commissionRate }}</span>
                   </div>
                 </div>
                 <div class="group">
                   <div class="item">
                     <span class="header">{{ `${$t('__toSuperior')}` }}</span>
-                    <span>{{ agentInfo.toSuperior }}</span>
+                    <span class="content">{{ agentInfo.toSuperior }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
-                    <span>{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
+                    <span class="content">{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
                   </div>
                 </div>
                 <div class="group">
@@ -207,72 +207,32 @@
           </template>
           <template v-else>
             <div class="wrap">
-              <div class="item c0">
-                <el-button v-if="agentInfo.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click.stop="remarkExpand()" />
-                <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click.stop="remarkExpand()" />
-              </div>
-              <div class="item c1">
+              <div class="c0">
                 <svg-icon icon-class="user" />
                 <span class="agentName">{{ agentInfo.agent }}</span>
               </div>
-              <div class="item c2">
-                <span class="header">{{ `${$t('__gameType')}` }}</span>
-                <span>{{ agentInfo.gameType }}</span>
-              </div>
-              <div class="item c3">
-                <span class="header">{{ `${$t('__betAmount')}` }}</span>
-                <span>{{ agentInfo.betAmount }}</span>
-              </div>
-              <div class="item c4">
-                <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
-                <span>{{ agentInfo.validBetAmount }}</span>
-              </div>
-              <div class="item c5">
-                <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                <span>{{ agentInfo.winLoss }}</span>
-              </div>
-              <div class="item c6">
-                <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                <span>{{ agentInfo.winLossRate }}</span>
-              </div>
-            </div>
-            <div v-if="agentInfo.open" class="wrap">
-              <div class="item c1">
-                <span class="header">{{ `${$t('__rollingRate')}` }}</span>
-                <span>{{ agentInfo.rollingRate }}</span>
-              </div>
-              <div class="item c2">
-                <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
-                <span>{{ agentInfo.rollingCommission }}</span>
-              </div>
-              <div class="item c3">
-                <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                <span>{{ agentInfo.netPL }}</span>
-              </div>
-              <div class="item c4">
-                <span class="header">{{ `${$t('__commissionRate')}` }}</span>
-                <span>{{ agentInfo.commissionRate }}</span>
-              </div>
-              <div class="item c5">
-                <span class="header">{{ `${$t('__toSuperior')}` }}</span>
-                <span>{{ agentInfo.toSuperior }}</span>
-              </div>
-              <div class="item c6">
-                <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
-                <span>{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
-              </div>
-            </div>
-            <div v-if="agentInfo.open" class="wrap">
-              <div class="item c1 betMemberCount" size="mini" @click.stop="onBetMemberCount()">
-                <div>
-                  <span class="header">{{ `${$t('__betMemberCount')} ` }}</span>
-                </div>
-                <span>{{ agentInfo.betMemberCount }}</span>
-              </div>
-              <div class="item c2">
-                <span class="header">{{ `${$t('__myProfit')}` }}</span>
-                <span>{{ agentInfo.myProfit }}</span>
-              </div>
+              <div class="r1-c1">{{ $t('__gameType') }}</div>
+              <div class="r1-c3">{{ $t('__betAmount') }}</div>
+              <div class="r1-c4">{{ $t('__winLoss') }}</div>
+              <div class="r1-c5">{{ $t('__winLossRate') }}</div>
+              <div class="r1-c6">{{ $t('__validBetAmount') }}</div>
+              <div class="r1-c7">{{ $t('__rollingRate') }}</div>
+              <div class="r1-c8">{{ $t('__rollingCommission') }}</div>
+              <div class="r1-c9">{{ $t('__totalAmount') }}</div>
+              <div class="r1-c10">{{ $t('__commissionRate') }}</div>
+              <div class="r1-c11">{{ $t('__toSuperior') }}</div>
+              <div class="r1-c12">{{ $t('__commitSuperiorsValidBetAmount') }}</div>
+              <div class="r2-c1">{{ agentInfo.gameType }}</div>
+              <div class="r2-c3">{{ agentInfo.betAmount }}</div>
+              <div class="r2-c4">{{ agentInfo.winLoss }}</div>
+              <div class="r2-c5">{{ agentInfo.winLossRate }}</div>
+              <div class="r2-c6">{{ agentInfo.validBetAmount }}</div>
+              <div class="r2-c7">{{ agentInfo.rollingRate }}</div>
+              <div class="r2-c8">{{ agentInfo.rollingCommission }}</div>
+              <div class="r2-c9">{{ agentInfo.netPL }}</div>
+              <div class="r2-c10">{{ agentInfo.commissionRate }}</div>
+              <div class="r2-c11">{{ agentInfo.toSuperior }}</div>
+              <div class="r2-c12">{{ agentInfo.commitSuperiorsValidBetAmount }}</div>
             </div>
           </template>
         </div>
@@ -642,39 +602,84 @@ export default {
         &-row {
           .wrap {
             display: grid;
-            grid-template-columns: 50px repeat(6, 1fr);
-            grid-template-areas: "c0 c1 c2 c3 c4 c5 c6";
-            .c0 {
-              grid-area: c0;
-            }
-            .c1 {
-              grid-area: c1;
-            }
-            .c2 {
-              grid-area: c2;
-            }
-            .c3 {
-              grid-area: c3;
-            }
-            .c4 {
-              grid-area: c4;
-            }
-            .c5 {
-              grid-area: c5;
-            }
-            .c6 {
-              grid-area: c6;
-            }
-            .betMemberCount {
-              cursor: pointer;
-              .header {
-                display: inline-block;
-                background-color: $yellow;
-              }
-            }
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-areas:
+            "c0 r1-c1 r1-c3 r1-c4 r1-c5 r1-c6 r1-c7 r1-c8 r1-c9 r1-c10 r1-c11 r1-c12"
+            "c0 r2-c1 r2-c3 r2-c4 r2-c5 r2-c6 r2-c7 r2-c8 r2-c9 r2-c10 r2-c11 r2-c12";
           }
-          .wrap + .wrap {
-            margin-top: 10px;
+          .c0 {
+            grid-area: c0;
+            display: flex;
+            align-items: center;
+          }
+          .r1-c1 {
+            grid-area: r1-c1;
+          }
+          .r1-c3 {
+            grid-area: r1-c3;
+          }
+          .r1-c4 {
+            grid-area: r1-c4;
+          }
+          .r1-c5 {
+            grid-area: r1-c5;
+          }
+          .r1-c6 {
+            grid-area: r1-c6;
+          }
+          .r1-c7 {
+            grid-area: r1-c7;
+          }
+          .r1-c8 {
+            grid-area: r1-c8;
+          }
+          .r1-c9 {
+            grid-area: r1-c9;
+          }
+          .r1-c10 {
+            grid-area: r1-c10;
+          }
+          .r1-c11 {
+            grid-area: r1-c11;
+          }
+          .r1-c12 {
+            grid-area: r1-c12;
+          }
+          .r2-c1 {
+            grid-area: r2-c1;
+          }
+          .r2-c2 {
+            grid-area: r2-c2;
+          }
+          .r2-c3 {
+            grid-area: r2-c3;
+          }
+          .r2-c4 {
+            grid-area: r2-c4;
+          }
+          .r2-c5 {
+            grid-area: r2-c5;
+          }
+          .r2-c6 {
+            grid-area: r2-c6;
+          }
+          .r2-c7 {
+            grid-area: r2-c7;
+          }
+          .r2-c8 {
+            grid-area: r2-c8;
+          }
+          .r2-c9 {
+            grid-area: r2-c9;
+          }
+          .r2-c10 {
+            grid-area: r2-c10;
+          }
+          .r2-c11 {
+            grid-area: r2-c11;
+          }
+          .r2-c12 {
+            grid-area: r2-c12;
           }
         }
       }
