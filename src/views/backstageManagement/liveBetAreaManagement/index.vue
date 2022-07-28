@@ -379,7 +379,7 @@ export default {
               width: 30px;
             }
             .areaName {
-              width: 110px;
+              width: 120px;
             }
             .area {
               width: 180px;

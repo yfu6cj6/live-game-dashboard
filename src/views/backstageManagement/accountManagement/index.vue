@@ -133,8 +133,8 @@
                       </span>
                     </div>
                     <div class="operate">
-                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                      <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
+                      <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                      <el-button class="bg-red" size="mini" @click.stop="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
                     </div>
                   </div>
                 </div>

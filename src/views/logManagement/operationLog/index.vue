@@ -277,24 +277,6 @@ export default {
     this.handleCurrentChange(this.currentPage)
   },
   methods: {
-    resizeHandler() {
-      const vw = window.innerWidth;
-      var formHeight = "34px";
-      if (vw <= 768) {
-        formHeight = this.searchFormOpen ? "102px" : formHeight;
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        formHeight = this.searchFormOpen ? "68px" : formHeight;
-        this.paginationPagerCount = 7;
-      } else {
-        formHeight = "auto";
-        this.paginationPagerCount = 7;
-      }
-      this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
-        this.setHeight();
-      });
-    },
     remarkExpand(row) {
       const obj = this.tableData.find(item => item.id === row.id);
       this.$nextTick(() => {

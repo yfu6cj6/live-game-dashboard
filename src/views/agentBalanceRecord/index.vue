@@ -171,73 +171,71 @@
               </template>
               <template v-else>
                 <div class="wrap">
-                  <div class="left">
-                    <div class="item remark">
-                      <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                      <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__transactionNumber') }}</span>
-                      <span>{{ item.order_number }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__operationTime') }}</span>
-                      <span>{{ item.operationTime }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__agent') }}</span>
-                      <span>{{ item.agent }}</span>
-                    </div>
-                    <div class="item record">
-                      <span class="header">{{ $t('__recordType') }}</span>
-                      <span>{{ item.type }}</span>
-                    </div>
-                    <div class="item ip">
-                      <span class="header">IP</span>
-                      <span>{{ item.ip }}</span>
-                    </div>
+                  <div class="item remark c0">
+                    <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
+                    <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
+                  </div>
+                  <div class="item c1">
+                    <span class="header">{{ $t('__transactionNumber') }}</span>
+                    <span>{{ item.order_number }}</span>
+                  </div>
+                  <div class="item c2">
+                    <span class="header">{{ $t('__operationTime') }}</span>
+                    <span>{{ item.operationTime }}</span>
+                  </div>
+                  <div class="item c3">
+                    <span class="header">{{ $t('__agent') }}</span>
+                    <span>{{ item.agent }}</span>
+                  </div>
+                  <div class="item c4">
+                    <span class="header">{{ $t('__recordType') }}</span>
+                    <span>{{ item.type }}</span>
+                  </div>
+                  <div class="item c5">
+                    <span class="header">IP</span>
+                    <span>{{ item.ip }}</span>
                   </div>
                 </div>
-                <div v-if="item.open">
-                  <div class="wrap moveright">
-                    <div class="item">
+                <template v-if="item.open">
+                  <div class="wrap">
+                    <div class="item c1">
                       <span class="header">{{ $t('__counterparty') }}</span>
                       <span>{{ item.counterparty }}</span>
                     </div>
-                    <div class="item">
+                    <div class="item c2">
                       <span class="header">{{ $t('__superiorAgent') }}</span>
                       <span>{{ item.superiorAgent }}</span>
                     </div>
-                    <div class="item">
+                    <div class="item c3">
                       <span class="header">{{ $t('__operator') }}</span>
                       <span>{{ item.operator }}</span>
                     </div>
                   </div>
-                  <div class="wrap moveright">
-                    <div class="item">
+                  <div class="wrap">
+                    <div class="item c1">
                       <span class="header">{{ $t('__preTradeBalance') }}</span>
                       <span>{{ item.pre_trade_balance }}</span>
                     </div>
-                    <div class="item">
+                    <div class="item c2">
                       <span class="header">{{ $t('__income') }}</span>
                       <span :class="{'front' : item.income > 0}">{{ item.incomeLabel }}</span>
                     </div>
-                    <div class="item">
+                    <div class="item c3">
                       <span class="header">{{ $t('__payout') }}</span>
                       <span :class="{'back' : item.payout < 0}">{{ item.payoutLabel }}</span>
                     </div>
-                    <div class="item">
+                    <div class="item c4">
                       <span class="header">{{ $t('__balanceAfterTrade') }}</span>
                       <span>{{ item.balance_after_trade }}</span>
                     </div>
                   </div>
-                  <div class="wrap moveright">
-                    <div class="item">
+                  <div class="wrap contentWrap">
+                    <div class="item c1">
                       <span class="header">{{ $t('__content') }}</span>
                       <span>{{ item.message }}</span>
                     </div>
                   </div>
-                </div>
+                </template>
               </template>
             </div>
           </div>
@@ -448,14 +446,6 @@ export default {
           }
           .item{
             word-break: break-all;
-            &.record {
-              min-width: 100px;
-              width: 100px;
-            }
-            &.ip {
-              min-width: 130px;
-              width: 130px;
-            }
           }
           .wrap + .wrap {
             margin-top: 0px;
@@ -463,9 +453,6 @@ export default {
           .mobileExpand{
             display: flex;
             flex-direction: column;
-          }
-          .moveright {
-            margin-left: 43px;
           }
           .front {
             color: blue;
@@ -487,16 +474,36 @@ export default {
       &-table {
         &-row {
           .content {
-            display: flex;
-            flex-direction: column;
             .wrap {
-              .left {
-                width: 100%;
-                flex-direction: row;
-                .remark {
-                  width: 50px;
-                }
+              display: grid;
+              grid-template-columns: 50px repeat(5, 1fr);
+              grid-template-areas:
+              "c0 c1 c2 c3 c4 c5";
+              .c0 {
+                grid-area: c0;
               }
+              .c1 {
+                grid-area: c1;
+              }
+              .c2 {
+                grid-area: c2;
+              }
+              .c3 {
+                grid-area: c3;
+              }
+              .c4 {
+                grid-area: c4;
+              }
+              .c5 {
+                grid-area: c5;
+              }
+            }
+            .contentWrap {
+              grid-template-areas:
+              ". c1 c1 c1 c1 c1";
+            }
+            .wrap + .wrap {
+              margin-top: 10px;
             }
           }
         }

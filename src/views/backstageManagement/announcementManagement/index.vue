@@ -177,8 +177,8 @@
                       <span>{{ item.maintain_ended_at }}</span>
                     </div>
                     <div class="operate">
-                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                      <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                      <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                      <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                     </div>
                   </div>
                 </div>
@@ -232,8 +232,8 @@
                         <span>{{ item.maintain_ended_at }}</span>
                       </div>
                       <div class="operate">
-                        <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                        <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
+                        <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                        <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                       </div>
                     </div>
                   </div>
