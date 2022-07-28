@@ -81,39 +81,37 @@
             :class="{'single-row': index % 2 === 0}"
           >
             <template v-if="device === 'mobile'">
-              <div class="wrap">
-                <div class="left">
-                  <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
-                  <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
+              <div class="left">
+                <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
+                <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
+              </div>
+              <div class="right">
+                <div class="item">
+                  <span class="header">ID</span>
+                  <span class="content">{{ item.id }}</span>
                 </div>
-                <div class="right">
-                  <div class="item">
-                    <span class="header">ID</span>
-                    <span class="content">{{ item.id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__account') }}</span>
-                    <span class="content">{{ item.account }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__name') }}</span>
-                    <span class="content">{{ item.name }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__status') }}</span>
-                    <span class="content status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__creator') }}</span>
-                    <span class="content">{{ item.creator }}</span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
-                    <a :href="item.dns1d" :download="item.name">
-                      <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
-                    </a>
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  </div>
+                <div class="item">
+                  <span class="header">{{ $t('__account') }}</span>
+                  <span class="content">{{ item.account }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__name') }}</span>
+                  <span class="content">{{ item.name }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__status') }}</span>
+                  <span class="content status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__creator') }}</span>
+                  <span class="content">{{ item.creator }}</span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
+                  <a :href="item.dns1d" :download="item.name">
+                    <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
+                  </a>
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                 </div>
               </div>
             </template>
@@ -325,6 +323,7 @@ export default {
   &-container {
     &-table {
       &-row {
+        display: flex;
         .dealerPhoto {
           vertical-align: middle;
           width: 105px;
@@ -335,22 +334,20 @@ export default {
             min-width: 60px;
           }
         }
-        .wrap {
-          .left {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 10px;
-          }
-          .right {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: auto;
-          }
-          .operate {
-            width: 250px;
-          }
+        .left {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 10px;
+        }
+        .right {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: auto;
+        }
+        .operate {
+          width: 250px;
         }
       }
     }
@@ -362,11 +359,9 @@ export default {
     &-container {
       &-table {
         &-row {
-          .wrap {
-            .left,
-            .right {
-              width: 50%;
-            }
+          .left,
+          .right {
+            width: 50%;
           }
         }
       }
