@@ -94,51 +94,97 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="content">
-              <template v-if="device === 'mobile'">
-                <div class="wrap" @click="remarkExpand(item)">
-                  <div class="left">
-                    <div class="item">
-                      <span class="header">{{ $t('__account') }}</span>
-                      <span>{{ item.account }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__nickname') }}</span>
-                      <span>{{ item.nickname }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__role') }}</span>
-                      <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role }}</span>
-                    </div>
-                    <div class="item">
-                      <div class="expand" @click.stop="remarkExpand(item)">
-                        <svg-icon v-if="item.open" icon-class="up" />
-                        <svg-icon v-else icon-class="more" />
-                      </div>
-                    </div>
+            <template v-if="device === 'mobile'">
+              <div class="base">
+                <div class="left" @click="remarkExpand(item)">
+                  <div class="item">
+                    <span class="header">{{ $t('__account') }}</span>
+                    <span class="content">{{ item.account }}</span>
                   </div>
-                  <div class="right">
-                    <div class="item">
-                      <span class="header">{{ $t('__agentName') }}</span>
-                      <span>{{ item.agentName }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__cityName') }}</span>
-                      <span>{{ item.cityNameLabel }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__accountStatus') }}</span>
-                      <span class="status" :class="{'statusOpen': item.status === '1' }">
-                        {{ item.statusLabel }}
-                      </span>
-                    </div>
-                    <div class="operate">
-                      <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                      <el-button class="bg-red" size="mini" @click.stop="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
+                  <div class="item">
+                    <span class="header">{{ $t('__nickname') }}</span>
+                    <span class="content">{{ item.nickname }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__role') }}</span>
+                    <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex" class="content">{{ role }}</span>
+                  </div>
+                </div>
+                <div class="right" @click="remarkExpand(item)">
+                  <div class="item">
+                    <span class="header">{{ $t('__agentName') }}</span>
+                    <span class="content">{{ item.agentName }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__cityName') }}</span>
+                    <span class="content">{{ item.cityNameLabel }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__accountStatus') }}</span>
+                    <span class="status content" :class="{'statusOpen': item.status === '1' }">
+                      {{ item.statusLabel }}
+                    </span>
+                  </div>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click.stop="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
+                  </div>
+                  <div class="item">
+                    <div class="expand" @click.stop="remarkExpand(item)">
+                      <svg-icon v-if="item.open" icon-class="up" />
+                      <svg-icon v-else icon-class="more" />
                     </div>
                   </div>
                 </div>
-                <div v-if="item.open" class="wrap" @click="remarkExpand(item)">
+              </div>
+              <div v-if="item.open" @click="remarkExpand(item)">
+                <div class="item col">
+                  <span class="header">{{ $t('__remark') }}</span>
+                  <span>
+                    {{ item.remark }}
+                  </span>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="content">
+                <div class="left">
+                  <div class="item remark">
+                    <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
+                    <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__account') }}</span>
+                    <span>{{ item.account }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__nickname') }}</span>
+                    <span>{{ item.nickname }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__role') }}</span>
+                    <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__agentName') }}</span>
+                    <span>{{ item.agentName }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__cityName') }}</span>
+                    <span>{{ item.cityNameLabel }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__accountStatus') }}</span>
+                    <span class="status" :class="{'statusOpen': item.status === '1' }">
+                      {{ item.statusLabel }}
+                    </span>
+                  </div>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
+                  </div>
+                </div>
+                <div v-if="item.open">
                   <div class="item">
                     <span class="header">{{ $t('__remark') }}</span>
                     <span>
@@ -146,58 +192,8 @@
                     </span>
                   </div>
                 </div>
-              </template>
-              <template v-else>
-                <div class="content">
-                  <div class="wrap">
-                    <div class="left">
-                      <div class="item remark">
-                        <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                        <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__account') }}</span>
-                        <span>{{ item.account }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__nickname') }}</span>
-                        <span>{{ item.nickname }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__role') }}</span>
-                        <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__agentName') }}</span>
-                        <span>{{ item.agentName }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__cityName') }}</span>
-                        <span>{{ item.cityNameLabel }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__accountStatus') }}</span>
-                        <span class="status" :class="{'statusOpen': item.status === '1' }">
-                          {{ item.statusLabel }}
-                        </span>
-                      </div>
-                      <div class="operate">
-                        <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                        <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-if="item.open" class="wrap">
-                    <div class="item">
-                      <span class="header">{{ $t('__remark') }}</span>
-                      <span>
-                        {{ item.remark }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </div>
+              </div>
+            </template>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -427,29 +423,42 @@ export default {
   &-container {
     &-table {
       &-row {
+        display: flex;
+        flex-direction: column;
         position: relative;
-        .content {
+        .base {
           display: flex;
-          flex-direction: column;
-          .wrap {
-            .left,
-            .right {
-              width: 50%;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-            }
-            .operate {
-              justify-content: start;
-            }
-            .expand {
-              position: absolute;
-              top: 5px;
-              right: 5px;
+          flex-direction: row;
+          .left,
+          .right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            .header {
+              width: 50px;
+              min-width: 50px;
             }
           }
-          .wrap + .wrap {
-            margin-top: 10px;
+          .right {
+            .header {
+              width: 80px;
+              min-width: 80px;
+            }
+          }
+          .operate {
+            justify-content: start;
+          }
+          .expand {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+          }
+        }
+        .item {
+          &.col {
+            display: flex;
+            flex-direction: column;
           }
         }
       }
@@ -465,13 +474,11 @@ export default {
           .content {
             display: flex;
             flex-direction: column;
-            .wrap {
-              .left {
-                width: 100%;
-                flex-direction: row;
-                .remark {
-                  width: 50px;
-                }
+            .left {
+              width: 100%;
+              flex-direction: row;
+              .remark {
+                width: 50px;
               }
             }
           }

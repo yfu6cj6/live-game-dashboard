@@ -97,68 +97,64 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="wrap">
-              <template v-if="device === 'mobile'">
-                <div class="left">
-                  <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+            <template v-if="device === 'mobile'">
+              <div class="left">
+                <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+              </div>
+              <div class="right">
+                <div class="item">
+                  <span class="header">ID</span>
+                  <span class="content">{{ item.id }}</span>
                 </div>
-                <div class="right">
-                  <div class="item">
-                    <span class="header">ID</span>
-                    <span>{{ item.id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__giftNickname') }}</span>
-                    <span>{{ item.nickname }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__currency') }}</span>
-                    <span>{{ item.currency }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__value') }}</span>
-                    <span>{{ item.valueLabel }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__status') }}</span>
-                    <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  </div>
+                <div class="item">
+                  <span class="header">{{ $t('__giftNickname') }}</span>
+                  <span class="content">{{ item.nickname }}</span>
                 </div>
-              </template>
-              <template v-else>
-                <div class="left">
-                  <div class="item">
-                    <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
-                  </div>
-                  <div class="item">
-                    <span class="header">ID</span>
-                    <span>{{ item.id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__giftNickname') }}</span>
-                    <span>{{ item.nickname }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__currency') }}</span>
-                    <span>{{ item.currency }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__value') }}</span>
-                    <span>{{ item.valueLabel }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__status') }}</span>
-                    <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  </div>
+                <div class="item">
+                  <span class="header">{{ $t('__currency') }}</span>
+                  <span class="content">{{ item.currency }}</span>
                 </div>
-              </template>
-            </div>
+                <div class="item">
+                  <span class="header">{{ $t('__value') }}</span>
+                  <span class="content">{{ item.valueLabel }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__status') }}</span>
+                  <span class="status content" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="item">
+                <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+              </div>
+              <div class="item">
+                <span class="header">ID</span>
+                <span>{{ item.id }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__giftNickname') }}</span>
+                <span>{{ item.nickname }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__currency') }}</span>
+                <span>{{ item.currency }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__value') }}</span>
+                <span>{{ item.valueLabel }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__status') }}</span>
+                <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+              </div>
+              <div class="operate">
+                <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+              </div>
+            </template>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -343,25 +339,32 @@ export default {
   &-container {
     &-table {
       &-row {
-        .wrap {
-          .left,
-          .right {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: auto;
-          }
-          .left {
-            align-items: center;
-            margin-right: 10px;
-          }
-          .operate {
-            width: 250px;
-          }
+        display: flex;
+        justify-content: space-between;
+        .left {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 10px;
           .giftPhoto {
             vertical-align: middle;
             width: 73px;
           }
+        }
+        .right {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: auto;
+          .item {
+            .header {
+              width: 50%;
+              min-width: 80px;
+            }
+          }
+        }
+        .operate {
+          width: 250px;
         }
       }
     }
@@ -373,11 +376,9 @@ export default {
     &-container {
       &-table {
         &-row {
-          .wrap {
-            .left,
-            .right {
-              width: 50%;
-            }
+          .left,
+          .right {
+            width: 50%;
           }
         }
       }
@@ -390,19 +391,17 @@ export default {
     &-container {
       &-table {
         &-row {
-          .wrap {
-            .left {
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-evenly;
-              width: 100%;
-            }
-            .item {
-              width: 110px;
-            }
-            .operate {
-              width: 110px;
-            }
+          .left {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+            width: 100%;
+          }
+          .item {
+            width: 110px;
+          }
+          .operate {
+            width: 110px;
           }
         }
       }

@@ -80,60 +80,58 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="wrap">
-              <template v-if="device === 'mobile'">
-                <div class="left">
-                  <div class="item">
-                    <span class="header">ID</span>
-                    <span>{{ item.id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__name') }}</span>
-                    <span>{{ item.name }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__nickname') }}</span>
-                    <span>{{ item.nickname }}</span>
-                  </div>
+            <template v-if="device === 'mobile'">
+              <div class="left">
+                <div class="item">
+                  <span class="header">ID</span>
+                  <span>{{ item.id }}</span>
                 </div>
-                <div class="right">
-                  <div class="item">
-                    <span class="header">{{ $t('__type') }}</span>
-                    <span>{{ item.typeNickname }}</span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onPermissionBtnClick(item)">{{ $t("__permission") }}</el-button>
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                  </div>
+                <div class="item">
+                  <span class="header">{{ $t('__name') }}</span>
+                  <span>{{ item.name }}</span>
                 </div>
-              </template>
-              <template v-else>
-                <div class="left">
-                  <div class="item id">
-                    <span class="header">ID</span>
-                    <span>{{ item.id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__name') }}</span>
-                    <span>{{ item.name }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__nickname') }}</span>
-                    <span>{{ item.nickname }}</span>
-                  </div>
-                  <div class="item type">
-                    <span class="header">{{ $t('__type') }}</span>
-                    <span>{{ item.typeNickname }}</span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onPermissionBtnClick(item)">{{ $t("__permission") }}</el-button>
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                  </div>
+                <div class="item">
+                  <span class="header">{{ $t('__nickname') }}</span>
+                  <span>{{ item.nickname }}</span>
                 </div>
-              </template>
-            </div>
+              </div>
+              <div class="right">
+                <div class="item">
+                  <span class="header">{{ $t('__type') }}</span>
+                  <span>{{ item.typeNickname }}</span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click="onPermissionBtnClick(item)">{{ $t("__permission") }}</el-button>
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="left">
+                <div class="item id">
+                  <span class="header">ID</span>
+                  <span>{{ item.id }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__name') }}</span>
+                  <span>{{ item.name }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__nickname') }}</span>
+                  <span>{{ item.nickname }}</span>
+                </div>
+                <div class="item type">
+                  <span class="header">{{ $t('__type') }}</span>
+                  <span>{{ item.typeNickname }}</span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click="onPermissionBtnClick(item)">{{ $t("__permission") }}</el-button>
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -328,20 +326,26 @@ export default {
   &-container {
     &-table {
       &-row {
-        .wrap {
-          .left {
-            display: flex;
-            flex-direction: column;
-            width: 50%;
+        display: flex;
+        flex-direction: row;
+        .left {
+          display: flex;
+          flex-direction: column;
+          width: 50%;
+        }
+        .right{
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          .operate{
+            justify-content: flex-start;
           }
-          .right{
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            .operate{
-              justify-content: flex-start;
-            }
+        }
+        .item {
+          .header {
+            width: 50px;
+            min-width: 50px;
           }
         }
       }
@@ -354,21 +358,19 @@ export default {
     &-container {
       &-table {
         &-row {
-          .wrap {
-            .left {
-              flex-direction: row;
-              width: 100%;
-              justify-content: space-between;
-              align-items: center;
-              .item {
-                width: 200px;
-              }
-              .id {
-                width: 60px;
-              }
-              .type {
-                width: 80px;
-              }
+          .left {
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            .item {
+              width: 200px;
+            }
+            .id {
+              width: 60px;
+            }
+            .type {
+              width: 80px;
             }
           }
         }

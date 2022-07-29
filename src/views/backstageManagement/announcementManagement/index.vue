@@ -132,57 +132,107 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="content">
-              <template v-if="device === 'mobile'">
-                <div class="wrap" @click="remarkExpand(item)">
-                  <div class="left">
-                    <div class="item">
-                      <span class="header">ID</span>
-                      <span>{{ item.id }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__announcementType') }}</span>
-                      <span>{{ item.typeNickname }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__marquee') }}</span>
-                      <span class="status" :class="{'statusOpen': item.is_marquee === '1' }">{{ item.marquee }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__announcementTitle') }}</span>
-                      <span>{{ item.title }}</span>
-                    </div>
-                    <div class="item">
-                      <div class="expand" @click.stop="remarkExpand(item)">
-                        <svg-icon v-if="item.open" icon-class="up" />
-                        <svg-icon v-else icon-class="more" />
-                      </div>
-                    </div>
+            <template v-if="device === 'mobile'">
+              <div class="base">
+                <div class="left" @click="remarkExpand(item)">
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                   </div>
-                  <div class="right">
-                    <div class="item">
-                      <span class="header">{{ `${$t('__announcementDate')}(${$t('__start')})` }}</span>
-                      <span>{{ item.announcement_started_at }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ `${$t('__announcementDate')}(${$t('__end')})` }}</span>
-                      <span>{{ item.announcement_ended_at }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ `${$t('__maintainDate')}(${$t('__start')})` }}</span>
-                      <span>{{ item.maintain_started_at }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ `${$t('__maintainDate')}(${$t('__end')})` }}</span>
-                      <span>{{ item.maintain_ended_at }}</span>
-                    </div>
-                    <div class="operate">
-                      <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                      <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                  <div class="item">
+                    <span class="header">ID</span>
+                    <span class="content">{{ item.id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__marquee') }}</span>
+                    <span class="status content" :class="{'statusOpen': item.is_marquee === '1' }">{{ item.marquee }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__announcementType') }}</span>
+                    <span class="content">{{ item.typeNickname }}</span>
+                  </div>
+                  <div class="item col">
+                    <span class="header">{{ $t('__announcementTitle') }}</span>
+                    <span class="content">{{ item.title }}</span>
+                  </div>
+                  <div class="item">
+                    <div class="expand" @click.stop="remarkExpand(item)">
+                      <svg-icon v-if="item.open" icon-class="up" />
+                      <svg-icon v-else icon-class="more" />
                     </div>
                   </div>
                 </div>
-                <div v-if="item.open" class="wrap" @click="remarkExpand(item)">
+                <div class="right" @click="remarkExpand(item)">
+                  <div class="item col">
+                    <span class="header">{{ `${$t('__announcementDate')}(${$t('__start')})` }}</span>
+                    <span class="content">{{ item.announcement_started_at }}</span>
+                  </div>
+                  <div class="item col">
+                    <span class="header">{{ `${$t('__announcementDate')}(${$t('__end')})` }}</span>
+                    <span class="content">{{ item.announcement_ended_at }}</span>
+                  </div>
+                  <div class="item col">
+                    <span class="header">{{ `${$t('__maintainDate')}(${$t('__start')})` }}</span>
+                    <span class="content">{{ item.maintain_started_at }}</span>
+                  </div>
+                  <div class="item col">
+                    <span class="header">{{ `${$t('__maintainDate')}(${$t('__end')})` }}</span>
+                    <span class="content">{{ item.maintain_ended_at }}</span>
+                  </div>
+                </div>
+              </div>
+              <div v-if="item.open" @click="remarkExpand(item)">
+                <div class="item col">
+                  <span class="header">{{ $t('__content') }}</span>
+                  <span class="content">{{ item.content }}</span>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="content">
+                <div class="left">
+                  <div class="item remark">
+                    <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
+                    <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
+                  </div>
+                  <div class="item">
+                    <span class="header">ID</span>
+                    <span>{{ item.id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__announcementType') }}</span>
+                    <span>{{ item.typeNickname }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__marquee') }}</span>
+                    <span class="status" :class="{'statusOpen': item.is_marquee === '1' }">{{ item.marquee }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__announcementTitle') }}</span>
+                    <span>{{ item.title }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ `${$t('__announcementDate')}(${$t('__start')})` }}</span>
+                    <span>{{ item.announcement_started_at }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ `${$t('__announcementDate')}(${$t('__end')})` }}</span>
+                    <span>{{ item.announcement_ended_at }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ `${$t('__maintainDate')}(${$t('__start')})` }}</span>
+                    <span>{{ item.maintain_started_at }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ `${$t('__maintainDate')}(${$t('__end')})` }}</span>
+                    <span>{{ item.maintain_ended_at }}</span>
+                  </div>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                  </div>
+                </div>
+                <div v-if="item.open">
                   <div class="item">
                     <span class="header">{{ $t('__content') }}</span>
                     <span>
@@ -190,64 +240,8 @@
                     </span>
                   </div>
                 </div>
-              </template>
-              <template v-else>
-                <div class="content">
-                  <div class="wrap">
-                    <div class="left">
-                      <div class="item remark">
-                        <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                        <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                      </div>
-                      <div class="item">
-                        <span class="header">ID</span>
-                        <span>{{ item.id }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__announcementType') }}</span>
-                        <span>{{ item.typeNickname }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__marquee') }}</span>
-                        <span class="status" :class="{'statusOpen': item.is_marquee === '1' }">{{ item.marquee }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__announcementTitle') }}</span>
-                        <span>{{ item.title }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ `${$t('__announcementDate')}(${$t('__start')})` }}</span>
-                        <span>{{ item.announcement_started_at }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ `${$t('__announcementDate')}(${$t('__end')})` }}</span>
-                        <span>{{ item.announcement_ended_at }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ `${$t('__maintainDate')}(${$t('__start')})` }}</span>
-                        <span>{{ item.maintain_started_at }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ `${$t('__maintainDate')}(${$t('__end')})` }}</span>
-                        <span>{{ item.maintain_ended_at }}</span>
-                      </div>
-                      <div class="operate">
-                        <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                        <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-if="item.open" class="wrap">
-                    <div class="item">
-                      <span class="header">{{ $t('__content') }}</span>
-                      <span>
-                        {{ item.content }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </div>
+              </div>
+            </template>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -484,29 +478,43 @@ export default {
   &-container {
     &-table {
       &-row {
+        display: flex;
+        flex-direction: column;
         position: relative;
-        .content {
+        .base {
           display: flex;
-          flex-direction: column;
-          .wrap {
-            .left,
-            .right {
-              width: 50%;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-            }
-            .operate {
-              justify-content: start;
-            }
-            .expand {
-              position: absolute;
-              top: 5px;
-              right: 5px;
+          flex-direction: row;
+          .left,
+          .right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+          }
+          .right {
+            .item {
+              .header {
+                width: 100px;
+                min-width: 100px;
+              }
             }
           }
-          .wrap + .wrap {
-            margin-top: 10px;
+          .operate {
+            justify-content: start;
+          }
+          .expand {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+          }
+        }
+        .item {
+          .header {
+            width: 80px;
+            min-width: 80px;
+          }
+          &.col {
+            flex-direction: column;
           }
         }
       }
@@ -522,13 +530,11 @@ export default {
           .content {
             display: flex;
             flex-direction: column;
-            .wrap {
-              .left {
-                width: 100%;
-                flex-direction: row;
-                .remark {
-                  width: 50px;
-                }
+            .left {
+              width: 100%;
+              flex-direction: row;
+              .remark {
+                width: 50px;
               }
             }
           }

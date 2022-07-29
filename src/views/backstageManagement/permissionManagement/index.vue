@@ -86,108 +86,100 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="content">
-              <template v-if="device === 'mobile'">
-                <div class="wrap" @click="remarkExpand(item)">
-                  <div class="left">
-                    <div class="item">
-                      <span class="header">ID</span>
-                      <span>{{ item.id }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__name') }}</span>
-                      <span>{{ item.name }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__nickname') }}</span>
-                      <span>{{ item.nickname }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">Uri</span>
-                      <span>{{ item.uri }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__method') }}</span>
-                      <span>{{ item.method }}</span>
-                    </div>
-                    <div class="settings">
-                      <div class="expand" @click.stop="remarkExpand(item)">
-                        <svg-icon v-if="item.open" icon-class="up" />
-                        <svg-icon v-else icon-class="more" />
-                      </div>
-                      <div>
-                        <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                        <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                      </div>
-                    </div>
+            <template v-if="device === 'mobile'">
+              <div class="left" @click="remarkExpand(item)">
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                </div>
+                <div class="item">
+                  <span class="header">ID</span>
+                  <span class="content">{{ item.id }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__name') }}</span>
+                  <span class="content">{{ item.name }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__nickname') }}</span>
+                  <span class="content">{{ item.nickname }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">Uri</span>
+                  <span class="content">{{ item.uri }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__method') }}</span>
+                  <span class="content">{{ item.method }}</span>
+                </div>
+                <div class="expand" @click.stop="remarkExpand(item)">
+                  <svg-icon v-if="item.open" icon-class="up" />
+                  <svg-icon v-else icon-class="more" />
+                </div>
+              </div>
+              <div v-if="item.open" class="expandContent" @click="remarkExpand(item)">
+                <div class="item col">
+                  <span class="header expandHeader">request_content</span>
+                  <span class="content">
+                    {{ item.request_content }}
+                  </span>
+                </div>
+                <div class="item col">
+                  <span class="header expandHeader">response_content</span>
+                  <span class="content">
+                    {{ item.response_content }}
+                  </span>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="content">
+                <div class="left">
+                  <div class="item remark">
+                    <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
+                    <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
+                  </div>
+                  <div class="item id">
+                    <span class="header">ID</span>
+                    <span>{{ item.id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__name') }}</span>
+                    <span>{{ item.name }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__nickname') }}</span>
+                    <span>{{ item.nickname }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">Uri</span>
+                    <span>{{ item.uri }}</span>
+                  </div>
+                  <div class="item method">
+                    <span class="header">{{ $t('__method') }}</span>
+                    <span>{{ item.method }}</span>
+                  </div>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                   </div>
                 </div>
-                <div v-if="item.open" class="wrap" @click="remarkExpand(item)">
-                  <div class="item">
-                    <span class="header">request_content</span>
+                <div v-if="item.open">
+                  <div class="item col">
+                    <span class="header expandHeader">request_content</span>
                     <span>
                       {{ item.request_content }}
                     </span>
                   </div>
-                  <div class="item">
-                    <span class="header">response_content</span>
+                  <div class="item col">
+                    <span class="header expandHeader">response_content</span>
                     <span>
                       {{ item.response_content }}
                     </span>
                   </div>
                 </div>
-              </template>
-              <template v-else>
-                <div class="content">
-                  <div class="wrap">
-                    <div class="left">
-                      <div class="item remark">
-                        <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                        <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                      </div>
-                      <div class="item id">
-                        <span class="header">ID</span>
-                        <span>{{ item.id }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__name') }}</span>
-                        <span>{{ item.name }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__nickname') }}</span>
-                        <span>{{ item.nickname }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">Uri</span>
-                        <span>{{ item.uri }}</span>
-                      </div>
-                      <div class="item method">
-                        <span class="header">{{ $t('__method') }}</span>
-                        <span>{{ item.method }}</span>
-                      </div>
-                      <div class="operate">
-                        <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                        <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-if="item.open" class="remark_wrap wrap">
-                    <div class="item">
-                      <span class="header">request_content</span>
-                      <span>
-                        {{ item.request_content }}
-                      </span>
-                    </div>
-                    <div class="item">
-                      <span class="header">response_content</span>
-                      <span>
-                        {{ item.response_content }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </div>
+              </div>
+            </template>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -364,37 +356,40 @@ export default {
   &-container {
     &-table {
       &-row {
+        display: flex;
+        flex-direction: column;
         position: relative;
-        .content {
+        .left {
+          width: 100%;
           display: flex;
           flex-direction: column;
-          .wrap {
-            flex-direction: column;
-            .left {
-              width: 100%;
-              display: flex;
+          .operate {
+            justify-content: flex-start;
+          }
+          .expand {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+          }
+          .item{
+            .header {
+              width: 50px;
+              min-width: 50px;
+            }
+            .expandHeader {
+              width: 150px;
+              min-width: 150px;
+            }
+            &.col {
               flex-direction: column;
-              justify-content: space-between;
-              .operate {
-                justify-content: flex-end;
-              }
-            }
-            .item{
-              word-break: break-all;
-            }
-            .settings {
-              display: flex;
-              justify-content: space-between;
-            }
-            .expand {
-              position: absolute;
-              top: 5px;
-              right: 5px;
             }
           }
-          .wrap + .wrap {
-            margin-top: 10px;
-          }
+        }
+        .left + .expandContent {
+          margin-top: 5px;
+        }
+        .operate + .item {
+          margin-top: 5px;
         }
       }
     }
@@ -406,23 +401,19 @@ export default {
   &-container {
     &-table {
       &-row {
-        .content {
-          display: flex;
-          flex-direction: column;
-          .wrap {
-            .left {
-              width: 100%;
-              flex-direction: row;
-              .remark {
-                width: 50px;
-              }
-              .id{
-                width: 300px;
-              }
-              .method{
-                width: 400px;
-              }
-            }
+        display: flex;
+        flex-direction: column;
+        .left {
+          width: 100%;
+          flex-direction: row;
+          .remark {
+            width: 50px;
+          }
+          .id{
+            width: 300px;
+          }
+          .method{
+            width: 400px;
           }
         }
       }

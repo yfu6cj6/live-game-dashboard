@@ -92,78 +92,76 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="wrap">
-              <template v-if="device === 'mobile'">
-                <div class="left">
-                  <div class="item">
-                    <span class="header">ID</span>
-                    <span>{{ item.id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__tableId') }}</span>
-                    <span>{{ item.table_id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__liveBetAreaId') }}</span>
-                    <span>{{ item.live_bet_area_id }}</span>
-                  </div>
+            <template v-if="device === 'mobile'">
+              <div class="left">
+                <div class="item">
+                  <span class="header headerW">ID</span>
+                  <span class="content">{{ item.id }}</span>
                 </div>
-                <div class="right">
-                  <div class="item">
-                    <span class="header">{{ $t('__betMin') }}</span>
-                    <span>{{ item.bet_min }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__betMax') }}</span>
-                    <span>{{ item.bet_max }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__totalBetMax') }}</span>
-                    <span :class="{'status': item.total_bet_max === '0.00' }">
-                      {{ item.totalBetMaxLabel }}
-                    </span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                  </div>
+                <div class="item">
+                  <span class="header headerW">{{ $t('__tableId') }}</span>
+                  <span class="content">{{ item.table_id }}</span>
                 </div>
-              </template>
-              <template v-else>
-                <div class="left">
-                  <div class="item id">
-                    <span class="header">ID</span>
-                    <span>{{ item.id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__tableId') }}</span>
-                    <span>{{ item.table_id }}</span>
-                  </div>
-                  <div class="item liveBetAreaId">
-                    <span class="header">{{ $t('__liveBetAreaId') }}</span>
-                    <span>{{ item.live_bet_area_id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__betMin') }}</span>
-                    <span>{{ item.bet_min }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__betMax') }}</span>
-                    <span>{{ item.bet_max }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__totalBetMax') }}</span>
-                    <span :class="{'status': item.total_bet_max === '0.00' }">
-                      {{ item.totalBetMaxLabel }}
-                    </span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                  </div>
+                <div class="item">
+                  <span class="header headerW">{{ $t('__liveBetAreaId') }}</span>
+                  <span class="content">{{ item.live_bet_area_id }}</span>
                 </div>
-              </template>
-            </div>
+                <div class="item col">
+                  <span class="header">{{ $t('__totalBetMax') }}</span>
+                  <span :class="{'status': item.total_bet_max === '0.00' }">
+                    {{ item.totalBetMaxLabel }}
+                  </span>
+                </div>
+              </div>
+              <div class="right">
+                <div class="item col">
+                  <span class="header headerW">{{ $t('__betMin') }}</span>
+                  <span class="content">{{ item.bet_min }}</span>
+                </div>
+                <div class="item col">
+                  <span class="header headerW">{{ $t('__betMax') }}</span>
+                  <span class="content">{{ item.bet_max }}</span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="left">
+                <div class="item id">
+                  <span class="header">ID</span>
+                  <span>{{ item.id }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__tableId') }}</span>
+                  <span>{{ item.table_id }}</span>
+                </div>
+                <div class="item liveBetAreaId">
+                  <span class="header">{{ $t('__liveBetAreaId') }}</span>
+                  <span>{{ item.live_bet_area_id }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__betMin') }}</span>
+                  <span>{{ item.bet_min }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__betMax') }}</span>
+                  <span>{{ item.bet_max }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__totalBetMax') }}</span>
+                  <span :class="{'status': item.total_bet_max === '0.00' }">
+                    {{ item.totalBetMaxLabel }}
+                  </span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -340,16 +338,32 @@ export default {
   &-container {
     &-table {
       &-row {
-        .wrap {
-          .left,
-          .right {
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        display: flex;
+        flex-direction: row;
+        .left,
+        .right {
+          width: 50%;
+          display: flex;
+          flex-direction: column;
+          .item {
+            .headerW {
+              width: 50px;
+              min-width: 50px;
+            }
+            &.col {
+              flex-direction: column;
+            }
+          }
+        }
+        .right {
+          .item {
+            .headerW {
+              width: 90px;
+              min-width: 90px;
+            }
           }
           .operate {
-            justify-content: start;
+            justify-content: flex-start;
           }
         }
       }
@@ -369,23 +383,21 @@ export default {
     &-container {
       &-table {
         &-row {
-          .wrap {
-            .left {
-              flex-wrap: wrap;
-              width: 100%;
-              flex-direction: row;
-              .item {
-                width: auto;
-              }
-              .id {
-                width: 50px;
-              }
-              .liveBetAreaId {
-                width: 160px;
-              }
-              .operate {
-                width: 150px;
-              }
+          .left {
+            flex-wrap: wrap;
+            width: 100%;
+            flex-direction: row;
+            .item {
+              width: auto;
+            }
+            .id {
+              width: 50px;
+            }
+            .liveBetAreaId {
+              width: 160px;
+            }
+            .operate {
+              width: 150px;
             }
           }
         }

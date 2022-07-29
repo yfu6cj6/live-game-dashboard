@@ -98,96 +98,101 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="wrap">
-              <template v-if="device === 'mobile'">
-                <div class="left">
-                  <div class="item">
-                    <span class="header">{{ $t('__tableId') }}</span>
-                    <span>{{ item.id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__name') }}</span>
-                    <span>{{ item.name }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__idleRounds') }}</span>
-                    <span>{{ item.idle_rounds }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__status') }}</span>
-                    <span class="status" :class="{'statusOpen': item.activated === '1' }">
-                      {{ item.statusLabel }}
-                    </span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__description') }}</span>
-                    <span>{{ item.description }}</span>
+            <template v-if="device === 'mobile'">
+
+              <div class="left" @click.stop="remarkExpand(item)">
+                <div class="item">
+                  <el-button class="bg-yellow" size="mini" @click.stop="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
+                  <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__tableId') }}</span>
+                  <span class="content">{{ item.id }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__name') }}</span>
+                  <span class="content">{{ item.name }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__status') }}</span>
+                  <span class="status content" :class="{'statusOpen': item.status === '1' }">
+                    {{ item.statusLabel }}
+                  </span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__idleRounds') }}</span>
+                  <span class="content">{{ item.idle_rounds }}</span>
+                </div>
+                <div class="item col">
+                  <span class="header">{{ $t('__description') }}</span>
+                  <span class="content">{{ item.description }}</span>
+                </div>
+                <div class="item">
+                  <div class="expand" @click.stop="remarkExpand(item)">
+                    <svg-icon v-if="item.open" icon-class="up" />
+                    <svg-icon v-else icon-class="more" />
                   </div>
                 </div>
-                <div class="right">
-                  <div class="item">
-                    <span class="header">{{ $t('__streamingUrl') }}</span>
-                    <span>{{ item.streaming_url }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">app_name</span>
-                    <span>{{ item.app_name }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">streaming_name</span>
-                    <span>{{ item.streaming_name }}</span>
-                  </div>
-                  <div class="item">
-                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                  </div>
+              </div>
+              <div v-if="item.open" class="left" @click="remarkExpand(item)">
+                <div class="item col">
+                  <span class="header">{{ $t('__streamingUrl') }}</span>
+                  <span class="content">{{ item.streaming_url }}</span>
                 </div>
-              </template>
-              <template v-else>
-                <div class="left">
-                  <div class="item tableId">
-                    <span class="header">{{ $t('__tableId') }}</span>
-                    <span>{{ item.id }}</span>
-                  </div>
-                  <div class="item tableName">
-                    <span class="header">{{ $t('__name') }}</span>
-                    <span>{{ item.name }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__idleRounds') }}</span>
-                    <span>{{ item.idle_rounds }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__status') }}</span>
-                    <span class="status" :class="{'statusOpen': item.activated === '1' }">
-                      {{ item.statusLabel }}
-                    </span>
-                  </div>
-                  <div class="item description">
-                    <span class="header">{{ $t('__description') }}</span>
-                    <span>{{ item.description }}</span>
-                  </div>
-                  <div class="item streaming_url">
-                    <span class="header">{{ $t('__streamingUrl') }}</span>
-                    <span>{{ item.streaming_url }}</span>
-                  </div>
-                  <div class="item appName">
-                    <span class="header">app_name</span>
-                    <span>{{ item.app_name }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">streaming_name</span>
-                    <span>{{ item.streaming_name }}</span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                  </div>
+                <div class="item">
+                  <span class="header">app_name</span>
+                  <span class="content">{{ item.app_name }}</span>
                 </div>
-              </template>
-            </div>
+                <div class="item">
+                  <span class="header">streaming_name</span>
+                  <span class="content">{{ item.streaming_name }}</span>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="left">
+                <div class="item tableId">
+                  <span class="header">{{ $t('__tableId') }}</span>
+                  <span>{{ item.id }}</span>
+                </div>
+                <div class="item tableName">
+                  <span class="header">{{ $t('__name') }}</span>
+                  <span>{{ item.name }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__idleRounds') }}</span>
+                  <span>{{ item.idle_rounds }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__status') }}</span>
+                  <span class="status" :class="{'statusOpen': item.activated === '1' }">
+                    {{ item.statusLabel }}
+                  </span>
+                </div>
+                <div class="item description">
+                  <span class="header">{{ $t('__description') }}</span>
+                  <span>{{ item.description }}</span>
+                </div>
+                <div class="item streaming_url">
+                  <span class="header">{{ $t('__streamingUrl') }}</span>
+                  <span>{{ item.streaming_url }}</span>
+                </div>
+                <div class="item appName">
+                  <span class="header">app_name</span>
+                  <span>{{ item.app_name }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">streaming_name</span>
+                  <span>{{ item.streaming_name }}</span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                </div>
+              </div>
+            </template>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -310,6 +315,13 @@ export default {
     this.onSearchBtnClick({}, 1)
   },
   methods: {
+    remarkExpand(row) {
+      const obj = this.tableData.find(item => item.id === row.id);
+      this.$nextTick(() => {
+        obj.open = !obj.open;
+        this.tableData = JSON.parse(JSON.stringify(this.tableData))
+      })
+    },
     onSearchBtnClick(data, page) {
       this.searchForm = data
       this.handleCurrentChange(page)
@@ -452,30 +464,38 @@ export default {
   &-container {
     &-table {
       &-row {
-        .wrap {
-          flex-wrap: wrap;
-          .left,
-          .right {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        .left {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          .item {
+            .header {
+              width: 150px;
+              min-width: 150px;
+            }
+            .expand {
+              position: absolute;
+              top: 5px;
+              right: 5px;
+            }
+            &.col {
+              flex-direction: column;
+            }
           }
         }
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .wrap {
-            .left,
-            .right {
-              width: 50%;
+        .right {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          width: 50%;
+          .item {
+            .header {
+              width: 30px;
+              min-width: 80px;
             }
           }
         }
@@ -489,34 +509,32 @@ export default {
     &-container {
       &-table {
         &-row {
-          .wrap {
-            .left {
-              flex-direction: row;
-              flex-wrap: wrap;
-              width: 100%;
-              justify-content: space-between;
+          .left {
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: space-between;
+          }
+          .item {
+            width: auto;
+            &.tableId {
+              width: 60px;
             }
-            .item {
-              width: auto;
-              &.tableId {
-                width: 60px;
-              }
-              &.tableName {
-                width: 130px;
-              }
-              &.description {
-                width: 240px;
-              }
-              &.streaming_url {
-                width: 340px;
-              }
-              &.appName {
-                width: 100px;
-              }
+            &.tableName {
+              width: 130px;
             }
-            .operate{
-              align-items: center;
+            &.description {
+              width: 240px;
             }
+            &.streaming_url {
+              width: 340px;
+            }
+            &.appName {
+              width: 100px;
+            }
+          }
+          .operate{
+            align-items: center;
           }
         }
       }
