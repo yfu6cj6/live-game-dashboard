@@ -339,12 +339,13 @@ export default {
           justify-content: center;
           align-items: center;
           margin-right: 10px;
+          width: 40%;
         }
         .right {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          width: auto;
+          width: 60%;
         }
         .operate {
           width: 250px;

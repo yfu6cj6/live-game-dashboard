@@ -346,6 +346,7 @@ export default {
           justify-content: center;
           align-items: center;
           margin-right: 10px;
+          width: 40%;
           .giftPhoto {
             vertical-align: middle;
             width: 73px;
@@ -355,7 +356,7 @@ export default {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          width: auto;
+          width: 60%;
           .item {
             .header {
               width: 50%;
