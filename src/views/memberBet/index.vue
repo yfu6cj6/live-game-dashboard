@@ -218,7 +218,7 @@
     </div>
     <playbackDialog
       v-if="curPlaybackIndex === playbackEnum.pic"
-      :title="playbackTitle"
+      :title="`${$t('__gameType')} ${selectForm.game_type} ${$t('__tableId')} ${selectForm.table_id} ${$t('__roundId')} ${selectForm.round_id}`"
       :visible="curPlaybackIndex === playbackEnum.pic"
       :playback-type="playbackEnum.pic"
       :url="imagePlaybackpic"
@@ -227,11 +227,19 @@
 
     <playbackDialog
       v-if="curPlaybackIndex === playbackEnum.video"
-      :title="playbackTitle"
+      :title="`${$t('__gameType')} ${selectForm.game_type} ${$t('__tableId')} ${selectForm.table_id} ${$t('__roundId')} ${selectForm.round_id}`"
       :visible="curPlaybackIndex === playbackEnum.video"
       :playback-type="playbackEnum.video"
       :url="videoPlaybackUrl"
       @close="closePlaybackDialogEven"
+    />
+
+    <gameResultDialog
+      v-if="curGameResultIndex === gameResultEnum.resultdialog"
+      :visible="curGameResultIndex === gameResultEnum.resultdialog"
+      :round-info="roundInfo"
+      :count-info="countInfo"
+      @close="closeGameResultEven"
     />
   </div>
 </template>
@@ -246,25 +254,15 @@ import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime, getLastWeekDateTime,
   getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
-import { getRoadArray } from '@/utils/roadLogic'
 import PlaybackDialog from './playbackDialog';
+import GameResultDialog from '@/components/gameResult/gameResultDialog';
 
 const defaultSearchTimeType = 'betTime'
 const defaultSearchTime = getTodayDateTime()
-const road = {
-  roadData: [[]],
-  roadDataFormat: []
-}
-const roundInfo = {
-  result: {
-    PlayerCard: ["None", "None", "None"],
-    BankerCard: ["None", "None", "None"]
-  }
-}
 
 export default {
   name: 'MemberBet',
-  components: { PlaybackDialog },
+  components: { PlaybackDialog, GameResultDialog },
   mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
   data() {
     return {
@@ -306,29 +304,20 @@ export default {
         'pic': 1,
         'video': 2
       }),
+      gameResultEnum: Object.freeze({
+        'none': 0,
+        'resultdialog': 1
+      }),
       searchTimeType: defaultSearchTimeType,
       searchTime: defaultSearchTime,
-      totalInfo: {
-        count: 0,
-        bet_amount: '',
-        payout: '',
-        valid_bet_amount: ''
-      },
-      subtotalInfo: {},
       memberId: null,
       firstCreate: true,
       playbackPic: undefined,
       playbackUrl: undefined,
-      showRoadInfo: false,
-      roundInfo: JSON.parse(JSON.stringify(roundInfo)),
-      countInfo: {},
-      bigRoad: JSON.parse(JSON.stringify(road)),
-      bigEyeRoad: JSON.parse(JSON.stringify(road)),
-      smallEyeRoad: JSON.parse(JSON.stringify(road)),
-      cockroachRoad: JSON.parse(JSON.stringify(road)),
-      beadRoad: JSON.parse(JSON.stringify(road)),
-      playbackTitle: "",
-      curPlaybackIndex: 0
+      curPlaybackIndex: 0,
+      curGameResultIndex: 0,
+      roundInfo: {},
+      countInfo: {}
     }
   },
   computed: {
@@ -420,129 +409,11 @@ export default {
       }
     },
     gameResultClick(round_id) {
-      this.showRoadInfo = false
-      const data = { round_id: round_id }
       this.dataLoading = true
-      this.bigRoad = JSON.parse(JSON.stringify(road))
-      this.bigEyeRoad = JSON.parse(JSON.stringify(road))
-      this.smallEyeRoad = JSON.parse(JSON.stringify(road))
-      this.cockroachRoad = JSON.parse(JSON.stringify(road))
-      this.beadRoad = JSON.parse(JSON.stringify(road))
-      this.roundInfo = JSON.parse(JSON.stringify(roundInfo))
-      this.countInfo = {}
-      gameResultGetScoreCards(data).then((res) => {
+      gameResultGetScoreCards({ round_id: round_id }).then((res) => {
         this.roundInfo = res.roundInfo
         this.countInfo = res.countInfo
-
-        if (this.roundInfo.result.PlayerCard.length === 2) {
-          this.roundInfo.result.PlayerCard.push('None')
-        }
-        if (this.roundInfo.result.BankerCard.length === 2) {
-          this.roundInfo.result.BankerCard.push('None')
-        }
-
-        var scoreCards = res.scoreCards
-        {
-          const bigRoad = getRoadArray(0, scoreCards.toString(), res.roundInfo.scoreCardsId)
-          var bigRoadLastIndex = 0
-          for (let i = 0, max = bigRoad.length; i < max; i++) {
-            for (let j = 0, jMax = bigRoad[i].length; j < jMax; j++) {
-              if (bigRoad[i][j] !== "" && bigRoadLastIndex < j + 1) {
-                bigRoadLastIndex = j + 1
-              }
-            }
-          }
-          if (bigRoadLastIndex < 26) {
-            bigRoadLastIndex = 26
-          }
-          this.bigRoad.roadData = bigRoad
-          this.bigRoad.roadDataFormat = []
-          for (let i = 0; i < bigRoadLastIndex; i++) {
-            this.bigRoad.roadDataFormat.push({ prop: i.toString() })
-          }
-        }
-
-        {
-          const bigEyeRoad = getRoadArray(2, scoreCards.toString(), res.roundInfo.scoreCardsId)
-          var bigEyeRoadLastIndex = 0
-          for (let i = 0, max = bigEyeRoad.length; i < max; i++) {
-            for (let j = 0, jMax = bigEyeRoad[i].length; j < jMax; j++) {
-              if (bigEyeRoad[i][j] !== "" && bigEyeRoadLastIndex < j + 1) {
-                bigEyeRoadLastIndex = j + 1
-              }
-            }
-          }
-          if (bigEyeRoadLastIndex < 52) {
-            bigEyeRoadLastIndex = 52
-          }
-          this.bigEyeRoad.roadData = bigEyeRoad
-          this.bigEyeRoad.roadDataFormat = []
-          for (let i = 0; i < bigEyeRoadLastIndex; i++) {
-            this.bigEyeRoad.roadDataFormat.push({ prop: i.toString() })
-          }
-        }
-
-        {
-          const smallEyeRoad = getRoadArray(3, scoreCards.toString(), res.roundInfo.scoreCardsId)
-          var smallEyeRoadLastIndex = 0
-          for (let i = 0, max = smallEyeRoad.length; i < max; i++) {
-            for (let j = 0, jMax = smallEyeRoad[i].length; j < jMax; j++) {
-              if (smallEyeRoad[i][j] !== "" && smallEyeRoadLastIndex < j + 1) {
-                smallEyeRoadLastIndex = j + 1
-              }
-            }
-          }
-          if (smallEyeRoadLastIndex < 26) {
-            smallEyeRoadLastIndex = 26
-          }
-          this.smallEyeRoad.roadData = smallEyeRoad
-          this.smallEyeRoad.roadDataFormat = []
-          for (let i = 0; i < smallEyeRoadLastIndex; i++) {
-            this.smallEyeRoad.roadDataFormat.push({ prop: i.toString() })
-          }
-        }
-
-        {
-          const cockroachRoad = getRoadArray(4, scoreCards.toString(), res.roundInfo.scoreCardsId)
-          var cockroachRoadLastIndex = 0
-          for (let i = 0, max = cockroachRoad.length; i < max; i++) {
-            for (let j = 0, jMax = cockroachRoad[i].length; j < jMax; j++) {
-              if (cockroachRoad[i][j] !== "" && cockroachRoadLastIndex < j + 1) {
-                cockroachRoadLastIndex = j + 1
-              }
-            }
-          }
-          if (cockroachRoadLastIndex < 26) {
-            cockroachRoadLastIndex = 26
-          }
-          this.cockroachRoad.roadData = cockroachRoad
-          this.cockroachRoad.roadDataFormat = []
-          for (let i = 0; i < cockroachRoadLastIndex; i++) {
-            this.cockroachRoad.roadDataFormat.push({ prop: i.toString() })
-          }
-        }
-
-        {
-          const beadRoad = getRoadArray(1, scoreCards.toString(), res.roundInfo.scoreCardsId)
-          var beadRoadLastIndex = 0
-          for (let i = 0, max = beadRoad.length; i < max; i++) {
-            for (let j = 0, jMax = beadRoad[i].length; j < jMax; j++) {
-              if (beadRoad[i][j] !== "" && beadRoadLastIndex < j + 1) {
-                beadRoadLastIndex = j + 1
-              }
-            }
-          }
-          if (beadRoadLastIndex < 26) {
-            beadRoadLastIndex = 26
-          }
-          this.beadRoad.roadData = beadRoad
-          this.beadRoad.roadDataFormat = []
-          for (let i = 0; i < beadRoadLastIndex; i++) {
-            this.beadRoad.roadDataFormat.push({ prop: i.toString() })
-          }
-        }
-
-        this.showRoadInfo = true
+        this.curGameResultIndex = this.gameResultEnum.resultdialog
         this.dataLoading = false
       }).catch(() => {
         this.dataLoading = false
@@ -567,8 +438,6 @@ export default {
     },
     handleRespone(res) {
       this.searchForm[this.searchTimeType] = undefined
-      this.totalInfo = res.totalInfo
-      this.subtotalInfo = res.subtotalInfo
       this.searchItems = res.searchItems
       this.tableData = res.rows
       for (let i = 0, max = this.tableData.length; i < max; i++) {
@@ -586,7 +455,7 @@ export default {
     },
     onPlaybackPic(row) {
       this.dataLoading = true
-      this.playbackTitle = `${this.$t('__gameType')} ${row.game_type} ${this.$t('__tableId')} ${row.table_id} ${this.$t('__roundId')} ${row.round_id}`
+      this.selectForm = JSON.parse(JSON.stringify(row))
       gameResultGetPlaybackPic({ round_id: row.round_id }).then((res) => {
         this.playbackPic = res.playbackPic
         this.curPlaybackIndex = this.playbackEnum.pic
@@ -597,7 +466,7 @@ export default {
     },
     onPlaybackUrl(row) {
       this.dataLoading = true
-      this.playbackTitle = `${this.$t('__gameType')} ${row.game_type} ${this.$t('__tableId')} ${row.table_id} ${this.$t('__roundId')} ${row.round_id}`
+      this.selectForm = JSON.parse(JSON.stringify(row))
       gameResultGetPlaybackUrl({ round_id: row.round_id }).then((res) => {
         this.playbackUrl = res.playbackUrl
         this.curPlaybackIndex = this.playbackEnum.video
@@ -645,6 +514,9 @@ export default {
     },
     closePlaybackDialogEven() {
       this.curPlaybackIndex = this.playbackEnum.none
+    },
+    closeGameResultEven() {
+      this.curGameResultIndex = this.gameResultEnum.none
     }
   }
 }

@@ -142,8 +142,8 @@ body {
 .bg-red:hover,
 .bg-red:focus {
   color: black;
-  background: $red;
-  border-color: $red;
+  background: $shallowRed;
+  border-color: $shallowRed;
   font-weight: 700;
 }
 
@@ -157,12 +157,25 @@ body {
   border-color: #a3a3a3;
 }
 
+.yellow-color {
+  color: $yellow;
+}
+.green-color {
+  color: $green;
+}
+.red-color {
+  color: $red;
+}
+.blue-color {
+  color: $blue;
+}
+
 .red-tick {
   .el-checkbox__input {
     &.is-checked {
       .el-checkbox__inner {
         &::after {
-          border: 3px solid $red;
+          border: 3px solid $shallowRed;
           border-left: 0;
           border-top: 0;
         }
