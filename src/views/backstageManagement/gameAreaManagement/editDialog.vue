@@ -5,7 +5,7 @@
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
-    :close-on-click-modal="false"
+    :close-on-click-modal="device === 'mobile'"
   >
     <el-form ref="editForm" :model="editForm" :rules="rules">
       <el-form-item v-if="!isEdit" :label="$t('__tableId')" prop="table_id">

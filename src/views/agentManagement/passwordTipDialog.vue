@@ -4,7 +4,7 @@
     :visible.sync="visible"
     :width="formWidth"
     :before-close="onClose"
-    :close-on-click-modal="false"
+    :close-on-click-modal="device === 'mobile'"
     :close-on-press-escape="false"
   >
     <label>{{ `${$t('__account')}: ` }}

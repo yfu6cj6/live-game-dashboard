@@ -5,7 +5,7 @@
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
-    :close-on-click-modal="false"
+    :close-on-click-modal="device === 'mobile'"
   >
     <el-form ref="editForm" :model="editForm" :rules="rules">
       <el-form-item :label="$t('__giftNickname')" prop="nickname">

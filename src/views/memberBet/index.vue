@@ -106,17 +106,29 @@
           >
             <template v-if="device === 'mobile'">
               <div class="wrap" @click="remarkExpand(item)">
+                <div class="expand">
+                  <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
+                  <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />
+                </div>
                 <div class="item">
                   <span class="header">{{ $t('__agent') }}</span>
-                  <span>{{ item.agent }}</span>
+                  <span class="content">{{ item.agent }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ $t('__member') }}</span>
-                  <span>{{ item.member }}</span>
+                  <span class="content">{{ item.member }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ $t('__orderNumber') }}</span>
-                  <span>{{ item.order_number }}</span>
+                  <span class="content">{{ item.order_number }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__betTime') }}</span>
+                  <span class="content">{{ item.bet_time }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__payoutTime') }}</span>
+                  <span>{{ item.payout_time }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ $t('__gameType') }}</span>
@@ -126,65 +138,64 @@
                   <span class="header">{{ $t('__roundId') }}</span>
                   <span>{{ item.round_id }}</span>
                 </div>
-                <div>
-                  <div class="expand" @click.stop="remarkExpand(item)">
-                    <svg-icon v-if="item.open" icon-class="up" />
-                    <svg-icon v-else icon-class="more" />
+                <template v-if="item.open">
+                  <div class="item">
+                    <span class="header">{{ $t('__gameResult') }}</span>
+                    <div class="gameResult" @click.stop="gameResultClick(item.round_id)">
+                      <span
+                        class="mr-5"
+                        :class="{
+                          'banker': item.gameResult.result === 0,
+                          'player': item.gameResult.result === 1,
+                          'tie': item.gameResult.result === 2}"
+                      >
+                        {{ item.gameResult.resultLabel }}
+                      </span>
+                      <span>{{ "[" }}</span>
+                      <span class="mr-5 player">
+                        <span>{{ $t('__player') }}</span>
+                        <span>{{ item.gameResult.player_point }}</span>
+                      </span>
+                      <span class="banker">
+                        <span>{{ $t('__banker') }}</span>
+                        <span>{{ item.gameResult.banker_point }}</span>
+                      </span>
+                      <span>{{ "]" }}</span>
+                    </div>
+                    <div>
+                      <i class="el-icon-picture playbackIcon" @click.stop="onPlaybackPic(item)" />
+                      <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click.stop="onPlaybackUrl(item)">
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div v-if="item.open" class="wrap" @click="remarkExpand(item)">
-                <div class="item">
-                  <span class="header">{{ $t('__betTime') }}</span>
-                  <span>{{ item.bet_time }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__payoutTime') }}</span>
-                  <span>{{ item.payout_time }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__gameResult') }}</span>
-                  <div class="gameResult" @click.stop="gameResultClick(item.round_id)">
-                    <span
-                      class="resultLabel"
-                      :class="{
-                        'banker': item.gameResult.result === 0,
-                        'player': item.gameResult.result === 1,
-                        'tie': item.gameResult.result === 2}"
-                    >
-                      {{ item.gameResult.resultLabel }}
-                    </span>
-                    <span>{{ item.gameResultPoints }}</span>
+                  <div class="item">
+                    <span class="header">{{ $t('__status') }}</span>
+                    <span class="status" :class="{'statusOpen': item.status === '已派彩' }">{{ item.status }}</span>
                   </div>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__status') }}</span>
-                  <span class="status" :class="{'statusOpen': item.status === '已派彩' }">{{ item.status }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__gamePlay') }}</span>
-                  <span>{{ item.game_play }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__betAmount') }}</span>
-                  <span>{{ item.bet_amount }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__result') }}</span>
-                  <span>{{ item.payout }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__validBetAmount') }}</span>
-                  <span>{{ item.valid_bet_amount }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__device') }}</span>
-                  <span>{{ item.device }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">IP</span>
-                  <span>{{ item.ip }}</span>
-                </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__gamePlay') }}</span>
+                    <span>{{ item.game_play }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__betAmount') }}</span>
+                    <span>{{ item.bet_amount }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__result') }}</span>
+                    <span>{{ item.payout }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__validBetAmount') }}</span>
+                    <span>{{ item.valid_bet_amount }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__device') }}</span>
+                    <span>{{ item.device }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">IP</span>
+                    <span>{{ item.ip }}</span>
+                  </div>
+                </template>
               </div>
             </template>
           </div>
@@ -205,6 +216,23 @@
         @current-change="handlePageChangeByClient"
       />
     </div>
+    <playbackDialog
+      v-if="curPlaybackIndex === playbackEnum.pic"
+      :title="playbackTitle"
+      :visible="curPlaybackIndex === playbackEnum.pic"
+      :playback-type="playbackEnum.pic"
+      :url="imagePlaybackpic"
+      @close="closePlaybackDialogEven"
+    />
+
+    <playbackDialog
+      v-if="curPlaybackIndex === playbackEnum.video"
+      :title="playbackTitle"
+      :visible="curPlaybackIndex === playbackEnum.video"
+      :playback-type="playbackEnum.video"
+      :url="videoPlaybackUrl"
+      @close="closePlaybackDialogEven"
+    />
   </div>
 </template>
 
@@ -219,6 +247,7 @@ import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime,
   getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
 import { getRoadArray } from '@/utils/roadLogic'
+import PlaybackDialog from './playbackDialog';
 
 const defaultSearchTimeType = 'betTime'
 const defaultSearchTime = getTodayDateTime()
@@ -235,7 +264,7 @@ const roundInfo = {
 
 export default {
   name: 'MemberBet',
-  components: { },
+  components: { PlaybackDialog },
   mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
   data() {
     return {
@@ -549,12 +578,6 @@ export default {
         const element = this.tableData[i]
         const winner = this.searchItems.gameResult.find(item => item.key === element.gameResult.result).nickname
         element.gameResult.resultLabel = winner
-        const player = this.searchItems.gameResult.find(item => item.key === 1).nickname
-        const playerPoint = element.gameResult.player_point
-        const banker = this.searchItems.gameResult.find(item => item.key === 0).nickname
-        const bankerPoint = element.gameResult.banker_point
-        const pointResult = player + playerPoint + ' ' + banker + bankerPoint
-        element.gameResultPoints = '[' + pointResult + ']'
         element.game_play = element.game_play.nickname
       }
       this.totalCount = res.totalCount
@@ -628,39 +651,49 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/variables.scss";
+
 .view {
   &-container {
     &-table {
       &-row {
-        position: relative;
         .wrap {
-          flex-direction: column;
+          position: relative;
+          .agentName {
+            vertical-align: top;
+          }
           .item {
-            line-height: 25px;
-            // border-bottom: 1px solid #aaa;
             .header {
               width: 100px;
               min-width: 100px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
             }
-            .gameResult {
-              cursor: pointer;
-              border-bottom: 1px solid #000;
-              .resultLabel {
-                margin-right: 5px;
-              }
-            }
-          }
-          .expand {
-            position: absolute;
-            top: 5px;
-            right: 5px;
           }
         }
       }
     }
   }
+}
+
+.gameResult {
+  cursor: pointer;
+  border-bottom: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .mr-5 {
+    margin-right: 5px;
+  }
+}
+.playbackIcon {
+  width: 20px;
+  font-size: 24px;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 20px;
+  color: $yellow;
+}
+.expand {
+  position: absolute;
+  right: 0;
 }
 </style>

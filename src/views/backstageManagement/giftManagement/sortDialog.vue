@@ -5,7 +5,7 @@
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
-    :close-on-click-modal="false"
+    :close-on-click-modal="device === 'mobile'"
   >
     <el-form :model="searchForm">
       <el-form-item :label="$t('__currency')" prop="currency">

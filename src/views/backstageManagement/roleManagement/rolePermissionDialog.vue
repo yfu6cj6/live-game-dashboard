@@ -5,7 +5,7 @@
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
-    :close-on-click-modal="false"
+    :close-on-click-modal="device === 'mobile'"
   >
     <div ref="table" class="view-container-table">
       <div v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0">

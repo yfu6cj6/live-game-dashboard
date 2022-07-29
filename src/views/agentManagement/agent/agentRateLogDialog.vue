@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="false" :close-on-press-escape="false">
+  <el-dialog :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
     <el-table :data="listData" tooltip-effect="dark" header-cell-class-name="bg-black_table_header" row-class-name="bg-black_table_col" style="background: black;">
       <el-table-column prop="user" :label="$t('__operator')" align="center" />
       <el-table-column v-if="operationType === operationEnum.liveCommissionRate" prop="commission_rate" :label="title" align="center" />

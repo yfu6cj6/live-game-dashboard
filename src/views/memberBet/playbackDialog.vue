@@ -1,11 +1,11 @@
 <template>
   <el-dialog
+    v-if="visible"
+    v-loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
-    width="100%"
     :before-close="onClose"
-    :close-on-click-modal="false"
-    :close-on-press-escape="false"
+    :close-on-click-modal="device === 'mobile'"
   >
     <img v-if="playbackType === 1" class="playbackPic" :src="url">
     <div v-else-if="playbackType === 2" class="playbackUrl">
@@ -17,8 +17,11 @@
 </template>
 
 <script>
+import dialogCommon from '@/mixin/dialogCommon'
+
 export default {
   name: 'PlaybackDialog',
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,
@@ -44,7 +47,7 @@ export default {
       default() {
         return ''
       }
-    },
+    }
   },
   data: function() {
     return {
@@ -53,9 +56,6 @@ export default {
   watch: {
   },
   methods: {
-    onClose() {
-      this.$emit('close')
-    }
   }
 }
 </script>
@@ -76,6 +76,4 @@ export default {
     margin: 0 auto;
   }
 }
-
-
 </style>

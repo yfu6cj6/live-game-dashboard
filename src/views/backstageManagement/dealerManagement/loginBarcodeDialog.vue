@@ -5,7 +5,7 @@
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
-    :close-on-click-modal="false"
+    :close-on-click-modal="device === 'mobile'"
   >
     <div class="loginBarcode">
       <img :src="form.dns1d" :alt="$t('__loginBarcode')">
