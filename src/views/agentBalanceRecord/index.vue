@@ -477,10 +477,10 @@ export default {
           }
         }
         .expand {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-          }
+          position: absolute;
+          top: 5px;
+          right: 5px;
+        }
         .mobileExpand{
           display: flex;
           flex-direction: column;

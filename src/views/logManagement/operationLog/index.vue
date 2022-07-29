@@ -90,45 +90,85 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="content">
-              <template v-if="device === 'mobile'">
-                <div class="wrap">
-                  <div class="left">
-                    <div class="item">
-                      <span class="header">{{ $t('__operator') }}</span>
-                      <span>{{ item.userNickName }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">IP</span>
-                      <span>{{ item.ip }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__description') }}</span>
-                      <span>{{ item.description }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__operationTime') }}</span>
-                      <span>{{ item.created_at }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">Uri</span>
-                      <span v-if="isAdminister">{{ item.uri }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__method') }}</span>
-                      <span v-if="isAdminister">{{ item.method }}</span>
-                    </div>
-                    <div class="item">
-                      <el-button v-if="item.open" class="bg-yellow" size="mini" icon="el-icon-arrow-up" @click="remarkExpand(item)">
-                        {{ $t("__content") }}
-                      </el-button>
-                      <el-button v-else class="bg-yellow" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)">
-                        {{ $t("__content") }}
-                      </el-button>
-                    </div>
+            <template v-if="device === 'mobile'">
+              <div class="base">
+                <div class="left" @click.stop="remarkExpand(item)">
+                  <div class="item">
+                    <span class="header">{{ $t('__operator') }}</span>
+                    <span class="content">{{ item.userNickName }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__operationTime') }}</span>
+                    <span class="content">{{ item.created_at }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__description') }}</span>
+                    <span class="content">{{ item.description }}</span>
+                  </div>
+                  <div class="expand" @click.stop="remarkExpand(item)">
+                    <svg-icon v-if="item.open" icon-class="up" />
+                    <svg-icon v-else icon-class="more" />
                   </div>
                 </div>
-                <div v-if="item.open" class="wrap">
+                <div class="right" @click.stop="remarkExpand(item)">
+                  <div class="item">
+                    <span class="header shortW">IP</span>
+                    <span class="content">{{ item.ip }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header shortW">Uri</span>
+                    <span v-if="isAdminister" class="content">{{ item.uri }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header shortW">{{ $t('__method') }}</span>
+                    <span v-if="isAdminister" class="content">{{ item.method }}</span>
+                  </div>
+                  <div class="expand" @click.stop="remarkExpand(item)">
+                    <svg-icon v-if="item.open" icon-class="up" />
+                    <svg-icon v-else icon-class="more" />
+                  </div>
+                </div>
+              </div>
+              <div v-if="item.open" class="expandContent" @click.stop="remarkExpand(item)">
+                <div class="item col">
+                  <span class="header">{{ $t('__content') }}</span>
+                  <span class="content">{{ item.request_content }}</span>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="content">
+                <div class="left">
+                  <div class="item remark">
+                    <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
+                    <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__operator') }}</span>
+                    <span>{{ item.userNickName }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">IP</span>
+                    <span>{{ item.ip }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__description') }}</span>
+                    <span>{{ item.description }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__operationTime') }}</span>
+                    <span>{{ item.created_at }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">Uri</span>
+                    <span v-if="isAdminister">{{ item.uri }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__method') }}</span>
+                    <span v-if="isAdminister">{{ item.method }}</span>
+                  </div>
+                </div>
+                <div v-if="item.open">
                   <div class="item">
                     <span class="header">{{ $t('__content') }}</span>
                     <span>
@@ -136,52 +176,8 @@
                     </span>
                   </div>
                 </div>
-              </template>
-              <template v-else>
-                <div class="content">
-                  <div class="wrap">
-                    <div class="left">
-                      <div class="item remark">
-                        <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                        <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__operator') }}</span>
-                        <span>{{ item.userNickName }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">IP</span>
-                        <span>{{ item.ip }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__description') }}</span>
-                        <span>{{ item.description }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__operationTime') }}</span>
-                        <span>{{ item.created_at }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">Uri</span>
-                        <span v-if="isAdminister">{{ item.uri }}</span>
-                      </div>
-                      <div class="item">
-                        <span class="header">{{ $t('__method') }}</span>
-                        <span v-if="isAdminister">{{ item.method }}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-if="item.open" class="wrap">
-                    <div class="item">
-                      <span class="header">{{ $t('__content') }}</span>
-                      <span>
-                        {{ item.request_content }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </div>
+              </div>
+            </template>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -347,20 +343,40 @@ export default {
   &-container {
     &-table {
       &-row {
-        .content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        .base {
           display: flex;
-          flex-direction: column;
-          .wrap {
-            .left{
-              width: 100%;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-            }
+          flex-direction: row;
+          .left,
+          .right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
           }
-          .wrap + .wrap {
-            margin-top: 10px;
+        }
+        .item {
+          .header {
+            width: 80px;
+            min-width: 80px;
           }
+          .shortW {
+            width: 50px;
+            min-width: 50px;
+          }
+          &.col {
+            flex-direction: column;
+          }
+        }
+        .expand {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+        }
+        .base + .expandContent {
+          margin-top: 5px;
         }
       }
     }
@@ -372,17 +388,13 @@ export default {
     &-container {
       &-table {
         &-row {
-          .content {
-            display: flex;
-            flex-direction: column;
-            .wrap {
-              .left {
-                width: 100%;
-                flex-direction: row;
-                .remark {
-                  width: 50px;
-                }
-              }
+          display: flex;
+          flex-direction: column;
+          .left {
+            width: 100%;
+            flex-direction: row;
+            .remark {
+              width: 50px;
             }
           }
         }

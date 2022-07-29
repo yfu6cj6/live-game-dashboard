@@ -112,48 +112,28 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <div class="content">
-              <template v-if="device === 'mobile'">
-                <div class="wrap" @click="remarkExpand(item)">
-                  <div class="left">
-                    <div class="item">
-                      <span class="header">{{ $t('__transactionNumber') }}</span>
-                      <span>{{ item.order_number }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__operationTime') }}</span>
-                      <span>{{ item.operationTime }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__member') }}</span>
-                      <span>{{ item.member }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__recordType') }}</span>
-                      <span>{{ item.type }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__orderNumber') }}</span>
-                      <span>{{ item.betOrderNumber }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">IP</span>
-                      <span>{{ item.ip }}</span>
-                    </div>
+            <template v-if="device === 'mobile'">
+              <div class="base">
+                <div class="left" @click="remarkExpand(item)">
+                  <div class="item">
+                    <span class="header">{{ $t('__transactionNumber') }}</span>
+                    <span class="content">{{ item.order_number }}</span>
                   </div>
-                  <div class="expand" @click.stop="remarkExpand(item)">
-                    <svg-icon v-if="item.open" icon-class="up" />
-                    <svg-icon v-else icon-class="more" />
+                  <div class="item">
+                    <span class="header">{{ $t('__orderNumber') }}</span>
+                    <span class="content">{{ item.betOrderNumber }}</span>
                   </div>
-                </div>
-                <div v-if="item.open" class="wrap mobileExpand" @click="remarkExpand(item)">
+                  <div class="item">
+                    <span class="header">{{ $t('__operationTime') }}</span>
+                    <span class="content">{{ item.operationTime }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__member') }}</span>
+                    <span class="content">{{ item.member }}</span>
+                  </div>
                   <div class="item">
                     <span class="header">{{ $t('__superiorAgent') }}</span>
-                    <span>{{ item.superiorAgent }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__preTradeBalance') }}</span>
-                    <span>{{ item.pre_trade_balance }}</span>
+                    <span class="content">{{ item.superiorAgent }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ $t('__income') }}</span>
@@ -161,93 +141,131 @@
                   </div>
                   <div class="item">
                     <span class="header">{{ $t('__payout') }}</span>
-                    <span :class="{'back' : item.payout < 0}">{{ item.payoutLabel }}</span>
+                    <span :class="{'back' : item.payout > 0}">{{ item.payoutLabel }}</span>
+                  </div>
+                  <div class="expand" @click.stop="remarkExpand(item)">
+                    <svg-icon v-if="item.open" icon-class="up" />
+                    <svg-icon v-else icon-class="more" />
+                  </div>
+                </div>
+                <div class="right" @click="remarkExpand(item)">
+                  <div class="item">
+                    <span class="header">{{ $t('__operator') }}</span>
+                    <span class="content">{{ item.operator }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">IP</span>
+                    <span class="content">{{ item.ip }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__recordType') }}</span>
+                    <span class="content">{{ item.type }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="header">{{ $t('__preTradeBalance') }}</span>
+                    <span class="content">{{ item.pre_trade_balance }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ $t('__balanceAfterTrade') }}</span>
-                    <span>{{ item.balance_after_trade }}</span>
+                    <span class="content">{{ item.balance_after_trade }}</span>
                   </div>
-                  <div class="item">
+                </div>
+              </div>
+              <div v-if="item.open" class="mobileExpand" @click="remarkExpand(item)">
+                <div class="item displayItem">
+                  <span class="header">{{ $t('__operator') }}</span>
+                  <span class="content">{{ item.operator }}</span>
+                </div>
+                <div class="item displayItem">
+                  <span class="header">IP</span>
+                  <span class="content">{{ item.ip }}</span>
+                </div>
+                <div class="item displayItem">
+                  <span class="header">{{ $t('__recordType') }}</span>
+                  <span class="content">{{ item.type }}</span>
+                </div>
+                <div class="item displayItem">
+                  <span class="header">{{ $t('__preTradeBalance') }}</span>
+                  <span class="content">{{ item.pre_trade_balance }}</span>
+                </div>
+                <div class="item displayItem">
+                  <span class="header">{{ $t('__balanceAfterTrade') }}</span>
+                  <span class="content">{{ item.balance_after_trade }}</span>
+                </div>
+                <div class="item col">
+                  <span class="header">{{ $t('__operationMessage') }}</span>
+                  <span class="content">{{ item.message }}</span>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="grid">
+                <div class="item remark c0">
+                  <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
+                  <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
+                </div>
+                <div class="item c1">
+                  <span class="header">{{ $t('__transactionNumber') }}</span>
+                  <span class="content">{{ item.order_number }}</span>
+                </div>
+                <div class="item c2">
+                  <span class="header">{{ $t('__orderNumber') }}</span>
+                  <span class="content">{{ item.betOrderNumber }}</span>
+                </div>
+                <div class="item c3">
+                  <span class="header">{{ $t('__operationTime') }}</span>
+                  <span class="content">{{ item.operationTime }}</span>
+                </div>
+                <div class="item c4">
+                  <span class="header">{{ $t('__income') }}</span>
+                  <span :class="{'front' : item.income > 0}">{{ item.incomeLabel }}</span>
+                </div>
+                <div class="item c5">
+                  <span class="header">{{ $t('__payout') }}</span>
+                  <span :class="{'back' : item.payout < 0}">{{ item.payoutLabel }}</span>
+                </div>
+              </div>
+              <div v-if="item.open">
+                <div class="grid">
+                  <div class="item c1">
+                    <span class="header">{{ $t('__member') }}</span>
+                    <span class="content">{{ item.member }}</span>
+                  </div>
+                  <div class="item c2">
+                    <span class="header">{{ $t('__superiorAgent') }}</span>
+                    <span class="content">{{ item.superiorAgent }}</span>
+                  </div>
+                  <div class="item c3">
                     <span class="header">{{ $t('__operator') }}</span>
-                    <span>{{ item.operator }}</span>
+                    <span class="content">{{ item.operator }}</span>
                   </div>
-                  <div class="item">
+                  <div class="item c4">
+                    <span class="header">{{ $t('__preTradeBalance') }}</span>
+                    <span class="content">{{ item.pre_trade_balance }}</span>
+                  </div>
+                  <div class="item c5">
+                    <span class="header">{{ $t('__balanceAfterTrade') }}</span>
+                    <span class="content">{{ item.balance_after_trade }}</span>
+                  </div>
+                </div>
+                <div class="grid">
+                  <div class="item c1">
+                    <span class="header">{{ $t('__recordType') }}</span>
+                    <span class="content">{{ item.type }}</span>
+                  </div>
+                  <div class="item c2">
+                    <span class="header">IP</span>
+                    <span class="content">{{ item.ip }}</span>
+                  </div>
+                </div>
+                <div class="grid contentWrap">
+                  <div class="item c1">
                     <span class="header">{{ $t('__operationMessage') }}</span>
-                    <span>{{ item.message }}</span>
+                    <span class="content">{{ item.message }}</span>
                   </div>
                 </div>
-              </template>
-              <template v-else>
-                <div class="wrap">
-                  <div class="left">
-                    <div class="item remark">
-                      <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                      <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__transactionNumber') }}</span>
-                      <span>{{ item.order_number }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__operationTime') }}</span>
-                      <span>{{ item.operationTime }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__member') }}</span>
-                      <span>{{ item.member }}</span>
-                    </div>
-                    <div class="item record">
-                      <span class="header">{{ $t('__recordType') }}</span>
-                      <span>{{ item.type }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__orderNumber') }}</span>
-                      <span>{{ item.betOrderNumber }}</span>
-                    </div>
-                    <div class="item ip">
-                      <span class="header">IP</span>
-                      <span>{{ item.ip }}</span>
-                    </div>
-                  </div>
-                </div>
-                <div v-if="item.open">
-                  <div class="wrap moveright">
-                    <div class="item">
-                      <span class="header">{{ $t('__superiorAgent') }}</span>
-                      <span>{{ item.superiorAgent }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__operator') }}</span>
-                      <span>{{ item.operator }}</span>
-                    </div>
-                  </div>
-                  <div class="wrap moveright">
-                    <div class="item">
-                      <span class="header">{{ $t('__preTradeBalance') }}</span>
-                      <span>{{ item.pre_trade_balance }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__income') }}</span>
-                      <span :class="{'front' : item.income > 0}">{{ item.incomeLabel }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__payout') }}</span>
-                      <span :class="{'back' : item.payout < 0}">{{ item.payoutLabel }}</span>
-                    </div>
-                    <div class="item">
-                      <span class="header">{{ $t('__balanceAfterTrade') }}</span>
-                      <span>{{ item.balance_after_trade }}</span>
-                    </div>
-                  </div>
-                  <div class="wrap moveright">
-                    <div class="item">
-                      <span class="header">{{ $t('__operationMessage') }}</span>
-                      <span>{{ item.message }}</span>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </div>
+              </div>
+            </template>
           </div>
         </div>
         <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
@@ -438,50 +456,76 @@ export default {
     }
     &-table {
       &-row {
+        display: flex;
+        flex-direction: column;
         position: relative;
-        .content {
+        .left {
+          width: 100%;
           display: flex;
           flex-direction: column;
-          .wrap {
-            .left {
-              width: 100%;
+        }
+        .right {
+          width: 0%;
+          display: none;
+        }
+        .item{
+          .header {
+            min-width: 100px;
+            width: 100px;
+          }
+          &.col {
+            flex-direction: column;
+          }
+          &.displayItem {
+            display: flex;
+          }
+        }
+        .expand {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+        }
+        .mobileExpand{
+          display: flex;
+          flex-direction: column;
+        }
+        .front {
+          color: blue;
+          font-weight: bolder;
+        }
+        .back {
+          color: red;
+          font-weight: bolder;
+        }
+        .base + .mobileExpand {
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .view {
+    &-container {
+      &-table {
+        &-row {
+          .base {
+            display: flex;
+            flex-direction: row;
+            .left,
+            .right {
+              width: 50%;
               display: flex;
               flex-direction: column;
             }
-            .expand {
-              position: absolute;
-              top: 5px;
-              right: 5px;
+          }
+          .mobileExpand {
+            .item {
+              &.displayItem {
+                display: none;
+              }
             }
-          }
-          .item{
-            word-break: break-all;
-            &.record {
-              min-width: 100px;
-              width: 100px;
-            }
-            &.ip {
-              min-width: 130px;
-              width: 130px;
-            }
-          }
-          .wrap + .wrap {
-            margin-top: 0px;
-          }
-          .mobileExpand{
-            display: flex;
-            flex-direction: column;
-          }
-          .moveright {
-            margin-left: 43px;
-          }
-          .front {
-            color: blue;
-            font-weight: bolder;
-          }
-          .back {
-            color: red;
-            font-weight: bolder;
           }
         }
       }
@@ -494,17 +538,32 @@ export default {
     &-container {
       &-table {
         &-row {
-          .content {
-            display: flex;
-            flex-direction: column;
-            .wrap {
-              .left {
-                width: 100%;
-                flex-direction: row;
-                .remark {
-                  width: 50px;
-                }
-              }
+          .grid {
+            display: grid;
+            grid-template-columns: 50px repeat(5, 1fr);
+            grid-template-areas:
+            "c0 c1 c2 c3 c4 c5";
+            .c0 {
+              grid-area: c0;
+            }
+            .c1 {
+              grid-area: c1;
+            }
+            .c2 {
+              grid-area: c2;
+            }
+            .c3 {
+              grid-area: c3;
+            }
+            .c4 {
+              grid-area: c4;
+            }
+            .c5 {
+              grid-area: c5;
+            }
+            &.contentWrap {
+              grid-template-areas:
+              ". c1 c1 c1 c1 c1";
             }
           }
         }
