@@ -244,7 +244,7 @@ export default {
     .logo {
       width: 450px;
       max-width: 100vw;
-      height: 200px;
+      height: 180px;
       position: relative;
       left: 50%;
       transform: translateX(-50%);

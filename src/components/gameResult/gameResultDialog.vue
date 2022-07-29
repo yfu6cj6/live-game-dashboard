@@ -50,19 +50,19 @@
           <div class="player">{{ $t('__player') }}</div>
           <div class="pokerInfo">
             <div class="poker3">
-              <img class="poker rotate" :src="require(`@/assets/poker/${playerCard3}.png`)" :alt="`${$t('__player')}3`">
+              <img class="poker rotate" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[2]}.png`)" :alt="`${$t('__player')}3`">
             </div>
-            <img class="poker" :src="require(`@/assets/poker/${playerCard1}.png`)" :alt="`${$t('__player')}1`">
-            <img class="poker" :src="require(`@/assets/poker/${playerCard2}.png`)" :alt="`${$t('__player')}2`">
+            <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[0]}.png`)" :alt="`${$t('__player')}1`">
+            <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[1]}.png`)" :alt="`${$t('__player')}2`">
           </div>
         </div>
         <div class="pokerArea">
           <div class="banker">{{ $t('__banker') }}</div>
           <div class="pokerInfo">
-            <img class="poker" :src="require(`@/assets/poker/${bankerCard1}.png`)" :alt="`${$t('__banker')}1`">
-            <img class="poker" :src="require(`@/assets/poker/${bankerCard2}.png`)" :alt="`${$t('__banker')}2`">
+            <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[0]}.png`)" :alt="`${$t('__banker')}1`">
+            <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[1]}.png`)" :alt="`${$t('__banker')}2`">
             <div class="poker3">
-              <img class="poker rotate" :src="require(`@/assets/poker/${bankerCard3}.png`)" :alt="`${$t('__banker')}3`">
+              <img class="poker rotate" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[2]}.png`)" :alt="`${$t('__banker')}3`">
             </div>
           </div>
         </div>
@@ -150,64 +150,149 @@
         </tr>
       </table>
     </div>
+    <div class="road">
+      <table>
+        <tr
+          v-for="(road, i) in bigRoad"
+          :key="i"
+        >
+          <td
+            v-for="(item, j) in road"
+            :key="j"
+            class="item"
+          >
+            <div
+              :class="{
+                'bigRoad-current': item.split('_')[3] === '1'
+              }"
+            />
+            <div
+              :class="{
+                'bigRoad-winner-banker': item.split('_')[0] === '1',
+                'bigRoad-winner-player': item.split('_')[0] === '2'
+              }"
+            />
+            <div
+              :class="{
+                'bigRoad-pair-banker': item.split('_')[1] === '1' || item.split('_')[1] === '3',
+              }"
+            />
+            <div
+              :class="{
+                'bigRoad-pair-player': item.split('_')[1] === '2' || item.split('_')[1] === '3',
+              }"
+            />
+            <div
+              v-if="item.split('_')[0] === '3' && item.split('_')[2] >= 1"
+              class="bigRoad-tieCount"
+            >
+              {{ (Number(item.split('_')[2]) + 1) }}
+            </div>
+            <div
+              v-else-if="item.split('_')[0] === '3' || item.split('_')[2] === '1'"
+              class="bigRoad-winner-tie"
+            />
+            <div
+              v-else-if="item.split('_')[2] > 1"
+              class="bigRoad-tieCount"
+            >
+              {{ item.split('_')[2] }}
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
   </el-dialog>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
-// import { getRoadArray } from '@/utils/roadLogic'
+import { getRoadArray } from '@/utils/roadLogic'
 
 export default {
   name: 'GameResultDialog',
   mixins: [dialogCommon],
   props: {
-    visible: {
+    'visible': {
       type: Boolean,
-      require: true,
-      default() {
-        return false
-      }
+      require: true
     },
-    roundInfo: {
+    'roundInfo': {
       type: Object,
       require: true,
       default() {
         return {}
       }
     },
-    countInfo: {
+    'countInfo': {
       type: Object,
       require: true,
       default() {
         return {}
+      }
+    },
+    'scoreCards': {
+      type: Array,
+      require: true,
+      default() {
+        return []
       }
     }
   },
   data: function() {
     return {
+      bigRoad: [[]],
+      bigEyeRoad: [[]],
+      smallEyeRoad: [[]],
+      cockroachRoad: [[]],
+      beadRoad: [[]]
     }
   },
   computed: {
-    playerCard1() {
-      return this.roundInfo.result.PlayerCard[0] ? this.roundInfo.result.PlayerCard[0] : "None"
-    },
-    playerCard2() {
-      return this.roundInfo.result.PlayerCard[1] ? this.roundInfo.result.PlayerCard[1] : "None"
-    },
-    playerCard3() {
-      return this.roundInfo.result.PlayerCard[2] ? this.roundInfo.result.PlayerCard[2] : "None"
-    },
-    bankerCard1() {
-      return this.roundInfo.result.BankerCard[0] ? this.roundInfo.result.BankerCard[0] : "None"
-    },
-    bankerCard2() {
-      return this.roundInfo.result.BankerCard[1] ? this.roundInfo.result.BankerCard[1] : "None"
-    },
-    bankerCard3() {
-      return this.roundInfo.result.BankerCard[2] ? this.roundInfo.result.BankerCard[2] : "None"
-    }
   },
   watch: {
+    visible() {
+      if (this.visible) {
+        this.dialogLoading = true
+        if (this.roundInfo.result) {
+          for (let i = 0; i < 3; i++) {
+            if (!this.roundInfo.result.PlayerCard[i]) {
+              this.roundInfo.result.PlayerCard[i] = "None"
+            }
+            if (!this.roundInfo.result.BankerCard[i]) {
+              this.roundInfo.result.BankerCard[i] = "None"
+            }
+          }
+        }
+        const roadData = this.scoreCards.toString()
+        const bigRoad = getRoadArray(0, roadData, this.roundInfo.scoreCardsId)
+        var bigRoadLastIndex = 0
+        bigRoad.forEach(element => {
+          const info = element.filter(item => { return item !== "" })
+          const last = element.lastIndexOf(info[info.length - 1])
+          if (bigRoadLastIndex < last) {
+            bigRoadLastIndex = last
+          }
+        })
+        if (bigRoadLastIndex < 26) {
+          bigRoadLastIndex = 26
+        }
+        for (let i = 0, max = bigRoad.length; i < max; i++) {
+          bigRoad[i] = bigRoad[i].slice(0, bigRoadLastIndex);
+        }
+        this.bigRoad = bigRoad;
+
+        this.dialogLoading = false
+      } else {
+        this.bigRoad = [[]]
+        this.bigEyeRoad = [[]]
+        this.smallEyeRoad = [[]]
+        this.cockroachRoad = [[]]
+        this.beadRoad = [[]]
+        this.roundInfo = {}
+        this.countInfo = {}
+      }
+    }
   },
   methods: {
   }
@@ -239,6 +324,7 @@ export default {
 .roundData {
   display: flex;
   flex-wrap: wrap;
+  max-width: 100%;
   .pokerData {
     display: flex;
     margin-right: 50px;
@@ -287,6 +373,105 @@ export default {
     }
     tr {
       line-height: 20px;
+    }
+  }
+}
+
+.road {
+  overflow: auto;
+  table {
+    background-color: #fff;
+    border-spacing: 0;
+    border-collapse: collapse;
+    td {
+      width: 20px;
+      min-width: 20px;
+      height: 20px;
+      min-height: 20px;
+      max-height: 20px;
+      border: 1px solid #aaa;
+      position: relative;
+      .bigRoad {
+        &-current {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          animation: change 1s;
+          animation-iteration-count: infinite;
+          animation-direction: alternate;
+        }
+        &-winner {
+          &-banker,
+          &-player {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+          }
+        }
+        &-winner {
+          &-banker {
+            border: 2px solid $red;
+          }
+          &-player {
+            border: 2px solid $blue;
+          }
+          &-tie {
+            position: absolute;
+            top: 0;
+            left: 9px;
+            width: 2px;
+            height: 100%;
+            transform: rotate(45deg);
+            background-color: $green;
+          }
+        }
+        &-pair {
+          &-banker,
+          &-player {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+          }
+        }
+        &-pair {
+          &-banker {
+            background-color: $darkRed;
+            top: 2px;
+            left: 2px;
+          }
+          &-player {
+            background-color: $darkBlue;
+            bottom: 2px;
+            right: 2px;
+          }
+        }
+        &-tieCount {
+          position: absolute;
+          top: 0;
+          left: 0;
+          font-weight: bold;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      @keyframes change {
+        from {
+          background-color: #fff;
+        }
+        to {
+          background-color: #fc0;
+        }
+      }
     }
   }
 }

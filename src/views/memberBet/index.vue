@@ -235,10 +235,10 @@
     />
 
     <gameResultDialog
-      v-if="curGameResultIndex === gameResultEnum.resultdialog"
       :visible="curGameResultIndex === gameResultEnum.resultdialog"
       :round-info="roundInfo"
       :count-info="countInfo"
+      :score-cards="scoreCards"
       @close="closeGameResultEven"
     />
   </div>
@@ -317,7 +317,8 @@ export default {
       curPlaybackIndex: 0,
       curGameResultIndex: 0,
       roundInfo: {},
-      countInfo: {}
+      countInfo: {},
+      scoreCards: []
     }
   },
   computed: {
@@ -413,6 +414,7 @@ export default {
       gameResultGetScoreCards({ round_id: round_id }).then((res) => {
         this.roundInfo = res.roundInfo
         this.countInfo = res.countInfo
+        this.scoreCards = res.scoreCards
         this.curGameResultIndex = this.gameResultEnum.resultdialog
         this.dataLoading = false
       }).catch(() => {
