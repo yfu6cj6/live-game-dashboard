@@ -150,7 +150,7 @@
         </tr>
       </table>
     </div>
-    <div class="road">
+    <div class="bigRoadData">
       <table>
         <tr
           v-for="(road, i) in bigRoad"
@@ -198,6 +198,32 @@
             >
               {{ item.split('_')[2] }}
             </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="bigEyeRoadData">
+      <table>
+        <tr
+          v-for="(road, i) in bigEyeRoad"
+          :key="i"
+        >
+          <td
+            v-for="(item, j) in road"
+            :key="j"
+            class="item"
+          >
+            <div
+              :class="{
+                'bigEyeRoad-current': item.split('_')[1] === '1'
+              }"
+            />
+            <div
+              :class="{
+                'bigEyeRoad-winner-banker': item.split('_')[0] === '1',
+                'bigEyeRoad-winner-player': item.split('_')[0] === '2'
+              }"
+            />
           </td>
         </tr>
       </table>
@@ -265,6 +291,7 @@ export default {
           }
         }
         const roadData = this.scoreCards.toString()
+
         const bigRoad = getRoadArray(0, roadData, this.roundInfo.scoreCardsId)
         var bigRoadLastIndex = 0
         bigRoad.forEach(element => {
@@ -274,13 +301,30 @@ export default {
             bigRoadLastIndex = last
           }
         })
-        if (bigRoadLastIndex < 26) {
-          bigRoadLastIndex = 26
+        if (bigRoadLastIndex < 29) {
+          bigRoadLastIndex = 29
         }
         for (let i = 0, max = bigRoad.length; i < max; i++) {
           bigRoad[i] = bigRoad[i].slice(0, bigRoadLastIndex);
         }
         this.bigRoad = bigRoad;
+
+        const bigEyeRoad = getRoadArray(2, roadData, this.roundInfo.scoreCardsId)
+        var bigEyeRoadLastIndex = 0
+        bigEyeRoad.forEach(element => {
+          const info = element.filter(item => { return item !== "" })
+          const last = element.lastIndexOf(info[info.length - 1])
+          if (bigEyeRoadLastIndex < last) {
+            bigEyeRoadLastIndex = last
+          }
+        })
+        if (bigEyeRoadLastIndex < 58) {
+          bigEyeRoadLastIndex = 58
+        }
+        for (let i = 0, max = bigEyeRoad.length; i < max; i++) {
+          bigEyeRoad[i] = bigEyeRoad[i].slice(0, bigEyeRoadLastIndex);
+        }
+        this.bigEyeRoad = bigEyeRoad;
 
         this.dialogLoading = false
       } else {
@@ -377,7 +421,17 @@ export default {
   }
 }
 
-.road {
+@keyframes change {
+  from {
+    background-color: #fff;
+  }
+  to {
+    background-color: #fc0;
+  }
+}
+
+.bigRoadData {
+  margin-top: 10px;
   overflow: auto;
   table {
     background-color: #fff;
@@ -464,12 +518,65 @@ export default {
           height: 100%;
         }
       }
-      @keyframes change {
-        from {
-          background-color: #fff;
+    }
+  }
+}
+.bigEyeRoadData {
+  overflow: auto;
+  table {
+    background-color: #fff;
+    border-spacing: 0;
+    border-collapse: collapse;
+    &:first-child {
+      border-top: 1px solid #aaa;
+    }
+    tr {
+      border-left: 1px solid #aaa;
+      border-right: 1px solid #aaa;
+      &:nth-child(even) {
+        border-bottom: 1px solid #aaa;
+      }
+      td {
+        &:nth-child(even) {
+          border-right: 1px solid #aaa;
         }
-        to {
-          background-color: #fc0;
+        width: 10px;
+        min-width: 10px;
+        height: 10px;
+        min-height: 10px;
+        max-height: 10px;
+        position: relative;
+        .bigEyeRoad {
+          &-current {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            animation: change 1s;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+          }
+          &-winner {
+            &-banker,
+            &-player {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translateX(-50%) translateY(-50%);
+              width: calc(100% - 1px);
+              height: calc(100% - 1px);
+              border-radius: 50%;
+            }
+          }
+          &-winner {
+            &-banker {
+              border: 2px solid $red;
+            }
+            &-player {
+              border: 2px solid $blue;
+            }
+          }
         }
       }
     }
