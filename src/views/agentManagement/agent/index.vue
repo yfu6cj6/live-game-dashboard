@@ -10,9 +10,13 @@
             :class="{'single-row': index % 2 === 0}"
           >
             <template v-if="device === 'mobile'">
-              <div class="wrap">
+              <div class="wrap" @click="remarkExpand(item)">
+                <div class="expand">
+                  <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
+                  <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />
+                </div>
                 <div class="visible">
-                  <div class="top">
+                  <div class="userInfo">
                     <div class="user">
                       <div>
                         <svg-icon icon-class="user" />
@@ -39,14 +43,9 @@
                       </span>
                       <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
                     </div>
-                    <div class="expand">
-                      <svg-icon v-if="item.open" icon-class="up" @click="remarkExpand(item)" />
-                      <svg-icon v-else icon-class="more" @click="remarkExpand(item)" />
-                    </div>
                   </div>
-                  <div class="bottom">
+                  <div class="otherInfo">
                     <div class="currency">
-                      <span class="header">{{ $t('__currency') }}</span>
                       <span class="conten">{{ item.currency }}</span>
                     </div>
                     <div class="balance">
@@ -55,34 +54,35 @@
                       <span class="conten">{{ item.balance }}</span>
                     </div>
                     <div class="timeZone">
-                      <span class="header">{{ $t('__timeZone') }}</span>
                       <span class="conten">{{ item.cityNameLabel }}</span>
                     </div>
                   </div>
                 </div>
-                <div class="inVisible">
-                  <div class="">
-                    <el-button v-if="!isAgentSubAccount" class="bg-yellow" size="mini" @click="onDepositBtnClick(item)">{{ $t("__deposit") }}</el-button>
-                    <el-button v-if="!isAgentSubAccount" class="bg-yellow" size="mini" @click="onWithdrawBtnClick(item)">{{ $t("__withdraw") }}</el-button>
-                    <el-button
-                      v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'"
-                      class="bg-yellow"
-                      size="mini"
-                      :title="$t('__agentOneClickRecyclingTitle')"
-                      @click="onOneClickRecyclingBtnClick(item)"
-                    >
-                      {{ $t("__oneClickRecycling") }}
-                    </el-button>
-                    <span class="winLossReport">
-                      <router-link :to="`/winLossReport/winLossReport/${item.id}`">
-                        <el-button class="bg-yellow" size="mini">{{ $t("__winLossReport") }}</el-button>
-                      </router-link>
-                    </span>
-                  </div>
-                  <div class="handicapLimit">
-                    <span>
-                      <el-button class="bg-yellow" size="mini" @click="onLimitBtnClick(item.handicaps)">{{ $t("_handicapLimit") }}</el-button>
-                    </span>
+                <div v-if="item.open">
+                  <div class="btnGroup">
+                    <div class="group1">
+                      <el-button v-if="!isAgentSubAccount" class="bg-yellow" size="mini" @click.stop="onDepositBtnClick(item)">{{ $t("__deposit") }}</el-button>
+                      <el-button v-if="!isAgentSubAccount" class="bg-yellow" size="mini" @click.stop="onWithdrawBtnClick(item)">{{ $t("__withdraw") }}</el-button>
+                      <el-button
+                        v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'"
+                        class="bg-yellow"
+                        size="mini"
+                        :title="$t('__agentOneClickRecyclingTitle')"
+                        @click.stop="onOneClickRecyclingBtnClick(item)"
+                      >
+                        {{ $t("__oneClickRecycling") }}
+                      </el-button>
+                      <span class="winLossReport">
+                        <router-link :to="`/winLossReport/winLossReport/${item.id}`">
+                          <el-button class="bg-yellow" size="mini">{{ $t("__winLossReport") }}</el-button>
+                        </router-link>
+                      </span>
+                    </div>
+                    <div class="group2">
+                      <el-button class="bg-yellow" size="mini" @click.stop="onLimitBtnClick(item.handicaps)">{{ $t("_handicapLimit") }}</el-button>
+                      <svg-icon v-if="!isAgentSubAccount" icon-class="key" class="yellow-color key" @click.stop="onModPasswordBtnClick(item)" />
+                      <el-button v-if="!isAgentSubAccount" class="bg-normal yellow-color edit" size="mini" icon="el-icon-setting" @click.stop="onEditBtnClick(scope.row)" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -515,7 +515,7 @@ export default {
           .visible {
             display: flex;
             flex-direction: column;
-            .top {
+            .userInfo {
               display: flex;
               .user {
                 display: flex;
@@ -541,7 +541,7 @@ export default {
                 align-items: center;
               }
             }
-            .bottom {
+            .otherInfo {
               display: flex;
               flex-wrap: wrap;
               margin-top: 3px;
@@ -563,12 +563,20 @@ export default {
               flex-direction: column;
             }
           }
-          .inVisible {
-            display: flex;
-            flex-direction: column;
+          .btnGroup {
             margin-top: 5px;
-            .handicapLimit {
-              margin-top: 5px;
+            .group2 {
+              margin-top: 10px;
+              display: flex;
+              align-items: center;
+              .key {
+                margin-left: 20px;
+                font-size: 22px;
+              }
+              .edit {
+                font-size: 22px;
+                margin-left: 10px;
+              }
             }
             .winLossReport {
               margin-left: 10px;

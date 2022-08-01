@@ -468,7 +468,7 @@ export default {
       this.bigEyeRoad.roadData = JSON.parse(JSON.stringify(this.bigEyeRoad.roadData));
 
       var smallEyeRoadLastIndex = this.smallEyeRoad.lastIndex;
-      while (smallEyeRoadLastIndex * 20 < (window.innerWidth - 50)) {
+      while (smallEyeRoadLastIndex * 20 < (window.innerWidth - 50) / 2) {
         smallEyeRoadLastIndex++;
       }
       for (let i = 0, max = this.smallEyeRoad.allData.length; i < max; i++) {
@@ -477,7 +477,7 @@ export default {
       this.smallEyeRoad.roadData = JSON.parse(JSON.stringify(this.smallEyeRoad.roadData));
 
       var cockroachRoadLastIndex = this.cockroachRoad.lastIndex
-      while (cockroachRoadLastIndex * 20 < (window.innerWidth - 50)) {
+      while (cockroachRoadLastIndex * 20 < (window.innerWidth - 50) / 2) {
         cockroachRoadLastIndex++;
       }
       for (let i = 0, max = this.cockroachRoad.allData.length; i < max; i++) {
@@ -743,6 +743,7 @@ export default {
   display: flex;
 }
 .smallEyeRoadData {
+  max-width: 50%;
   overflow-x: auto;
   overflow-y: hidden;
   border-right: 1px solid #aaa;
@@ -805,6 +806,7 @@ export default {
   }
 }
 .cockroachRoadData {
+  max-width: 50%;
   overflow-x: auto;
   overflow-y: hidden;
   table {
