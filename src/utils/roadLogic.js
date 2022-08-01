@@ -112,7 +112,7 @@ function statistic(scores)
     * 
     */
 function convertToBeadRoad(scores, recordCurIndex) {
-    var board = initBoard(6, 30);
+    var board = initBoard(6, 99);
     var sc = scores.split(',');
     var bp = false;
     var pp = false;
