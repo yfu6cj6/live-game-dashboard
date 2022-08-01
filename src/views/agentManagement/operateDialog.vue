@@ -1,9 +1,16 @@
 <template>
-  <el-dialog v-loading="dialogLoading" :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
+  <el-dialog
+    v-if="visible"
+    v-loading="dialogLoading"
+    :title="title"
+    :visible.sync="visible"
+    :before-close="onClose"
+    :close-on-click-modal="device === 'mobile'"
+  >
     <div class="contentClass">
       <span>{{ content }}</span>
     </div>
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
+    <el-form ref="form" :model="form" :rules="rules">
       <el-form-item :label="$t('__userPassword')" prop="userPassword">
         <el-input v-model="form.userPassword" show-password />
       </el-form-item>
@@ -15,12 +22,11 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-import common from '@/mixin/common'
+import dialogCommon from '@/mixin/dialogCommon'
 
 export default {
   name: 'OperateDialog',
-  mixins: [handleDialogWidth, common],
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,
@@ -80,12 +86,6 @@ export default {
           })
         }
       })
-    },
-    onClose() {
-      this.$emit('close')
-    },
-    setDialogLoading(dialogLoading) {
-      this.dialogLoading = dialogLoading
     }
   }
 }
@@ -99,9 +99,6 @@ export default {
   color: $yellow;
   padding-top: 10px;
   margin-bottom: 10px;
-}
-
-.el-form {
-  margin-bottom: 10px;
+  font-size: 20px;
 }
 </style>

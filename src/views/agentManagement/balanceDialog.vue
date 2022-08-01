@@ -1,24 +1,39 @@
 <template>
-  <el-dialog v-loading="dialogLoading" :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
-      <el-form-item :label="$t('__superiorAgent') + ': '">
-        <span>{{ agentBalanceInfo.parent }}</span>
-      </el-form-item>
-      <el-form-item :label="$t('__superiorBalance') + ': '">
-        <span>{{ parentBalance }}</span>
-      </el-form-item>
-      <el-form-item v-if="modeType===modeEnum.agent" :label="$t('__agent') + ': '">
-        <span>{{ agentBalanceInfo.agent }}</span>
-      </el-form-item>
-      <el-form-item v-if="modeType===modeEnum.agent" :label="$t('__agentBalance') + ': '">
-        <span>{{ agentBalanceInfo.agentBalance }}</span>
-      </el-form-item>
-      <el-form-item v-if="modeType===modeEnum.member" :label="$t('__member') + ': '">
-        <span>{{ agentBalanceInfo.member }}</span>
-      </el-form-item>
-      <el-form-item v-if="modeType===modeEnum.member" :label="$t('__memberBalance') + ': '">
-        <span>{{ agentBalanceInfo.memberBalance }}</span>
-      </el-form-item>
+  <el-dialog
+    v-if="visible"
+    v-loading="dialogLoading"
+    :title="title"
+    :visible.sync="visible"
+    :before-close="onClose"
+    :close-on-click-modal="device === 'mobile'"
+  >
+    <div class="info">
+      <div class="info-item">
+        <span class="yellow-color info-header">{{ $t('__superiorAgent') }}</span>
+        <span class="info-content">{{ agentBalanceInfo.parent }}</span>
+      </div>
+      <div class="info-item">
+        <span class="yellow-color info-header">{{ $t('__superiorBalance') }}</span>
+        <span class="info-content">{{ parentBalance }}</span>
+      </div>
+      <div v-if="modeType===modeEnum.agent" class="info-item">
+        <span class="yellow-color info-header">{{ $t('__agent') }}</span>
+        <span class="info-content">{{ agentBalanceInfo.agent }}</span>
+      </div>
+      <div v-if="modeType===modeEnum.agent" class="info-item">
+        <span class="yellow-color info-header">{{ $t('__agentBalance') }}</span>
+        <span class="info-content">{{ agentBalanceInfo.agentBalance }}</span>
+      </div>
+      <div v-if="modeType===modeEnum.member" class="info-item">
+        <span class="yellow-color info-header">{{ $t('__member') }}</span>
+        <span class="info-content">{{ agentBalanceInfo.member }}</span>
+      </div>
+      <div v-if="modeType===modeEnum.member" class="info-item">
+        <span class="yellow-color info-header">{{ $t('__memberBalance') }}</span>
+        <span class="info-content">{{ agentBalanceInfo.memberBalance }}</span>
+      </div>
+    </div>
+    <el-form ref="form" :model="form" :rules="rules">
       <el-form-item :label="balanceLabelTitle" prop="amount">
         <el-input v-model="form.amount" type="number" :disabled="balanceDisable" min="0" />
       </el-form-item>
@@ -33,11 +48,11 @@
 </template>
 
 <script>
-import common from '@/mixin/common'
+import dialogCommon from '@/mixin/dialogCommon'
 
 export default {
   name: 'BalanceDialog',
-  mixins: [common],
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,
@@ -117,8 +132,7 @@ export default {
       },
       operationEnum: Object.freeze({ 'depositBalance': 1, 'withdrawBalance': 2 }),
       modeEnum: Object.freeze({ 'agent': 1, 'member': 2 }),
-      agentBalanceInfo: {},
-      dialogLoading: false
+      agentBalanceInfo: {}
     }
   },
   computed: {
@@ -137,7 +151,7 @@ export default {
       }
     },
     parentBalance() {
-      return this.agentBalanceInfo.parentId === 1 ? '∞' : this.agentBalanceInfo.parentBalance
+      return this.agentBalanceInfo.parentId === 1 ? 'oo' : this.agentBalanceInfo.parentBalance
     }
   },
   watch: {
@@ -162,12 +176,6 @@ export default {
         }
       })
     },
-    onClose() {
-      this.$emit('close')
-    },
-    setDialogLoading(dialogLoading) {
-      this.dialogLoading = dialogLoading
-    },
     setBalanceInfo(balanceInfo) {
       this.agentBalanceInfo = balanceInfo
     }
@@ -175,12 +183,27 @@ export default {
 }
 </script>
 
-<style scoped>
-.el-table--fit {
-  padding: 0 0 10px 0
+<style lang="scss" scoped>
+.info {
+  font-size: 16px;
+  width: 100%;
+  margin: 20px auto;
+  .info-item {
+    display: flex;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    .info-header {
+      width: 120px;
+      font-weight: bold;
+    }
+    .info-content {
+      color: #fff;
+    }
+  }
 }
-
-span {
-  color: #fff;
+@media screen and (min-width: 768px) {
+  .info {
+    width: 50%;
+  }
 }
 </style>

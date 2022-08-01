@@ -195,6 +195,45 @@
         @current-change="handlePageChangeByClient"
       />
     </div>
+    <balanceDialog
+      ref="depositBalanceDialog"
+      :title="$t('__depositBalance')"
+      :visible="curDialogIndex === dialogEnum.depositBalance"
+      :confirm="$t('__confirm')"
+      :form="editForm"
+      :operation-type="1"
+      :mode-type="1"
+      @close="closeDialogEven"
+      @depositBalance="depositBalance"
+    />
+
+    <balanceDialog
+      ref="withdrawBalanceDialog"
+      :title="$t('__withdrawBalance')"
+      :visible="curDialogIndex === dialogEnum.withdrawBalance"
+      :confirm="$t('__confirm')"
+      :form="editForm"
+      :operation-type="2"
+      :mode-type="1"
+      @close="closeDialogEven"
+      @withdrawBalance="withdrawBalance"
+    />
+
+    <operateDialog
+      ref="balanceOneClickRecyclingDialog"
+      :visible="curDialogIndex === dialogEnum.balanceOneClickRecycling"
+      :content="$stringFormat($t('__agentBalanceOneClickRecyclingMsg'), operateDialogMsgParameter)"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <limitDialog
+      :title="$t('_handicapLimit')"
+      :visible="curDialogIndex === dialogEnum.limit"
+      :handicaps="handicaps"
+      @close="closeDialogEven"
+    />
   </div>
 </template>
 
@@ -208,6 +247,9 @@ import { currencySearch } from '@/api/backstageManagement/currencyManagement'
 import handlePageChange from '@/mixin/handlePageChange';
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
+import BalanceDialog from '@/views/agentManagement/balanceDialog'
+import OperateDialog from '@/views/agentManagement/operateDialog'
+import LimitDialog from '@/views/agentManagement/limitDialog'
 
 const defaultForm = {
   parent: 0,
@@ -234,6 +276,7 @@ const editFormStepEnum = Object.freeze({ 'agentInfo': 0, 'rate': 1, 'limit': 2, 
 
 export default {
   name: 'Agent',
+  components: { BalanceDialog, OperateDialog, LimitDialog },
   mixins: [handlePageChange],
   props: {
   },

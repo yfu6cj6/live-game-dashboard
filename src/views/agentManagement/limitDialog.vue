@@ -1,21 +1,41 @@
 <template>
-  <el-dialog :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
-    <el-table :data="handicaps" tooltip-effect="dark" header-cell-class-name="bg-black_table_header" row-class-name="bg-black_table_col" style="background: black;">
-      <el-table-column prop="id" label="ID" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="nickname" :label="$t('__nickname')" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="bet_min" :label="$t('__betMin')" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="bet_max" :label="$t('__betMax')" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="currency" :label="$t('__currency')" align="center" :show-overflow-tooltip="true" />
-    </el-table>
+  <el-dialog
+    v-if="visible"
+    v-loading="dialogLoading"
+    :title="title"
+    :visible.sync="visible"
+    :before-close="onClose"
+    :close-on-click-modal="device === 'mobile'"
+  >
+    <div class="limit">
+      <table>
+        <thead>
+          <tr>
+            <th align="center">{{ $t('__nickname') }}</th>
+            <th align="center">{{ $t('__betMin') }}</th>
+            <th align="center">{{ $t('__betMax') }}</th>
+            <th align="center">{{ $t('__currency') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in handicaps" :key="index">
+            <td align="center" class="nickname">{{ item.nickname }}</td>
+            <td align="center" class="bet_min">{{ item.bet_min }}</td>
+            <td align="center" class="bet_max">{{ item.bet_max }}</td>
+            <td align="center" class="currency">{{ item.currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </el-dialog>
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon'
 
 export default {
   name: 'LimitDialog',
-  mixins: [handleDialogWidth],
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,
@@ -41,15 +61,44 @@ export default {
     }
   },
   methods: {
-    onClose() {
-      this.$emit('close')
-    }
   }
 }
 </script>
 
-<style scoped>
-.el-table--fit {
-  padding: 0 0 10px 0
+<style lang="scss" scoped>
+@import "~@/styles/variables.scss";
+
+.limit {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 15px;
+  table {
+    color: #fff;
+    font-size: 18px;
+    margin: 0 auto;
+    tr {
+      th {
+        color: $yellow;
+      }
+      td {
+        &.nickname {
+          width: 160px;
+          min-width: 160px;
+        }
+        &.bet_min {
+          width: 160px;
+          min-width: 160px;
+        }
+        &.bet_max {
+          width: 160px;
+          min-width: 160px;
+        }
+        &.currency {
+          width: 100px;
+          min-width: 100px;
+        }
+      }
+    }
+  }
 }
 </style>
