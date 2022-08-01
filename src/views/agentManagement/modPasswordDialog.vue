@@ -1,9 +1,16 @@
 <template>
-  <el-dialog v-loading="dialogLoading" :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
-    <label class="agentNameLabel">{{ nameLabel }}
-      <span class="agentNameSpan">{{ form.fullName }}</span>
-    </label>
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
+  <el-dialog
+    v-if="visible"
+    v-loading="dialogLoading"
+    :visible.sync="visible"
+    :before-close="onClose"
+    :close-on-click-modal="device === 'mobile'"
+  >
+    <div class="agentInfo">
+      <span class="header">{{ nameLabel }}</span>
+      <span class="content">{{ form.fullName }}</span>
+    </div>
+    <el-form ref="form" :model="form" :rules="rules">
       <el-form-item v-if="visible" :label="$t('__newPassword')" prop="newPassword">
         <el-input v-model="form.newPassword" show-password />
       </el-form-item>
@@ -21,12 +28,11 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-import common from '@/mixin/common'
+import dialogCommon from '@/mixin/dialogCommon'
 
 export default {
   name: 'ModPasswordDialog',
-  mixins: [handleDialogWidth, common],
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,
@@ -113,12 +119,6 @@ export default {
           })
         }
       })
-    },
-    onClose() {
-      this.$emit('close')
-    },
-    setDialogLoading(dialogLoading) {
-      this.dialogLoading = dialogLoading
     }
   }
 }
@@ -127,16 +127,18 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
 
-.el-table--fit {
-  padding: 0 0 10px 0
+.agentInfo {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 10px;
+  display: flex;
+  .header {
+    color: $yellow;
+    margin-right: 20px;
+  }
+  .content {
+    color: #fff;
+  }
 }
 
-.agentNameLabel {
-  font-size: 14px;
-  color: #fff
-}
-
-.agentNameSpan {
-  color: $yellow;
-}
 </style>

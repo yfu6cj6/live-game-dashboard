@@ -81,7 +81,7 @@
                     <div class="group2">
                       <el-button class="bg-yellow" size="mini" @click.stop="onLimitBtnClick(item.handicaps)">{{ $t("_handicapLimit") }}</el-button>
                       <svg-icon v-if="!isAgentSubAccount" icon-class="key" class="yellow-color key" @click.stop="onModPasswordBtnClick(item)" />
-                      <el-button v-if="!isAgentSubAccount" class="bg-normal yellow-color edit" size="mini" icon="el-icon-setting" @click.stop="onEditBtnClick(scope.row)" />
+                      <el-button v-if="!isAgentSubAccount" class="bg-normal yellow-color edit" size="mini" icon="el-icon-setting" @click.stop="onEditBtnClick(item)" />
                     </div>
                   </div>
                   <div class="infoGroup">
@@ -234,6 +234,71 @@
       :handicaps="handicaps"
       @close="closeDialogEven"
     />
+
+    <modPasswordDialog
+      ref="modPasswordDialog"
+      :title="$t('__modPassword')"
+      :visible="curDialogIndex === dialogEnum.modPassword"
+      :confirm="$t('__revise')"
+      :name-label="`${$t('__agent')}`"
+      :form="editForm"
+      @close="closeDialogEven"
+      @modPassword="modPassword"
+    />
+
+    <operateDialog
+      ref="totallyDisabledDialog"
+      :visible="curDialogIndex === dialogEnum.totallyDisabled"
+      :content="$stringFormat($t('__agentTotallyDisabledMsg'), operateDialogMsgParameter)"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="lockLoginDialog"
+      :visible="curDialogIndex === dialogEnum.lockLogin"
+      :content="$stringFormat($t('__agentLockLoginMsg'), operateDialogMsgParameter)"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="debarBetDialog"
+      :visible="curDialogIndex === dialogEnum.debarBet"
+      :content="$stringFormat($t('__agentDebarBetMsg'), operateDialogMsgParameter)"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="weeklyLossSettlementDialog"
+      :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
+      :content="$stringFormat($t('__agentWeeklyLossSettlement'), operateDialogMsgParameter)"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="oneClickRecyclingDialog"
+      :visible="curDialogIndex === dialogEnum.oneClickRecycling"
+      :content="$stringFormat($t('__agentOneClickRecyclingMsg'), operateDialogMsgParameter)"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="giftEffectDialog"
+      :visible="curDialogIndex === dialogEnum.giftEffect"
+      :content="$stringFormat($t('__agentGiftEffectMsg'), operateDialogMsgParameter)"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
   </div>
 </template>
 
@@ -250,6 +315,7 @@ import { numberFormat } from '@/utils/numberFormat'
 import BalanceDialog from '@/views/agentManagement/balanceDialog'
 import OperateDialog from '@/views/agentManagement/operateDialog'
 import LimitDialog from '@/views/agentManagement/limitDialog'
+import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 
 const defaultForm = {
   parent: 0,
@@ -276,7 +342,7 @@ const editFormStepEnum = Object.freeze({ 'agentInfo': 0, 'rate': 1, 'limit': 2, 
 
 export default {
   name: 'Agent',
-  components: { BalanceDialog, OperateDialog, LimitDialog },
+  components: { BalanceDialog, OperateDialog, LimitDialog, ModPasswordDialog },
   mixins: [handlePageChange],
   props: {
   },
