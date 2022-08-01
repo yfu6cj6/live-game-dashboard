@@ -56,10 +56,16 @@
   }
 }
 
-.el-checkbox__input {
-  .el-checkbox__inner {
-    &:hover {
-      border-color: #DCDFE6;
+.el-checkbox {
+  color: #000;
+  .el-checkbox__input {
+    .el-checkbox__inner {
+      &:hover {
+        border-color: #DCDFE6;
+      }
+    }
+    &.is-checked+.el-checkbox__label {
+      color: #000;
     }
   }
 }

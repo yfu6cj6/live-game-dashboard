@@ -1,27 +1,24 @@
 <template>
-  <div v-loading="dataLoading">
-    <div class="view-container">
-      <div>
-        <div class="item">
-          <span class="header">{{ $t('__agent') }}</span>
-          <span>{{ agentInfo.fullName }}</span>
-        </div>
-        <div class="item">
-          <span class="header">{{ $t('__currency') }}</span>
-          <span>{{ agentInfo.currency }}</span>
-        </div>
-        <div class="item">
-          <span class="header">{{ $t('__balance') }}</span>
-          <span>{{ agentInfo.agentInfoBalance }}</span>
-        </div>
-        <div class="item">
-          <el-button class="bg-yellow" size="mini" @click="onLimitBtnClick(agentInfo.handicaps)">
-            {{ $t("_handicapLimit") }}
-          </el-button>
-        </div>
+  <div ref="container" v-loading="dataLoading" class="view-container">
+    <div>
+      <div class="item">
+        <span class="header">{{ $t('__agent') }}</span>
+        <span>{{ agentInfo.fullName }}</span>
+      </div>
+      <div class="item">
+        <span class="header">{{ $t('__currency') }}</span>
+        <span>{{ agentInfo.currency }}</span>
+      </div>
+      <div class="item">
+        <span class="header">{{ $t('__balance') }}</span>
+        <span>{{ agentInfo.agentInfoBalance }}</span>
+      </div>
+      <div class="item">
+        <el-button class="bg-yellow" size="mini" @click="onLimitBtnClick(agentInfo.handicaps)">
+          {{ $t("_handicapLimit") }}
+        </el-button>
       </div>
     </div>
-
     <agent
       v-show="curTableIndex === tableEnum.agent"
       ref="agent"
@@ -34,6 +31,7 @@
 <script>
 import { agentTotalPlayerCount } from '@/api/agentManagement/agent'
 import viewCommon from '@/mixin/viewCommon';
+import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
 import Agent from './agent/index'
@@ -41,7 +39,7 @@ import Agent from './agent/index'
 export default {
   name: 'AgentManagement',
   components: { Agent },
-  mixins: [viewCommon],
+  mixins: [viewCommon, handleSearchFormOpen],
   data() {
     return {
       tableEnum: Object.freeze({

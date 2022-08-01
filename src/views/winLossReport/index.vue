@@ -371,6 +371,7 @@ export default {
     this.$nextTick(() => {
       this.onTableBtnClick(this.curTableIndex)
       this.firstCreate = false
+      this.resizeHandler();
     })
   },
   methods: {

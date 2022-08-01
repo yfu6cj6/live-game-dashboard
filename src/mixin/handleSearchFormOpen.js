@@ -54,12 +54,16 @@ export default {
         formHeight = "auto";
       }
       this.$nextTick(() => {
-        this.$refs.seachFormExpand.style.height = `${formHeight}`;
+        if (this.$refs.seachFormExpand) {
+          this.$refs.seachFormExpand.style.height = `${formHeight}`;
+        }
         const tagsView = document.getElementsByClassName("tagsView");
-        if (tagsView && tagsView.length > 0) {
+        if (tagsView && tagsView.length > 0 && this.$refs.container) {
           this.$refs.container.style.height = `calc(100vh - 45px - ${tagsView[0].clientHeight}px - 40px)`;
         }
-        this.$refs.table.style.height = `${this.$refs.container.clientHeight - this.$refs.seachForm.clientHeight}px`;
+        if (this.$refs.table) {
+          this.$refs.table.style.height = `${this.$refs.container.clientHeight - this.$refs.seachForm.clientHeight}px`;
+        }
       });
     }
   }

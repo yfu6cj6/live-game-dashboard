@@ -10,7 +10,7 @@
             :class="{'single-row': index % 2 === 0}"
           >
             <template v-if="device === 'mobile'">
-              <div class="wrap" @click="remarkExpand(item)">
+              <div class="wrap">
                 <div class="expand">
                   <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
                   <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />
@@ -31,7 +31,7 @@
                       </div>
                     </div>
                     <div class="column liveCommissionRate">
-                      <span class="conten">{{ item.live_commission_rate }}</span>
+                      <span class="conten">{{ `${item.live_commission_rate}%` }}</span>
                       <span class="header">{{ `${$t('__liveGame')}${$t('__rate')}` }}</span>
                     </div>
                     <div class="column state">
@@ -82,6 +82,96 @@
                       <el-button class="bg-yellow" size="mini" @click.stop="onLimitBtnClick(item.handicaps)">{{ $t("_handicapLimit") }}</el-button>
                       <svg-icon v-if="!isAgentSubAccount" icon-class="key" class="yellow-color key" @click.stop="onModPasswordBtnClick(item)" />
                       <el-button v-if="!isAgentSubAccount" class="bg-normal yellow-color edit" size="mini" icon="el-icon-setting" @click.stop="onEditBtnClick(scope.row)" />
+                    </div>
+                  </div>
+                  <div class="infoGroup">
+                    <div class="agentCount">
+                      <div class="infoGroup-item">
+                        <span class="infoGroup-item-header">{{ $t('__directAgentCount') }}</span>
+                        <span class="infoGroup-item-content">{{ item.directAgentCount }}</span>
+                      </div>
+                      <div class="infoGroup-item">
+                        <span class="infoGroup-item-header">{{ $t('__directPlayerCount') }}</span>
+                        <span class="infoGroup-item-content">{{ item.directPlayerCount }}</span>
+                      </div>
+                    </div>
+                    <div class="liveGame">
+                      <div class="liveGame-title">
+                        {{ $t('__liveGame') }}
+                      </div>
+                      <div class="liveGame-wrap">
+                        <div class="infoGroup-item">
+                          <span class="infoGroup-item-header">{{ $t('__commissionRate') }}</span>
+                          <span class="infoGroup-item-content">{{ item.live_commission_rate }}</span>
+                          <span>%</span>
+                        </div>
+                        <div class="infoGroup-item">
+                          <span class="infoGroup-item-header">{{ $t('__rollingRate') }}</span>
+                          <span class="infoGroup-item-content">{{ item.live_rolling_rate }}</span>
+                          <span>%</span>
+                        </div>
+                        <div class="infoGroup-item">
+                          <span class="infoGroup-item-header">{{ $t('__giftRate') }}</span>
+                          <span class="infoGroup-item-content">{{ item.live_gift_rate }}</span>
+                          <span>%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="operate">
+                      <el-checkbox
+                        v-model="item.totallyDisabled"
+                        class="red-tick"
+                        :label="$t('__totallyDisabled')"
+                        :disabled="agentInfoTotallyDisabled"
+                        @mousedown.native="onOperateCheckboxClick(dialogEnum.totallyDisabled, item)"
+                      />
+                      <el-checkbox
+                        v-model="item.lockLogin"
+                        class="red-tick"
+                        :label="$t('__lockLogin')"
+                        @mousedown.native="onOperateCheckboxClick(dialogEnum.lockLogin, item)"
+                      />
+                      <el-checkbox
+                        v-model="item.debarBet"
+                        class="red-tick"
+                        :label="$t('__debarBet')"
+                        :disabled="agentInfoBetStatusDisabled"
+                        @mousedown.native="onOperateCheckboxClick(dialogEnum.debarBet, item)"
+                      />
+                      <template v-if="agentInfo.weekly_loss_settlement === '1'">
+                        <el-checkbox
+                          v-model="item.weeklyLossSettlement"
+                          class="red-tick"
+                          :label="$t('__weeklyLossSettlement')"
+                          @mousedown.native="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, item)"
+                        />
+                      </template>
+                      <template v-if="agentInfo.one_click_recycling === '1'">
+                        <el-checkbox
+                          v-model="item.oneClickRecycling"
+                          class="red-tick"
+                          :label="$t('__oneClickRecycling')"
+                          @mousedown.native="onOperateCheckboxClick(dialogEnum.oneClickRecycling, item)"
+                        />
+                      </template>
+                      <template v-if="agentInfo.gift_status === '1'">
+                        <el-checkbox
+                          v-model="item.giftEffect"
+                          class="red-tick"
+                          :label="$t('__giftEffect')"
+                          @mousedown.native="onOperateCheckboxClick(dialogEnum.giftEffect, item)"
+                        />
+                      </template>
+                    </div>
+                    <div>
+                      <div class="infoGroup-item">
+                        <span class="infoGroup-item-header">{{ $t('__createdAt') }}</span>
+                        <span class="">{{ item.created_at }}</span>
+                      </div>
+                      <div class="infoGroup-item">
+                        <span class="infoGroup-item-header">{{ $t('__lastLoginAt') }}</span>
+                        <span class="infoGroup-item-content">{{ item.lastLoginAt }}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -350,6 +440,9 @@ export default {
         element.giftEffect = element.gift_status === '1'
         const statusNickname = this.statusType.find(type => type.key === element.status).nickname
         element.statusLabel = this.$t(statusNickname)
+        element.live_commission_rate = numberFormat(element.live_commission_rate)
+        element.live_rolling_rate = numberFormat(element.live_rolling_rate)
+        element.live_gift_rate = numberFormat(element.live_gift_rate)
       })
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)
@@ -365,9 +458,6 @@ export default {
     },
     setDataLoading(dataLoading) {
       this.$emit('setDataLoading', dataLoading)
-    },
-    numberFormatStr(number) {
-      return numberFormat(number)
     },
     // 父物件呼叫
     onSearch(agentId) {
@@ -430,7 +520,7 @@ export default {
       this.curDialogIndex = this.dialogEnum.modPassword
     },
     onDepositBtnClick(rowData) {
-      this.editForm = { agentId: rowData.id, amount: this.numberFormatStr(0) }
+      this.editForm = { agentId: rowData.id, amount: numberFormat(0) }
       this.curDialogIndex = this.dialogEnum.depositBalance
       this.$refs.depositBalanceDialog.setDialogLoading(true)
       agentGetSetBalanceInfo({ agentId: rowData.id }).then((res) => {
@@ -441,7 +531,7 @@ export default {
       })
     },
     onWithdrawBtnClick(rowData) {
-      this.editForm = { agentId: rowData.id, amount: this.numberFormatStr(0) }
+      this.editForm = { agentId: rowData.id, amount: numberFormat(0) }
       this.curDialogIndex = this.dialogEnum.withdrawBalance
       this.$refs.withdrawBalanceDialog.setDialogLoading(true)
       agentGetSetBalanceInfo({ agentId: rowData.id }).then((res) => {
@@ -580,6 +670,52 @@ export default {
             }
             .winLossReport {
               margin-left: 10px;
+            }
+          }
+          .infoGroup {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            .agentCount {
+              display: flex;
+              padding-bottom: 2px;
+              border-bottom: 2px solid $yellow;
+            }
+            .liveGame {
+              margin-top: 5px;
+              padding-bottom: 2px;
+              border-bottom: 2px solid $yellow;
+              .liveGame-title {
+                font-weight: bold;
+                margin-bottom: 5px;
+              }
+              .liveGame-wrap {
+                display: flex;
+                flex-wrap: wrap;
+              }
+            }
+            .infoGroup-item {
+              min-width: 50%;
+              display: flex;
+              .infoGroup-item-header {
+                width: 50%;
+                min-width: 120px;
+              }
+              .infoGroup-item-content {
+                min-width: 40px;
+                text-align: right;
+              }
+            }
+            .operate {
+              display: flex;
+              flex-wrap: wrap;
+              margin-top: 10px;
+              .el-checkbox {
+                margin-right: 0;
+                width: 50%;
+                height: 30px;
+                text-align: center;
+              }
             }
           }
         }

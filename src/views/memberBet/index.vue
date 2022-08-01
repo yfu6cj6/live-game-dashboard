@@ -218,7 +218,7 @@
     </div>
     <playbackDialog
       v-if="curPlaybackIndex === playbackEnum.pic"
-      :title="`${$t('__gameType')} ${selectForm.game_type} ${$t('__tableId')} ${selectForm.table_id} ${$t('__roundId')} ${selectForm.round_id}`"
+      :title="`${$t('__gameType')}:${selectForm.game_type} ${$t('__roundId')}:${selectForm.round_id}`"
       :visible="curPlaybackIndex === playbackEnum.pic"
       :playback-type="playbackEnum.pic"
       :url="imagePlaybackpic"
@@ -227,7 +227,7 @@
 
     <playbackDialog
       v-if="curPlaybackIndex === playbackEnum.video"
-      :title="`${$t('__gameType')} ${selectForm.game_type} ${$t('__tableId')} ${selectForm.table_id} ${$t('__roundId')} ${selectForm.round_id}`"
+      :title="`${$t('__gameType')}:${selectForm.game_type} ${$t('__roundId')}:${selectForm.round_id}`"
       :visible="curPlaybackIndex === playbackEnum.video"
       :playback-type="playbackEnum.video"
       :url="videoPlaybackUrl"
