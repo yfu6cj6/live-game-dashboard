@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <Dialog
     :title="title"
     :visible.sync="visible"
     :width="formWidth"
@@ -17,14 +17,16 @@
     <span slot="footer">
       <el-button class="bg-yellow" @click="onClose">{{ confirm }}</el-button>
     </span>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
 import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'PasswordTipDialog',
+  components: { Dialog },
   mixins: [handleDialogWidth],
   props: {
     'title': {

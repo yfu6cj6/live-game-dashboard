@@ -205,6 +205,38 @@ body {
   font-size: 18px;
 }
 
+.dialog {
+  .el-form {
+    .el-form-item {
+      display: flex;
+      flex-direction: column;
+      .el-form-item__label {
+        color: $yellow;
+        min-width: auto;
+        text-align: left;
+        line-height: 20px;
+      }
+      .el-form-item__content {
+        line-height: 0px;
+        .el-input {
+          .el-input__inner {
+            padding: 0 15px;
+            color: #000;
+          }
+        }
+        .el-form-item__error {
+          padding: 0;
+          left: unset;
+          right: 0;
+        }
+        .el-select {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
 .expand {
   font-size: 25px;
   color: #4e4e4e;
@@ -223,6 +255,7 @@ body {
 
 .view {
   &-container {
+    position: relative;
     width: 100%;
     overflow-y: auto;
     &-seachForm {
@@ -319,6 +352,12 @@ body {
 }
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
+  .dialog {
+    .el-form {
+      width: 50%;
+      margin: 0 auto;
+    }
+  }
   .view {
     &-container {
       &-seachForm {
@@ -333,6 +372,12 @@ body {
 }
 
 @media screen and (min-width: 992px) {
+  .dialog {
+    .el-form {
+      width: 50%;
+      margin: 0 auto;
+    }
+  }
   .operate {
     .el-button {
       font-size: 20px;

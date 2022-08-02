@@ -1,7 +1,7 @@
 <template>
-  <el-dialog
+  <Dialog
     v-if="visible"
-    v-loading="dialogLoading"
+    :loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
@@ -27,14 +27,16 @@
         </tbody>
       </table>
     </div>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'LimitDialog',
+  components: { Dialog },
   mixins: [dialogCommon],
   props: {
     'title': {

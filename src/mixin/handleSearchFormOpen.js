@@ -57,9 +57,10 @@ export default {
         if (this.$refs.seachFormExpand) {
           this.$refs.seachFormExpand.style.height = `${formHeight}`;
         }
-        const tagsView = document.getElementsByClassName("tagsView");
-        if (tagsView && tagsView.length > 0 && this.$refs.container) {
-          this.$refs.container.style.height = `calc(100vh - 45px - ${tagsView[0].clientHeight}px - 40px)`;
+        if (this.$refs.container) {
+          const tagsView = document.getElementsByClassName("tagsView");
+          const tagsViewHeight = (tagsView && tagsView.length > 0) ? tagsView[0].clientHeight : 0;
+          this.$refs.container.style.height = `calc(100vh - 45px - ${tagsViewHeight}px - 40px)`;
         }
         if (this.$refs.table) {
           this.$refs.table.style.height = `${this.$refs.container.clientHeight - this.$refs.seachForm.clientHeight}px`;

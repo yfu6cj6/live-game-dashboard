@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
+  <Dialog :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
     <el-table :data="listData" tooltip-effect="dark" header-cell-class-name="bg-black_table_header" row-class-name="bg-black_table_col" style="background: black;">
       <el-table-column prop="user" :label="$t('__operator')" align="center" />
       <el-table-column v-if="operationType === operationEnum.liveCommissionRate" prop="commission_rate" :label="title" align="center" />
@@ -7,14 +7,16 @@
       <el-table-column v-if="operationType === operationEnum.liveGiftRate" prop="gift_rate" :label="title" align="center" />
       <el-table-column prop="created_at" :label="$t('__createdAt')" align="center" />
     </el-table>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
 import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'AgentRateLogDialog',
+  components: { Dialog },
   mixins: [handleDialogWidth],
   props: {
     'title': {

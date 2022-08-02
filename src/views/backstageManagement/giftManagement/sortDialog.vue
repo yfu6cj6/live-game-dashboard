@@ -1,7 +1,7 @@
 <template>
-  <el-dialog
+  <Dialog
     v-if="visible"
-    v-loading="dialogLoading"
+    :loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
@@ -78,7 +78,7 @@
     <span v-if="allDataByClient.length > 0 && !dialogLoading" slot="footer">
       <el-button class="bg-yellow confirm" @click="onSubmit()">{{ confirm }}</el-button>
     </span>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
@@ -87,10 +87,11 @@ import draggable from 'vuedraggable'
 import { numberFormat } from '@/utils/numberFormat';
 import dialogCommon from '@/mixin/dialogCommon'
 import handlePageChange from '@/mixin/handlePageChange'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'SortDialog',
-  components: { draggable },
+  components: { draggable, Dialog },
   mixins: [dialogCommon, handlePageChange],
   props: {
     title: {

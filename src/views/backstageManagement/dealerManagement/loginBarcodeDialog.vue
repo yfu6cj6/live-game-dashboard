@@ -1,7 +1,7 @@
 <template>
-  <el-dialog
+  <Dialog
     v-if="visible"
-    v-loading="dialogLoading"
+    :loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
@@ -15,14 +15,16 @@
         <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
       </a>
     </span>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'LoginBarcodeDialog',
+  components: { Dialog },
   mixins: [dialogCommon],
   props: {
     title: {

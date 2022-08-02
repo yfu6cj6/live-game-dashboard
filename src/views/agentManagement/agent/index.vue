@@ -10,7 +10,7 @@
             :class="{'single-row': index % 2 === 0}"
           >
             <template v-if="device === 'mobile'">
-              <div class="wrap">
+              <div class="wrap" @click.stop="remarkExpand(item)">
                 <div class="expand">
                   <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
                   <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />

@@ -1,7 +1,7 @@
 <template>
-  <el-dialog
+  <Dialog
     v-if="visible"
-    v-loading="dialogLoading"
+    :loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
@@ -37,15 +37,17 @@
       </div>
       <div v-else-if="chipsData.length === 0" class="noInformation">{{ $t("__noInformation") }}</div>
     </div>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
 import common from '@/mixin/common';
 import dialogCommon from '@/mixin/dialogCommon'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'ChipSettingDialog',
+  components: { Dialog },
   mixins: [common, dialogCommon],
   props: {
     'title': {

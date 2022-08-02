@@ -1,7 +1,7 @@
 <template>
   <div :class="classObj" class="app-container">
     <navbar />
-    <tags-view class="tagsView" :class="{'opened': sidebar.opened}" />
+    <tags-view v-if="device !== 'mobile'" class="tagsView" :class="{'opened': sidebar.opened}" />
     <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
     <sidebar class="sidebar" />
     <agent-level class="agentLevel" />
@@ -27,7 +27,8 @@ export default {
   mixins: [ResizeMixin],
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      'device'
     ]),
     classObj() {
       return {

@@ -1,7 +1,7 @@
 <template>
-  <el-dialog
+  <Dialog
     v-if="visible"
-    v-loading="dialogLoading"
+    :loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
@@ -18,14 +18,16 @@
     <span v-show="!dialogLoading" slot="footer">
       <el-button class="bg-yellow" @click="onSubmit">{{ $t('__confirm') }}</el-button>
     </span>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'OperateDialog',
+  components: { Dialog },
   mixins: [dialogCommon],
   props: {
     'title': {

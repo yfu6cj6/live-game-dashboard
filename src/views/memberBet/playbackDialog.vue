@@ -1,7 +1,7 @@
 <template>
-  <el-dialog
+  <Dialog
     v-if="visible"
-    v-loading="dialogLoading"
+    :loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
@@ -13,14 +13,16 @@
         <source :src="url" type="video/mp4">
       </video>
     </div>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'PlaybackDialog',
+  components: { Dialog },
   mixins: [dialogCommon],
   props: {
     'title': {

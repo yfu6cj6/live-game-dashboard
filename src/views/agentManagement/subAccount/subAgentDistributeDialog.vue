@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-loading="dialogLoading" :title="`${title} [${form.fullName}]`" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
+  <Dialog :loading="dialogLoading" :title="`${title} [${form.fullName}]`" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
     <el-table
       ref="subAgentsTable"
       :data="subAgents"
@@ -20,15 +20,17 @@
     <span v-if="!dialogLoading" slot="footer">
       <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
     </span>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
 import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
 import common from '@/mixin/common'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'SubAgentDistributeDialog',
+  components: { Dialog },
   mixins: [handleDialogWidth, common],
   props: {
     'title': {

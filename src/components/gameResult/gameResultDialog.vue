@@ -1,7 +1,7 @@
 <template>
-  <el-dialog
+  <Dialog
     v-if="visible"
-    v-loading="dialogLoading"
+    :loading="dialogLoading"
     :visible.sync="visible"
     :before-close="onClose"
     :close-on-click-modal="device === 'mobile'"
@@ -319,11 +319,12 @@
         </tr>
       </table>
     </div>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
+import Dialog from '@/components/Dialog'
 import { getRoadArray } from '@/utils/roadLogic'
 
 const road = {
@@ -334,6 +335,7 @@ const road = {
 
 export default {
   name: 'GameResultDialog',
+  components: { Dialog },
   mixins: [dialogCommon],
   props: {
     'visible': {

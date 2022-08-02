@@ -1,7 +1,7 @@
 <template>
-  <el-dialog
+  <Dialog
     v-if="visible"
-    v-loading="dialogLoading"
+    :loading="dialogLoading"
     :title="title"
     :visible.sync="visible"
     :before-close="onClose"
@@ -47,14 +47,16 @@
       <el-button class="bg-gray" @click="selection(false)">{{ $t('__cancelSelect') }}</el-button>
       <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
     </span>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'RolePermissionDialog',
+  components: { Dialog },
   mixins: [dialogCommon],
   props: {
     'title': {

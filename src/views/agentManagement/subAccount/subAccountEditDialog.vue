@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-loading="dialogLoading" :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
+  <Dialog :loading="dialogLoading" :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
     <label class="agentNameLabel">{{ `${$t('__superiorAgent')}: ` }}
       <span class="agentNameSpan">{{ agentInfo.fullName }}</span>
     </label>
@@ -49,7 +49,7 @@
     <span v-if="!dialogLoading" slot="footer">
       <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
     </span>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
@@ -58,9 +58,11 @@ import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
 import common from '@/mixin/common'
 import { subAccountCreateAccount, subAccountCreate, subAccountEdit } from '@/api/agentManagement/subAccount'
 import { mapGetters } from 'vuex'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'SubAccountEditDialog',
+  components: { Dialog },
   mixins: [handleDialogWidth, common],
   props: {
     'title': {

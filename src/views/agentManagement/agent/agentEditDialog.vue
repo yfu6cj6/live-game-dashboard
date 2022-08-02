@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-loading="dialogLoading" :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
+  <Dialog :loading="dialogLoading" :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
     <label class="agentNameLabel">{{ `${$t('__superiorAgent')}: ` }}
       <span class="agentNameSpan">{{ agentInfo.fullName }}</span>
     </label>
@@ -199,7 +199,7 @@
       <el-button v-if="nextBtnVisible" class="bg-yellow" @click="onNextBtnClick">{{ $t("__nextStep") }}</el-button>
       <el-button v-if="confirmBtnVisible" class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
     </span>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
@@ -209,9 +209,11 @@ import common from '@/mixin/common'
 import { agentCreateAccount, agentGetSetBalanceInfo, agentCreate, agentEdit } from '@/api/agentManagement/agent'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'AgentEditDialog',
+  components: { Dialog },
   mixins: [handleDialogWidth, common],
   props: {
     'title': {
