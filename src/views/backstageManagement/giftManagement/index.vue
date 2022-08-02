@@ -365,7 +365,7 @@ export default {
           }
         }
         .operate {
-          width: 250px;
+          width: 130px;
         }
       }
     }
