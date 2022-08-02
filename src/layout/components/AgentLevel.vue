@@ -120,10 +120,10 @@ export default {
             background-color: #000;
           }
         }
-        .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
-          background-color: #000;
-          color: $yellow;
-        }
+      }
+      .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+        background-color: #000;
+        color: $yellow;
       }
     }
   }
