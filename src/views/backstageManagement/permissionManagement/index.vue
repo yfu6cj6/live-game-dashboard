@@ -133,50 +133,44 @@
               </div>
             </template>
             <template v-else>
-              <div class="content">
-                <div class="left">
-                  <div class="item remark">
-                    <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                    <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                  </div>
-                  <div class="item id">
-                    <span class="header">ID</span>
-                    <span>{{ item.id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__name') }}</span>
-                    <span>{{ item.name }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__nickname') }}</span>
-                    <span>{{ item.nickname }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">Uri</span>
-                    <span>{{ item.uri }}</span>
-                  </div>
-                  <div class="item method">
-                    <span class="header">{{ $t('__method') }}</span>
-                    <span>{{ item.method }}</span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                  </div>
+              <div class="base">
+                <div class="item remark">
+                  <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
+                  <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
                 </div>
-                <div v-if="item.open">
-                  <div class="item col">
-                    <span class="header expandHeader">request_content</span>
-                    <span>
-                      {{ item.request_content }}
-                    </span>
-                  </div>
-                  <div class="item col">
-                    <span class="header expandHeader">response_content</span>
-                    <span>
-                      {{ item.response_content }}
-                    </span>
-                  </div>
+                <div class="item id">
+                  <span class="header">ID</span>
+                  <span>{{ item.id }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__name') }}</span>
+                  <span>{{ item.name }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__nickname') }}</span>
+                  <span>{{ item.nickname }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">Uri</span>
+                  <span>{{ item.uri }}</span>
+                </div>
+                <div class="item method">
+                  <span class="header">{{ $t('__method') }}</span>
+                  <span>{{ item.method }}</span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                </div>
+              </div>
+              <div v-if="item.open">
+                <div class="item col">
+                  <span class="header expandHeader">request_content</span>
+                  <span>{{ item.request_content }}</span>
+                </div>
+                <div class="item col">
+                  <span class="header expandHeader">response_content</span>
+                  <span>{{ item.response_content }}</span>
                 </div>
               </div>
             </template>
@@ -401,19 +395,25 @@ export default {
   &-container {
     &-table {
       &-row {
-        display: flex;
-        flex-direction: column;
-        .left {
-          width: 100%;
+        .base {
+          display: flex;
           flex-direction: row;
-          .remark {
-            width: 50px;
-          }
-          .id{
-            width: 300px;
-          }
-          .method{
-            width: 400px;
+          .item {
+            width: 420px;
+            min-width: 420px;
+            margin-right: 15px;
+            &.remark {
+              width: 40px;
+              min-width: 40px;
+            }
+            &.id{
+              width: 70px;
+              min-width: 70px;
+            }
+            &.method{
+              width: 100px;
+              min-width: 100px;
+            }
           }
         }
       }

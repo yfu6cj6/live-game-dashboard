@@ -147,50 +147,48 @@
               </div>
             </template>
             <template v-else>
-              <div class="content">
-                <div class="left">
-                  <div class="item remark">
-                    <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                    <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__account') }}</span>
-                    <span>{{ item.account }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__nickname') }}</span>
-                    <span>{{ item.nickname }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__role') }}</span>
-                    <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__agentName') }}</span>
-                    <span>{{ item.agentName }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__cityName') }}</span>
-                    <span>{{ item.cityNameLabel }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__accountStatus') }}</span>
-                    <span class="status" :class="{'statusOpen': item.status === '1' }">
-                      {{ item.statusLabel }}
-                    </span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
-                  </div>
+              <div class="base">
+                <div class="item remark">
+                  <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
+                  <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
                 </div>
-                <div v-if="item.open">
-                  <div class="item">
-                    <span class="header">{{ $t('__remark') }}</span>
-                    <span>
-                      {{ item.remark }}
-                    </span>
-                  </div>
+                <div class="item">
+                  <span class="header">{{ $t('__account') }}</span>
+                  <span>{{ item.account }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__nickname') }}</span>
+                  <span>{{ item.nickname }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__role') }}</span>
+                  <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__agentName') }}</span>
+                  <span>{{ item.agentName }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__cityName') }}</span>
+                  <span>{{ item.cityNameLabel }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__accountStatus') }}</span>
+                  <span class="status" :class="{'statusOpen': item.status === '1' }">
+                    {{ item.statusLabel }}
+                  </span>
+                </div>
+                <div class="operate">
+                  <el-button class="bg-yellow locate" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-red locate" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
+                </div>
+              </div>
+              <div v-if="item.open">
+                <div class="item">
+                  <span class="header">{{ $t('__remark') }}</span>
+                  <span>
+                    {{ item.remark }}
+                  </span>
                 </div>
               </div>
             </template>
@@ -471,15 +469,25 @@ export default {
     &-container {
       &-table {
         &-row {
-          .content {
+          .base {
+            width: 100%;
             display: flex;
-            flex-direction: column;
-            .left {
-              width: 100%;
-              flex-direction: row;
-              .remark {
-                width: 50px;
-              }
+            flex-direction: row;
+            .remark {
+              width: 40px;
+              min-width: 40px;
+              margin-right: 20px;
+            }
+          }
+          .item {
+            width: 150px;
+            min-width: 150px;
+            margin-right: 50px;
+          }
+          .operate {
+            width: auto;
+            .locate {
+              margin-right: 20px;
             }
           }
         }

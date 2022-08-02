@@ -99,7 +99,6 @@
             :class="{'single-row': index % 2 === 0}"
           >
             <template v-if="device === 'mobile'">
-
               <div class="left" @click.stop="remarkExpand(item)">
                 <div class="item">
                   <el-button class="bg-yellow" size="mini" @click.stop="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
@@ -151,46 +150,44 @@
               </div>
             </template>
             <template v-else>
-              <div class="left">
-                <div class="item tableId">
-                  <span class="header">{{ $t('__tableId') }}</span>
-                  <span>{{ item.id }}</span>
-                </div>
-                <div class="item tableName">
-                  <span class="header">{{ $t('__name') }}</span>
-                  <span>{{ item.name }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__idleRounds') }}</span>
-                  <span>{{ item.idle_rounds }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__status') }}</span>
-                  <span class="status" :class="{'statusOpen': item.activated === '1' }">
-                    {{ item.statusLabel }}
-                  </span>
-                </div>
-                <div class="item description">
-                  <span class="header">{{ $t('__description') }}</span>
-                  <span>{{ item.description }}</span>
-                </div>
-                <div class="item streaming_url">
-                  <span class="header">{{ $t('__streamingUrl') }}</span>
-                  <span>{{ item.streaming_url }}</span>
-                </div>
-                <div class="item appName">
-                  <span class="header">app_name</span>
-                  <span>{{ item.app_name }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">streaming_name</span>
-                  <span>{{ item.streaming_name }}</span>
-                </div>
-                <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                </div>
+              <div class="item tableId">
+                <span class="header">{{ $t('__tableId') }}</span>
+                <span>{{ item.id }}</span>
+              </div>
+              <div class="item tableName">
+                <span class="header">{{ $t('__name') }}</span>
+                <span>{{ item.name }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__idleRounds') }}</span>
+                <span>{{ item.idle_rounds }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__status') }}</span>
+                <span class="status" :class="{'statusOpen': item.activated === '1' }">
+                  {{ item.statusLabel }}
+                </span>
+              </div>
+              <div class="item description">
+                <span class="header">{{ $t('__description') }}</span>
+                <span>{{ item.description }}</span>
+              </div>
+              <div class="item streaming_url">
+                <span class="header">{{ $t('__streamingUrl') }}</span>
+                <span>{{ item.streaming_url }}</span>
+              </div>
+              <div class="item appName">
+                <span class="header">app_name</span>
+                <span>{{ item.app_name }}</span>
+              </div>
+              <div class="item">
+                <span class="header">streaming_name</span>
+                <span>{{ item.streaming_name }}</span>
+              </div>
+              <div class="operate">
+                <el-button class="bg-yellow locate" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
+                <el-button class="bg-yellow locate" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
               </div>
             </template>
           </div>
@@ -509,32 +506,36 @@ export default {
     &-container {
       &-table {
         &-row {
-          .left {
-            flex-direction: row;
-            flex-wrap: wrap;
-            width: 100%;
-            justify-content: space-between;
-          }
+          flex-direction: row;
           .item {
             width: auto;
+            margin-right: 35px;
             &.tableId {
               width: 60px;
+              min-width: 60px;
             }
             &.tableName {
               width: 130px;
+              min-width: 130px;
             }
             &.description {
               width: 240px;
+              min-width: 240px;
             }
             &.streaming_url {
               width: 340px;
+              min-width: 340px;
             }
             &.appName {
               width: 100px;
+              min-width: 100px;
             }
           }
           .operate{
-            align-items: center;
+            width: auto;
+            .locate {
+              margin-right: 20px;
+            }
           }
         }
       }

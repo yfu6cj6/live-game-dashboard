@@ -135,45 +135,43 @@
               </div>
             </template>
             <template v-else>
-              <div class="left">
-                <div class="item id">
-                  <span class="header">ID</span>
-                  <span>{{ item.id }}</span>
-                </div>
-                <div class="item areaName">
-                  <span class="header">{{ $t('__name') }}</span>
-                  <span>{{ item.area_name }}</span>
-                </div>
-                <div class="item area">
-                  <span class="header">{{ $t('__code') }}</span>
-                  <span>{{ item.area }}</span>
-                </div>
-                <div class="item odds">
-                  <span class="header">{{ $t('__odds') }}</span>
-                  <span>{{ item.odds }}</span>
-                </div>
-                <div class="item activatedLabel">
-                  <span class="header">{{ $t('__status') }}</span>
-                  <span class="status" :class="{'statusOpen': item.activated === '1' }">
-                    {{ item.activatedLabel }}
-                  </span>
-                </div>
-                <div class="item currency">
-                  <span class="header">{{ $t('__currency') }}</span>
-                  <span>{{ item.currency }}</span>
-                </div>
-                <div class="item bet_min">
-                  <span class="header">{{ $t('__betMin') }}</span>
-                  <span>{{ item.bet_min }}</span>
-                </div>
-                <div class="item bet_max">
-                  <span class="header">{{ $t('__betMax') }}</span>
-                  <span>{{ item.bet_max }}</span>
-                </div>
-                <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                </div>
+              <div class="item id">
+                <span class="header">ID</span>
+                <span>{{ item.id }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__name') }}</span>
+                <span>{{ item.area_name }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__code') }}</span>
+                <span>{{ item.area }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__odds') }}</span>
+                <span>{{ item.odds }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__status') }}</span>
+                <span class="status" :class="{'statusOpen': item.activated === '1' }">
+                  {{ item.activatedLabel }}
+                </span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__currency') }}</span>
+                <span>{{ item.currency }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__betMin') }}</span>
+                <span>{{ item.bet_min }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__betMax') }}</span>
+                <span>{{ item.bet_max }}</span>
+              </div>
+              <div class="operate">
+                <el-button class="bg-yellow locate" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                <el-button class="bg-red locate" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
               </div>
             </template>
           </div>
@@ -383,36 +381,17 @@ export default {
     &-container {
       &-table {
         &-row {
-          .left {
-            flex-direction: row;
-            width: 100%;
-          }
-          .id {
-            width: 30px;
-          }
-          .areaName {
-            width: 120px;
-          }
-          .area {
-            width: 180px;
-          }
-          .odds {
-            width: 60px;
-          }
-          .activatedLabel {
-            width: 60px;
-          }
-          .currency {
-            width: 60px;
-          }
-          .bet_min {
-            width: 110px;
-          }
-          .bet_max {
-            width: 110px;
+          flex-direction: row;
+          .item {
+            width: 150px;
+            min-width: 150px;
+            margin-right: 40px;
           }
           .operate {
-            width: 160px;
+            width: auto;
+            .locate {
+              margin-right: 20px;
+            }
           }
         }
       }

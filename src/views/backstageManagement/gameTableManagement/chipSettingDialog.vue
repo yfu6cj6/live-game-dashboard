@@ -3,8 +3,7 @@
     v-if="visible"
     :loading="dialogLoading"
     :title="title"
-    :visible.sync="visible"
-    :before-close="onClose"
+    :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
   >
     <div class="operate btnGroup">
@@ -19,19 +18,13 @@
           class="view-container-table-row"
           :class="{'single-row': index % 2 === 0}"
         >
-          <div class="wrap">
-            <div class="left">
-              <div class="item">
-                <span class="header">{{ $t('__amount') }}</span>
-                <span>{{ item.amount }}</span>
-              </div>
-            </div>
-            <div>
-              <div class="operate">
-                <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-              </div>
-            </div>
+          <div class="item">
+            <span class="header">{{ $t('__amount') }}</span>
+            <span class="amount">{{ item.amount }}</span>
+          </div>
+          <div class="operate">
+            <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+            <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
           </div>
         </div>
       </div>
@@ -101,34 +94,30 @@ export default {
   &-container {
     &-table {
       &-row {
-        .wrap {
-          .left {
-            width: 50%;
-            display: flex;
-            align-items: center;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        .item {
+          width: 300px;
+          color: #000;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          .header + .amount {
+            margin-left: 10px;
           }
+        }
+        .operate {
+          justify-content: center;
+        }
+        .item + .operate {
+          margin-top: 0px;
         }
       }
       .noInformation {
-        color: #fff;
+        color: #000;
         font-size: 18px;
         padding-bottom: 20px;
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .wrap {
-            .item {
-              font-size: 18px;
-            }
-          }
-        }
       }
     }
   }

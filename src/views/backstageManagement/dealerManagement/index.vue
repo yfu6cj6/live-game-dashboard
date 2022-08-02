@@ -120,23 +120,23 @@
                 <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
                 <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
               </div>
-              <div class="item id">
+              <div class="item">
                 <span class="header">ID</span>
                 <span class="content">{{ item.id }}</span>
               </div>
-              <div class="item account">
+              <div class="item">
                 <span class="header">{{ $t('__account') }}</span>
                 <span class="content">{{ item.account }}</span>
               </div>
-              <div class="item name">
+              <div class="item">
                 <span class="header">{{ $t('__name') }}</span>
                 <span class="content">{{ item.name }}</span>
               </div>
-              <div class="item state">
+              <div class="item">
                 <span class="header">{{ $t('__status') }}</span>
                 <span class="status content" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
               </div>
-              <div class="item creator">
+              <div class="item">
                 <span class="header">{{ $t('__creator') }}</span>
                 <span class="content">{{ item.creator }}</span>
               </div>
@@ -339,13 +339,13 @@ export default {
           justify-content: center;
           align-items: center;
           margin-right: 10px;
-          width: 40%;
+          width: 30%;
         }
         .right {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          width: 60%;
+          width: 70%;
         }
         .operate {
           width: 250px;
@@ -375,47 +375,25 @@ export default {
     &-container {
       &-table {
         &-row {
+          .dealerPhoto {
+            margin: auto;
+          }
           .item {
-            min-width: 110px;
-            width: 110px;
+            min-width: 150px;
+            width: 150px;
             margin-right: 50px;
-            &.id {
-              min-width: 60px;
-              width: 60px;
-            }
-            &.account {
-              min-width: 140px;
-              width: 140px;
-            }
-            &.name {
-              min-width: 120px;
-              width: 120px;
-            }
-            &.state {
-              min-width: 80px;
-              width: 80px;
-            }
-            &.creator {
-              min-width: 120px;
-              width: 120px;
-            }
           }
           .operate {
             justify-content: flex-start;
-            width: 400px;
+            width: auto;
             .loginBar {
-              width: 112px;
-              min-width: 112px;
               margin-right: 32px;
             }
             .download {
-              width: 152px;
-              min-width: 152px;
               margin-right: 32px;
             }
             .edit {
-              width: 72px;
-              min-width: 72px;
+              margin-right: 32px;
             }
           }
         }

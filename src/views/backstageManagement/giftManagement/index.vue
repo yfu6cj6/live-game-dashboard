@@ -131,28 +131,28 @@
               <div class="item">
                 <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
               </div>
-              <div class="item">
+              <div class="item fixWidth">
                 <span class="header">ID</span>
                 <span>{{ item.id }}</span>
               </div>
-              <div class="item">
+              <div class="item fixWidth">
                 <span class="header">{{ $t('__giftNickname') }}</span>
                 <span>{{ item.nickname }}</span>
               </div>
-              <div class="item">
+              <div class="item fixWidth">
                 <span class="header">{{ $t('__currency') }}</span>
                 <span>{{ item.currency }}</span>
               </div>
-              <div class="item">
+              <div class="item fixWidth">
                 <span class="header">{{ $t('__value') }}</span>
                 <span>{{ item.valueLabel }}</span>
               </div>
-              <div class="item">
+              <div class="item fixWidth">
                 <span class="header">{{ $t('__status') }}</span>
                 <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
               </div>
               <div class="operate">
-                <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                <el-button class="bg-yellow fixWidth" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
               </div>
             </template>
           </div>
@@ -340,17 +340,17 @@ export default {
     &-table {
       &-row {
         display: flex;
-        justify-content: space-between;
         .left {
           display: flex;
           justify-content: center;
           align-items: center;
           margin-right: 10px;
           width: 40%;
-          .giftPhoto {
-            vertical-align: middle;
-            width: 73px;
-          }
+        }
+        .giftPhoto {
+          vertical-align: middle;
+          width: 73px;
+          min-width: 73px;
         }
         .right {
           display: flex;
@@ -392,14 +392,18 @@ export default {
     &-container {
       &-table {
         &-row {
-          .left {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-evenly;
-            width: 100%;
-          }
           .item {
-            width: 110px;
+            min-width: 150px;
+            width: 150px;
+            margin-right: 50px;
+            .giftPhoto {
+              margin: auto;
+            }
+          }
+          .giftPhoto {
+            vertical-align: middle;
+            width: 73px;
+            min-width: 73px;
           }
           .operate {
             width: 110px;
