@@ -330,6 +330,12 @@ body {
         .statusOpen {
           color: #090;
         }
+        .positive {
+          color: #f00;
+        }
+        .negative {
+          color: #00f;
+        }
       }
       .single-row {
         background-color: #f4f4f4;
@@ -353,7 +359,8 @@ body {
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .dialog {
-    .el-form {
+    .el-form,
+    .el-steps {
       width: 50%;
       margin: 0 auto;
     }
@@ -373,7 +380,8 @@ body {
 
 @media screen and (min-width: 992px) {
   .dialog {
-    .el-form {
+    .el-form,
+    .el-steps {
       width: 50%;
       margin: 0 auto;
     }

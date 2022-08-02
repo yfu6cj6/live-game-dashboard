@@ -6,9 +6,10 @@
     :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
   >
-    <label class="agentNameLabel">{{ `${$t('__superiorAgent')}: ` }}
-      <span class="agentNameSpan">{{ agentInfo.fullName }}</span>
-    </label>
+    <div>
+      <span>{{ $t('__superiorAgent') }}</span>
+      <span class="yellow-color agentFullName">{{ agentInfo.fullName }}</span>
+    </div>
     <el-steps v-if="visible" :active="curIndex" align-center finish-status="success">
       <el-step v-if="hasStep('agentInfo')" :description="$t('__agentInfo')" />
       <el-step v-if="hasStep('rate')" :description="$t('__rate')" />
@@ -540,90 +541,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~@/styles/variables.scss";
+@import "~@/styles/variables.scss";
 
-label {
-  font-weight: 300;
-}
-
-.agentNameLabel {
-  font-size: 14px;
-  color: #fff
-}
-
-.agentNameSpan {
-  color: $yellow;
-}
-
-span {
-  color: #fff;
-}
-
-p {
-  margin: 0;
-}
-
-.step2Input.el-input {
-  width: 70%;
-}
-
-.step2Span {
-  line-height: 10px;
-  display: inline;
-  font-size: 10px;
-  padding: 0 0 0 10px;
-  color: #bbb;
-}
-
-.step4Info {
-  margin: 10px 0 0 0;
-  label {
-    color: $yellow;
-    font-size: 10px;
-    font-weight: 500;
-  }
-}
-
-.step5Header {
-  font-size: 16px;
-  color: $yellow;
-  font-weight: 600;
-}
-
-.step5Info {
-  label {
-    color: $yellow;
-    font-size: 10px;
-    font-weight: 500;
-  }
-  span {
-    float: right;
-    margin-right: 20px;
-  }
-}
-
-.rowStep5LimitTable {
-  text-align: center;
-}
-
-.v-line100 {
-  border-bottom: 0.08333rem solid $yellow;
-  width: 100%;
-  height: 1px;
-}
-
-.v-line96 {
-  border-bottom: 0.08333rem solid $yellow;
-  width: 96%;
-  height: 1px;
-}
-
-.el-steps--horizontal {
-  margin: 15px 0;
-}
-
-.el-button {
-  width: 150px;
-  padding: 8px 0;
+.agentFullName {
+  margin-left: 10px;
 }
 </style>

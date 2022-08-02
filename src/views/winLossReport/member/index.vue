@@ -32,11 +32,11 @@
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                  <span class="content">{{ item.winLoss }}</span>
+                  <span class="content" :class="{positive: item.winLoss >= 0, negative: item.winLoss < 0}">{{ item.winLossLabel }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                  <span class="content">{{ item.winLossRate }}</span>
+                  <span class="content positive">{{ item.winLossRate }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
@@ -53,7 +53,7 @@
                   </div>
                   <div class="item">
                     <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                    <span class="content">{{ item.netPL }}</span>
+                    <span class="content" :class="{positive: item.netPL >= 0, negative: item.netPL < 0}">{{ item.netPLLabel }}</span>
                   </div>
                 </template>
               </div>
@@ -143,10 +143,10 @@ export default {
         this.tableData = res.rows
         this.tableData.forEach(element => {
           element.betAmount = numberFormat(element.betAmount)
-          element.winLoss = numberFormat(element.winLoss)
+          element.winLossLabel = numberFormat(element.winLoss)
           element.validBetAmount = numberFormat(element.validBetAmount)
           element.rollingCommission = numberFormat(element.rollingCommission)
-          element.netPL = numberFormat(element.netPL)
+          element.netPLLabel = numberFormat(element.netPL)
         })
         this.totalCount = res.totalCount
         this.$emit('handleRespone')

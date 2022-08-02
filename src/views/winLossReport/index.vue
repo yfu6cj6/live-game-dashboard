@@ -145,11 +145,11 @@
               </div>
               <div class="item">
                 <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                <span class="content">{{ agentInfo.winLoss }}</span>
+                <span class="content" :class="{positive: agentInfo.winLoss >= 0, negative: agentInfo.winLoss < 0}">{{ agentInfo.winLossLabel }}</span>
               </div>
               <div class="item">
                 <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                <span class="content">{{ agentInfo.winLossRate }}</span>
+                <span class="content positive">{{ agentInfo.winLossRate }}</span>
               </div>
               <div class="item">
                 <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
@@ -166,7 +166,7 @@
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                  <span class="content">{{ agentInfo.netPL }}</span>
+                  <span class="content" :class="{positive: agentInfo.netPL >= 0, negative: agentInfo.netPL < 0}">{{ agentInfo.netPLLabel }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__commissionRate')}` }}</span>
@@ -174,7 +174,7 @@
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__toSuperior')}` }}</span>
-                  <span class="content">{{ agentInfo.toSuperior }}</span>
+                  <span class="content" :class="{positive: agentInfo.toSuperior >= 0, negative: agentInfo.toSuperior < 0}">{{ agentInfo.toSuperiorLabel }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
@@ -188,7 +188,7 @@
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__myProfit')}` }}</span>
-                  <span class="content">{{ agentInfo.myProfit }}</span>
+                  <span class="content" :class="{positive: agentInfo.myProfit >= 0, negative: agentInfo.myProfit < 0}">{{ agentInfo.myProfitLabel }}</span>
                 </div>
               </template>
             </div>
@@ -477,12 +477,12 @@ export default {
       this.agentInfo = agentInfo
       this.agentInfo.index = 0
       this.agentInfo.betAmount = numberFormat(this.agentInfo.betAmount)
-      this.agentInfo.myProfit = numberFormat(this.agentInfo.myProfit)
-      this.agentInfo.winLoss = numberFormat(this.agentInfo.winLoss)
+      this.agentInfo.myProfitLabel = numberFormat(this.agentInfo.myProfit)
+      this.agentInfo.winLossLabel = numberFormat(this.agentInfo.winLoss)
       this.agentInfo.validBetAmount = numberFormat(this.agentInfo.validBetAmount)
       this.agentInfo.rollingCommission = numberFormat(this.agentInfo.rollingCommission)
-      this.agentInfo.netPL = numberFormat(this.agentInfo.netPL)
-      this.agentInfo.toSuperior = numberFormat(this.agentInfo.toSuperior)
+      this.agentInfo.netPLLabel = numberFormat(this.agentInfo.netPL)
+      this.agentInfo.toSuperiorLabel = numberFormat(this.agentInfo.toSuperior)
       this.agentInfo.commitSuperiorsValidBetAmount = numberFormat(this.agentInfo.commitSuperiorsValidBetAmount)
       this.setTagsViewTitle()
       this.setDataLoading(false)

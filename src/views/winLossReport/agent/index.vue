@@ -33,11 +33,11 @@
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                  <span class="content">{{ item.winLoss }}</span>
+                  <span class="content" :class="{positive: item.winLoss >= 0, negative: item.winLoss < 0}">{{ item.winLossLabel }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                  <span class="content">{{ item.winLossRate }}</span>
+                  <span class="content positive">{{ item.winLossRate }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
@@ -54,7 +54,7 @@
                   </div>
                   <div class="item">
                     <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                    <span class="content">{{ item.netPL }}</span>
+                    <span class="content" :class="{positive: item.netPL >= 0, negative: item.netPL < 0}">{{ item.netPLLabel }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ `${$t('__commissionRate')}` }}</span>
@@ -62,7 +62,7 @@
                   </div>
                   <div class="item">
                     <span class="header">{{ `${$t('__toSuperior')}` }}</span>
-                    <span class="content">{{ item.toSuperior }}</span>
+                    <span class="content" :class="{positive: item.toSuperior >= 0, negative: item.toSuperior < 0}">{{ item.toSuperiorLabel }}</span>
                   </div>
                   <div class="item">
                     <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
@@ -156,11 +156,11 @@ export default {
         this.tableData = res.rows
         this.tableData.forEach(element => {
           element.betAmount = numberFormat(element.betAmount)
-          element.winLoss = numberFormat(element.winLoss)
+          element.winLossLabel = numberFormat(element.winLoss)
           element.validBetAmount = numberFormat(element.validBetAmount)
           element.rollingCommission = numberFormat(element.rollingCommission)
-          element.netPL = numberFormat(element.netPL)
-          element.toSuperior = numberFormat(element.toSuperior)
+          element.netPLLabel = numberFormat(element.netPL)
+          element.toSuperiorLabel = numberFormat(element.toSuperior)
           element.commitSuperiorsValidBetAmount = numberFormat(element.commitSuperiorsValidBetAmount)
         })
         this.totalCount = res.totalCount
