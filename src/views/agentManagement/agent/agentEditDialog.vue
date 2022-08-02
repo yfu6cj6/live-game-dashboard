@@ -1,5 +1,11 @@
 <template>
-  <Dialog :loading="dialogLoading" :title="title" :on-close-even="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
+  <Dialog
+    v-if="visible"
+    :loading="dialogLoading"
+    :title="title"
+    :on-close-even="onClose"
+    :close-on-click-modal="device === 'mobile'"
+  >
     <label class="agentNameLabel">{{ `${$t('__superiorAgent')}: ` }}
       <span class="agentNameSpan">{{ agentInfo.fullName }}</span>
     </label>
@@ -10,7 +16,7 @@
       <el-step v-if="hasStep('balanceConfig')" :description="$t('__balanceConfig')" />
       <el-step v-if="hasStep('confirm')" :description="$t('__confirm')" />
     </el-steps>
-    <el-form v-show="curIndex === stepEnum.agentInfo" ref="step1" :model="form" :rules="step1Rules" label-width="80px" :label-position="formLabelPosition">
+    <el-form v-show="curIndex === stepEnum.agentInfo" ref="step1" :model="form" :rules="step1Rules">
       <el-form-item :label="$t('__accountGenerateMode')">
         <el-switch
           v-model="autoGenerateAccount"
@@ -51,7 +57,7 @@
         <el-input v-model="form.remark" type="textarea" :rows="2" />
       </el-form-item>
     </el-form>
-    <el-form v-show="curIndex === stepEnum.rate" ref="step2" :model="form" :rules="step2Rules" label-width="120px" :label-position="formLabelPosition">
+    <el-form v-show="curIndex === stepEnum.rate" ref="step2" :model="form" :rules="step2Rules">
       <el-form-item :label="`${$t('__liveGame')} ${$t('__commissionRate')}`" prop="live_commission_rate">
         <el-input v-model="form.live_commission_rate" class="step2Input" type="number" :disabled="agentInfo.live_commission_rate === 0" min="0" :max="agentInfo.live_commission_rate" />
         <span class="step2Span">{{ commissionRateTip }}</span>
@@ -82,7 +88,7 @@
       <el-table-column prop="bet_max" :label="$t('__betMax')" align="center" :show-overflow-tooltip="true" />
       <el-table-column prop="currency" :label="$t('__currency')" align="center" :show-overflow-tooltip="true" />
     </el-table>
-    <el-form v-show="curIndex === stepEnum.balanceConfig" ref="step4" :model="form" :rules="step4Rules" label-width="70px" :label-position="formLabelPosition">
+    <el-form v-show="curIndex === stepEnum.balanceConfig" ref="step4" :model="form" :rules="step4Rules">
       <template>
         <div class="step4Info">
           <p>
@@ -111,7 +117,7 @@
         <el-input v-model="form.balance" type="number" :disabled="balanceDisable" min="0" />
       </el-form-item>
     </el-form>
-    <el-form v-show="curIndex === stepEnum.confirm" ref="step5" :model="form" :rules="step5Rules" label-width="80px" :label-position="formLabelPosition">
+    <el-form v-show="curIndex === stepEnum.confirm" ref="step5" :model="form" :rules="step5Rules">
       <el-row>
         <el-col :span="12">
           <label class="step5Header">{{ $t('__agentInfo') }}</label>
@@ -204,7 +210,7 @@
 
 <script>
 import colors from '@/styles/variables.scss'
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon'
 import common from '@/mixin/common'
 import { agentCreateAccount, agentGetSetBalanceInfo, agentCreate, agentEdit } from '@/api/agentManagement/agent'
 import { mapGetters } from 'vuex'
@@ -214,7 +220,7 @@ import Dialog from '@/components/Dialog'
 export default {
   name: 'AgentEditDialog',
   components: { Dialog },
-  mixins: [handleDialogWidth, common],
+  mixins: [dialogCommon, common],
   props: {
     'title': {
       type: String,
@@ -357,7 +363,6 @@ export default {
       time_zone: [],
       currency: [],
       agentBalanceInfo: {},
-      dialogLoading: false,
       selectHandicaps: []
     }
   },
@@ -367,9 +372,6 @@ export default {
     ]),
     color_yellow() {
       return colors.yellow
-    },
-    formLabelPosition() {
-      return 'left'
     },
     commissionRateTip() {
       return `${this.$t('__range')}0%-${this.agentInfo.live_commission_rate}%`
@@ -495,9 +497,6 @@ export default {
     },
     onPreviousBtnClick() {
       this.curIndex--
-    },
-    onClose() {
-      this.$emit('close')
     },
     onSubmit() {
       this.$refs.step5.validate((valid) => {
@@ -626,11 +625,5 @@ p {
 .el-button {
   width: 150px;
   padding: 8px 0;
-}
-
-.el-select,
-.el-input,
-.el-textarea{
-  width: 90%;
 }
 </style>

@@ -4,13 +4,13 @@
     <div v-loading="loading" class="dialog">
       <div class="dialog-header">
         <i class="el-icon-close dialog-header-close" @click.stop="onCloseEven" />
-        <slot name="header" />
+        <div>{{ title }}</div>
       </div>
       <div class="dialog-body">
         <slot />
-      </div>
-      <div class="dialog-footer">
-        <slot name="footer" />
+        <div class="dialog-footer">
+          <slot name="footer" />
+        </div>
       </div>
     </div>
   </div>
@@ -86,7 +86,6 @@ export default {
   -ms-flex-direction: column; /* 兼容IE */
   background: #000;
   margin: 0 auto !important;
-  overflow-y: auto;
   top: 80px;
   left: 50%;
   transform: translateX(-50%);
@@ -97,7 +96,7 @@ export default {
     font-size: 22px;
     padding: 20px 20px 10px;
     .dialog-header-close {
-      position: absolute;
+      position: fixed;
       top: 5px;
       right: 10px;
       color: $yellow;
@@ -105,6 +104,7 @@ export default {
   }
   .dialog-body {
     padding: 0 10px;
+    overflow-y: auto;
   }
   .dialog-footer {
     text-align: center;
@@ -119,9 +119,7 @@ export default {
 
 @media screen and (min-width: 768px) and (max-width: 991px) {
   .dialog {
-    max-height: calc(100% - 20px);
-    top: 50%;
-    transform: translateX(-50%) translateY(-50%);
+    max-height: calc(100% - 100px);
   }
 }
 

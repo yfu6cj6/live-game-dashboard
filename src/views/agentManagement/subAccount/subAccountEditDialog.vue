@@ -134,7 +134,7 @@ export default {
     return {
       rules: {
         account: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        nickname: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        nickname: [{ required: true, trigger: 'blur', validator: validate }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
         confirmPassword: [{ required: true, trigger: 'blur', validator: validateConfirmPassword }],
         userPassword: [{ required: true, trigger: 'blur', validator: validate }]

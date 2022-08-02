@@ -204,6 +204,33 @@
         @current-change="handlePageChangeByClient"
       />
     </div>
+
+    <agentEditDialog
+      ref="editDialog"
+      :title="$t('__editSubAgent')"
+      :visible="curDialogIndex === dialogEnum.edit"
+      :operation-type="2"
+      :agent-info="agentInfo"
+      :confirm="$t('__revise')"
+      :form="editForm"
+      :step-enum="editStepEnum"
+      @close="closeDialogEven"
+      @editSuccess="handleRespone"
+    />
+
+    <agentEditDialog
+      ref="createDialog"
+      :title="$t('__addSubAgent')"
+      :visible="curDialogIndex === dialogEnum.create"
+      :operation-type="1"
+      :agent-info="agentInfo"
+      :confirm="$t('__confirm')"
+      :form="editForm"
+      :step-enum="editStepEnum"
+      @close="closeDialogEven"
+      @editSuccess="createDialogEditSuccess"
+    />
+
     <balanceDialog
       ref="depositBalanceDialog"
       :title="$t('__depositBalance')"
@@ -350,6 +377,7 @@ import OperateDialog from '@/views/agentManagement/operateDialog'
 import LimitDialog from '@/views/agentManagement/limitDialog'
 import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import AgentRateLogDialog from './agentRateLogDialog'
+import AgentEditDialog from './agentEditDialog'
 
 const defaultForm = {
   parent: 0,
@@ -376,7 +404,7 @@ const editFormStepEnum = Object.freeze({ 'agentInfo': 0, 'rate': 1, 'limit': 2, 
 
 export default {
   name: 'Agent',
-  components: { BalanceDialog, OperateDialog, LimitDialog, ModPasswordDialog, AgentRateLogDialog },
+  components: { BalanceDialog, OperateDialog, LimitDialog, ModPasswordDialog, AgentRateLogDialog, AgentEditDialog },
   mixins: [handlePageChange],
   props: {
   },

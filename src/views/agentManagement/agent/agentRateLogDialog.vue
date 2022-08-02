@@ -6,13 +6,26 @@
     :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
   >
-    <el-table :data="listData" tooltip-effect="dark" header-cell-class-name="bg-black_table_header" row-class-name="bg-black_table_col" style="background: black;">
-      <el-table-column prop="user" :label="$t('__operator')" align="center" />
-      <el-table-column v-if="operationType === operationEnum.liveCommissionRate" prop="commission_rate" :label="title" align="center" />
-      <el-table-column v-if="operationType === operationEnum.liveRollingRate" prop="rolling_rate" :label="title" align="center" />
-      <el-table-column v-if="operationType === operationEnum.liveGiftRate" prop="gift_rate" :label="title" align="center" />
-      <el-table-column prop="created_at" :label="$t('__createdAt')" align="center" />
-    </el-table>
+    <div class="rate">
+      <table>
+        <thead>
+          <tr>
+            <th align="center">{{ $t('__operator') }}</th>
+            <th align="center">{{ title }}</th>
+            <th align="center">{{ $t('__createdAt') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in listData" :key="index">
+            <td align="center" class="user">{{ item.user }}</td>
+            <td v-if="operationType === operationEnum.liveCommissionRate" align="center" class="commission_rate">{{ item.commission_rate }}</td>
+            <td v-if="operationType === operationEnum.liveRollingRate" align="center" class="rolling_rate">{{ item.rolling_rate }}</td>
+            <td v-if="operationType === operationEnum.liveGiftRate" align="center" class="gift_rate">{{ item.gift_rate }}</td>
+            <td align="center" class="created_at">{{ item.created_at }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </Dialog>
 </template>
 
@@ -65,8 +78,32 @@ export default {
 }
 </script>
 
-<style scoped>
-.el-table--fit {
-  padding: 0 0 10px 0
+<style lang="scss" scoped>
+@import "~@/styles/variables.scss";
+
+.rate {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 15px;
+  table {
+    color: #fff;
+    font-size: 18px;
+    margin: 0 auto;
+    tr {
+      th {
+        color: $yellow;
+      }
+      td {
+        &.user,
+        &.commission_rate,
+        &.rolling_rate,
+        &.gift_rate,
+        &.created_at {
+          width: 200px;
+          min-width: 200px;
+        }
+      }
+    }
+  }
 }
 </style>
