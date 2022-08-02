@@ -3,8 +3,7 @@
     v-if="visible"
     :loading="dialogLoading"
     :title="title"
-    :visible.sync="visible"
-    :before-close="onClose"
+    :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
   >
     <img v-if="playbackType === 1" class="playbackPic" :src="url">

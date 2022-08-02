@@ -101,17 +101,26 @@
                       </div>
                       <div class="liveGame-wrap">
                         <div class="infoGroup-item">
-                          <span class="infoGroup-item-header">{{ $t('__commissionRate') }}</span>
+                          <span class="infoGroup-item-header">
+                            {{ $t('__commissionRate') }}
+                            <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click.stop="onCommissionRateLogBtnClick(item)" />
+                          </span>
                           <span class="infoGroup-item-content">{{ item.live_commission_rate }}</span>
                           <span>%</span>
                         </div>
                         <div class="infoGroup-item">
-                          <span class="infoGroup-item-header">{{ $t('__rollingRate') }}</span>
+                          <span class="infoGroup-item-header">
+                            {{ $t('__rollingRate') }}
+                            <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click.stop="onRollingRateLogBtnClick(item)" />
+                          </span>
                           <span class="infoGroup-item-content">{{ item.live_rolling_rate }}</span>
                           <span>%</span>
                         </div>
                         <div class="infoGroup-item">
-                          <span class="infoGroup-item-header">{{ $t('__giftRate') }}</span>
+                          <span class="infoGroup-item-header">
+                            {{ $t('__giftRate') }}
+                            <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click.stop="onGiftRateLogBtnClick(item)" />
+                          </span>
                           <span class="infoGroup-item-content">{{ item.live_gift_rate }}</span>
                           <span>%</span>
                         </div>
@@ -246,6 +255,30 @@
       @modPassword="modPassword"
     />
 
+    <agentRateLogDialog
+      :title="`${$t('__liveGame')} ${$t('__commissionRate')}`"
+      :visible="curDialogIndex === dialogEnum.liveCommissionRate"
+      :list-data="rateData"
+      :operation-type="1"
+      @close="closeDialogEven"
+    />
+
+    <agentRateLogDialog
+      :title="`${$t('__liveGame')} ${$t('__rollingRate')}`"
+      :visible="curDialogIndex === dialogEnum.liveRollingRate"
+      :list-data="rateData"
+      :operation-type="2"
+      @close="closeDialogEven"
+    />
+
+    <agentRateLogDialog
+      :title="`${$t('__liveGame')} ${$t('__giftRate')}`"
+      :visible="curDialogIndex === dialogEnum.liveGiftRate"
+      :list-data="rateData"
+      :operation-type="3"
+      @close="closeDialogEven"
+    />
+
     <operateDialog
       ref="totallyDisabledDialog"
       :visible="curDialogIndex === dialogEnum.totallyDisabled"
@@ -316,6 +349,7 @@ import BalanceDialog from '@/views/agentManagement/balanceDialog'
 import OperateDialog from '@/views/agentManagement/operateDialog'
 import LimitDialog from '@/views/agentManagement/limitDialog'
 import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
+import AgentRateLogDialog from './agentRateLogDialog'
 
 const defaultForm = {
   parent: 0,
@@ -342,7 +376,7 @@ const editFormStepEnum = Object.freeze({ 'agentInfo': 0, 'rate': 1, 'limit': 2, 
 
 export default {
   name: 'Agent',
-  components: { BalanceDialog, OperateDialog, LimitDialog, ModPasswordDialog },
+  components: { BalanceDialog, OperateDialog, LimitDialog, ModPasswordDialog, AgentRateLogDialog },
   mixins: [handlePageChange],
   props: {
   },
@@ -801,6 +835,20 @@ export default {
               .liveGame-wrap {
                 display: flex;
                 flex-wrap: wrap;
+              }
+              .iconButton {
+                padding: 0;
+                background: transparent;
+                color: #000;
+                -webkit-text-stroke: 0.5px $yellow;
+                border: none;
+                font-size: 16px;
+                margin-left: 0;
+                vertical-align: middle;
+                .icon {
+                  color: $yellow;
+                  margin-left: 5px;
+                }
               }
             }
             .infoGroup-item {

@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div class="mask" @click.stop="beforeClose" />
+    <div class="mask" @click.stop="onClickMask" />
     <div v-loading="loading" class="dialog">
-      <div class="header">
-        <i class="el-icon-close close" @click.stop="beforeClose" />
+      <div class="dialog-header">
+        <i class="el-icon-close dialog-header-close" @click.stop="onCloseEven" />
         <slot name="header" />
       </div>
-      <div class="body">
+      <div class="dialog-body">
         <slot />
       </div>
-      <div class="footer">
+      <div class="dialog-footer">
         <slot name="footer" />
       </div>
     </div>
@@ -37,11 +37,25 @@ export default {
         return true
       }
     },
-    'beforeClose': {
+    'closeOnClickModal': {
+      type: Boolean,
+      require: true,
+      default() {
+        return true
+      }
+    },
+    'onCloseEven': {
       type: Function,
       require: true,
       default() {
         return () => {}
+      }
+    }
+  },
+  methods: {
+    onClickMask() {
+      if (this.closeOnClickModal) {
+        this.onCloseEven()
       }
     }
   }
@@ -78,21 +92,21 @@ export default {
   transform: translateX(-50%);
   z-index: 10;
   color: #fff;
-  .header {
+  .dialog-header {
     text-align: center;
     font-size: 22px;
     padding: 20px 20px 10px;
-    .close {
+    .dialog-header-close {
       position: absolute;
       top: 5px;
       right: 10px;
       color: $yellow;
     }
   }
-  .body {
+  .dialog-body {
     padding: 0 10px;
   }
-  .footer {
+  .dialog-footer {
     text-align: center;
     padding: 10px 20px 20px;
   }

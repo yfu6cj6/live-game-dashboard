@@ -2,13 +2,12 @@
   <Dialog
     v-if="visible"
     :loading="dialogLoading"
-    :visible.sync="visible"
-    :before-close="onClose"
+    :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
   >
     <div class="agentInfo">
-      <span class="header">{{ nameLabel }}</span>
-      <span class="content">{{ form.fullName }}</span>
+      <span class="agentInfo-header">{{ nameLabel }}</span>
+      <span class="agentInfo-content">{{ form.fullName }}</span>
     </div>
     <el-form ref="form" :model="form" :rules="rules">
       <el-form-item v-if="visible" :label="$t('__newPassword')" prop="newPassword">
@@ -134,11 +133,11 @@ export default {
   font-weight: bold;
   padding-bottom: 10px;
   display: flex;
-  .header {
+  .agentInfo-header {
     color: $yellow;
     margin-right: 20px;
   }
-  .content {
+  .agentInfo-content {
     color: #fff;
   }
 }

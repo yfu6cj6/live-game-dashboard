@@ -1,9 +1,8 @@
 <template>
   <Dialog
     :title="title"
-    :visible.sync="visible"
     :width="formWidth"
-    :before-close="onClose"
+    :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
     :close-on-press-escape="false"
   >

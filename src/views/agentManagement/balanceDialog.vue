@@ -3,7 +3,7 @@
     v-if="visible"
     :loading="dialogLoading"
     :title="title"
-    :before-close="onClose"
+    :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
   >
     <div class="info">

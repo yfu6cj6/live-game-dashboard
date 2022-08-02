@@ -2,8 +2,7 @@
   <Dialog
     v-if="visible"
     :loading="dialogLoading"
-    :visible.sync="visible"
-    :before-close="onClose"
+    :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
   >
     <div class="dialogheader">

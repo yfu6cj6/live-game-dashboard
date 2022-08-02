@@ -1,5 +1,5 @@
 <template>
-  <Dialog :loading="dialogLoading" :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
+  <Dialog :loading="dialogLoading" :title="title" :on-close-even="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
     <label class="agentNameLabel">{{ `${$t('__superiorAgent')}: ` }}
       <span class="agentNameSpan">{{ agentInfo.fullName }}</span>
     </label>

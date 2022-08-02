@@ -1,5 +1,11 @@
 <template>
-  <Dialog :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
+  <Dialog
+    v-if="visible"
+    :loading="dialogLoading"
+    :title="title"
+    :on-close-even="onClose"
+    :close-on-click-modal="device === 'mobile'"
+  >
     <el-table :data="listData" tooltip-effect="dark" header-cell-class-name="bg-black_table_header" row-class-name="bg-black_table_col" style="background: black;">
       <el-table-column prop="user" :label="$t('__operator')" align="center" />
       <el-table-column v-if="operationType === operationEnum.liveCommissionRate" prop="commission_rate" :label="title" align="center" />
@@ -11,13 +17,13 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon'
 import Dialog from '@/components/Dialog'
 
 export default {
   name: 'AgentRateLogDialog',
   components: { Dialog },
-  mixins: [handleDialogWidth],
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,
@@ -55,9 +61,6 @@ export default {
     }
   },
   methods: {
-    onClose() {
-      this.$emit('close')
-    }
   }
 }
 </script>
