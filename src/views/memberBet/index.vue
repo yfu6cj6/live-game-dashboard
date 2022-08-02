@@ -255,7 +255,7 @@ import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime,
   getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
 import PlaybackDialog from './playbackDialog';
-import GameResultDialog from '@/components/GameResult1/gameResultDialog';
+import GameResultDialog from '@/components/GameResult/gameResultDialog';
 
 const defaultSearchTimeType = 'betTime'
 const defaultSearchTime = getTodayDateTime()
