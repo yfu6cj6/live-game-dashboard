@@ -17,7 +17,7 @@
         <el-input v-model="form.userPassword" show-password />
       </el-form-item>
     </el-form>
-    <span v-if="!dialogLoading" slot="footer">
+    <span v-if="!dialogLoading" slot="bodyFooter">
       <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
     </span>
   </Dialog>

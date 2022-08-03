@@ -28,7 +28,7 @@
         <el-input v-model="editForm.total_bet_max" type="number" />
       </el-form-item>
     </el-form>
-    <span v-if="!dialogLoading" slot="footer">
+    <span v-if="!dialogLoading" slot="bodyFooter">
       <el-button class="bg-gray" @click="onReset">{{ $t("__reset") }}</el-button>
       <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
     </span>

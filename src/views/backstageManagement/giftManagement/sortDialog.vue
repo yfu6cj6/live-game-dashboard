@@ -74,7 +74,7 @@
       </draggable>
       <div v-else-if="searched && allDataByClient.length === 0" class="noInformation">{{ $t("__noInformation") }}</div>
     </div>
-    <span v-if="allDataByClient.length > 0 && !dialogLoading" slot="footer">
+    <span v-if="allDataByClient.length > 0 && !dialogLoading" slot="bodyFooter">
       <el-button class="bg-yellow confirm" @click="onSubmit()">{{ confirm }}</el-button>
     </span>
   </Dialog>

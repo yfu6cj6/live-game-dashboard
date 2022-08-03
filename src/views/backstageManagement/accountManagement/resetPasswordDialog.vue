@@ -14,7 +14,7 @@
     <label>{{ passwordTitle }}
       <span>{{ password }}</span>
     </label>
-    <span v-if="!dialogLoading" slot="footer">
+    <span v-if="!dialogLoading" slot="bodyFooter">
       <el-button class="bg-yellow" @click="onClose">{{ confirm }}</el-button>
     </span>
   </Dialog>

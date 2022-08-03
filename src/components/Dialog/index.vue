@@ -8,9 +8,12 @@
       </div>
       <div class="dialog-body">
         <slot />
-        <div class="dialog-footer">
-          <slot name="footer" />
+        <div v-if="$slots.bodyFooter" class="dialog-body-footer">
+          <slot name="bodyFooter" />
         </div>
+      </div>
+      <div v-if="$slots.footer" class="dialog-footer">
+        <slot name="footer" />
       </div>
     </div>
   </div>
@@ -105,6 +108,10 @@ export default {
   .dialog-body {
     padding: 0 10px;
     overflow-y: auto;
+    .dialog-body-footer {
+      text-align: center;
+      padding: 10px 20px 20px;
+    }
   }
   .dialog-footer {
     text-align: center;

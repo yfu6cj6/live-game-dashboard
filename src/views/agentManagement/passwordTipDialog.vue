@@ -13,7 +13,7 @@
     <label>{{ passwordTitle }}
       <span>{{ `${form.password}` }}</span>
     </label>
-    <span slot="footer">
+    <span slot="bodyFooter">
       <el-button class="bg-yellow" @click="onClose">{{ confirm }}</el-button>
     </span>
   </Dialog>

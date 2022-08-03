@@ -9,7 +9,7 @@
     <div class="loginBarcode">
       <img :src="form.dns1d" :alt="$t('__loginBarcode')">
     </div>
-    <span v-if="!dialogLoading" slot="footer">
+    <span v-if="!dialogLoading" slot="bodyFooter">
       <a :href="form.dns1d" :download="form.name">
         <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
       </a>

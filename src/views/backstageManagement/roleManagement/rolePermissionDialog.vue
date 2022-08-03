@@ -6,46 +6,36 @@
     :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
   >
-    <div ref="table" class="view-container-table">
+    <div class="table">
       <div v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0">
-        <div class="view-container-table-row">
-          <div class="wrap header">
-            <div class="item selection">
+        <table>
+          <tr>
+            <th class="toggle">
               <el-checkbox v-model="selectAll" class="red-tick" @change="selection" />
-            </div>
-            <div class="item name">
-              <span>{{ $t('__name') }}</span>
-            </div>
-            <div class="item nickname">
-              <span>{{ $t('__nickname') }}</span>
-            </div>
-          </div>
-        </div>
-        <div
-          v-for="(item, index) in serverData.allPermissions"
-          :key="index"
-          class="view-container-table-row"
-          :class="{'single-row': index % 2 === 0}"
-        >
-          <div class="wrap">
-            <div class="item selection">
+            </th>
+            <th align="center" class="name header">{{ $t('__name') }}</th>
+            <th align="center" class="nickName header">{{ $t('__nickname') }}</th>
+          </tr>
+          <tr
+            v-for="(item, index) in serverData.allPermissions"
+            :key="index"
+            class="view-container-table-row"
+            :class="{'single-row': index % 2 === 0}"
+          >
+            <td class=" bg-color toggle">
               <el-checkbox v-model="item.exist" class="red-tick" @change="handleCheckboxChange" />
-            </div>
-            <div class="item name">
-              <span>{{ item.name }}</span>
-            </div>
-            <div class="item nickname">
-              <span>{{ item.nickname }}</span>
-            </div>
-          </div>
-        </div>
+            </td>
+            <td align="center" class="bg-color name">{{ item.name }}</td>
+            <td align="center" class="bg-color nickName">{{ item.nickname }}</td>
+          </tr>
+        </table>
       </div>
       <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
     </div>
-    <span v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0 && !dialogLoading" slot="footer">
+    <div v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0 && !dialogLoading" slot="footer">
       <el-button class="bg-gray" @click="selection(false)">{{ $t('__cancelSelect') }}</el-button>
       <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-    </span>
+    </div>
   </Dialog>
 </template>
 
@@ -134,73 +124,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view {
-  &-container {
-    &-table {
-      &-row {
-        .wrap {
-          justify-content: space-between;
-          &.header {
-            font-weight: bold;
-            font-size: 18px;
-          }
-          .item {
-            display: flex;
-            align-items: center;
-          }
-          .selection {
-            width: 15px;
-          }
-          .name {
-            width: 190px;
-          }
-          .nickname {
-            width: 80px;
-          }
-        }
-      }
-      .noInformation {
-        color: #fff;
-        font-size: 18px;
-        padding-bottom: 20px;
-      }
+.table {
+  color: #fff;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 18px;
+  .toggle {
+    width: 40px;
+    min-width: 40px;
+    .red-tick {
+      display: flex;
+      justify-content: center;
     }
   }
-}
-
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .wrap {
-            .item {
-              width: auto;
-            }
-          }
-        }
-      }
-    }
+  .bg-color {
+    background-color: #000;
   }
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .wrap {
-            &.header {
-              font-weight: bold;
-              font-size: 22px;
-            }
-            .item {
-              width: auto;
-            }
-          }
-        }
-      }
-    }
+  .header {
+    color: rgb(255, 251, 0);
+  }
+  .name {
+    word-break: break-all;
+    width: 500px;
+    min-width: 500px;
+  }
+  .nickName {
+    word-break: break-all;
+    width: 250px;
+    min-width: 250px;
   }
 }
 </style>
