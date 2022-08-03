@@ -141,7 +141,7 @@
                   </div>
                   <div class="item">
                     <span class="header">{{ $t('__payout') }}</span>
-                    <span :class="{'back' : item.payout > 0}">{{ item.payoutLabel }}</span>
+                    <span :class="{'back' : item.payout < 0}">{{ item.payoutLabel }}</span>
                   </div>
                   <div class="expand" @click.stop="remarkExpand(item)">
                     <svg-icon v-if="item.open" icon-class="up" />
@@ -540,7 +540,7 @@ export default {
         &-row {
           .grid {
             display: grid;
-            grid-template-columns: 50px repeat(5, 1fr);
+            grid-template-columns: 50px repeat(5, 330px);
             grid-template-areas:
             "c0 c1 c2 c3 c4 c5";
             .c0 {

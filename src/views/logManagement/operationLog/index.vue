@@ -137,44 +137,40 @@
               </div>
             </template>
             <template v-else>
-              <div class="content">
-                <div class="left">
-                  <div class="item remark">
-                    <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                    <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__operator') }}</span>
-                    <span>{{ item.userNickName }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">IP</span>
-                    <span>{{ item.ip }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__description') }}</span>
-                    <span>{{ item.description }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__operationTime') }}</span>
-                    <span>{{ item.created_at }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">Uri</span>
-                    <span v-if="isAdminister">{{ item.uri }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__method') }}</span>
-                    <span v-if="isAdminister">{{ item.method }}</span>
-                  </div>
+              <div class="base">
+                <div class="item remark">
+                  <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
+                  <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
                 </div>
-                <div v-if="item.open">
-                  <div class="item">
-                    <span class="header">{{ $t('__content') }}</span>
-                    <span>
-                      {{ item.request_content }}
-                    </span>
-                  </div>
+                <div class="item">
+                  <span class="header">{{ $t('__operator') }}</span>
+                  <span class="content">{{ item.userNickName }}</span>
+                </div>
+                <div class="item operationTime">
+                  <span class="header">{{ $t('__operationTime') }}</span>
+                  <span class="content">{{ item.created_at }}</span>
+                </div>
+                <div class="item ip">
+                  <span class="header">IP</span>
+                  <span class="content">{{ item.ip }}</span>
+                </div>
+                <div class="item method">
+                  <span class="header">{{ $t('__method') }}</span>
+                  <span v-if="isAdminister" class="content">{{ item.method }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">Uri</span>
+                  <span v-if="isAdminister" class="content">{{ item.uri }}</span>
+                </div>
+                <div class="item">
+                  <span class="header">{{ $t('__description') }}</span>
+                  <span class="content">{{ item.description }}</span>
+                </div>
+              </div>
+              <div v-if="item.open">
+                <div class="item expandItem">
+                  <span class="header">{{ $t('__content') }}</span>
+                  <span class="content">{{ item.request_content }}</span>
                 </div>
               </div>
             </template>
@@ -388,14 +384,24 @@ export default {
     &-container {
       &-table {
         &-row {
-          display: flex;
-          flex-direction: column;
-          .left {
-            width: 100%;
-            flex-direction: row;
-            .remark {
-              width: 50px;
+          .base {
+            .item {
+              width: 250px;
+              min-width: 250px;
+              margin-right: 30px;
+              &.method {
+                width: 200px;
+                min-width: 200px;
+              }
             }
+            .remark {
+              width: 40px;
+              min-width: 40px;
+            }
+          }
+          .expandItem {
+            width: 1700px;
+            min-width: 1700px;
           }
         }
       }

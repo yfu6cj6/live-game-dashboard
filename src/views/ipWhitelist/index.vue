@@ -87,23 +87,21 @@
               </div>
             </template>
             <template v-else>
-              <div class="left">
-                <div class="item id">
-                  <span class="header">ID</span>
-                  <span>{{ item.id }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__account') }}</span>
-                  <span>{{ item.account }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">IP</span>
-                  <span>{{ item.ip }}</span>
-                </div>
-                <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                </div>
+              <div class="item id">
+                <span class="header">ID</span>
+                <span>{{ item.id }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__account') }}</span>
+                <span>{{ item.account }}</span>
+              </div>
+              <div class="item">
+                <span class="header">IP</span>
+                <span>{{ item.ip }}</span>
+              </div>
+              <div class="operate">
+                <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
               </div>
             </template>
           </div>
@@ -293,10 +291,10 @@ export default {
     &-container {
       &-table {
         &-row {
-          .left {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
+          .item {
+            width: 450px;
+            min-width: 450px;
+            margin-right: 50px;
           }
           .operate {
             width: 160px;
