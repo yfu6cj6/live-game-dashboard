@@ -379,6 +379,7 @@ export default {
   },
   created() {
     this.searchFormNormalHeight = "68px";
+    this.resizeHandler();
     this.$store.dispatch('memberBet/setMemberBetTimeType')
     if (this.tempRoute.params?.id !== undefined) {
       this.memberId = parseInt(this.$route.params.id)

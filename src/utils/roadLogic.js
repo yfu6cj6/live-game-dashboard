@@ -112,7 +112,7 @@ function statistic(scores)
     * 
     */
 function convertToBeadRoad(scores, recordCurIndex) {
-    var board = initBoard(6, 99);
+    var board = initBoard(6, scores.length > 99 ? scores.length : 99);
     var sc = scores.split(',');
     var bp = false;
     var pp = false;
@@ -233,7 +233,7 @@ function initBoard(rowCount, colCount)
     */
     function convertToBigRoad(scores, recordCurIndex) {
         var sc = scores.split(',');
-        var result = initBoard(6, 99);
+        var result = initBoard(6, sc.length > 99 ? sc.length : 99);
         var columnIndex = 0;
         var rowIndex = 0;
         var last = "";
@@ -408,7 +408,7 @@ function initBoard(rowCount, colCount)
         if (maxSameCount < 15)
             maxSameCount = 15;
 
-        var result = initBoard(maxSameCount, 99);
+        var result = initBoard(maxSameCount, scores.length > 99 ? scores.length : 99);
         var columnIndex = 0;
         var rowIndex = 0;
         var last = "";
@@ -537,7 +537,13 @@ function initBoard(rowCount, colCount)
         return result;
     }
  function GetTable(bigRoadMap, firstCheckColumnIndex) {
-        var board = initBoard(6, 99);
+        let maxCount = 0;
+        for (let i = 0, max = bigRoadMap.length; i < max; i++) {
+            if (maxCount < bigRoadMap[i].length) {
+                maxCount = bigRoadMap[i].length;
+            }
+        }
+        var board = initBoard(6, maxCount > 99 ? maxCount : 99);
 
         var bigRoadMapRowIndex = 1;
         var bigRoadMapColumnIndex = firstCheckColumnIndex;

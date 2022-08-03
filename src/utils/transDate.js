@@ -43,12 +43,13 @@ export function getNextDate(next) {
 export function getYesterdayDateTime() {
   const start = new Date()
   start.setDate(start.getDate() - 1)
-  start.setHours(12)
+  start.setHours(0)
   start.setMinutes(0)
   start.setSeconds(0)
 
   const end = new Date()
-  end.setHours(11)
+  end.setDate(end.getDate() - 1)
+  end.setHours(23)
   end.setMinutes(59)
   end.setSeconds(59)
 
@@ -58,13 +59,12 @@ export function getYesterdayDateTime() {
 // 今天
 export function getTodayDateTime() {
   const start = new Date()
-  start.setHours(12)
+  start.setHours(0)
   start.setMinutes(0)
   start.setSeconds(0)
 
   const end = new Date()
-  end.setDate(end.getDate() + 1)
-  end.setHours(11)
+  end.setHours(23)
   end.setMinutes(59)
   end.setSeconds(59)
 
@@ -74,13 +74,13 @@ export function getTodayDateTime() {
 // 上周
 export function getLastWeekDateTime() {
   const start = new Date()
-  start.setDate(start.getDate() - 14 - start.getDay() + 1)
+  start.setDate(start.getDate() - 7 - start.getDay() + 1)
   start.setHours(0)
   start.setMinutes(0)
   start.setSeconds(0)
 
   const end = new Date()
-  end.setDate(end.getDate() - 7 - end.getDay())
+  end.setDate(end.getDate() - end.getDay())
   end.setHours(23)
   end.setMinutes(59)
   end.setSeconds(59)
@@ -91,13 +91,13 @@ export function getLastWeekDateTime() {
 // 本週
 export function getThisWeekDateTime() {
   const start = new Date()
-  start.setDate(start.getDate() - 7 - start.getDay() + 1)
+  start.setDate(start.getDate() - start.getDay() + 1)
   start.setHours(0)
   start.setMinutes(0)
   start.setSeconds(0)
 
   const end = new Date()
-  end.setDate(end.getDate() - end.getDay())
+  end.setDate(end.getDate() + 7 - end.getDay())
   end.setHours(23)
   end.setMinutes(59)
   end.setSeconds(59)
