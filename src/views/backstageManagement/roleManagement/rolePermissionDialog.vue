@@ -22,7 +22,7 @@
             class="view-container-table-row"
             :class="{'single-row': index % 2 === 0}"
           >
-            <td class=" bg-color toggle">
+            <td class="bg-color toggle">
               <el-checkbox v-model="item.exist" class="red-tick" @change="handleCheckboxChange" />
             </td>
             <td align="center" class="bg-color name">{{ item.name }}</td>
