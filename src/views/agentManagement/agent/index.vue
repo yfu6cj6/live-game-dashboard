@@ -105,24 +105,30 @@
                             {{ $t('__commissionRate') }}
                             <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click.stop="onCommissionRateLogBtnClick(item)" />
                           </span>
-                          <span class="infoGroup-item-content">{{ item.live_commission_rate }}</span>
-                          <span>%</span>
+                          <span class="infoGroup-item-content">
+                            {{ item.live_commission_rate }}
+                            <span>%</span>
+                          </span>
                         </div>
                         <div class="infoGroup-item">
                           <span class="infoGroup-item-header">
                             {{ $t('__rollingRate') }}
                             <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click.stop="onRollingRateLogBtnClick(item)" />
                           </span>
-                          <span class="infoGroup-item-content">{{ item.live_rolling_rate }}</span>
-                          <span>%</span>
+                          <span class="infoGroup-item-content">
+                            {{ item.live_rolling_rate }}
+                            <span>%</span>
+                          </span>
                         </div>
                         <div class="infoGroup-item">
                           <span class="infoGroup-item-header">
                             {{ $t('__giftRate') }}
                             <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click.stop="onGiftRateLogBtnClick(item)" />
                           </span>
-                          <span class="infoGroup-item-content">{{ item.live_gift_rate }}</span>
-                          <span>%</span>
+                          <span class="infoGroup-item-content">
+                            {{ item.live_gift_rate }}
+                            <span>%</span>
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -175,11 +181,15 @@
                     <div>
                       <div class="infoGroup-item">
                         <span class="infoGroup-item-header">{{ $t('__createdAt') }}</span>
-                        <span class="">{{ item.created_at }}</span>
+                        <span class="infoGroup-item-content">{{ item.created_at }}</span>
                       </div>
                       <div class="infoGroup-item">
                         <span class="infoGroup-item-header">{{ $t('__lastLoginAt') }}</span>
                         <span class="infoGroup-item-content">{{ item.lastLoginAt }}</span>
+                      </div>
+                      <div class="infoGroup-item">
+                        <span class="infoGroup-item-header">{{ $t('__remark') }}</span>
+                        <span class="infoGroup-item-content">{{ item.remark }}</span>
                       </div>
                     </div>
                   </div>
@@ -863,6 +873,12 @@ export default {
               .liveGame-wrap {
                 display: flex;
                 flex-wrap: wrap;
+                .infoGroup-item {
+                  .infoGroup-item-content {
+                    display: flex;
+                    justify-content: space-between;
+                  }
+                }
               }
               .iconButton {
                 padding: 0;
@@ -887,8 +903,7 @@ export default {
                 min-width: 120px;
               }
               .infoGroup-item-content {
-                min-width: 40px;
-                text-align: right;
+                width: 50%;
               }
             }
             .operate {

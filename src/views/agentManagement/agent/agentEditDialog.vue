@@ -6,7 +6,7 @@
     :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
   >
-    <div>
+    <div class="agentInfo">
       <span>{{ $t('__superiorAgent') }}</span>
       <span class="yellow-color agentFullName">{{ agentInfo.fullName }}</span>
     </div>
@@ -18,7 +18,7 @@
       <el-step v-if="hasStep('confirm')" :description="$t('__confirm')" />
     </el-steps>
     <el-form v-show="curIndex === stepEnum.agentInfo" ref="step1" :model="form" :rules="step1Rules">
-      <el-form-item :label="$t('__accountGenerateMode')">
+      <el-form-item v-if="operationType===operationEnum.create&&visible" :label="$t('__accountGenerateMode')">
         <el-switch
           v-model="autoGenerateAccount"
           :active-color="color_yellow"
@@ -59,39 +59,53 @@
       </el-form-item>
     </el-form>
     <el-form v-show="curIndex === stepEnum.rate" ref="step2" :model="form" :rules="step2Rules">
-      <el-form-item :label="`${$t('__liveGame')} ${$t('__commissionRate')}`" prop="live_commission_rate">
-        <el-input v-model="form.live_commission_rate" class="step2Input" type="number" :disabled="agentInfo.live_commission_rate === 0" min="0" :max="agentInfo.live_commission_rate" />
-        <span class="step2Span">{{ commissionRateTip }}</span>
+      <el-form-item :label="`${$t('__liveGame')} ${$t('__commissionRate')}`" class="relative" prop="live_commission_rate">
+        <span class="form-item-tip">{{ commissionRateTip }}</span>
+        <el-input v-model="form.live_commission_rate" type="number" :disabled="agentInfo.live_commission_rate === 0" min="0" :max="agentInfo.live_commission_rate" />
       </el-form-item>
-      <el-form-item :label="`${$t('__liveGame')} ${$t('__rollingRate')}`" prop="live_rolling_rate">
-        <el-input v-model="form.live_rolling_rate" class="step2Input" type="number" :disabled="agentInfo.live_rolling_rate === 0" min="0" :max="agentInfo.live_rolling_rate" />
-        <span class="step2Span">{{ rollingRateTip }}</span>
+      <el-form-item :label="`${$t('__liveGame')} ${$t('__rollingRate')}`" class="relative" prop="live_rolling_rate">
+        <span class="form-item-tip">{{ rollingRateTip }}</span>
+        <el-input v-model="form.live_rolling_rate" type="number" :disabled="agentInfo.live_rolling_rate === 0" min="0" :max="agentInfo.live_rolling_rate" />
       </el-form-item>
-      <el-form-item v-if="agentInfo.gift_status === '1'" :label="`${$t('__liveGame')} ${$t('__giftRate')}`" prop="live_gift_rate">
-        <el-input v-model="form.live_gift_rate" class="step2Input" type="number" :disabled="agentInfo.live_gift_rate === 0" min="0" :max="agentInfo.live_gift_rate" />
-        <span class="step2Span">{{ giftRateTip }}</span>
+      <el-form-item v-if="agentInfo.gift_status === '1'" :label="`${$t('__liveGame')} ${$t('__giftRate')}`" class="relative" prop="live_gift_rate">
+        <span class="form-item-tip">{{ giftRateTip }}</span>
+        <el-input v-model="form.live_gift_rate" type="number" :disabled="agentInfo.live_gift_rate === 0" min="0" :max="agentInfo.live_gift_rate" />
       </el-form-item>
     </el-form>
-    <el-table
+    <table
       v-show="curIndex === stepEnum.limit"
       ref="handicapsTable"
-      :data="agentInfo.handicaps"
-      tooltip-effect="dark"
-      header-cell-class-name="bg-black_table_header"
-      row-class-name="bg-black_table_col"
-      style="background: black;"
-      @selection-change="handleSelectionHandicaps"
     >
-      <el-table-column type="selection" align="center" />
-      <el-table-column prop="id" label="ID" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="nickname" :label="$t('__nickname')" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="bet_min" :label="$t('__betMin')" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="bet_max" :label="$t('__betMax')" align="center" :show-overflow-tooltip="true" />
-      <el-table-column prop="currency" :label="$t('__currency')" align="center" :show-overflow-tooltip="true" />
-    </el-table>
+      <thead>
+        <tr>
+          <th>
+            <el-checkbox v-model="selectAll" class="red-tick" @change="selectionHandicaps" />
+          </th>
+          <th align="center">{{ $t('__nickname') }}</th>
+          <th align="center">{{ $t('__betMin') }}</th>
+          <th align="center">{{ $t('__betMax') }}</th>
+          <th align="center">{{ $t('__currency') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="(item, index) in agentInfo.handicaps"
+          :key="index"
+          :class="{'single-row': index % 2 === 0}"
+        >
+          <td>
+            <el-checkbox v-model="item.exist" class="red-tick" @change="handleCheckboxChange" />
+          </td>
+          <td align="center">{{ item.nickname }}</td>
+          <td align="center">{{ item.bet_min }}</td>
+          <td align="center">{{ item.bet_max }}</td>
+          <td align="center">{{ item.currency }}</td>
+        </tr>
+      </tbody>
+    </table>
     <el-form v-show="curIndex === stepEnum.balanceConfig" ref="step4" :model="form" :rules="step4Rules">
       <template>
-        <div class="step4Info">
+        <div>
           <p>
             <label>{{ `${$t('__superiorAgent')}: ` }}
               <span>{{ agentBalanceInfo.parent }}</span>
@@ -121,9 +135,9 @@
     <el-form v-show="curIndex === stepEnum.confirm" ref="step5" :model="form" :rules="step5Rules">
       <el-row>
         <el-col :span="12">
-          <label class="step5Header">{{ $t('__agentInfo') }}</label>
-          <div class="v-line96" />
-          <div class="step5Info">
+          <label>{{ $t('__agentInfo') }}</label>
+          <div />
+          <div>
             <p>
               <label>{{ $t('__agentAccount') }}
                 <span>{{ form.account }}</span>
@@ -159,9 +173,9 @@
           </div>
         </el-col>
         <el-col :span="12">
-          <label class="step5Header">{{ $t('__rate') }}</label>
-          <div class="v-line96" />
-          <div class="step5Info">
+          <label>{{ $t('__rate') }}</label>
+          <div />
+          <div>
             <p>
               <label>{{ `${$t('__liveGame')} ${$t('__commissionRate')}` }}
                 <span>{{ `${numberFormatStr(form.live_commission_rate)}%` }}</span>
@@ -180,9 +194,9 @@
           </div>
         </el-col>
       </el-row>
-      <el-row class="rowStep5LimitTable">
-        <label class="step5Header">{{ $t('_handicapLimit') }}</label>
-        <div class="v-line100" />
+      <el-row>
+        <label>{{ $t('_handicapLimit') }}</label>
+        <div />
         <el-table
           :data="selectHandicaps"
           tooltip-effect="dark"
@@ -201,7 +215,7 @@
         </el-form-item>
       </el-row>
     </el-form>
-    <span v-if="!dialogLoading" slot="footer">
+    <span v-if="!dialogLoading" slot="bodyFooter">
       <el-button v-if="previousBtnVisible" class="bg-gray" @click="onPreviousBtnClick">{{ $t("__previous") }}</el-button>
       <el-button v-if="nextBtnVisible" class="bg-yellow" @click="onNextBtnClick">{{ $t("__nextStep") }}</el-button>
       <el-button v-if="confirmBtnVisible" class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
@@ -471,6 +485,12 @@ export default {
     numberFormatStr(number) {
       return numberFormat(number)
     },
+    selectionHandicaps(select) {
+      this.serverData.allPermissions.forEach(element => {
+        element.exist = select;
+      });
+      this.serverData.allPermissions = JSON.parse(JSON.stringify(this.serverData.allPermissions));
+    },
     handleSelectionHandicaps(val) {
       this.selectHandicaps = val
     },
@@ -543,7 +563,42 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
 
-.agentFullName {
-  margin-left: 10px;
+.agentInfo {
+  .agentFullName {
+    margin-left: 10px;
+  }
+}
+
+.el-step,
+.el-form {
+  margin-top: 10px;
+}
+
+.relative {
+  position: relative;
+}
+
+.form-item-tip {
+  position: absolute;
+  padding: 5px 0 0 125px;
+  display: block;
+  line-height: 14px;
+  color: #f80;
+  top: calc(-100% + 7px);
+  right: 0;
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .agentInfo {
+    width: 50%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .agentInfo {
+    width: 50%;
+    margin: 0 auto;
+  }
 }
 </style>

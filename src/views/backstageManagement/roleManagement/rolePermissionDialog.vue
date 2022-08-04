@@ -20,7 +20,7 @@
             v-for="(item, index) in serverData.allPermissions"
             :key="index"
           >
-            <td class=" bg-color toggle">
+            <td class="bg-color toggle">
               <el-checkbox v-model="item.exist" class="red-tick" @change="handleCheckboxChange" />
             </td>
             <td align="center" class="bg-color name">{{ item.name }}</td>
