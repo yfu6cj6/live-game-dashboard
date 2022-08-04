@@ -7,7 +7,7 @@
     :close-on-click-modal="device === 'mobile'"
   >
     <div class="table">
-      <div v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0">
+      <template v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0">
         <table>
           <tr>
             <th class="toggle">
@@ -19,8 +19,6 @@
           <tr
             v-for="(item, index) in serverData.allPermissions"
             :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
           >
             <td class=" bg-color toggle">
               <el-checkbox v-model="item.exist" class="red-tick" @change="handleCheckboxChange" />
@@ -29,7 +27,7 @@
             <td align="center" class="bg-color nickName">{{ item.nickname }}</td>
           </tr>
         </table>
-      </div>
+      </template>
       <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
     </div>
     <div v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0 && !dialogLoading" slot="footer">
@@ -126,6 +124,7 @@ export default {
 <style lang="scss" scoped>
 .table {
   color: #fff;
+  background-color: #000;
   border-collapse: collapse;
   border-spacing: 0;
   font-size: 18px;
@@ -154,4 +153,20 @@ export default {
     min-width: 250px;
   }
 }
+
+@media screen and (min-width: 992px) {
+  .table {
+    .name {
+      word-break: break-all;
+      width: 630px;
+      min-width: 630px;
+    }
+    .nickName {
+      word-break: break-all;
+      width: 250px;
+      min-width: 250px;
+    }
+  }
+}
+
 </style>

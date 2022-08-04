@@ -294,5 +294,8 @@
     "__moreSearch": "更多搜尋",
     "__noInformation": "無資料",
     "__gameTable": "遊戲桌",
-    "__gameArea": "遊戲區"
+    "__gameArea": "遊戲區",
+    "__firstLoginModPassword": "您好，您的帳號初次登入，請修改密碼！",
+    "__backendUrl": "後臺網址",
+    "__updateDate": "更新時間"
 }

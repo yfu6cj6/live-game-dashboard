@@ -65,29 +65,40 @@
             :class="{'single-row': index % 2 === 0}"
           >
             <template v-if="device === 'mobile'">
-              <div class="left">
-                <div class="item">
-                  <span class="header">ID</span>
-                  <span>{{ item.id }}</span>
+              <div class="base">
+                <div class="left">
+                  <div class="field">
+                    <span class="title">{{ $t('__account') }}</span>
+                    <div class="accountnews">
+                      <svg-icon icon-class="user" class="icon" />
+                      <span class="news spcolor">{{ item.account }}</span>
+                    </div>
+                  </div>
                 </div>
-                <div class="item">
-                  <span class="header">{{ $t('__account') }}</span>
-                  <span>{{ item.account }}</span>
+                <div class="right">
+                  <div class="field">
+                    <span class="title">IP</span>
+                    <span class="news">{{ item.ip }}</span>
+                  </div>
+                  <div class="setup">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                  </div>
                 </div>
-                <div class="item">
-                  <span class="header">IP</span>
-                  <span>{{ item.ip }}</span>
+                <div :class="{'moreopen': !item.open, 'moreclose': item.open}" @click.stop="remarkExpand(item)">
+                  <svg-icon v-if="item.open" icon-class="up" />
+                  <svg-icon v-else icon-class="more" />
                 </div>
               </div>
-              <div class="right">
-                <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+              <div v-if="item.open" class="moreInfo" @click.stop="remarkExpand(item)">
+                <div class="field">
+                  <span class="title">{{ $t('__updateDate') }}</span>
+                  <span class="news">{{ item.updated_at }}</span>
                 </div>
               </div>
             </template>
             <template v-else>
-              <div class="item id">
+              <!-- <div class="item id">
                 <span class="header">ID</span>
                 <span>{{ item.id }}</span>
               </div>
@@ -102,7 +113,7 @@
               <div class="operate">
                 <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                 <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-              </div>
+              </div> -->
             </template>
           </div>
         </div>
@@ -175,6 +186,13 @@ export default {
     this.onSearchBtnClick({}, 1)
   },
   methods: {
+    remarkExpand(row) {
+      const obj = this.tableData.find(item => item.id === row.id);
+      this.$nextTick(() => {
+        obj.open = !obj.open;
+        this.tableData = JSON.parse(JSON.stringify(this.tableData))
+      })
+    },
     handleRespone(res) {
       this.allDataByClient = res
       this.totalCount = res.length
@@ -248,38 +266,71 @@ export default {
   &-container {
     &-table {
       &-row {
+        position: relative;
         display: flex;
-        flex-direction: row;
-        .left {
+        flex-direction: column;
+        .base {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          .left {
+            width: 50%;
+            display: flex;
+            .spcolor {
+              color: #c49136;
+            }
+            .accountnews {
+              display: flex;
+              flex-direction: row;
+              .icon {
+                color: #c49136;
+              }
+            }
+          }
+          .right {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+          }
+          .setup {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-top: 10px;
+          }
+        }
+        .field {
           display: flex;
           flex-direction: column;
-          width: 50%;
+          .title {
+            display: flex;
+            align-items: center;
+            width: 100px;
+            min-width: 100px;
+          }
+          .news {
+            font-weight: bold;
+            word-break: break-all;
+            color: #2b3c43;
+          }
         }
-        .right {
-          width: 50%;
+        .moreInfo {
           display: flex;
-          justify-content: flex-end;
-          align-items: center;
+          flex-direction: row;
         }
-        .item {
-          .header {
-            width: 50px;
-            min-width: 50px;
-          }
+        .moreopen {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+          font-size: 25px;
+          color: #4e4e4e;
         }
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  .view {
-    &-container {
-      &-seachForm {
-        &-operate {
-          .moreSearch {
-            display: none;
-          }
+        .moreclose {
+          position: absolute;
+          bottom: 5px;
+          right: 5px;
+          font-size: 25px;
+          color: #4e4e4e;
         }
       }
     }

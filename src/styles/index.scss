@@ -22,26 +22,6 @@ body {
   box-sizing: border-box;
 }
 
-//整個滾動條
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  background-color: #000;
-  //滾動條軌道
-  &-track {
-    background-color: #000;
-  }
-  //滾動條上的滾動滑塊
-  &-thumb {
-    border-radius: 15px;
-    background-color: $yellow;
-  }
-  //當同時有垂直滾動條和水平滾動條時交彙的部分。通常是瀏覽器窗口
-  &-corner {
-    background-color: #000;
-  }
-}
-
 .bg-normal,
 .bg-normal:hover,
 .bg-normal:focus {
@@ -313,9 +293,9 @@ body {
           .header {
             display: flex;
             align-items: center;
-            font-weight: bold;
           }
           .content {
+            font-weight: bold;
             word-break: break-all;
           }
         }
@@ -379,6 +359,25 @@ body {
 }
 
 @media screen and (min-width: 992px) {
+  //整個滾動條
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: #000;
+    //滾動條軌道
+    &-track {
+      background-color: #000;
+    }
+    //滾動條上的滾動滑塊
+    &-thumb {
+      border-radius: 15px;
+      background-color: $yellow;
+    }
+    //當同時有垂直滾動條和水平滾動條時交彙的部分。通常是瀏覽器窗口
+    &-corner {
+      background-color: #000;
+    }
+  }
   .dialog {
     .el-form,
     .el-steps {
