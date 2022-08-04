@@ -80,7 +80,7 @@
                     <span class="title">IP</span>
                     <span class="news">{{ item.ip }}</span>
                   </div>
-                  <div class="setup">
+                  <div v-if="isAdminister" class="setup">
                     <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                     <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                   </div>
@@ -90,7 +90,7 @@
                   <svg-icon v-else icon-class="more" />
                 </div>
               </div>
-              <div v-if="item.open" class="moreInfo" @click.stop="remarkExpand(item)">
+              <div v-if="item.open">
                 <div class="field">
                   <span class="title">{{ $t('__updateDate') }}</span>
                   <span class="news">{{ item.updated_at }}</span>
@@ -163,6 +163,7 @@ import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
 import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import EditDialog from './editDialog';
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'IpWhitelist',
@@ -181,6 +182,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'isAdminister'
+    ])
   },
   created() {
     this.onSearchBtnClick({}, 1)
@@ -313,10 +317,6 @@ export default {
             word-break: break-all;
             color: #2b3c43;
           }
-        }
-        .moreInfo {
-          display: flex;
-          flex-direction: row;
         }
         .moreopen {
           position: absolute;

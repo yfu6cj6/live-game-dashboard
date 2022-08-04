@@ -156,6 +156,13 @@ export const asyncRoutes = [
         name: 'AnnouncementManagement',
         component: () => import('@/views/backstageManagement/announcementManagement/index'),
         meta: { title: '__announcementManagement', icon: 'el-icon-s-order', permission: 'BackStageManage.AnnouncementManage' }
+      },
+      {
+        // 系統管理
+        path: 'systemManagement',
+        name: 'SystemManagement',
+        component: () => import('@/views/backstageManagement/systemManagement/index'),
+        meta: { title: '__systemManagement', icon: 'el-icon-s-tools', permission: 'BackStageManage.SystemParameterManage' }
       }
     ]
   },
@@ -224,6 +231,20 @@ export const asyncRoutes = [
   },
 
   {
+    // 遊戲結果
+    path: '/gameResult',
+    component: Layout,
+    redirect: '/gameResult',
+    meta: { title: '__gameResult', icon: 'poker', permission: 'GameResult' },
+    children: [{
+      path: 'gameResult',
+      name: 'GameResult',
+      component: () => import('@/views/gameResult/index'),
+      meta: { title: '__gameResult' }
+    }]
+  },
+
+  {
     // 代理額度記錄
     path: '/agentBalanceRecord',
     component: Layout,
@@ -252,6 +273,27 @@ export const asyncRoutes = [
   },
 
   {
+    // 代理商額度報表
+    path: '/agentBalanceReport',
+    component: Layout,
+    redirect: '/agentBalanceReport',
+    meta: { title: '__agentBalanceReport', icon: 'agentBalanceReportIcon', permission: 'AgentManage.Balance.Report' },
+    children: [{
+      path: 'agentBalanceReport',
+      name: 'AgentBalanceReport',
+      component: () => import('@/views/agentBalanceReport/index'),
+      meta: { title: '__agentBalanceReport' }
+    },
+    {
+      path: 'agentBalanceReport/:id(\\d+)',
+      name: 'AgentBalanceReport{0}',
+      component: () => import('@/views/agentBalanceReport/index'),
+      meta: { title: '__agentBalanceReport', activeMenu: '/agentBalanceReport/agentBalanceReport' },
+      hidden: true
+    }]
+  },
+
+  {
     // 禮物記錄
     path: '/giftRecord',
     component: Layout,
@@ -268,6 +310,27 @@ export const asyncRoutes = [
       name: 'GiftRecord{0}',
       component: () => import('@/views/giftRecord/index'),
       meta: { title: '__giftRecord', activeMenu: '/giftRecord/giftRecord' },
+      hidden: true
+    }]
+  },
+
+  {
+    // 贈禮報表
+    path: '/giftReport',
+    component: Layout,
+    redirect: '/giftReport',
+    meta: { title: '__giftReport', icon: 'el-icon-data-line', permission: 'GiftManage.Report' },
+    children: [{
+      path: 'giftReport',
+      name: 'GiftReport',
+      component: () => import('@/views/giftReport/index'),
+      meta: { title: '__giftReport' }
+    },
+    {
+      path: 'giftReport/:id(\\d+)',
+      name: 'GiftReport{0}',
+      component: () => import('@/views/giftReport/index'),
+      meta: { title: '__giftReport', activeMenu: '/giftReport/giftReport' },
       hidden: true
     }]
   },
@@ -298,6 +361,21 @@ export const asyncRoutes = [
       name: 'OperationLog',
       component: () => import('@/views/logManagement/operationLog/index'),
       meta: { title: '__operationLog', icon: 'operationLogIcon', permission: 'LogManage.OperationLog' }
+    }]
+  },
+
+  {
+    // 修改密碼
+    path: '/passwordReset',
+    component: Layout,
+    redirect: '/passwordReset',
+    meta: { title: '__modPassword', icon: 'key', permission: 'ModPassword' },
+    pcHidden: true,
+    children: [{
+      path: 'modPassword',
+      name: 'ModPassword',
+      component: () => import('@/views/modPassword/index'),
+      meta: { title: '__modPassword' }
     }]
   },
 

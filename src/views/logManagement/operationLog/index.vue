@@ -92,52 +92,49 @@
           >
             <template v-if="device === 'mobile'">
               <div class="base">
-                <div class="left" @click.stop="remarkExpand(item)">
-                  <div class="item">
-                    <span class="header">{{ $t('__operator') }}</span>
-                    <span class="content">{{ item.userNickName }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__operationTime') }}</span>
-                    <span class="content">{{ item.created_at }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__description') }}</span>
-                    <span class="content">{{ item.description }}</span>
-                  </div>
-                  <div class="expand" @click.stop="remarkExpand(item)">
-                    <svg-icon v-if="item.open" icon-class="up" />
-                    <svg-icon v-else icon-class="more" />
-                  </div>
+                <div class="index">
+                  <span class="number">{{ (index+1) }}</span>
                 </div>
-                <div class="right" @click.stop="remarkExpand(item)">
-                  <div class="item">
-                    <span class="header shortW">IP</span>
-                    <span class="content">{{ item.ip }}</span>
+                <div class="info">
+                  <div class="field">
+                    <span class="title">{{ $t('__operator') }}</span>
+                    <span class="news">{{ item.userNickName }}</span>
                   </div>
-                  <div class="item">
-                    <span class="header shortW">Uri</span>
-                    <span v-if="isAdminister" class="content">{{ item.uri }}</span>
+                  <div class="field">
+                    <span class="title">{{ $t('__operationTime') }}</span>
+                    <span class="news">{{ item.created_at }}</span>
                   </div>
-                  <div class="item">
-                    <span class="header shortW">{{ $t('__method') }}</span>
-                    <span v-if="isAdminister" class="content">{{ item.method }}</span>
+                  <div class="field">
+                    <span class="title">{{ $t('__description') }}</span>
+                    <span class="news">{{ item.description }}</span>
                   </div>
-                  <div class="expand" @click.stop="remarkExpand(item)">
+                  <div v-if="isAdminister" class="field">
+                    <span class="title">IP</span>
+                    <span class="news">{{ item.ip }}</span>
+                  </div>
+                  <div v-if="isAdminister" class="field">
+                    <span class="title">Uri</span>
+                    <span v-if="isAdminister" class="news">{{ item.uri }}</span>
+                  </div>
+                  <div v-if="isAdminister" class="field">
+                    <span class="title">{{ $t('__method') }}</span>
+                    <span v-if="isAdminister" class="news">{{ item.method }}</span>
+                  </div>
+                  <div v-if="isAdminister" :class="{'moreopen': !item.open, 'moreclose': item.open}" @click.stop="remarkExpand(item)">
                     <svg-icon v-if="item.open" icon-class="up" />
                     <svg-icon v-else icon-class="more" />
                   </div>
                 </div>
               </div>
-              <div v-if="item.open" class="expandContent" @click.stop="remarkExpand(item)">
-                <div class="item col">
-                  <span class="header">{{ $t('__content') }}</span>
-                  <span class="content">{{ item.request_content }}</span>
+              <div v-if="item.open && isAdminister" class="moreInfo">
+                <div class="field col">
+                  <span class="title">{{ $t('__content') }}</span>
+                  <span class="news">{{ item.request_content }}</span>
                 </div>
               </div>
             </template>
             <template v-else>
-              <div class="base">
+              <!-- <div class="base">
                 <div class="item remark">
                   <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
                   <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
@@ -154,13 +151,13 @@
                   <span class="header">IP</span>
                   <span class="content">{{ item.ip }}</span>
                 </div>
-                <div class="item method">
+                <div v-if="isAdminister" class="item method">
                   <span class="header">{{ $t('__method') }}</span>
-                  <span v-if="isAdminister" class="content">{{ item.method }}</span>
+                  <span class="content">{{ item.method }}</span>
                 </div>
-                <div class="item">
+                <div v-if="isAdminister" class="item">
                   <span class="header">Uri</span>
-                  <span v-if="isAdminister" class="content">{{ item.uri }}</span>
+                  <span class="content">{{ item.uri }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ $t('__description') }}</span>
@@ -172,7 +169,7 @@
                   <span class="header">{{ $t('__content') }}</span>
                   <span class="content">{{ item.request_content }}</span>
                 </div>
-              </div>
+              </div> -->
             </template>
           </div>
         </div>
@@ -340,38 +337,64 @@ export default {
     &-table {
       &-row {
         position: relative;
-        display: flex;
-        flex-direction: column;
         .base {
           display: flex;
           flex-direction: row;
-          .left,
-          .right {
-            width: 50%;
+          .index {
+            width: 10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .number {
+              display: flex;
+              align-content: center;
+              font-weight: bold;
+              color: #2b3c43;
+              font-size: 18px;
+            }
+          }
+          .info {
+            width: 90%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
           }
         }
-        .item {
-          .header {
-            width: 80px;
-            min-width: 80px;
+        .field {
+          display: flex;
+          flex-direction: column;
+          .title {
+            display: flex;
+            align-items: center;
+            width: 100px;
+            min-width: 100px;
           }
-          .shortW {
-            width: 50px;
-            min-width: 50px;
-          }
-          &.col {
-            flex-direction: column;
+          .news {
+            font-weight: bold;
+            word-break: break-all;
+            color: #2b3c43;
           }
         }
-        .expand {
+        .moreopen {
           position: absolute;
           top: 5px;
           right: 5px;
+          font-size: 25px;
+          color: #4e4e4e;
         }
-        .base + .expandContent {
+        .moreclose {
+          position: absolute;
+          bottom: 5px;
+          right: 5px;
+          font-size: 25px;
+          color: #4e4e4e;
+        }
+        .moreInfo {
+          width: 90%;
+        }
+        .base + .moreInfo {
+          margin-top: 5px;
+        }
+        .field + .field {
           margin-top: 5px;
         }
       }
