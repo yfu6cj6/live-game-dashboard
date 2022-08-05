@@ -44,7 +44,7 @@ export default {
       default() {
         return ''
       }
-    },
+    }
   },
   data: function() {
     return {
@@ -76,6 +76,5 @@ export default {
     margin: 0 auto;
   }
 }
-
 
 </style>

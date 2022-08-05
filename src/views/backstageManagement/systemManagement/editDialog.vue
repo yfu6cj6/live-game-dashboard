@@ -1,13 +1,10 @@
 <template>
-  <el-dialog
+  <Dialog
     v-if="visible"
-    v-loading="dialogLoading"
+    :loading="dialogLoading"
     :title="title"
-    :visible.sync="visible"
-    :width="formWidth"
-    :before-close="onClose"
-    :close-on-click-modal="false"
-    :close-on-press-escape="false"
+    :on-close-even="onClose"
+    :close-on-click-modal="device === 'mobile'"
   >
     <el-form ref="editForm" class="row" :model="editForm" :rules="rules" label-width="80px" label-position="left">
       <el-form-item label="ID" prop="id">
@@ -27,15 +24,17 @@
       <el-button class="bg-gray" @click="onReset">{{ $t("__reset") }}</el-button>
       <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
     </span>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon';
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'EditDialog',
-  mixins: [handleDialogWidth],
+  components: { Dialog },
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,

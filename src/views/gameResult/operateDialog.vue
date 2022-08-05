@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-loading="dialogLoading" :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="false" :close-on-press-escape="false">
+  <Dialog v-loading="dialogLoading" :title="title" :visible.sync="visible" :width="formWidth" :before-close="onClose" :close-on-click-modal="false" :close-on-press-escape="false">
     <div class="contentClass">
       <span>{{ content }}</span>
     </div>
@@ -11,16 +11,17 @@
     <span v-show="!dialogLoading" slot="footer">
       <el-button class="bg-yellow" @click="onSubmit">{{ $t('__confirm') }}</el-button>
     </span>
-  </el-dialog>
+  </Dialog>
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-import common from '@/layout/mixin/common'
+import dialogCommon from '@/mixin/dialogCommon';
+import Dialog from '@/components/Dialog'
 
 export default {
   name: 'OperateDialog',
-  mixins: [handleDialogWidth, common],
+  components: { Dialog },
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,

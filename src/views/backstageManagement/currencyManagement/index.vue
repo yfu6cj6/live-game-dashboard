@@ -1,168 +1,166 @@
 <template>
-  <div>
-    <div v-loading="dataLoading">
-      <div ref="container" class="view-container">
-        <div ref="seachForm" class="view-container-seachForm">
-          <template v-if="device === 'mobile'">
-            <div ref="seachFormExpand" class="view-container-seachForm-option">
-              <p class="optionItem">
-                <el-input v-model="searchForm.id" type="number" placeholder="ID" />
-              </p>
-              <p class="optionItem">
-                <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
-              </p>
-              <p class="optionItem">
-                <el-input v-model="searchForm.code" :placeholder="$t('__code')" />
-              </p>
-              <p class="optionItem">
-                <el-input v-model="searchForm.symbol" :placeholder="$t('__symbol')" />
-              </p>
-            </div>
-            <div class="view-container-seachForm-operate">
-              <p class="operateItem">
-                <el-button class="bg-gray" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                  {{ $t("__search") }}
-                </el-button>
-              </p>
-              <p class="operateItem">
-                <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                  {{ $t("__create") }}
-                </el-button>
-              </p>
-              <p class="operateItem">
-                <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
-                  {{ $t("__moreSearch") }}
-                </el-button>
-              </p>
-            </div>
-          </template>
-          <template v-else>
-            <div ref="seachFormExpand" class="view-container-seachForm-option">
-              <p class="optionItem">
-                <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
-              </p>
-              <p class="optionItem">
-                <el-input v-model="searchForm.id" type="number" placeholder="ID" />
-              </p>
-              <p class="optionItem">
-                <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
-              </p>
-              <p class="optionItem">
-                <el-input v-model="searchForm.code" :placeholder="$t('__code')" />
-              </p>
-              <p class="optionItem">
-                <el-input v-model="searchForm.symbol" :placeholder="$t('__symbol')" />
-              </p>
-              <p class="optionItem">
-                <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
-              </p>
-              <p class="optionItem">
-                <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                  {{ $t("__search") }}
-                </el-button>
-              </p>
-              <p class="optionItem">
-                <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                  {{ $t("__create") }}
-                </el-button>
-              </p>
-            </div>
-          </template>
-        </div>
-        <div ref="table" class="view-container-table">
-          <div v-if="tableData.length > 0">
-            <div
-              v-for="(item, index) in tableData"
-              :key="index"
-              class="view-container-table-row"
-              :class="{'single-row': index % 2 === 0}"
-            >
-              <template v-if="device === 'mobile'">
-                <div class="left">
-                  <div class="item">
-                    <span class="header">ID</span>
-                    <span class="content">{{ item.id }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__code') }}</span>
-                    <span class="content">{{ item.code }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__symbol') }}</span>
-                    <span class="content">{{ item.symbol }}</span>
-                  </div>
-                </div>
-                <div class="right">
-                  <div class="item">
-                    <span class="header">{{ $t('__name') }}</span>
-                    <span class="content">{{ item.name }}</span>
-                  </div>
-                  <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                  </div>
-                </div>
-              </template>
-              <template v-else>
+  <div v-loading="dataLoading">
+    <div ref="container" class="view-container">
+      <div ref="seachForm" class="view-container-seachForm">
+        <template v-if="device === 'mobile'">
+          <div ref="seachFormExpand" class="view-container-seachForm-option">
+            <p class="optionItem">
+              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.code" :placeholder="$t('__code')" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.symbol" :placeholder="$t('__symbol')" />
+            </p>
+          </div>
+          <div class="view-container-seachForm-operate">
+            <p class="operateItem">
+              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+                {{ $t("__search") }}
+              </el-button>
+            </p>
+            <p class="operateItem">
+              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
+                {{ $t("__create") }}
+              </el-button>
+            </p>
+            <p class="operateItem">
+              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
+                {{ $t("__moreSearch") }}
+              </el-button>
+            </p>
+          </div>
+        </template>
+        <template v-else>
+          <div ref="seachFormExpand" class="view-container-seachForm-option">
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.code" :placeholder="$t('__code')" />
+            </p>
+            <p class="optionItem">
+              <el-input v-model="searchForm.symbol" :placeholder="$t('__symbol')" />
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
+                {{ $t("__search") }}
+              </el-button>
+            </p>
+            <p class="optionItem">
+              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
+                {{ $t("__create") }}
+              </el-button>
+            </p>
+          </div>
+        </template>
+      </div>
+      <div ref="table" class="view-container-table">
+        <div v-if="tableData.length > 0">
+          <div
+            v-for="(item, index) in tableData"
+            :key="index"
+            class="view-container-table-row"
+            :class="{'single-row': index % 2 === 0}"
+          >
+            <template v-if="device === 'mobile'">
+              <div class="left">
                 <div class="item">
                   <span class="header">ID</span>
-                  <span>{{ item.id }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__name') }}</span>
-                  <span>{{ item.name }}</span>
+                  <span class="content">{{ item.id }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ $t('__code') }}</span>
-                  <span>{{ item.code }}</span>
+                  <span class="content">{{ item.code }}</span>
                 </div>
                 <div class="item">
                   <span class="header">{{ $t('__symbol') }}</span>
-                  <span>{{ item.symbol }}</span>
+                  <span class="content">{{ item.symbol }}</span>
+                </div>
+              </div>
+              <div class="right">
+                <div class="item">
+                  <span class="header">{{ $t('__name') }}</span>
+                  <span class="content">{{ item.name }}</span>
                 </div>
                 <div class="operate">
                   <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                   <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                 </div>
-              </template>
-            </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="item">
+                <span class="header">ID</span>
+                <span>{{ item.id }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__name') }}</span>
+                <span>{{ item.name }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__code') }}</span>
+                <span>{{ item.code }}</span>
+              </div>
+              <div class="item">
+                <span class="header">{{ $t('__symbol') }}</span>
+                <span>{{ item.symbol }}</span>
+              </div>
+              <div class="operate">
+                <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+              </div>
+            </template>
           </div>
-          <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
         </div>
+        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
       </div>
-      <div class="view-footer">
-        <el-pagination
-          layout="prev, pager, next, jumper, sizes"
-          :total="totalCount"
-          background
-          :page-size="pageSize"
-          :page-sizes="pageSizes"
-          :pager-count="pagerCount"
-          :current-page.sync="currentPage"
-          @size-change="handleSizeChangeByClient"
-          @current-change="handlePageChangeByClient"
-        />
-      </div>
-      <editDialog
-        ref="createDialog"
-        :title="`${$t('__create')}${$t('__currency')}`"
-        :visible="curDialogIndex === dialogEnum.create"
-        :confirm="$t('__confirm')"
-        :form="selectForm"
-        @close="closeDialogEven"
-        @confirm="createDialogConfirmEven"
-      />
-
-      <editDialog
-        ref="editDialog"
-        :title="$stringFormat(`${$t('__edit')}${$t('__currency')} - ID:{0}`, [selectForm.id])"
-        :visible="curDialogIndex === dialogEnum.edit"
-        :confirm="$t('__revise')"
-        :form="selectForm"
-        @close="closeDialogEven"
-        @confirm="editDialogConfirmEven"
+    </div>
+    <div class="view-footer">
+      <el-pagination
+        layout="prev, pager, next, jumper, sizes"
+        :total="totalCount"
+        background
+        :page-size="pageSize"
+        :page-sizes="pageSizes"
+        :pager-count="pagerCount"
+        :current-page.sync="currentPage"
+        @size-change="handleSizeChangeByClient"
+        @current-change="handlePageChangeByClient"
       />
     </div>
+    <editDialog
+      ref="createDialog"
+      :title="`${$t('__create')}${$t('__currency')}`"
+      :visible="curDialogIndex === dialogEnum.create"
+      :confirm="$t('__confirm')"
+      :form="selectForm"
+      @close="closeDialogEven"
+      @confirm="createDialogConfirmEven"
+    />
+
+    <editDialog
+      ref="editDialog"
+      :title="$stringFormat(`${$t('__edit')}${$t('__currency')} - ID:{0}`, [selectForm.id])"
+      :visible="curDialogIndex === dialogEnum.edit"
+      :confirm="$t('__revise')"
+      :form="selectForm"
+      @close="closeDialogEven"
+      @confirm="editDialogConfirmEven"
+    />
   </div>
 </template>
 
