@@ -133,6 +133,7 @@ export default {
     .appMain {
       padding-left: $hideSidebarWidth;
       transition: padding-left .3s;
+      max-width: 100%;
     }
 
     .appMain.opened {
