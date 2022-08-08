@@ -1,13 +1,12 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
-        <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
+  <div>
+    <div class="flex-column flex-fill bg-black">
+      <div class="bg-black w-100 pt-4">
+        <div class="day-range">
+          <div class="date-time-picker-box">
+            <div class="picker datetimerange datetimerange">
               <el-date-picker
                 v-model="searchTime"
-                class="date-picker"
                 type="datetimerange"
                 align="right"
                 unlink-panels
@@ -17,247 +16,12 @@
                 :picker-options="pickerOptions"
                 :default-time="['12:00:00', '11:59:59']"
               />
-            </p>
-            <p class="optionItem">
-              <span>
-                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.yesterday)">
-                  {{ $t("__yesterday") }}
-                </el-button>
-              </span>
-              <span>
-                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.today)">
-                  {{ $t("__today") }}
-                </el-button>
-              </span>
-              <span>
-                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.lastWeek)">
-                  {{ $t("__lastWeek") }}
-                </el-button>
-              </span>
-              <span>
-                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.thisWeek)">
-                  {{ $t("__thisWeek") }}
-                </el-button>
-              </span>
-              <span>
-                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.lastMonth)">
-                  {{ $t("__lastMonth") }}
-                </el-button>
-              </span>
-              <span>
-                <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.thisMonth)">
-                  {{ $t("__thisMonth") }}
-                </el-button>
-              </span>
-            </p>
-          </div>
-          <div class="view-container-seachForm-operate">
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onTableBtnClick(curTableIndex)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">
-                {{ $t("__searchAndExport") }}
-              </el-button>
-            </p>
-          </div>
-        </template>
-        <template v-else>
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-date-picker
-                v-model="searchTime"
-                class="date-picker"
-                type="datetimerange"
-                align="right"
-                unlink-panels
-                :range-separator="$t('__to')"
-                :start-placeholder="$t('__startDate')"
-                :end-placeholder="$t('__endDate')"
-                :picker-options="pickerOptions"
-                :default-time="['12:00:00', '11:59:59']"
-              />
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onTableBtnClick(curTableIndex)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.yesterday)">
-                {{ $t("__yesterday") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.today)">
-                {{ $t("__today") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.lastWeek)">
-                {{ $t("__lastWeek") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.thisWeek)">
-                {{ $t("__thisWeek") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.lastMonth)">
-                {{ $t("__lastMonth") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-black" size="mini" @click="onDateBtnClick(dateEnum.thisMonth)">
-                {{ $t("__thisMonth") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">
-                {{ $t("__searchAndExport") }}
-              </el-button>
-            </p>
-          </div>
-        </template>
-      </div>
-      <div ref="table" class="view-container-table">
-        <div class="view-container-table-row">
-          <template v-if="device === 'mobile'">
-            <div class="wrap" @click="remarkExpand()">
-              <div class="expand">
-                <svg-icon v-if="agentInfo.open" icon-class="up" @click.stop="remarkExpand()" />
-                <svg-icon v-else icon-class="more" @click.stop="remarkExpand()" />
-              </div>
-              <div>
-                <svg-icon icon-class="user" />
-                <span class="agentName">{{ agentInfo.agent }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ `${$t('__gameType')}` }}</span>
-                <span class="content">{{ agentInfo.gameType }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ `${$t('__betAmount')}` }}</span>
-                <span class="content">{{ agentInfo.betAmount }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                <span class="content" :class="{positive: agentInfo.winLoss >= 0, negative: agentInfo.winLoss < 0}">{{ agentInfo.winLossLabel }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                <span class="content positive">{{ agentInfo.winLossRate }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
-                <span class="content">{{ agentInfo.validBetAmount }}</span>
-              </div>
-              <template v-if="agentInfo.open">
-                <div class="item">
-                  <span class="header">{{ `${$t('__rollingRate')}` }}</span>
-                  <span class="content">{{ agentInfo.rollingRate }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
-                  <span class="content">{{ agentInfo.rollingCommission }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                  <span class="content" :class="{positive: agentInfo.netPL >= 0, negative: agentInfo.netPL < 0}">{{ agentInfo.netPLLabel }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__commissionRate')}` }}</span>
-                  <span class="content">{{ agentInfo.commissionRate }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__toSuperior')}` }}</span>
-                  <span class="content" :class="{positive: agentInfo.toSuperior >= 0, negative: agentInfo.toSuperior < 0}">{{ agentInfo.toSuperiorLabel }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__commitSuperiorsValidBetAmount')}` }}</span>
-                  <span class="content">{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
-                </div>
-                <div class="item">
-                  <div class="header" size="mini" @click.stop="onBetMemberCount()">
-                    <span class="betMember">{{ `${$t('__betMemberCount')} ` }}</span>
-                  </div>
-                  <span class="content">{{ agentInfo.betMemberCount }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__myProfit')}` }}</span>
-                  <span class="content" :class="{positive: agentInfo.myProfit >= 0, negative: agentInfo.myProfit < 0}">{{ agentInfo.myProfitLabel }}</span>
-                </div>
-              </template>
             </div>
-          </template>
-          <template v-else>
-            <div class="wrap">
-              <div class="c0">
-                <svg-icon icon-class="user" />
-                <span class="agentName">{{ agentInfo.agent }}</span>
-              </div>
-              <div class="r1-c1">{{ $t('__gameType') }}</div>
-              <div class="r1-c3">{{ $t('__betAmount') }}</div>
-              <div class="r1-c4">{{ $t('__winLoss') }}</div>
-              <div class="r1-c5">{{ $t('__winLossRate') }}</div>
-              <div class="r1-c6">{{ $t('__validBetAmount') }}</div>
-              <div class="r1-c7">{{ $t('__rollingRate') }}</div>
-              <div class="r1-c8">{{ $t('__rollingCommission') }}</div>
-              <div class="r1-c9">{{ $t('__totalAmount') }}</div>
-              <div class="r1-c10">{{ $t('__commissionRate') }}</div>
-              <div class="r1-c11">{{ $t('__toSuperior') }}</div>
-              <div class="r1-c12">{{ $t('__commitSuperiorsValidBetAmount') }}</div>
-              <div class="r2-c1">{{ agentInfo.gameType }}</div>
-              <div class="r2-c3">{{ agentInfo.betAmount }}</div>
-              <div class="r2-c4">{{ agentInfo.winLoss }}</div>
-              <div class="r2-c5">{{ agentInfo.winLossRate }}</div>
-              <div class="r2-c6">{{ agentInfo.validBetAmount }}</div>
-              <div class="r2-c7">{{ agentInfo.rollingRate }}</div>
-              <div class="r2-c8">{{ agentInfo.rollingCommission }}</div>
-              <div class="r2-c9">{{ agentInfo.netPL }}</div>
-              <div class="r2-c10">{{ agentInfo.commissionRate }}</div>
-              <div class="r2-c11">{{ agentInfo.toSuperior }}</div>
-              <div class="r2-c12">{{ agentInfo.commitSuperiorsValidBetAmount }}</div>
-            </div>
-          </template>
-        </div>
-        <div class="btnGroup">
-          <div class="btn">
-            <el-button
-              class="agentBtn"
-              :class="{'focus': curTableIndex === tableEnum.agent}"
-              @click="onTableBtnClick(tableEnum.agent)"
-            >
-              {{ $t("__agent") }}
-            </el-button>
-          </div>
-          <div class="btn">
-            <el-button
-              class="memberBtn"
-              :class="{'focus': curTableIndex === tableEnum.member}"
-              @click="onTableBtnClick(tableEnum.member)"
-            >
-              {{ $t("__member") }}
+            <el-button class="bg-yellow ml-auto mr-0 search-range" @click="onTableBtnClick(curTableIndex)">
+              {{ $t("__search") }}
             </el-button>
           </div>
         </div>
-        <agent
-          v-show="curTableIndex === tableEnum.agent"
-          ref="agent"
-          :payout-time="searchTime"
-          @handleRespone="handleAgentRespone"
-          @setDataLoading="setDataLoading"
-        />
-        <member
-          v-show="curTableIndex === tableEnum.member"
-          ref="member"
-          :payout-time="searchTime"
-          @handleRespone="handleMemberRespone"
-          @setDataLoading="setDataLoading"
-        />
       </div>
     </div>
   </div>
@@ -512,167 +276,46 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@/styles/variables.scss";
 
-.view {
-  &-container {
-    &-seachForm {
-      &-option {
-        .optionItem {
-          display: flex;
-          justify-content: space-between;
-          span {
-            width: calc(100% / 6 - 2px);
-            .el-button {
-              width: 100%;
-            }
-          }
-        }
-      }
-    }
-    &-table {
-      &-row {
-        .wrap {
-          position: relative;
-          .agentName {
-            vertical-align: top;
-          }
-          .item {
-            .header {
-              width: 50%;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-.betMember {
-  font-weight: bold;
-  background-color: $yellow;
-  padding: 2px 5px;
-}
-.btnGroup {
-  background-color: #000;
+.day-range {
   width: 100%;
-  display: flex;
-  .btn {
-    width: 50%;
-  }
-  .btn + .btn {
-    border-left: 1px solid #fff;
-  }
-  .agentBtn,
-  .memberBtn {
-    display: inline-block;
-    width: 100%;
-    border: none;
-    background-color: transparent;
-    color: #fff;
-    font-weight: bold;
-    margin-left: 0;
-    &:hover,
-    &.focus {
-      color: $yellow;
+  padding: 0.41667rem 1.25rem;
+  .date-time-picker-box {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    .picker {
+      width: 23.33333rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
     }
-  }
-}
-.expand {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .wrap {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-template-areas:
-            "c0 r1-c1 r1-c3 r1-c4 r1-c5 r1-c6 r1-c7 r1-c8 r1-c9 r1-c10 r1-c11 r1-c12"
-            "c0 r2-c1 r2-c3 r2-c4 r2-c5 r2-c6 r2-c7 r2-c8 r2-c9 r2-c10 r2-c11 r2-c12";
-          }
-          .c0 {
-            grid-area: c0;
-            display: flex;
-            align-items: center;
-          }
-          .r1-c1 {
-            grid-area: r1-c1;
-          }
-          .r1-c3 {
-            grid-area: r1-c3;
-          }
-          .r1-c4 {
-            grid-area: r1-c4;
-          }
-          .r1-c5 {
-            grid-area: r1-c5;
-          }
-          .r1-c6 {
-            grid-area: r1-c6;
-          }
-          .r1-c7 {
-            grid-area: r1-c7;
-          }
-          .r1-c8 {
-            grid-area: r1-c8;
-          }
-          .r1-c9 {
-            grid-area: r1-c9;
-          }
-          .r1-c10 {
-            grid-area: r1-c10;
-          }
-          .r1-c11 {
-            grid-area: r1-c11;
-          }
-          .r1-c12 {
-            grid-area: r1-c12;
-          }
-          .r2-c1 {
-            grid-area: r2-c1;
-          }
-          .r2-c2 {
-            grid-area: r2-c2;
-          }
-          .r2-c3 {
-            grid-area: r2-c3;
-          }
-          .r2-c4 {
-            grid-area: r2-c4;
-          }
-          .r2-c5 {
-            grid-area: r2-c5;
-          }
-          .r2-c6 {
-            grid-area: r2-c6;
-          }
-          .r2-c7 {
-            grid-area: r2-c7;
-          }
-          .r2-c8 {
-            grid-area: r2-c8;
-          }
-          .r2-c9 {
-            grid-area: r2-c9;
-          }
-          .r2-c10 {
-            grid-area: r2-c10;
-          }
-          .r2-c11 {
-            grid-area: r2-c11;
-          }
-          .r2-c12 {
-            grid-area: r2-c12;
-          }
-        }
+    .el-date-editor {
+      height: 2.66667rem;
+      width: 100%;
+      input {
+        font-size: 1rem;
+        height: 100%;
+        width: 100%;
+        padding: 0 !important;
+      }
+      .el-range-separator {
+        height: auto !important;
+        line-height: 1 !important;
+        width: 2.08333rem;
       }
     }
+  }
+  .search-range {
+    margin-left: 0.5rem !important;
   }
 }
 </style>

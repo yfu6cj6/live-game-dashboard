@@ -127,123 +127,127 @@
                   </div>
                 </template>
                 <template v-else>
-                  <div class="notice-container w-50">
-                    <div class="notices">
-                      <div class="title font-weight-bold pb-3 text-center text-golden ">
-                        {{ $t('__agencyAnnouncement') }}
-                      </div>
-                    </div>
-                    <template v-if="showAgentAnnouncements">
-                      <div
-                        v-for="agentItem in agentAnnouncements"
-                        :key="agentItem.id"
-                        class="notices"
-                      >
-                        <div class="title">
-                          <div class="inner d-flex">
-                            <div class="d-flex">
-                              <span class="label">{{ $t('__announcementTitle') }}:</span>
-                              <span class="title">{{ agentItem.title }}</span>
-                            </div>
-                            <span class="ml-auto dateTime">{{ agentItem.announcement_started_at }}</span>
-                          </div>
-                        </div>
-                        <div class="content">
-                          <div class="inner" :class="{expanded: agentItem.open}">
-                            <div class="text" :class="{'d-none': agentItem.open}">{{ agentItem.content }}</div>
-                            <div class="text" :class="{'d-none': !agentItem.open}">{{ agentItem.fullContent }}</div>
-                            <div class="cover lower" />
-                          </div>
-                        </div>
-                        <div class="icon-outter" @click.stop="setAgentAnnouncementsExpanded(agentItem.id)">
-                          <div class="fas clickable yellow" :class="{expanded: agentItem.open}">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 63 63"
-                              style="height: 1.08333rem; width: 1.08333rem;"
-                            >
-                              <title>arrow1</title>
-                              <path d="M31.49,30.14c-1.44,1.46-2.84,2.89-4.25,4.3-5.06,5.06-10.15,10.1-15.19,15.18-2,2.05-4.84,2.16-6.37.91A29.08,29.08,0,0,1,.83,45.65c-1.42-1.86-.93-4.42.81-6.2,2.08-2.13,4.2-4.22,6.31-6.33q9.81-9.81,19.63-19.64A5.12,5.12,0,0,1,33.25,12a6,6,0,0,1,2.14,1.38q10.38,10.32,20.7,20.7C57.73,35.7,59.36,37.36,61,39A5.72,5.72,0,0,1,63,42.62a4.48,4.48,0,0,1-1,3.52,47.11,47.11,0,0,1-4.12,4.12,4.87,4.87,0,0,1-6.31-.19c-1.85-1.73-3.61-3.55-5.41-5.33L31.88,30.48C31.78,30.38,31.67,30.3,31.49,30.14Z" />
-                            </svg>
-                          </div>
-                          <div class="fas clickable yellow" :class="{expanded: !agentItem.open}">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 63 63"
-                              style="height: 1.08333rem; width: 1.08333rem;"
-                            >
-                              <title>arrow2</title>
-                              <path d="M31.51,32.86C33,31.4,34.35,30,35.76,28.56,40.82,23.5,45.91,18.46,51,13.38c2-2.05,4.84-2.16,6.37-.91a29.08,29.08,0,0,1,4.85,4.88c1.42,1.86.93,4.42-.81,6.2-2.08,2.13-4.2,4.22-6.31,6.33q-9.81,9.81-19.63,19.64A5.12,5.12,0,0,1,29.75,51a6,6,0,0,1-2.14-1.38Q17.23,39.32,6.91,28.94C5.27,27.3,3.64,25.64,2,24A5.72,5.72,0,0,1,0,20.38a4.48,4.48,0,0,1,1-3.52,47.11,47.11,0,0,1,4.12-4.12,4.87,4.87,0,0,1,6.31.19c1.85,1.73,3.61,3.55,5.41,5.33L31.12,32.52C31.22,32.62,31.33,32.7,31.51,32.86Z" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    </template>
-                    <template v-else>
+                  <div class="d-flex w-100 px-6">
+                    <div class="notice-container w-50 pr-04">
                       <div class="notices">
                         <div class="title font-weight-bold pb-3 text-center text-golden ">
-                          {{ $t('__noInformation') }}
+                          {{ $t('__agencyAnnouncement') }}
                         </div>
                       </div>
-                    </template>
-                    <div class="notices">
-                      <div class="title font-weight-bold pb-3 text-center text-golden ">
-                        {{ $t('__gameAnnouncement') }}
-                      </div>
-                    </div>
-                    <template v-if="showGameAnnouncements">
-                      <div
-                        v-for="gameItem in gameAnnouncements"
-                        :key="gameItem.id"
-                        class="notices"
-                      >
-                        <div class="title">
-                          <div class="inner d-flex">
-                            <div class="d-flex">
-                              <span class="label">{{ $t('__announcementTitle') }}:</span>
-                              <span class="title">{{ gameItem.title }}</span>
+                      <template v-if="showAgentAnnouncements">
+                        <div
+                          v-for="agentItem in agentAnnouncements"
+                          :key="agentItem.id"
+                          class="notices"
+                        >
+                          <div class="title">
+                            <div class="inner d-flex">
+                              <div class="d-flex">
+                                <span class="label">{{ $t('__announcementTitle') }}:</span>
+                                <span class="title">{{ agentItem.title }}</span>
+                              </div>
+                              <span class="ml-auto dateTime">{{ agentItem.announcement_started_at }}</span>
                             </div>
-                            <span class="ml-auto dateTime">{{ gameItem.announcement_started_at }}</span>
+                          </div>
+                          <div class="content">
+                            <div class="inner" :class="{expanded: agentItem.open}">
+                              <div class="text" :class="{'d-none': agentItem.open}">{{ agentItem.content }}</div>
+                              <div class="text" :class="{'d-none': !agentItem.open}">{{ agentItem.fullContent }}</div>
+                              <div class="cover lower" />
+                            </div>
+                          </div>
+                          <div class="icon-outter" @click.stop="setAgentAnnouncementsExpanded(agentItem.id)">
+                            <div class="fas clickable yellow" :class="{expanded: agentItem.open}">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 63 63"
+                                style="height: 1.08333rem; width: 1.08333rem;"
+                              >
+                                <title>arrow1</title>
+                                <path d="M31.49,30.14c-1.44,1.46-2.84,2.89-4.25,4.3-5.06,5.06-10.15,10.1-15.19,15.18-2,2.05-4.84,2.16-6.37.91A29.08,29.08,0,0,1,.83,45.65c-1.42-1.86-.93-4.42.81-6.2,2.08-2.13,4.2-4.22,6.31-6.33q9.81-9.81,19.63-19.64A5.12,5.12,0,0,1,33.25,12a6,6,0,0,1,2.14,1.38q10.38,10.32,20.7,20.7C57.73,35.7,59.36,37.36,61,39A5.72,5.72,0,0,1,63,42.62a4.48,4.48,0,0,1-1,3.52,47.11,47.11,0,0,1-4.12,4.12,4.87,4.87,0,0,1-6.31-.19c-1.85-1.73-3.61-3.55-5.41-5.33L31.88,30.48C31.78,30.38,31.67,30.3,31.49,30.14Z" />
+                              </svg>
+                            </div>
+                            <div class="fas clickable yellow" :class="{expanded: !agentItem.open}">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 63 63"
+                                style="height: 1.08333rem; width: 1.08333rem;"
+                              >
+                                <title>arrow2</title>
+                                <path d="M31.51,32.86C33,31.4,34.35,30,35.76,28.56,40.82,23.5,45.91,18.46,51,13.38c2-2.05,4.84-2.16,6.37-.91a29.08,29.08,0,0,1,4.85,4.88c1.42,1.86.93,4.42-.81,6.2-2.08,2.13-4.2,4.22-6.31,6.33q-9.81,9.81-19.63,19.64A5.12,5.12,0,0,1,29.75,51a6,6,0,0,1-2.14-1.38Q17.23,39.32,6.91,28.94C5.27,27.3,3.64,25.64,2,24A5.72,5.72,0,0,1,0,20.38a4.48,4.48,0,0,1,1-3.52,47.11,47.11,0,0,1,4.12-4.12,4.87,4.87,0,0,1,6.31.19c1.85,1.73,3.61,3.55,5.41,5.33L31.12,32.52C31.22,32.62,31.33,32.7,31.51,32.86Z" />
+                              </svg>
+                            </div>
                           </div>
                         </div>
-                        <div class="content">
-                          <div class="inner" :class="{expanded: gameItem.open}">
-                            <div class="text" :class="{'d-none': gameItem.open}">{{ gameItem.content }}</div>
-                            <div class="text" :class="{'d-none': !gameItem.open}">{{ gameItem.fullContent }}</div>
-                            <div class="cover lower" />
+                      </template>
+                      <template v-else>
+                        <div class="notices">
+                          <div class="title font-weight-bold pb-3 text-center text-golden ">
+                            {{ $t('__noInformation') }}
                           </div>
                         </div>
-                        <div class="icon-outter" @click.stop="setGameAnnouncementsExpanded(gameItem.id)">
-                          <div class="fas clickable yellow" :class="{expanded: gameItem.open}">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 63 63"
-                              style="height: 1.08333rem; width: 1.08333rem;"
-                            >
-                              <title>arrow1</title>
-                              <path d="M31.49,30.14c-1.44,1.46-2.84,2.89-4.25,4.3-5.06,5.06-10.15,10.1-15.19,15.18-2,2.05-4.84,2.16-6.37.91A29.08,29.08,0,0,1,.83,45.65c-1.42-1.86-.93-4.42.81-6.2,2.08-2.13,4.2-4.22,6.31-6.33q9.81-9.81,19.63-19.64A5.12,5.12,0,0,1,33.25,12a6,6,0,0,1,2.14,1.38q10.38,10.32,20.7,20.7C57.73,35.7,59.36,37.36,61,39A5.72,5.72,0,0,1,63,42.62a4.48,4.48,0,0,1-1,3.52,47.11,47.11,0,0,1-4.12,4.12,4.87,4.87,0,0,1-6.31-.19c-1.85-1.73-3.61-3.55-5.41-5.33L31.88,30.48C31.78,30.38,31.67,30.3,31.49,30.14Z" />
-                            </svg>
-                          </div>
-                          <div class="fas clickable yellow" :class="{expanded: !gameItem.open}">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 63 63"
-                              style="height: 1.08333rem; width: 1.08333rem;"
-                            >
-                              <title>arrow2</title>
-                              <path d="M31.51,32.86C33,31.4,34.35,30,35.76,28.56,40.82,23.5,45.91,18.46,51,13.38c2-2.05,4.84-2.16,6.37-.91a29.08,29.08,0,0,1,4.85,4.88c1.42,1.86.93,4.42-.81,6.2-2.08,2.13-4.2,4.22-6.31,6.33q-9.81,9.81-19.63,19.64A5.12,5.12,0,0,1,29.75,51a6,6,0,0,1-2.14-1.38Q17.23,39.32,6.91,28.94C5.27,27.3,3.64,25.64,2,24A5.72,5.72,0,0,1,0,20.38a4.48,4.48,0,0,1,1-3.52,47.11,47.11,0,0,1,4.12-4.12,4.87,4.87,0,0,1,6.31.19c1.85,1.73,3.61,3.55,5.41,5.33L31.12,32.52C31.22,32.62,31.33,32.7,31.51,32.86Z" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    </template>
-                    <template v-else>
+                      </template>
+                    </div>
+                    <div class="notice-container w-50 pl-04">
                       <div class="notices">
                         <div class="title font-weight-bold pb-3 text-center text-golden ">
-                          {{ $t('__noInformation') }}
+                          {{ $t('__gameAnnouncement') }}
                         </div>
                       </div>
-                    </template>
+                      <template v-if="showGameAnnouncements">
+                        <div
+                          v-for="gameItem in gameAnnouncements"
+                          :key="gameItem.id"
+                          class="notices"
+                        >
+                          <div class="title">
+                            <div class="inner d-flex">
+                              <div class="d-flex">
+                                <span class="label">{{ $t('__announcementTitle') }}:</span>
+                                <span class="title">{{ gameItem.title }}</span>
+                              </div>
+                              <span class="ml-auto dateTime">{{ gameItem.announcement_started_at }}</span>
+                            </div>
+                          </div>
+                          <div class="content">
+                            <div class="inner" :class="{expanded: gameItem.open}">
+                              <div class="text" :class="{'d-none': gameItem.open}">{{ gameItem.content }}</div>
+                              <div class="text" :class="{'d-none': !gameItem.open}">{{ gameItem.fullContent }}</div>
+                              <div class="cover lower" />
+                            </div>
+                          </div>
+                          <div class="icon-outter" @click.stop="setGameAnnouncementsExpanded(gameItem.id)">
+                            <div class="fas clickable yellow" :class="{expanded: gameItem.open}">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 63 63"
+                                style="height: 1.08333rem; width: 1.08333rem;"
+                              >
+                                <title>arrow1</title>
+                                <path d="M31.49,30.14c-1.44,1.46-2.84,2.89-4.25,4.3-5.06,5.06-10.15,10.1-15.19,15.18-2,2.05-4.84,2.16-6.37.91A29.08,29.08,0,0,1,.83,45.65c-1.42-1.86-.93-4.42.81-6.2,2.08-2.13,4.2-4.22,6.31-6.33q9.81-9.81,19.63-19.64A5.12,5.12,0,0,1,33.25,12a6,6,0,0,1,2.14,1.38q10.38,10.32,20.7,20.7C57.73,35.7,59.36,37.36,61,39A5.72,5.72,0,0,1,63,42.62a4.48,4.48,0,0,1-1,3.52,47.11,47.11,0,0,1-4.12,4.12,4.87,4.87,0,0,1-6.31-.19c-1.85-1.73-3.61-3.55-5.41-5.33L31.88,30.48C31.78,30.38,31.67,30.3,31.49,30.14Z" />
+                              </svg>
+                            </div>
+                            <div class="fas clickable yellow" :class="{expanded: !gameItem.open}">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 63 63"
+                                style="height: 1.08333rem; width: 1.08333rem;"
+                              >
+                                <title>arrow2</title>
+                                <path d="M31.51,32.86C33,31.4,34.35,30,35.76,28.56,40.82,23.5,45.91,18.46,51,13.38c2-2.05,4.84-2.16,6.37-.91a29.08,29.08,0,0,1,4.85,4.88c1.42,1.86.93,4.42-.81,6.2-2.08,2.13-4.2,4.22-6.31,6.33q-9.81,9.81-19.63,19.64A5.12,5.12,0,0,1,29.75,51a6,6,0,0,1-2.14-1.38Q17.23,39.32,6.91,28.94C5.27,27.3,3.64,25.64,2,24A5.72,5.72,0,0,1,0,20.38a4.48,4.48,0,0,1,1-3.52,47.11,47.11,0,0,1,4.12-4.12,4.87,4.87,0,0,1,6.31.19c1.85,1.73,3.61,3.55,5.41,5.33L31.12,32.52C31.22,32.62,31.33,32.7,31.51,32.86Z" />
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="notices">
+                          <div class="title font-weight-bold pb-3 text-center text-golden ">
+                            {{ $t('__noInformation') }}
+                          </div>
+                        </div>
+                      </template>
+                    </div>
                   </div>
                 </template>
               </div>

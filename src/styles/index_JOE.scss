@@ -3,3 +3,90 @@
 .w-50 {
     width: 50%!important;
 }
+
+.pl-04, .px-04 {
+    padding-left: 0.4rem!important;
+}
+
+.pr-04, .px-04 {
+    padding-right: 0.4rem!important;
+}
+
+.pl-1, .px-1 {
+    padding-left: 0.25rem!important;
+}
+
+.pl-2, .px-2 {
+    padding-left: 0.75rem!important;
+}
+
+.pr-2, .px-2 {
+    padding-right: 0.75rem!important;
+}
+
+.pl-3, .px-3 {
+    padding-left: 1rem!important;
+}
+
+.pr-3, .px-3 {
+    padding-right: 1rem!important;
+}
+
+.pl-6, .px-6 {
+    padding-left: 2rem!important;
+}
+
+.pr-6, .px-6 {
+    padding-right: 2rem!important;
+}
+
+.bg-black {
+    background-color: #333;
+}
+
+.pt-4, .py-4 {
+    padding-top: 1.5rem!important;
+}
+
+.mr-0, .mx-0 {
+    margin-right: 0!important;
+}
+
+#app .el-input__inner,
+#app input {
+    line-height: 100%;
+}
+
+#app button,
+#app input {
+    outline: none;
+    cursor: pointer;
+}
+
+#app .el-input__inner,
+#app input {
+    line-height: 100%;
+}
+
+button, input, optgroup, select, textarea {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+button, input {
+    overflow: visible;
+}
+
+#app .el-button {
+    padding: 0.70833rem 0.95833rem;
+    font-size: 1rem;
+}
+
+.bg-yellow {
+    color: #000;
+    background: #f9c901;
+    border: 0.08333rem solid #f9c901;
+    border-radius: 0.25rem;
+}
