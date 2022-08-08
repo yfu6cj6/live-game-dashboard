@@ -3,7 +3,7 @@
     <template v-if="device === 'mobile'">
       <navbar class="navbar" />
       <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
-      <sidebar class="sidebar" />
+      <sidebar class="sidebar" :class="{'opened': sidebar.opened}" />
       <agent-level class="agentLevel" />
       <app-main class="appMain" :class="{'opened': sidebar.opened}" />
     </template>
@@ -83,8 +83,10 @@ export default {
     position: fixed;
     top: 2.5rem;
     left: 0;
-    z-index: 12;
     padding-bottom: 2.5rem;
+    &.opened {
+      z-index: 12;
+    }
   }
   .agentLevel {
     position: fixed;
@@ -104,7 +106,7 @@ export default {
     height: 100%;
     z-index: 1;
     margin: 0 auto;
-    // background-color: #d6d6d6;
+    background-color: #d6d6d6;
   }
 }
 

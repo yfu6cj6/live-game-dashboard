@@ -8,7 +8,13 @@ const state = {
 
 const mutations = {
   SET_ANNOUNCEMENTS(state, { gameAnnouncements, agentAnnouncements }) {
+    gameAnnouncements.forEach(element => {
+      element.open = true
+    });
     state.gameAnnouncements = gameAnnouncements
+    agentAnnouncements.forEach(element => {
+      element.open = true
+    });
     state.agentAnnouncements = agentAnnouncements
   },
   SET_MARQUEE_MESSAGE(state, marqueeMsg) {

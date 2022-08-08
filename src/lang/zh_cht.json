@@ -296,5 +296,6 @@
     "__gameUrl": "遊戲網址",
     "__systemManagement": "系統管理",
     "__parameter": "參數名稱",
-    "__parameterValue": "值"
+    "__parameterValue": "值",
+    "__noInformation": "沒有資料"
 }

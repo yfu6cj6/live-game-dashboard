@@ -117,6 +117,10 @@ body {
   display: flex!important;
 }
 
+.d-none {
+  display: none !important;
+}
+
 .flex-wrap {
   -ms-flex-wrap: wrap!important;
   flex-wrap: wrap!important;
