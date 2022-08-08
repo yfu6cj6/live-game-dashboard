@@ -31,19 +31,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import "~@/styles/variables.scss";
-
-.sub-el-icon {
-  color: $yellow;
-  width: 1em;
-  height: 1em;
-  margin-right: .2em;
-}
-
-.icon {
-  color: $yellow;
-  margin-right: .5em;
-}
-</style>

@@ -1,5 +1,5 @@
 <template>
-  <div @click.stop="toggleClick">
+  <div class="fas clickable m-auto yellow" @click.stop="toggleClick">
     <svg
       :class="{'is-active':isActive}"
       class="hamburger"
@@ -39,11 +39,10 @@ export default {
 @import "~@/styles/variables.scss";
 
 .hamburger {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  transform: rotate(180deg);
-  fill: $yellow !important;
+  height: 1.58333rem;
+  width: 1.58333rem;
+  overflow: hidden;
+  vertical-align: middle;
 }
 
 .hamburger.is-active {

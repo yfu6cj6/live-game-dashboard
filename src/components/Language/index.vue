@@ -1,35 +1,33 @@
 <template>
-  <div @click.stop="onClick">
-    <div class="language">
-      <div class="language-switch" :class="{'dropdown': dropdown}">
-        <div class="current-language">
-          <div
-            v-for="(item, index) in langList"
-            :key="index"
-            @click="changLang(item.key, index)"
-          >
+  <div class="language" @click.stop="onClick">
+    <div class="language-switch" :class="{'dropdown': dropdown}">
+      <div class="current-language">
+        <div
+          v-for="(item, index) in langList"
+          :key="index"
+          class="language-item"
+          @click="changLang(item.key, index)"
+        >
+          <div class="fas" :class="{'display_none': index !== curLangIndex}">
             <img
               :src="require(`@/assets/lang/${item.key}.png`)"
-              :class="{'display_none': index !== curLangIndex}"
               :title="item.title"
-              width="25"
-              height="25"
             >
           </div>
         </div>
-        <div v-if="dropdown" class="language-list">
-          <div
-            v-for="(item, index) in langList"
-            :key="index"
-            class="language-item"
-            :class="{'display_none': index === curLangIndex}"
-            @click="changLang(item.key, index)"
-          >
+      </div>
+      <div v-if="dropdown" class="language-list">
+        <div
+          v-for="(item, index) in langList"
+          :key="index"
+          class="language-item"
+          :class="{'display_none': index === curLangIndex}"
+          @click="changLang(item.key, index)"
+        >
+          <div class="fas">
             <img
               :src="require(`@/assets/lang/${item.key}.png`)"
               :title="item.title"
-              width="25"
-              height="25"
             >
           </div>
         </div>
@@ -88,38 +86,48 @@ export default {
 @import "~@/styles/variables.scss";
 
 .language {
-  z-index: 1;
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-
+  position: absolute;
+  top: 0.16667rem;
+  right: 0.41667rem;
+  z-index: 2;
   .language-switch {
+    position: relative;
+    padding: 0.66667rem;
+    &.dropdown {
+      background: rgba(155,155,155,0.4);
+    }
     .current-language {
       cursor: pointer;
-      text-align: center;
-      padding-top: 3px;
     }
-
-    .language-list {
-      display: block;
-
-      .language-item {
-        border-top: 0.08333rem solid $yellow;
-        text-align: center;
-
+    .language-item {
+      .fas {
+        fill: #fff !important;
         img {
-          margin-top: 3px;
+          vertical-align: middle;
+          overflow: hidden;
+          height: 2.16667rem;
+          width: 2.16667rem;
         }
       }
     }
+    .language-list {
+      display: block;
+      -webkit-animation-name: fadeIn;
+      animation-name: fadeIn;
+      -webkit-animation-duration: 0.5s;
+      animation-duration: 0.5s;
+      -webkit-animation-fill-mode: both;
+      animation-fill-mode: both;
+      .language-item {
+        border-top: 0.08333rem solid #f9c901;
+        margin-top: 0.41667rem;
+        padding-top: 0.5rem;
+        cursor: pointer;
+      }
+    }
   }
-
   .display_none {
     display: none;
-  }
-
-  .language-switch.dropdown {
-    background: rgba(155,155,155,0.4);
   }
 }
 </style>

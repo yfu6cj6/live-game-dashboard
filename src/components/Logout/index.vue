@@ -1,5 +1,5 @@
 <template>
-  <div @click.stop="toggleClick">
+  <div class="fas m-auto clickable pr-1 yellow" @click.stop="toggleClick">
     <svg
       class="logout"
       viewBox="337.962 206.102 169.087 178.771"
@@ -38,9 +38,9 @@ export default {
 @import "~@/styles/variables.scss";
 
 .logout {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  fill: $yellow !important;
+  height: 1.75rem;
+  width: 1.75rem;
+  overflow: hidden;
+  vertical-align: middle;
 }
 </style>

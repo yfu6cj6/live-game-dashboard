@@ -1,5 +1,5 @@
 <template>
-  <div @click.stop="toggleClick">
+  <div class="fas m-auto clickable yellow" @click.stop="toggleClick">
     <svg
       class="modPassword"
       viewBox="0 0 63 63"
@@ -34,9 +34,9 @@ export default {
 @import "~@/styles/variables.scss";
 
 .modPassword {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  fill: $yellow !important;
+  height: 1.75rem;
+  width: 1.75rem;
+  overflow: hidden;
+  vertical-align: middle;
 }
 </style>

@@ -12,6 +12,16 @@ export default {
 
 <style lang="scss" scoped>
 #app {
+  font-family: PingFang TC, PingFang SC, 微軟雅黑, Microsoft YaHei, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  font-size: 1.16667rem;
+  line-height: 1;
+  background-color: #000 !important;
+  background-position: center !important;
+  background-size: cover !important;
   height: 100%;
+  width: 100%;
 }
 </style>

@@ -1,11 +1,19 @@
 <template>
   <div :class="classObj" class="app-container">
-    <navbar />
-    <tags-view v-if="device !== 'mobile'" class="tagsView" :class="{'opened': sidebar.opened}" />
-    <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
-    <sidebar class="sidebar" />
-    <agent-level class="agentLevel" />
-    <app-main class="appMain" :class="{'opened': sidebar.opened}" />
+    <template v-if="device === 'mobile'">
+      <navbar class="navbar" />
+      <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
+      <sidebar class="sidebar" />
+      <agent-level class="agentLevel" />
+      <app-main class="appMain" :class="{'opened': sidebar.opened}" />
+    </template>
+    <template v-else>
+      <navbar class="navbar" />
+      <tags-view class="tagsView" :class="{'opened': sidebar.opened}" />
+      <sidebar class="sidebar" />
+      <agent-level class="agentLevel" />
+      <app-main class="appMain" :class="{'opened': sidebar.opened}" />
+    </template>
   </div>
 </template>
 
@@ -56,27 +64,47 @@ export default {
   @include clearfix;
   height: 100%;
   width: 100%;
+  .navbar {
+    z-index: 999;
+  }
   .drawer-bg.opened {
-    background: #000;
-    opacity: 0.3;
-    width: 100%;
+    display: block;
     position: fixed;
-    top: $navBarHeight;
-    height: calc(100% - 45px);
-    z-index: 998;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 11;
   }
   .sidebar {
+    height: 100%;
+    margin-left: 0;
     position: fixed;
-    z-index: 999;
-    border-right: 2px solid $yellow;
-    top: $navBarHeight;
+    top: 2.5rem;
+    left: 0;
+    z-index: 12;
+    padding-bottom: 2.5rem;
   }
-
   .agentLevel {
     position: fixed;
     z-index: 1000;
     border-right: 2px solid $yellow;
     top: $navBarHeight;
+  }
+  .appMain {
+    padding-top: 3.75rem;
+    -ms-flex-preferred-size: 0;
+    flex-basis: 0;
+    -ms-flex-positive: 1;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    max-width: 768px;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    margin: 0 auto;
+    // background-color: #d6d6d6;
   }
 }
 
@@ -91,8 +119,13 @@ export default {
       padding-left: $sideBarWidth;
     }
 
-    .drawer-bg {
-      display: none;
+    .sidebar {
+      height: 100%;
+      margin-left: 0;
+      position: fixed;
+      top: 45px;
+      left: 0;
+      z-index: 12;
     }
 
     .appMain {

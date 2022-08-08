@@ -1,34 +1,23 @@
 <template>
-  <div class="home-container">
-    <div class="accordion">
-      <h2 class="header">{{ $t('__agencyAnnouncement') }}</h2>
-      <el-collapse v-if="showAgentAnnouncements">
-        <el-collapse-item
-          v-for="item in agentAnnouncements"
-          :key="item.id"
-          :title="item.title"
-        >
-          <template>
-            {{ item.fullContent }}
-          </template>
-        </el-collapse-item>
-      </el-collapse>
-      <div v-else class="noMore">{{ $t('__noMore') }}</div>
-    </div>
-    <div class="accordion">
-      <h2 class="header">{{ $t('__gameAnnouncement') }}</h2>
-      <el-collapse v-if="showGameAnnouncements">
-        <el-collapse-item
-          v-for="item in gameAnnouncements"
-          :key="item.id"
-          :title="item.title"
-        >
-          <template>
-            {{ item.fullContent }}
-          </template>
-        </el-collapse-item>
-      </el-collapse>
-      <div v-else class="noMore">{{ $t('__noMore') }}</div>
+  <div class="scroll-wrap d-flex flex-column flex-fill">
+    <div class="scroll-inner d-flex flex-column flex-fill">
+      <div class="scroll-view d-flex flex-column flex-fill">
+        <div class="home flex-column d-flex flex-fill bg-new-dark-white">
+          <div class="scroll-wrap flex-column flex-fill">
+            <div class="scroll-inner flex-column flex-fill">
+              <div class="scroll-view flex-column flex-fill">
+                <div class="notice-container w-100">
+                  <div class="notices">
+                    <div class="title font-weight-bold pb-3 text-center text-golden ">
+                      {{ $t('__agencyAnnouncement') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -61,62 +50,54 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "~@/styles/variables.scss";
 
-.home-container {
-  .accordion {
-    .header {
-      width: 100%;
-      text-align: center;
-      padding: 10px 12px;
-      color: #ce9600;
-      font-weight: bold;
-      border-bottom: 1px solid #EBEEF5;
-    }
-
-    .el-collapse {
-      border: none;
-
-      .el-collapse-item {
-        .el-collapse-item__header {
-          font-size: 18px;
-          font-weight: bold;
-          color: #ca0;
-          padding-left: 10px;
-        }
-
-        .el-collapse-item__content {
-          font-size: 16px;
-          padding-left: 5px;
-          padding-right: 5px;
-        }
+.home {
+  height: 100%;
+  width: 100%;
+  .notice-container {
+    max-width: calc(100% - 1.66667rem);
+    margin: 0 auto;
+    .notices {
+      color: #000;
+      background-color: #fff;
+      position: relative;
+      padding: 0.83333rem 0.83333rem 0 0.83333rem;
+      margin-top: 1.66667rem;
+      -webkit-box-shadow: 0px 1px 3px 1px #a6a6a6;
+      box-shadow: 0px 1px 3px 1px #a6a6a6;
+      .title {
+        width: 100%;
+        margin-bottom: 0.83333rem;
+        font-size: 1.39944rem;
+        line-height: 1.2;
       }
-    }
-
-    .noMore {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 40px;
-      border-top: 2px solid #eee;
-      border-bottom: 2px solid #eee;
     }
   }
 }
 
-@media screen and (min-width: 992px) {
-  .home-container {
-    display: flex;
-    .accordion {
-      width: 50%;
-
-      .el-collapse {
-        .el-collapse-item {
-          width: calc(100% - 1em);
-          margin: 0 auto;
-        }
-      }
+.home-container {
+  max-width: calc(100% - 1.66667rem);
+  margin: 0 auto;
+  width: 100%;
+  .notices {
+    color: #000;
+    background-color: #fff;
+    position: relative;
+    padding: 0.83333rem 0.83333rem 0 0.83333rem;
+    margin-top: 1.66667rem;
+    -webkit-box-shadow: 0px 1px 3px 1px #a6a6a6;
+    box-shadow: 0px 1px 3px 1px #a6a6a6;
+    .title {
+      width: 100%;
+      margin-bottom: 0.83333rem;
+      font-size: 1.39944rem;
+      line-height: 1.2;
+      color: #ce9600;
+      font-weight: 700;
+      text-align: center;
+      padding-bottom: 1rem;
     }
   }
 }
