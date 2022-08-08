@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex-column flex-fill bg-black">
+    <div class="comp profit-report flex-column flex-fill bg-black">
       <div class="bg-black w-100 pt-4">
         <div class="day-range">
           <div class="date-time-picker-box">
@@ -20,6 +20,57 @@
             <el-button class="bg-yellow ml-auto mr-0 search-range" @click="onTableBtnClick(curTableIndex)">
               {{ $t("__search") }}
             </el-button>
+          </div>
+          <div class="day-range-options">
+            <el-button class="line-yellow" @click="onDateBtnClick(dateEnum.yesterday)">
+              {{ $t("__yesterday") }}
+            </el-button>
+            <el-button class="line-yellow" @click="onDateBtnClick(dateEnum.today)">
+              {{ $t("__today") }}
+            </el-button>
+            <el-button class="line-yellow" @click="onDateBtnClick(dateEnum.lastWeek)">
+              {{ $t("__lastWeek") }}
+            </el-button>
+            <el-button class="line-yellow" @click="onDateBtnClick(dateEnum.thisWeek)">
+              {{ $t("__thisWeek") }}
+            </el-button>
+            <el-button class="line-yellow" @click="onDateBtnClick(dateEnum.lastMonth)">
+              {{ $t("__lastMonth") }}
+            </el-button>
+            <el-button class="line-yellow" @click="onDateBtnClick(dateEnum.thisMonth)">
+              {{ $t("__thisMonth") }}
+            </el-button>
+          </div>
+        </div>
+      </div>
+      <div style="border-bottom: 0.25rem solid rgb(249, 201, 1);" />
+      <div class="profit-content flex-fill bg-new-dark-white">
+        <div class="superior-summary">
+          <div class="report-summary w-100">
+            <div class="w-100 summaryDate">
+              <div class="agent-type">
+                <span class="font-weight-bold">{{ $t('__timeRange') }}</span>
+                <span class="font-weight-bold">{{ timeRange[0] }}</span>
+                <span class="font-weight-bold">{{ $t('__to')}}</span>
+                <span class="font-weight-bold">{{ timeRange[1] }}</span>
+              </div>
+            </div>
+            <div class="w-100">
+              <span class="agent-type">{{ $t('__agentWinLossTotal') }}</span>
+            </div>
+            <div class="group">
+              <div class="w-100 d-flex list-row in-group">
+                <div class="list-item info">
+                  <div class="name list-sub-item d-flex align-items-center">
+                    <span class="icon">
+                      <div class="fas gold">
+                        <svg-icon icon-class="user" />
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -99,6 +150,13 @@ export default {
     }
   },
   computed: {
+    timeRange() {
+      const timeRange = [];
+      this.searchTime.forEach(element => {
+        timeRange.push(getFullDate(element))
+      });
+      return timeRange
+    }
   },
   watch: {
     '$route.path': function() {
@@ -259,7 +317,7 @@ export default {
       this.setDataLoading(true)
       switch (this.curTableIndex) {
         case this.tableEnum.agent: {
-          this.$refs.agent.onSearch(this.agentId)
+          // this.$refs.agent.onSearch(this.agentId)
           break
         }
         case this.tableEnum.member: {
@@ -313,9 +371,86 @@ export default {
         width: 2.08333rem;
       }
     }
+    .search-range {
+      margin-left: 0.5rem !important;
+    }
   }
-  .search-range {
-    margin-left: 0.5rem !important;
+  .day-range-options {
+    width: 100%;
+    padding: 0.83333rem 0rem 0.41667rem 0rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    .el-button:first-child {
+      margin-left: 0 !important;
+    }
+  }
+}
+
+.profit-report {
+  .superior-summary {
+    background-color: #fff;
+    .report-summary {
+      background-color: #fdf3c9;
+      .agent-type {
+        font-size: 1rem;
+        padding: 0.41667rem 1.66667rem 0.41667rem 0.83333rem;
+        background-color: transparent !important;
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+      }
+      .groups {
+        padding: 0.83333rem;
+        .in-group {
+          background: #fff;
+          -webkit-box-shadow: 0px 1px 3px 1px #a6a6a6;
+          box-shadow: 0px 1px 3px 1px #a6a6a6;
+          padding: 0.41667rem 0.41667rem 0.41667rem 0.41667rem !important;
+        }
+      }
+      .list-row {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding: 0.41667rem 1.25rem;
+        .list-item {
+          position: relative;
+          width: 100%;
+          &.info {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            .list-sub-item {
+              display: -webkit-box;
+              display: -ms-flexbox;
+              display: flex;
+              word-break: break-word;
+              margin-bottom: 0.83333rem;
+              width: 100%;
+            }
+            .name {
+              display: -webkit-box;
+              display: -ms-flexbox;
+              display: flex;
+              word-break: break-all;
+              margin-bottom: 0.83333rem;
+              .icon {
+                color: #ce9600;
+              }
+            }
+          }
+          .icon {
+            margin-right: 0.41667rem;
+          }
+        }
+      }
+    }
   }
 }
 </style>
