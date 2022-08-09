@@ -51,6 +51,7 @@ export default {
   height: 1em;
   fill: currentColor;
   overflow: hidden;
+  vertical-align: middle;
 }
 
 .svg-external-icon {
