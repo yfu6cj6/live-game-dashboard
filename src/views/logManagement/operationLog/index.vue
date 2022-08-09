@@ -1,196 +1,98 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
-        <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-date-picker
-                v-model="searchForm.searchTime"
-                type="datetimerange"
-                align="right"
-                unlink-panels
-                :range-separator="$t('__to')"
-                :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
-                :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
-                :picker-options="pickerOptions"
-                :default-time="['12:00:00', '11:59:59']"
-              />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.ip" placeholder="IP" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.description" :placeholder="$t('__description')" />
-            </p>
+  <div v-loading="dataLoading" class="logManagement">
+    <template v-if="device === 'mobile'">
+      <div class="bg-black">
+        <div class="search_frame">
+          <div class="day_frame">
+            <el-date-picker
+              v-model="searchTime"
+              type="datetimerange"
+              align="right"
+              unlink-panels
+              class="search_frame_size"
+              :range-separator="$t('__to')"
+              :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
+              :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
+              :picker-options="pickerOptions"
+              :default-time="['12:00:00', '11:59:59']"
+            />
           </div>
-          <div class="view-container-seachForm-operate">
-            <p class="operateItem">
-              <el-button class="bg-gray" size="mini" @click="handleCurrentChange(1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">
-                {{ $t("__searchAndExport") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
-                {{ $t("__moreSearch") }}
-              </el-button>
-            </p>
+          <div v-if="isAdminister" class="pad_frame">
+            <el-input v-model="searchForm.ip" class="search_frame_size search_input" placeholder="IP" />
+          </div>
+          <div class="pad_frame">
+            <el-input v-model="searchForm.description" class="search_frame_size search_input sp_search_frame" :placeholder="$t('__description')" />
+            <el-button class="bg-yellow sp_search_btn" size="mini" @click.stop="search()">{{ $t("__search") }}</el-button>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      -
+    </template>
+    <div v-if="tableData.length > 0">
+      <div
+        v-for="(item, index) in tableData"
+        :key="index"
+        :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+      >
+        <template v-if="device === 'mobile'">
+          <div class="dataContent">
+            <div class="base">
+              <span class="number">{{ (index+1) }}</span>
+              <div class="d-flex info">
+                <div class="field">
+                  <span class="title">{{ $t('__operator') }}</span>
+                  <span class="news">{{ item.userNickName }}</span>
+                </div>
+                <div class="field">
+                  <span class="title">{{ $t('__operationTime') }}</span>
+                  <span class="news">{{ item.created_at }}</span>
+                </div>
+                <div class="field">
+                  <span class="title line_height">{{ $t('__description') }}</span>
+                  <span class="news line_height">{{ item.description }}</span>
+                </div>
+                <div v-if="isAdminister" :class="{'moreopen': !item.open, 'moreclose': item.open}" @click.stop="remarkExpand(item)">
+                  <svg-icon v-if="item.open" icon-class="up" />
+                  <svg-icon v-else icon-class="more" />
+                </div>
+              </div>
+            </div>
+            <div v-if="item.open && isAdminister" class="moreInfo">
+              <div class="field">
+                <span class="title">IP</span>
+                <span class="news">{{ item.ip }}</span>
+              </div>
+              <div class="field">
+                <span class="title">Uri</span>
+                <span class="news">{{ item.uri }}</span>
+              </div>
+              <div class="field">
+                <span class="title">{{ $t('__method') }}</span>
+                <span class="news">{{ item.method }}</span>
+              </div>
+              <div class="field col">
+                <span class="title">{{ $t('__content') }}</span>
+                <span class="news">{{ item.request_content }}</span>
+              </div>
+            </div>
           </div>
         </template>
         <template v-else>
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="handleCurrentChange(currentPage)">{{ $t("__refresh") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-date-picker
-                v-model="searchForm.searchTime"
-                type="datetimerange"
-                align="right"
-                unlink-panels
-                :range-separator="$t('__to')"
-                :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
-                :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
-                :picker-options="pickerOptions"
-                :default-time="['12:00:00', '11:59:59']"
-              />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.ip" placeholder="IP" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.description" :placeholder="$t('__description')" />
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onReset()">{{ $t("__reset") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="handleCurrentChange(1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">
-                {{ $t("__searchAndExport") }}
-              </el-button>
-            </p>
-          </div>
+          -
         </template>
       </div>
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
-            v-for="(item, index) in tableData"
-            :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
-          >
-            <template v-if="device === 'mobile'">
-              <div class="base">
-                <div class="index">
-                  <span class="number">{{ (index+1) }}</span>
-                </div>
-                <div class="info">
-                  <div class="field">
-                    <span class="title">{{ $t('__operator') }}</span>
-                    <span class="news">{{ item.userNickName }}</span>
-                  </div>
-                  <div class="field">
-                    <span class="title">{{ $t('__operationTime') }}</span>
-                    <span class="news">{{ item.created_at }}</span>
-                  </div>
-                  <div class="field">
-                    <span class="title">{{ $t('__description') }}</span>
-                    <span class="news">{{ item.description }}</span>
-                  </div>
-                  <div v-if="isAdminister" class="field">
-                    <span class="title">IP</span>
-                    <span class="news">{{ item.ip }}</span>
-                  </div>
-                  <div v-if="isAdminister" class="field">
-                    <span class="title">Uri</span>
-                    <span v-if="isAdminister" class="news">{{ item.uri }}</span>
-                  </div>
-                  <div v-if="isAdminister" class="field">
-                    <span class="title">{{ $t('__method') }}</span>
-                    <span v-if="isAdminister" class="news">{{ item.method }}</span>
-                  </div>
-                  <div v-if="isAdminister" :class="{'moreopen': !item.open, 'moreclose': item.open}" @click.stop="remarkExpand(item)">
-                    <svg-icon v-if="item.open" icon-class="up" />
-                    <svg-icon v-else icon-class="more" />
-                  </div>
-                </div>
-              </div>
-              <div v-if="item.open && isAdminister" class="moreInfo">
-                <div class="field col">
-                  <span class="title">{{ $t('__content') }}</span>
-                  <span class="news">{{ item.request_content }}</span>
-                </div>
-              </div>
-            </template>
-            <template v-else>
-              <!-- <div class="base">
-                <div class="item remark">
-                  <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                  <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__operator') }}</span>
-                  <span class="content">{{ item.userNickName }}</span>
-                </div>
-                <div class="item operationTime">
-                  <span class="header">{{ $t('__operationTime') }}</span>
-                  <span class="content">{{ item.created_at }}</span>
-                </div>
-                <div class="item ip">
-                  <span class="header">IP</span>
-                  <span class="content">{{ item.ip }}</span>
-                </div>
-                <div v-if="isAdminister" class="item method">
-                  <span class="header">{{ $t('__method') }}</span>
-                  <span class="content">{{ item.method }}</span>
-                </div>
-                <div v-if="isAdminister" class="item">
-                  <span class="header">Uri</span>
-                  <span class="content">{{ item.uri }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__description') }}</span>
-                  <span class="content">{{ item.description }}</span>
-                </div>
-              </div>
-              <div v-if="item.open">
-                <div class="item expandItem">
-                  <span class="header">{{ $t('__content') }}</span>
-                  <span class="content">{{ item.request_content }}</span>
-                </div>
-              </div> -->
-            </template>
-          </div>
+      <div class="more_btn_space">
+        <div v-if="tableData.length >= maxCount" class="search_more">
+          <span>{{ $t("__noInformation") }}</span>
         </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        <div v-else class="search_more">
+          <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+        </div>
       </div>
     </div>
-
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handleCurrentChange"
-      />
-    </div>
-
+    <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
   </div>
 </template>
 
@@ -204,9 +106,7 @@ import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime,
   getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate';
 import { mapGetters } from 'vuex'
 
-const defaultForm = {
-  searchTime: getTodayDateTime()
-}
+const defaultSearchTime = getTodayDateTime()
 
 export default {
   name: 'OperationLog',
@@ -246,7 +146,10 @@ export default {
           }
         }]
       },
-      showDetail: false
+      searchTime: defaultSearchTime,
+      showDetail: false,
+      maxCount: 0,
+      pageSizeCount: 1
     }
   },
   computed: {
@@ -255,15 +158,16 @@ export default {
     ])
   },
   watch: {
-    'searchForm.searchTime': function() {
+    'searchTime': function() {
       this.$nextTick(() => {
+        this.pageSizeCount = 1
         this.handleCurrentChange(1)
       })
     }
   },
   created() {
-    this.searchForm = JSON.parse(JSON.stringify(defaultForm));
-    this.handleCurrentChange(this.currentPage)
+    this.pageSizeCount = 1
+    this.handleCurrentChange(1)
   },
   methods: {
     remarkExpand(row) {
@@ -274,27 +178,38 @@ export default {
       })
     },
     onReset() {
-      this.searchForm = JSON.parse(JSON.stringify(defaultForm))
+      this.searchForm = {}
+      this.pageSizeCount = 1;
       this.handleCurrentChange(1)
+    },
+    search() {
+      this.pageSizeCount = 1;
+      this.handleCurrentChange(1)
+    },
+    moreInfo() {
+      this.pageSizeCount++;
+      this.handleCurrentChange(1);
     },
     handleRequest(data) {
       this.dataLoading = true
-      if (!data.searchTime) {
-        data.searchTime = JSON.parse(JSON.stringify(defaultForm)).searchTime
+      if (!this.searchTime) {
+        this.searchTime = defaultSearchTime
       }
-      for (let i = 0, max = data.searchTime.length; i < max; i++) {
-        data.searchTime[i] = getFullDate(data.searchTime[i])
-      }
+      data.searchTime = []
+      this.searchTime.forEach(element => {
+        data.searchTime.push(getFullDate(element))
+      })
     },
     handleRespone(res) {
-      this.tableData = res.rows
+      this.maxCount = res.totalCount;
+      this.tableData = res.rows;
       this.showDetail = res.showDetail
       this.totalCount = res.totalCount
       this.dataLoading = false
     },
     onSubmit() {
       this.searchForm.page = this.currentPage
-      this.searchForm.rowsCount = this.pageSize
+      this.searchForm.rowsCount = this.pageSize * this.pageSizeCount
       this.handleRequest(this.searchForm)
       operationLogSearch(this.searchForm).then((res) => {
         this.handleRespone(res)
@@ -331,103 +246,169 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.view {
-  &-container {
-    &-table {
-      &-row {
-        position: relative;
-        .base {
-          display: flex;
-          flex-direction: row;
-          .index {
-            width: 10%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            .number {
-              display: flex;
-              align-content: center;
-              font-weight: bold;
-              color: #2b3c43;
-              font-size: 18px;
-            }
-          }
-          .info {
-            width: 90%;
-            display: flex;
-            flex-direction: column;
-          }
+<style lang="scss">
+.logManagement{
+  overflow: auto;
+  max-height: 100%;
+  position: relative;
+  .search_frame {
+    padding-top: 1.5rem;
+    border-bottom: 0.25rem solid #f9c901;
+    flex-flow: wrap;
+    .day_frame {
+      padding: 0.41667rem 0.83333rem;
+      .search_frame_size {
+        display: flex;
+        justify-content: space-evenly;
+        .el-range-input {
+          font-size: 1rem;
+          padding: 0;
+          margin: 0 0.1rem;
         }
-        .field {
-          display: flex;
-          flex-direction: column;
-          .title {
-            display: flex;
-            align-items: center;
-            width: 100px;
-            min-width: 100px;
-          }
-          .news {
-            font-weight: bold;
-            word-break: break-all;
-            color: #2b3c43;
+        .el-range-separator {
+          height: auto !important;
+          line-height: 1 !important;
+          width: 2.08333rem;
+        }
+        .el-input__icon.el-range__close-icon {
+          display: none;
+          &.el-icon-circle-close {
+            display: none;
           }
         }
-        .moreopen {
-          position: absolute;
-          top: 5px;
-          right: 5px;
-          font-size: 25px;
-          color: #4e4e4e;
-        }
-        .moreclose {
-          position: absolute;
-          bottom: 5px;
-          right: 5px;
-          font-size: 25px;
-          color: #4e4e4e;
-        }
-        .moreInfo {
-          width: 90%;
-        }
-        .base + .moreInfo {
-          margin-top: 5px;
-        }
-        .field + .field {
-          margin-top: 5px;
+      }
+    }
+    .pad_frame {
+      padding: 0.41667rem 0.83333rem 0.41667rem 0.83333rem;
+    }
+    .sp_search_frame {
+      margin-right: 0.5rem;
+    }
+    .sp_search_btn {
+      width: 5.3rem;
+      height: 2.8rem;
+      font-weight: bold;
+    }
+    .search_bottom {
+      align-items: center;
+      .tips {
+        width: 21.6rem;
+        color: #fff;
+        padding-top: 0;
+      }
+    }
+    .export_btn {
+      margin-left: 0.5rem;
+      font-weight: bold;
+    }
+    .search_frame_size {
+      width: 23.33333rem;
+      height: 2.66667rem;
+      &.search_input{
+        &.el-input{
+          .el-input__inner {
+            font-size: 1rem;
+            padding-left: 0.83333rem;
+            height: 2.66667rem;
+            line-height: 2.66667rem;
+            width: 100%;
+          }
         }
       }
     }
   }
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .base {
-            .item {
-              width: 250px;
-              min-width: 250px;
-              margin-right: 30px;
-              &.method {
-                width: 200px;
-                min-width: 200px;
-              }
-            }
-            .remark {
-              width: 40px;
-              min-width: 40px;
-            }
-          }
-          .expandItem {
-            width: 1700px;
-            min-width: 1700px;
-          }
+  .dataContent {
+    padding-left: 4.16667rem;
+    .base {
+      display: flex;
+      flex-direction: row;
+      .number {
+        font-size: 1.33333rem;
+        font-weight: bolder;
+        position: absolute;
+        top: 50%;
+        margin-top: -0.83333rem;
+        left: 0rem;
+        width: 4.16667rem;
+        text-align: center;
+      }
+      .info {
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    .field {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      margin-top: 0.3rem;
+      word-break: break-all;
+      padding-right: 0.41667rem;
+      padding-top: 0.41667rem;
+      padding-bottom: 0.41667rem;
+      .title {
+        width: 100%;
+        padding-bottom: 0.5rem;
+        font-size: 1.16667rem;
+        color: #6e6e6e;
+        word-break: break-word;
+        &.line_height {
+          line-height: 1.5;
         }
       }
+      .news {
+        font-size: 1.16667rem;
+        font-weight: bold;
+        word-break: break-all;
+        color: #2c3e50;
+        &.line_height {
+          line-height: 1.5;
+        }
+      }
+    }
+    .moreopen {
+      position: absolute;
+      top: 0.83333rem;
+      right: 1.3rem;
+      .svg-icon {
+        fill: #a3a3a3;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+    .moreclose {
+      position: absolute;
+      top: 24.33333rem;
+      right: 1.33rem;
+      .svg-icon {
+        fill: #a3a3a3;
+        width: 2.333rem;
+        height: 2.333rem;
+      }
+    }
+  }
+  .even-row {
+    position: relative;
+    background-color: #fff;
+    padding: 0.625rem 1.16667rem 0.625rem 0;
+  }
+  .odd-row {
+    position: relative;
+    background-color: #f4f4f4;
+    padding: 0.625rem 1.16667rem 0.625rem 0;
+  }
+  .more_btn_space {
+    padding: 1.5rem;
+    text-align: center;
+    background-color: #fff;
+  }
+  .search_more {
+    width: 100%;
+    height: 4.5rem;
+    .search_more_btn {
+      padding-bottom: 0.01667rem;
+      border-bottom: 1px solid #343a40;
     }
   }
 }

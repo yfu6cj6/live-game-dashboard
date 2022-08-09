@@ -31,61 +31,59 @@
     <template v-else>
       -
     </template>
-    <div>
-      <div v-if="allDataByClient.length > 0">
-        <div
-          v-for="(item, index) in allDataByClient"
-          :key="index"
-          :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
-        >
-          <template v-if="device === 'mobile'">
-            <div class="dataContent">
-              <div class="d-flex base">
-                <div class="left">
-                  <div class="field">
-                    <span class="title">{{ $t('__agentOrSubAccount') }}</span>
-                    <div class="accountnews">
-                      <svg-icon icon-class="user" class="icon" />
-                      <span class="news spcolor">{{ item.account }}</span>
-                    </div>
+    <div v-if="allDataByClient.length > 0">
+      <div
+        v-for="(item, index) in allDataByClient"
+        :key="index"
+        :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+      >
+        <template v-if="device === 'mobile'">
+          <div class="dataContent">
+            <div class="d-flex base">
+              <div class="left">
+                <div class="field">
+                  <span class="title">{{ $t('__agentOrSubAccount') }}</span>
+                  <div class="accountnews">
+                    <svg-icon icon-class="user" class="icon" />
+                    <span class="news spcolor">{{ item.account }}</span>
                   </div>
-                </div>
-                <div class="right">
-                  <div class="field">
-                    <span class="title">IP</span>
-                    <span class="news">{{ item.ip }}</span>
-                  </div>
-                </div>
-                <div :class="{'moreopen': !item.open, 'moreclose': item.open}" @click.stop="remarkExpand(item)">
-                  <svg-icon v-if="item.open" class="icon" icon-class="up" />
-                  <svg-icon v-else class="icon" icon-class="more" />
                 </div>
               </div>
-              <div v-if="item.open" class="expandInfo">
-                <div class="left">
-                  <div class="field">
-                    <span class="title">{{ $t('__updateDate') }}</span>
-                    <span class="news">{{ item.updated_at }}</span>
-                  </div>
+              <div class="right">
+                <div class="field">
+                  <span class="title">IP</span>
+                  <span class="news">{{ item.ip }}</span>
                 </div>
-                <div v-if="isAdminister" class="right">
-                  <div class="adminCtrl">
-                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                  </div>
-                  <div class="adminCtrl">
-                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  </div>
+              </div>
+              <div :class="{'moreopen': !item.open, 'moreclose': item.open}" @click.stop="remarkExpand(item)">
+                <svg-icon v-if="item.open" class="icon" icon-class="up" />
+                <svg-icon v-else class="icon" icon-class="more" />
+              </div>
+            </div>
+            <div v-if="item.open" class="expandInfo">
+              <div class="left">
+                <div class="field">
+                  <span class="title">{{ $t('__updateDate') }}</span>
+                  <span class="news">{{ item.updated_at }}</span>
+                </div>
+              </div>
+              <div v-if="isAdminister" class="right">
+                <div class="adminCtrl">
+                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                </div>
+                <div class="adminCtrl">
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                 </div>
               </div>
             </div>
-          </template>
-          <template v-else>
-            -
-          </template>
-        </div>
+          </div>
+        </template>
+        <template v-else>
+          -
+        </template>
       </div>
-      <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
     </div>
+    <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
 
     <editDialog
       ref="createDialog"
@@ -314,12 +312,6 @@ export default {
       flex-direction: column;
       padding-top: 1rem;
       padding-bottom: 1rem;
-    }
-    .setup {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      margin-top: 1rem;
     }
   }
 }

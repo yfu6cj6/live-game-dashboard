@@ -21,8 +21,8 @@ export default {
   },
   watch: {
     currentPage() {
-      this.$refs.container.scrollTop = 0;
-      this.$refs.table.scrollTop = 0;
+      // this.$refs.container.scrollTop = 0;
+      // this.$refs.table.scrollTop = 0;
     }
   },
   beforeMount() {

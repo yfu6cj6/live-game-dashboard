@@ -302,5 +302,6 @@
     "__agentWinLossTotal": "下線代理輸贏匯總",
     "__updateDate": "更新時間",
     "__level": "級別",
-    "__agentOrSubAccount": "代理帳號/子帳號"
+    "__agentOrSubAccount": "代理帳號/子帳號",
+    "__searchMoreValue": "瀏覽更多"
 }
