@@ -1,18 +1,54 @@
 @import './variables.scss';
-
-
-.bg-black {
-  background-color: #333;
-}
-
 .mt-4, .my-4 {
   margin-top: 1.5rem!important;
 }
 
-.ip-white-list .filter-container {
-  border-bottom: 0.25rem solid #f9c901;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 0 0.83333rem 0.41667rem 0.83333rem;
+.flex-wrap {
+  -ms-flex-wrap: wrap!important;
+  flex-wrap: wrap!important;
+}
+
+.d-flex .flex-row .optionItem {
+    width: 11.41667rem;
+}
+
+.bg-black {
+  background-color: #333;
+  line-height: 1;
+}
+
+.el-input.input_size {
+  .el-input__inner {
+    font-size: 1rem;
+    padding-left: 0.83333rem;
+    height: 2.66667rem;
+    line-height: 2.66667rem;
+    width: 100%;
+  }
+}
+
+.bg-red {
+  color: #000;
+  background: #ff473d;
+  border: 0.08333rem solid #ff473d;
+  border-radius: 0.25rem;
+  &.el-button {
+    color: #000;
+    background: #ff473d;
+    border: 0.08333rem solid #ff473d;
+    border-radius: 0.25rem;
+  }
+}
+
+.bg-yellow {
+  color: #000;
+  background: #f9c901;
+  border: 0.08333rem solid #f9c901;
+  border-radius: 0.25rem;
+  &.el-button {
+    color: #000;
+    background: #f9c901;
+    border: 0.08333rem solid #f9c901;
+    border-radius: 0.25rem;
+  }
 }
