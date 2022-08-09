@@ -104,3 +104,57 @@ button, input {
 .fas.gold {
     fill: #ce9600 !important;
 }
+
+.text-right {
+    text-align: right!important;
+}
+
+.text-red {
+    color: #ff473d;
+}
+
+.text-blue {
+    color: #0090ff;
+}
+
+.fas.text-gray {
+    fill: #a3a3a3 !important;
+}
+
+#app .profit-report .el-button {
+    margin: 0.41667rem;
+    font-size: .91667rem;
+    font-weight: bold;
+}
+
+#app .profit-report .superior-summary {
+    background-color: #fff;
+}
+
+.justify-content-end {
+    -ms-flex-pack: end!important;
+    -webkit-box-pack: end!important;
+    justify-content: flex-end!important;
+}
+
+.report-summary .bottom-line {
+    display: block;
+    border-bottom: 0.08333rem solid #ddd;
+    width: 100%;
+    margin: 0.83333rem auto;
+    padding: 0rem 0.83333rem;
+}
+
+#app .profit-report .bottom-line {
+    border-bottom: 0.08333rem solid #ddd;
+    width: 100%;
+    margin: 0.83333rem auto !important;
+}
+
+.text-black {
+    color: #000;
+}
+
+.text-link {
+    cursor: pointer;
+}

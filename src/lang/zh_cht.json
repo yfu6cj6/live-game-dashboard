@@ -300,5 +300,7 @@
     "__noInformation": "沒有資料",
     "__timeRange": "時間範圍",
     "__agentWinLossTotal": "下線代理輸贏匯總",
-    "__updateDate": "更新時間"
+    "__updateDate": "更新時間",
+    "__level": "級別",
+    "__agentOrSubAccount": "代理帳號/子帳號"
 }

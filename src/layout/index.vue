@@ -84,7 +84,9 @@ export default {
     top: 2.5rem;
     left: 0;
     padding-bottom: 2.5rem;
+    visibility: hidden;
     &.opened {
+      visibility: visible;
       z-index: 12;
     }
   }
