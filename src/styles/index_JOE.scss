@@ -695,6 +695,104 @@ button, input {
     color: #898989;
 }
 
+.profit-list.player {
+    background-color: transparent !important;
+}
+
+.profit-list.player .agent-group {
+    background-color: transparent;
+}
+
+.profit-list.player .agent-group .groups {
+    padding: 0.83333rem;
+}
+
+.profit-list.player .agent-group .groups .in-group:last-child {
+    margin-bottom: 0.41667rem;
+}
+
+.profit-list.player .list-sub-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    word-break: break-word;
+    margin-bottom: 0.83333rem;
+    width: 100%;
+}
+
+.profit-list.player .agent-group .groups .in-group .agent-list-detail {
+    width: 100%;
+}
+
+.halls .halls-row .hall-name {
+    font-size: 1.08333rem;
+    color: #000;
+    font-weight: bold;
+}
+
+.profit-list.player {
+    background-color: transparent !important;
+}
+
+#app .profit-report .profit-list .no-result, #app .profit-report .game-result-list .no-result {
+    min-height: 50vh;
+}
+
+#app .profit-report .profit-list .no-result, #app .profit-report .game-result-list .no-result {
+    padding: 1.66667rem;
+    text-align: center;
+}
+
+#app .profit-report .profit-list .list-row .list-item.info .name, #app .profit-report .game-result-list .list-row .list-item.info .name {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    word-break: break-all;
+}
+
+#app .profit-report .profit-list .list-row .list-item.info .list-sub-item, #app .profit-report .game-result-list .list-row .list-item.info .list-sub-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    word-break: break-all;
+    margin-right: 0.83333rem;
+}
+
+#app .profit-report .profit-list .list-row .list-item, #app .profit-report .game-result-list .list-row .list-item {
+    position: relative;
+    width: 100%;
+}
+
+#app .profit-report .profit-list .list-row .list-item.info, #app .profit-report .game-result-list .list-row .list-item.info {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+#app .profit-report .profit-list .list-row, #app .profit-report .game-result-list .list-row {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0.41667rem 1.25rem;
+    -webkit-transform: translateZ(0);
+}
+
+.profit-list.player .agent-group .groups .in-group {
+    background: #fff;
+    margin-bottom: 1.25rem;
+    -webkit-box-shadow: 0px 1px 3px 1px #a6a6a6;
+    box-shadow: 0px 1px 3px 1px #a6a6a6;
+    padding: 0.41667rem 0.41667rem 0.41667rem 0.41667rem !important;
+}
+
+#app .profit-report .profit-list .agent-group, #app .profit-report .game-result-list .agent-group {
+    -webkit-transform: translateZ(0);
+}
+
+#app .profit-report .profit-list, #app .profit-report .game-result-list {
+    background: #fff;
+}
+
 .profit-report {
 .superior-summary {
     .report-summary {

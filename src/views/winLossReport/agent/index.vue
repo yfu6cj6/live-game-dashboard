@@ -2,259 +2,261 @@
   <div>
     <div class="profit-list">
       <div>
-        <div
-          v-for="(item, index) in tableData"
-          :key="index"
-          class="agent-group none-group"
-          :class="{even: (index % 2 === 0), odd: (index % 2 !== 0)}"
-        >
-          <div class="groups">
-            <div class="w-100 d-flex list-row in-group">
-              <div class="list-item info">
-                <div class="name list-sub-item d-flex align-items-center">
-                  <span class="icon">
-                    <div class="fas gold">
-                      <svg-icon icon-class="user" style="height: 1.5rem;width: 1.5rem;" />
-                    </div>
-                  </span>
-                  <span>
-                    <router-link :to="`/winLossReport/winLossReport/${item.agentId}`">
-                      <span class="text-link text-underline" @click.stop="setSearchTime(item.agentId)">{{ item.agent }}</span>
-                    </router-link>
-                    <span>
-                      {{ `[${$t('__level')}:` }}
-                      <span class="text-link">{{ `${$t('__agent')}]` }}</span>
+        <template v-if="tableData.length > 0">
+          <div
+            v-for="(item, index) in tableData"
+            :key="index"
+            class="agent-group none-group"
+            :class="{even: (index % 2 === 0), odd: (index % 2 !== 0)}"
+          >
+            <div class="groups">
+              <div class="w-100 d-flex list-row in-group">
+                <div class="list-item info">
+                  <div class="name list-sub-item d-flex align-items-center">
+                    <span class="icon">
+                      <div class="fas gold">
+                        <svg-icon icon-class="user" style="height: 1.5rem;width: 1.5rem;" />
+                      </div>
                     </span>
-                  </span>
-                </div>
-                <div class="agent-list-detail">
-                  <div class="game-halls">
-                    <div v-if="item.open" class="halls">
-                      <div class="halls-row d-flex">
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span class="hall-name">{{ $t('__liveGame') }}</span>
-                            </div>
-                          </div>
-                          <div class="halls-value">
-                            <div class="d-flex align-items-center justify-content-end" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="halls-row d-flex">
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ $t('__betAmount') }}</span>
-                            </div>
-                          </div>
-                          <div class="halls-value">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ item.betAmount }}</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ $t('__validBetAmount') }}</span>
-                            </div>
-                          </div>
-                          <div class="halls-value">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ item.validBetAmount }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="halls-row d-flex">
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span class="text-parent">none</span>
-                            </div>
-                          </div>
-                          <div class="halls-value">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span style="word-break: keep-all; white-space: nowrap;">
-                                <span
-                                  :class="{
-                                    'text-red': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) > 0) || item.netPL > 0),
-                                    'text-blue': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) < 0) || item.netPL < 0)}"
-                                >
-                                  {{ item.winLossRateLabel }}
-                                </span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ $t('__result') }}</span>
-                            </div>
-                          </div>
-                          <div class="halls-value">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span :class="{'text-red': item.winLoss > 0, 'text-blue': item.winLoss < 0}">{{ item.winLossLabel }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="halls-row d-flex">
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ `${$t('__rollingRate')}%` }}</span>
-                            </div>
-                          </div>
-                          <div class="halls-value">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span style="word-break: keep-all; white-space: nowrap;">
-                                <span>{{ item.rollingCommissionLabel }}</span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ $t('__rollingCommission') }}</span>
-                            </div>
-                          </div>
-                          <div class="halls-value">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span :class="{'text-red': Number(item.rollingCommission) > 0, 'text-blue': Number(item.rollingCommission) < 0}">{{ item.rollingCommissionLabel }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="halls-row d-flex align-items-end">
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ `${$t('__rate')}%` }}</span>
-                            </div>
-                          </div>
-                          <div class="halls-value">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>
-                                <span>{{ item.commissionRate }}</span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ $t('__totalAmount') }}</span>
-                            </div>
-                          </div>
-                          <div class="halls-value">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="halls-row d-flex">
-                        <div class="halls-col align-items-end">
-                          <div class="halls-label text-right">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ $t('__commitSuperiorsValidBetAmount') }}</span>
-                            </div>
-                          </div>
-                          <div class="halls-value text-right">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>
-                                <span>{{ item.commitSuperiorsValidBetAmount }}</span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="halls-col align-items-end">
-                          <div class="halls-label text-right">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span>{{ $t('__toSuperior') }}</span>
-                            </div>
-                          </div>
-                          <div class="halls-value text-right">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span :class="{'text-red': Number(item.toSuperior) > 0, 'text-blue': Number(item.toSuperior) < 0}">{{ item.toSuperiorLabel }}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div v-if="item.open" class="bottom-line" />
-                  </div>
-                  <div class="list-sub-item d-flex align-items-center">
-                    <div class="list-sub-item-col text-right">
-                      <span class="label">{{ $t('__validBetAmount') }}</span>
-                      <span class="value">
-                        <span>{{ item.validBetAmount }}</span>
+                    <span>
+                      <router-link :to="`/winLossReport/winLossReport/${item.agentId}`">
+                        <span class="text-link text-underline" @click.stop="setSearchTime(item.agentId)">{{ item.agent }}</span>
+                      </router-link>
+                      <span>
+                        {{ `[${$t('__level')}:` }}
+                        <span class="text-link">{{ `${$t('__agent')}]` }}</span>
                       </span>
+                    </span>
+                  </div>
+                  <div class="agent-list-detail">
+                    <div class="game-halls">
+                      <div v-if="item.open" class="halls">
+                        <div class="halls-row d-flex">
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span class="hall-name">{{ $t('__liveGame') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end" />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="halls-row d-flex">
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__betAmount') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ item.betAmount }}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__validBetAmount') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ item.validBetAmount }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="halls-row d-flex">
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span class="text-parent">none</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span style="word-break: keep-all; white-space: nowrap;">
+                                  <span
+                                    :class="{
+                                      'text-red': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) > 0) || item.netPL > 0),
+                                      'text-blue': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) < 0) || item.netPL < 0)}"
+                                  >
+                                    {{ item.winLossRateLabel }}
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__result') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span :class="{'text-red': item.winLoss > 0, 'text-blue': item.winLoss < 0}">{{ item.winLossLabel }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="halls-row d-flex">
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ `${$t('__rollingRate')}%` }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span style="word-break: keep-all; white-space: nowrap;">
+                                  <span>{{ item.rollingCommissionLabel }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__rollingCommission') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span :class="{'text-red': Number(item.rollingCommission) > 0, 'text-blue': Number(item.rollingCommission) < 0}">{{ item.rollingCommissionLabel }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="halls-row d-flex align-items-end">
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ `${$t('__rate')}%` }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>
+                                  <span>{{ item.commissionRate }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__totalAmount') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="halls-row d-flex">
+                          <div class="halls-col align-items-end">
+                            <div class="halls-label text-right">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__commitSuperiorsValidBetAmount') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value text-right">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>
+                                  <span>{{ item.commitSuperiorsValidBetAmount }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="halls-col align-items-end">
+                            <div class="halls-label text-right">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__toSuperior') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value text-right">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span :class="{'text-red': Number(item.toSuperior) > 0, 'text-blue': Number(item.toSuperior) < 0}">{{ item.toSuperiorLabel }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-if="item.open" class="bottom-line" />
                     </div>
-                    <div class="win-loss list-sub-item-col text-right">
-                      <div class="to-superiors">
-                        <span class="label">{{ $t('__result') }}</span>
-                        <span class="value" style="position: relative;">
-                          <span :class="{'text-red': item.winLoss > 0, 'text-blue': item.winLoss < 0}">{{ item.winLossLabel }}</span>
-                          <span class="w-rate">
-                            <span
-                              :class="{
-                                'text-red': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) > 0) || item.netPL > 0),
-                                'text-blue': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) < 0) || item.netPL < 0)}"
-                            >
-                              {{ item.winLossRateLabel }}
+                    <div class="list-sub-item d-flex align-items-center">
+                      <div class="list-sub-item-col text-right">
+                        <span class="label">{{ $t('__validBetAmount') }}</span>
+                        <span class="value">
+                          <span>{{ item.validBetAmount }}</span>
+                        </span>
+                      </div>
+                      <div class="win-loss list-sub-item-col text-right">
+                        <div class="to-superiors">
+                          <span class="label">{{ $t('__result') }}</span>
+                          <span class="value" style="position: relative;">
+                            <span :class="{'text-red': item.winLoss > 0, 'text-blue': item.winLoss < 0}">{{ item.winLossLabel }}</span>
+                            <span class="w-rate">
+                              <span
+                                :class="{
+                                  'text-red': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) > 0) || item.netPL > 0),
+                                  'text-blue': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) < 0) || item.netPL < 0)}"
+                              >
+                                {{ item.winLossRateLabel }}
+                              </span>
                             </span>
                           </span>
-                        </span>
+                        </div>
                       </div>
-                    </div>
-                    <div class="list-sub-item-icon-col-with-icon">
-                      <div class="ctrl" :class="{'exp': item.open}" @click.stop="remarkExpand(item)">
-                        <div class="item-inner">
-                          <div :class="{'d-none': item.open}">
-                            <svg-icon class="fas text-gray" icon-class="more" style="height: 2.16667rem;width: 2.16667rem;" />
-                          </div>
-                          <div :class="{'d-none': !item.open}">
-                            <svg-icon class="fas text-gray" icon-class="up" style="height: 1.83333rem;width: 1.83333rem;" />
+                      <div class="list-sub-item-icon-col-with-icon">
+                        <div class="ctrl" :class="{'exp': item.open}" @click.stop="remarkExpand(item)">
+                          <div class="item-inner">
+                            <div :class="{'d-none': item.open}">
+                              <svg-icon class="fas text-gray" icon-class="more" style="height: 2.16667rem;width: 2.16667rem;" />
+                            </div>
+                            <div :class="{'d-none': !item.open}">
+                              <svg-icon class="fas text-gray" icon-class="up" style="height: 1.83333rem;width: 1.83333rem;" />
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="list-sub-item d-flex align-items-end">
-                    <div class="win-loss list-sub-item-col text-right">
-                      <span class="label">{{ $t('__rollingCommission') }}</span>
-                      <span class="value">
-                        <span :class="{'text-red': Number(item.rollingCommission) > 0, 'text-blue': Number(item.rollingCommission) < 0}">{{ item.rollingCommissionLabel }}</span>
-                      </span>
-                    </div>
-                    <div class="to-superiors list-sub-item-col text-right">
-                      <div class="to-superiors">
-                        <span class="label">{{ $t('__totalAmount') }}</span>
+                    <div class="list-sub-item d-flex align-items-end">
+                      <div class="win-loss list-sub-item-col text-right">
+                        <span class="label">{{ $t('__rollingCommission') }}</span>
                         <span class="value">
-                          <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
+                          <span :class="{'text-red': Number(item.rollingCommission) > 0, 'text-blue': Number(item.rollingCommission) < 0}">{{ item.rollingCommissionLabel }}</span>
                         </span>
                       </div>
+                      <div class="to-superiors list-sub-item-col text-right">
+                        <div class="to-superiors">
+                          <span class="label">{{ $t('__totalAmount') }}</span>
+                          <span class="value">
+                            <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="list-sub-item d-flex align-items-end">
-                    <div class="win-loss list-sub-item-col text-right">
-                      <span class="label">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
-                      <span class="value">
-                        <span>{{ item.commitSuperiorsValidBetAmount }}</span>
-                      </span>
-                    </div>
-                    <div class="to-superiors list-sub-item-col text-right">
-                      <div class="to-superiors">
-                        <span class="label">{{ $t('__toSuperior') }}</span>
+                    <div class="list-sub-item d-flex align-items-end">
+                      <div class="win-loss list-sub-item-col text-right">
+                        <span class="label">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
                         <span class="value">
-                          <span :class="{'text-red': Number(item.toSuperior) > 0, 'text-blue': Number(item.toSuperior) < 0}">{{ item.toSuperiorLabel }}</span>
+                          <span>{{ item.commitSuperiorsValidBetAmount }}</span>
                         </span>
+                      </div>
+                      <div class="to-superiors list-sub-item-col text-right">
+                        <div class="to-superiors">
+                          <span class="label">{{ $t('__toSuperior') }}</span>
+                          <span class="value">
+                            <span :class="{'text-red': Number(item.toSuperior) > 0, 'text-blue': Number(item.toSuperior) < 0}">{{ item.toSuperiorLabel }}</span>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -262,10 +264,11 @@
               </div>
             </div>
           </div>
-        </div>
+        </template>
+        <div v-else class="no-result">{{ $t('__noInformation') }}</div>
       </div>
     </div>
-    <div class="page-total">
+    <div v-if="tableData.length > 0" class="page-total">
       <div class="w-100 list-row">
         <div class="list-item">
           <div class="name list-sub-item d-flex align-items-center">
@@ -422,4 +425,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+#app .profit-report .profit-list {
+    background-color: transparent;
+}
+
 </style>

@@ -1,80 +1,256 @@
 <template>
   <div>
-    <div ref="container" class="view-container">
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
-            v-for="(item, index) in tableData"
-            :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
-          >
-            <template v-if="device === 'mobile'">
-              <div class="wrap" @click="remarkExpand(item)">
-                <div class="expand">
-                  <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
-                  <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />
-                </div>
-                <div>
-                  <router-link :to="`/memberBet/memberBet/${item.member_id}?searchTime=${searchTime}`">
-                    <el-button class="bg-normal stroke" size="mini">
-                      {{ item.member }}
-                    </el-button>
+    <div class="profit-list player">
+      <div>
+        <div v-if="tableData.length > 0" class="agent-group">
+          <div class="groups">
+            <div
+              v-for="(item, index) in tableData"
+              :key="index"
+              class="w-100 d-flex list-row in-group"
+              :class="{even: (index % 2 === 0), odd: (index % 2 !== 0)}"
+            >
+              <div class="list-item info">
+                <div class="name list-sub-item d-flex align-items-center">
+                  <span class="icon">
+                    <div class="fas gold">
+                      <svg-icon icon-class="user" style="height: 1.5rem;width: 1.5rem;" />
+                    </div>
+                  </span>
+                  <router-link :to="`/memberBet/memberBet/${item.member_id}`">
+                    <span class="text-link text-underline">{{ item.member }}</span>
                   </router-link>
                 </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__gameType')}` }}</span>
-                  <span class="content">{{ item.gameType }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__betAmount')}` }}</span>
-                  <span class="content">{{ item.betAmount }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__winLoss')}` }}</span>
-                  <span class="content" :class="{positive: item.winLoss >= 0, negative: item.winLoss < 0}">{{ item.winLossLabel }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__winLossRate')}` }}</span>
-                  <span class="content positive">{{ item.winLossRate }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ `${$t('__validBetAmount')}` }}</span>
-                  <span class="content">{{ item.validBetAmount }}</span>
-                </div>
-                <template v-if="item.open">
-                  <div class="item">
-                    <span class="header">{{ `${$t('__rollingRate')}` }}</span>
-                    <span class="content">{{ item.rollingRate }}</span>
+                <div class="agent-list-detail">
+                  <div class="game-halls">
+                    <div v-if="item.open" class="halls">
+                      <div class="halls-row d-flex">
+                        <div class="halls-col">
+                          <div class="halls-label">
+                            <div class="d-flex align-items-center justify-content-end">
+                              <span class="hall-name">{{ $t('__liveGame') }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="halls-row d-flex">
+                        <div class="halls-col">
+                          <div class="halls-label text-right">
+                            <span>{{ $t('__betAmount') }}</span>
+                          </div>
+                          <div class="halls-value text-right">
+                            <span>{{ item.betAmount }}</span>
+                          </div>
+                        </div>
+                        <div class="halls-col">
+                          <div class="halls-label text-right">
+                            <span>{{ $t('__validBetAmount') }}</span>
+                          </div>
+                          <div class="halls-value text-right">
+                            <span>{{ item.validBetAmount }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="halls-row d-flex">
+                        <div class="halls-col">
+                          <div class="halls-label">
+                            <div class="d-flex align-items-center justify-content-end">
+                              <span class="text-parent">none</span>
+                            </div>
+                          </div>
+                          <div class="halls-value">
+                            <div class="d-flex align-items-center justify-content-end">
+                              <span style="word-break: keep-all; white-space: nowrap;">
+                                <span
+                                  :class="{
+                                    'text-red': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) > 0) || item.netPL > 0),
+                                    'text-blue': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) < 0) || item.netPL < 0)}"
+                                >
+                                  {{ item.winLossRateLabel }}
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="halls-col">
+                          <div class="halls-label text-right">
+                            <span>{{ $t('__result') }}</span>
+                          </div>
+                          <div class="halls-value text-right">
+                            <span :class="{'text-red': item.winLoss > 0, 'text-blue': item.winLoss < 0}">{{ item.winLossLabel }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="halls-row d-flex">
+                        <div class="halls-col">
+                          <div class="halls-label text-right">
+                            <span>{{ $t('__rollingRate') }}</span>
+                          </div>
+                          <div class="halls-value text-right">
+                            <span>{{ item.rollingCommissionLabel }}</span>
+                          </div>
+                        </div>
+                        <div class="halls-col">
+                          <div class="halls-label text-right">
+                            <span>{{ $t('__rollingCommission') }}</span>
+                          </div>
+                          <div class="halls-value text-right">
+                            <span :class="{'text-red': Number(item.rollingCommission) > 0, 'text-blue': Number(item.rollingCommission) < 0}">{{ item.rollingCommissionLabel }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="halls-row d-flex">
+                        <div class="halls-col" />
+                        <div class="halls-col">
+                          <div class="halls-label align-items-center text-right">
+                            <span>{{ $t('__totalAmount') }}</span>
+                          </div>
+                          <div class="halls-value text-right">
+                            <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div v-if="item.open" class="bottom-line" />
                   </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__rollingCommission')}` }}</span>
-                    <span class="content">{{ item.rollingCommission }}</span>
+                </div>
+                <div class="list-sub-item d-flex align-items-center">
+                  <div class="list-sub-item-col win-loss text-right">
+                    <span class="label">{{ $t('__validBetAmount') }}</span>
+                    <span class="value">
+                      <span>{{ item.validBetAmount }}</span>
+                    </span>
                   </div>
-                  <div class="item">
-                    <span class="header">{{ `${$t('__totalAmount')}` }}</span>
-                    <span class="content" :class="{positive: item.netPL >= 0, negative: item.netPL < 0}">{{ item.netPLLabel }}</span>
+                  <div class="list-sub-item-col win-loss text-right">
+                    <span class="label">{{ $t('__result') }}</span>
+                    <span class="value" style="position: relative;">
+                      <span :class="{'text-red': item.winLoss > 0, 'text-blue': item.winLoss < 0}">{{ item.winLossLabel }}</span>
+                      <span class="w-rate">
+                        <span
+                          :class="{
+                            'text-red': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) > 0) || item.netPL > 0),
+                            'text-blue': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) < 0) || item.netPL < 0)}"
+                        >
+                          {{ item.winLossRateLabel }}
+                        </span>
+                      </span>
+                    </span>
                   </div>
-                </template>
+                </div>
+                <div class="list-sub-item d-flex align-items-center">
+                  <div class="list-sub-item-col win-loss text-right">
+                    <span class="label">{{ $t('__rollingCommission') }}</span>
+                    <span class="value">
+                      <span :class="{'text-red': Number(item.rollingCommission) > 0, 'text-blue': Number(item.rollingCommission) < 0}">{{ item.rollingCommissionLabel }}</span>
+                    </span>
+                  </div>
+                  <div class="list-sub-item-col win-loss text-right">
+                    <span class="label">{{ $t('__totalAmount') }}</span>
+                    <span class="value">
+                      <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
+                    </span>
+                  </div>
+                </div>
+                <div class="ctrl" :class="{'exp': item.open}" @click.stop="remarkExpand(item)">
+                  <div class="item-inner">
+                    <div :class="{'d-none': item.open}">
+                      <svg-icon class="fas text-gray" icon-class="more" style="height: 2.16667rem;width: 2.16667rem;" />
+                    </div>
+                    <div :class="{'d-none': !item.open}">
+                      <svg-icon class="fas text-gray" icon-class="up" style="height: 1.83333rem;width: 1.83333rem;" />
+                    </div>
+                  </div>
+                </div>
               </div>
-            </template>
+            </div>
+          </div>
+          <div v-if="tableData.length < totalCount" class="more_btn_space">
+            <div v-if="tableData.length >= totalCount" class="search_more">
+              <span>{{ $t("__noMoreInformation") }}</span>
+            </div>
+            <div v-else class="search_more">
+              <span class="search_more_btn" @click.stop="moreInfo">{{ $t("__searchMoreValue") }}</span>
+            </div>
           </div>
         </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        <div v-else class="no-result">{{ $t('__noInformation') }}</div>
       </div>
     </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
+    <div v-if="tableData.length > 0" class="page-total">
+      <div class="w-100 list-row">
+        <div class="list-item">
+          <div class="name list-sub-item d-flex align-items-center">
+            <span class="text-link text-golden">{{ $t('__subtotalCount') }}</span>
+          </div>
+          <div class="item-content list-sub-item d-flex flex-wrap align-items-end">
+            <div class="page-item mb-2 is-amount">
+              <span class="label">{{ $t('__validBetAmount') }}</span>
+              <span class="value">
+                <span>{{ subtotalCountData.validBetAmount }}</span>
+              </span>
+            </div>
+            <div class="page-item mb-2 is-amount">
+              <span class="label">{{ $t('__result') }}</span>
+              <span class="value" style="position: relative;">
+                <span :class="{'text-red': subtotalCountData.winLoss > 0, 'text-blue': subtotalCountData.winLoss < 0}">{{ subtotalCountData.winLossLabel }}</span>
+                <span class="w-rate">
+                  <span
+                    :class="{
+                      'text-red': (((subtotalCountData.netPL === 0 || subtotalCountData.netPL === '-') && Number(subtotalCountData.winLossRate) > 0) || subtotalCountData.netPL > 0),
+                      'text-blue': (((subtotalCountData.netPL === 0 || subtotalCountData.netPL === '-') && Number(subtotalCountData.winLossRate) < 0) || subtotalCountData.netPL < 0)}"
+                  >
+                    {{ subtotalCountData.winLossRateLabel }}
+                  </span>
+                </span>
+              </span>
+            </div>
+            <div class="page-item mb-2 is-amount" />
+            <div class="page-item mb-2 is-amount">
+              <span class="label">{{ $t('__totalAmount') }}</span>
+              <span class="value">
+                <span :class="{'text-red': Number(subtotalCountData.netPL) > 0, 'text-blue': Number(subtotalCountData.netPL) < 0}">{{ subtotalCountData.netPLLabel }}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-100 list-row">
+        <div class="list-item">
+          <div class="name list-sub-item d-flex align-items-center">
+            <span class="text-link text-golden">{{ $t('__totalCount') }}</span>
+          </div>
+          <div class="item-content list-sub-item d-flex flex-wrap align-items-end">
+            <div class="page-item mb-2 is-amount">
+              <span class="label">{{ $t('__validBetAmount') }}</span>
+              <span class="value">
+                <span>{{ totalCountData.validBetAmount }}</span>
+              </span>
+            </div>
+            <div class="page-item mb-2 is-amount">
+              <span class="label">{{ $t('__result') }}</span>
+              <span class="value" style="position: relative;">
+                <span :class="{'text-red': totalCountData.winLoss > 0, 'text-blue': totalCountData.winLoss < 0}">{{ totalCountData.winLossLabel }}</span>
+                <span class="w-rate">
+                  <span
+                    :class="{
+                      'text-red': (((totalCountData.netPL === 0 || totalCountData.netPL === '-') && Number(totalCountData.winLossRate) > 0) || totalCountData.netPL > 0),
+                      'text-blue': (((totalCountData.netPL === 0 || totalCountData.netPL === '-') && Number(totalCountData.winLossRate) < 0) || totalCountData.netPL < 0)}"
+                  >
+                    {{ totalCountData.winLossRateLabel }}
+                  </span>
+                </span>
+              </span>
+            </div>
+            <div class="page-item mb-2 is-amount" />
+            <div class="page-item mb-2 is-amount">
+              <span class="label">{{ $t('__totalAmount') }}</span>
+              <span class="value">
+                <span :class="{'text-red': Number(totalCountData.netPL) > 0, 'text-blue': Number(totalCountData.netPL) < 0}">{{ totalCountData.netPLLabel }}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -100,22 +276,25 @@ export default {
   },
   data() {
     return {
-      agentId: null
+      agentId: null,
+      subtotalCountData: {},
+      totalCountData: {},
+      pageSizeCount: 1
     }
   },
   computed: {
     ...mapGetters([
       'device'
-    ]),
-    searchTime() {
-      const searchTime = []
-      this.payoutTime.forEach(element => {
-        searchTime.push(getFullDate(element))
-      })
-      return searchTime
-    }
+    ])
   },
   methods: {
+    moreInfo() {
+      this.pageSizeCount++;
+      this.handleCurrentChange(1)
+    },
+    setSearchTime(member_id) {
+      localStorage.setItem(`memberBet${member_id}`, this.payoutTime.toString())
+    },
     remarkExpand(row) {
       const obj = this.tableData.find(item => item.member === row.member);
       this.$nextTick(() => {
@@ -125,13 +304,14 @@ export default {
     },
     // 父物件呼叫
     onSearch(agentId) {
+      this.pageSizeCount = 1
       this.agentId = agentId
       this.handleCurrentChange(this.currentPage)
     },
     onSubmit() {
       const data = {
         page: this.currentPage,
-        rowsCount: this.pageSize,
+        rowsCount: this.pageSize * this.pageSizeCount,
         payoutTime: [],
         agentId: this.agentId
       }
@@ -140,14 +320,17 @@ export default {
       })
       this.setDataLoading(true)
       memberWinLossReportSearch(data).then((res) => {
-        this.tableData = res.rows
-        this.tableData.forEach(element => {
+        res.rows.forEach(element => {
           element.betAmount = numberFormat(element.betAmount)
           element.winLossLabel = numberFormat(element.winLoss)
+          element.winLossRateLabel = `${numberFormat(element.winLossRate)}%`
           element.validBetAmount = numberFormat(element.validBetAmount)
-          element.rollingCommission = numberFormat(element.rollingCommission)
+          element.rollingCommissionLabel = numberFormat(element.rollingCommission)
           element.netPLLabel = numberFormat(element.netPL)
         })
+        this.tableData = res.rows.slice(0, res.rows.length - 2)
+        this.subtotalCountData = res.rows[res.rows.length - 2]
+        this.totalCountData = res.rows[res.rows.length - 1]
         this.totalCount = res.totalCount
         this.$emit('handleRespone')
       }).catch(() => {
@@ -162,34 +345,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view {
-  &-container {
-    &-table {
-      &-row {
-        .wrap {
-          position: relative;
-          .item {
-            .header {
-              width: 50%;
-            }
-          }
-        }
-      }
-    }
-  }
-}
 
-.expand {
-  position: absolute;
-  right: 0;
-}
-
-.stroke {
-  padding: 0;
-  font-size: 16px;
-  color: #ce9600;
-  font-weight: bold;
-  border-bottom: 1px solid #ce9600;
-  vertical-align: top;
-}
 </style>

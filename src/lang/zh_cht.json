@@ -303,5 +303,6 @@
     "__updateDate": "更新時間",
     "__level": "級別",
     "__agentOrSubAccount": "代理帳號/子帳號",
-    "__searchMoreValue": "瀏覽更多"
+    "__searchMoreValue": "瀏覽更多",
+    "__noMoreInformation": "沒有更多資料"
 }

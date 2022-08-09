@@ -8,10 +8,11 @@ export default {
       tableData: [],
       allDataByClient: [],
       totalCount: 0,
-      pageSize: 25,
+      pageSize: 10,
       currentPage: 1,
-      pageSizes: [10, 20, 30, 40],
-      paginationPagerCount: 5
+      pageSizes: [50, 100, 200, 300, 500],
+      paginationPagerCount: 7,
+      pageSizeCount: 1
     }
   },
   computed: {
