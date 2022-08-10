@@ -8,7 +8,7 @@ export default {
       tableData: [],
       allDataByClient: [],
       totalCount: 0,
-      pageSize: 10,
+      pageSize: 25,
       currentPage: 1,
       pageSizes: [50, 100, 200, 300, 500],
       paginationPagerCount: 7,

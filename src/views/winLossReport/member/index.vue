@@ -164,7 +164,7 @@
               </div>
             </div>
           </div>
-          <div v-if="tableData.length < totalCount" class="more_btn_space">
+          <div v-if="totalCount > pageSize" class="more_btn_space">
             <div v-if="tableData.length >= totalCount" class="search_more">
               <span>{{ $t("__noMoreInformation") }}</span>
             </div>
