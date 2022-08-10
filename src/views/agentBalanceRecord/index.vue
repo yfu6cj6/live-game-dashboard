@@ -1,286 +1,150 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
-        <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-date-picker
-                v-model="searchTime"
-                type="datetimerange"
-                align="right"
-                unlink-panels
-                :range-separator="$t('__to')"
-                :start-placeholder="`${$t('__operationTime')}(${$t('__start')})`"
-                :end-placeholder="`${$t('__operationTime')}(${$t('__end')})`"
-                :picker-options="pickerOptions"
-              />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.type" multiple filterable :collapse-tags="typeCollapse" :placeholder="$t('__recordType')">
-                <el-option v-for="item in searchItems.type" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.ip" placeholder="IP" type="url" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.orderNumber" :placeholder="$t('__transactionNumber')" />
-            </p>
-            <p class="optionItem">
-              <el-checkbox v-model="fuzzyMatchingByOrderNumber" class="red-tick checkbox" :label="$t('__fuzzyMatching')" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.agents" multiple filterable :collapse-tags="agentsCollapse" :placeholder="$t('__agent')">
-                <el-option v-for="item in searchItems.agents" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
+  <div v-loading="dataLoading" class="agentBalanceRecord">
+    <template v-if="device === 'mobile'">
+      <div class="bg-black">
+        <div class="search_frame">
+          <div class="d-flex align-items-center day_frame">
+            <el-date-picker
+              v-model="searchTime"
+              type="datetimerange"
+              align="right"
+              unlink-panels
+              class="search_frame_size"
+              :range-separator="$t('__to')"
+              :start-placeholder="`${$t('__operationTime')}(${$t('__start')})`"
+              :end-placeholder="`${$t('__operationTime')}(${$t('__end')})`"
+              :picker-options="pickerOptions"
+            />
+            <span>
+              <div class="d-flex align-items-center more_option text-yellow" @click.stop="searchFormOpen = !searchFormOpen">
+                <svg-icon v-if="searchFormOpen" class="icon" icon-class="less" />
+                <svg-icon v-else class="icon" icon-class="add" />
+                <span>{{ $t('__options') }}</span>
+              </div>
+            </span>
           </div>
-          <div class="view-container-seachForm-operate">
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="handleCurrentChange(1)">{{ $t("__search") }}</el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">{{ $t("__searchAndExport") }}</el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">{{ $t("__moreSearch") }}</el-button>
-            </p>
+          <div class="d-flex search_options">
+            <div class="d-flex flex-wrap w-100">
+              <div class="d-flex justify-content-between align-items-center search_option_width">
+                <div class="field">
+                  <el-select
+                    v-model="searchForm.type"
+                    class="d-flex flex-wrap justify-content-between align-items-center option"
+                    multiple
+                    :collapse-tags="typeCollapse"
+                    :placeholder="$t('__recordType')"
+                  >
+                    <el-option v-for="item in searchItems.type" :key="item.key" :label="item.nickname" :value="item.key" />
+                  </el-select>
+                </div>
+                <div class="field">
+                  <el-input v-model="searchForm.ip" class="d-flex flex-wrap justify-content-between align-items-center option" placeholder="IP" type="url" />
+                </div>
+              </div>
+              <div v-if="searchFormOpen" class="d-flex flex-column justify-content-between align-items-center search_option_width">
+                <div class="d-flex justify-content-between align-items-center search_option_width">
+                  <div class="field">
+                    <el-input v-model="searchForm.orderNumber" class="option" :placeholder="$t('__transactionNumber')" />
+                  </div>
+                  <div class="field">
+                    <el-checkbox v-model="fuzzyMatchingByOrderNumber" class="checkbox option" :label="$t('__fuzzyMatching')" />
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center search_option_width">
+                  <div class="field w-100">
+                    <el-select v-model="searchForm.agents" class="option" multiple :collapse-tags="agentsCollapse" :placeholder="$t('__agent')">
+                      <el-option v-for="item in searchItems.agents" :key="item.key" :label="item.nickname" :value="item.key" />
+                    </el-select>
+                  </div>
+                </div>
+              </div>
+              <div class="search_btn_frame">
+                <el-button class="bg-yellow search_btn" size="mini" @click="handleCurrentChange(1)">{{ $t("__search") }}</el-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      -
+    </template>
+    <div v-if="tableData.length > 0">
+      <div
+        v-for="(item, index) in tableData"
+        :key="index"
+        :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+      >
+        <template v-if="device === 'mobile'">
+          <div class="data_content w-100">
+            <div :class="{'expand_ctrl more_open': !item.open, 'expand_ctrl more_close': item.open}" @click.stop="remarkExpand(item)">
+              <svg-icon v-if="item.open" class="more_close" icon-class="up" />
+              <svg-icon v-else class="more_open" icon-class="more" />
+            </div>
+            <div class="d-flex flex-wrap justify-content-between base">
+              <div class="d-flex flex-colum field">
+                <span class="title">{{ $t('__transactionNumber') }}</span>
+                <span class="news">{{ item.order_number }}</span>
+              </div>
+              <div class="d-flex flex-colum field">
+                <span class="title">{{ $t('__operationTime') }}</span>
+                <span class="news">{{ item.operationTime }}</span>
+              </div>
+              <div class="d-flex flex-colum field">
+                <span class="title">{{ $t('__agent') }}</span>
+                <span class="news text-yellow">{{ item.agent }}</span>
+              </div>
+              <div class="d-flex flex-colum field">
+                <span class="title">{{ $t('__superiorAgent') }}</span>
+                <span class="news text-yellow">{{ item.superiorAgent }}</span>
+              </div>
+              <div class="d-flex flex-colum field">
+                <span class="title">{{ $t('__recordType') }}</span>
+                <span class="news">{{ item.type }}</span>
+              </div>
+              <div class="d-flex flex-colum field">
+                <span class="title text_align_right">{{ $t('__beforeTradeBalance') }}</span>
+                <span class="news text_align_right">{{ item.pre_trade_balance }}</span>
+              </div>
+              <div class="d-flex flex-colum field">
+                <span class="title text_align_right">{{ $t('__income') }}</span>
+                <span :class="{'text_align_right front' : item.income > 0, 'text_align_right news': item.income <= 0}">{{ item.incomeLabel }}</span>
+              </div>
+              <div class="d-flex flex-colum field">
+                <span class="title text_align_right">{{ $t('__payout') }}</span>
+                <span :class="{'back text_align_right' : item.payout < 0, 'news text_align_right': item.payout <= 0}">{{ item.payoutLabel }}</span>
+              </div>
+              <div class="d-flex flex-colum field">
+                <span class="title text_align_right">{{ $t('__afterTradeBalance') }}</span>
+                <span class="news text_align_right">{{ item.balance_after_trade }}</span>
+              </div>
+            </div>
+            <div v-if="item.open" class="d-flex flex-wrap justify-content-between expand">
+              <div class="d-flex flex-colum field">
+                <span class="title">IP</span>
+                <span class="news text-yellow">{{ item.ip }}</span>
+              </div>
+              <div class="d-flex flex-colum field">
+                <span class="title">{{ $t('__operator') }}</span>
+                <span class="news">{{ item.operator }}</span>
+              </div>
+              <div class="d-flex flex-colum field col">
+                <span class="title">{{ $t('__operationMessage') }}</span>
+                <span class="news">{{ item.message }}</span>
+              </div>
+              <div class="d-flex flex-colum field">
+                <span class="title">{{ $t('__counterparty') }}</span>
+                <span class="news">{{ item.counterparty }}</span>
+              </div>
+            </div>
           </div>
         </template>
         <template v-else>
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="handleCurrentChange(currentPage)">{{ $t("__refresh") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-date-picker
-                v-model="searchTime"
-                type="datetimerange"
-                align="right"
-                unlink-panels
-                :range-separator="$t('__to')"
-                :start-placeholder="`${$t('__operationTime')}(${$t('__start')})`"
-                :end-placeholder="`${$t('__operationTime')}(${$t('__end')})`"
-                :picker-options="pickerOptions"
-              />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.type" multiple filterable :collapse-tags="typeCollapse" :placeholder="$t('__recordType')">
-                <el-option v-for="item in searchItems.type" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.ip" placeholder="IP" type="url" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.orderNumber" :placeholder="$t('__transactionNumber')" />
-            </p>
-            <p class="optionItem">
-              <el-checkbox v-model="fuzzyMatchingByOrderNumber" class="red-tick checkbox" :label="$t('__fuzzyMatching')" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.agents" multiple filterable :collapse-tags="agentsCollapse" :placeholder="$t('__agent')">
-                <el-option v-for="item in searchItems.agents" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onReset()">{{ $t("__reset") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="handleCurrentChange(1)">{{ $t("__search") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">{{ $t("__searchAndExport") }}</el-button>
-            </p>
-          </div>
+          -
         </template>
       </div>
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
-            v-for="(item, index) in tableData"
-            :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
-          >
-            <template v-if="device === 'mobile'">
-              <div class="base">
-                <div class="left" @click="remarkExpand(item)">
-                  <div class="item">
-                    <span class="header">{{ $t('__transactionNumber') }}</span>
-                    <span class="content">{{ item.order_number }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__operationTime') }}</span>
-                    <span class="content">{{ item.operationTime }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__counterparty') }}</span>
-                    <span>{{ item.counterparty }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__agent') }}</span>
-                    <span class="content">{{ item.agent }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__income') }}</span>
-                    <span :class="{'front' : item.income > 0}">{{ item.incomeLabel }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__payout') }}</span>
-                    <span :class="{'back' : item.payout < 0}">{{ item.payoutLabel }}</span>
-                  </div>
-                  <div class="expand" @click.stop="remarkExpand(item)">
-                    <svg-icon v-if="item.open" icon-class="up" />
-                    <svg-icon v-else icon-class="more" />
-                  </div>
-                </div>
-                <div class="right" @click="remarkExpand(item)">
-                  <div class="item">
-                    <span class="header">{{ $t('__operator') }}</span>
-                    <span>{{ item.operator }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">IP</span>
-                    <span class="content">{{ item.ip }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__recordType') }}</span>
-                    <span class="content">{{ item.type }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__superiorAgent') }}</span>
-                    <span class="content">{{ item.superiorAgent }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__preTradeBalance') }}</span>
-                    <span class="content">{{ item.pre_trade_balance }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__balanceAfterTrade') }}</span>
-                    <span class="content">{{ item.balance_after_trade }}</span>
-                  </div>
-                </div>
-              </div>
-              <div v-if="item.open" class="mobileExpand" @click="remarkExpand(item)">
-                <div class="item displayItem">
-                  <span class="header">{{ $t('__operator') }}</span>
-                  <span>{{ item.operator }}</span>
-                </div>
-                <div class="item displayItem">
-                  <span class="header">IP</span>
-                  <span class="content">{{ item.ip }}</span>
-                </div>
-                <div class="item displayItem">
-                  <span class="header">{{ $t('__recordType') }}</span>
-                  <span class="content">{{ item.type }}</span>
-                </div>
-                <div class="item displayItem">
-                  <span class="header">{{ $t('__superiorAgent') }}</span>
-                  <span class="content">{{ item.superiorAgent }}</span>
-                </div>
-                <div class="item displayItem">
-                  <span class="header">{{ $t('__preTradeBalance') }}</span>
-                  <span class="content">{{ item.pre_trade_balance }}</span>
-                </div>
-                <div class="item displayItem">
-                  <span class="header">{{ $t('__balanceAfterTrade') }}</span>
-                  <span class="content">{{ item.balance_after_trade }}</span>
-                </div>
-                <div class="item col">
-                  <span class="header">{{ $t('__operationMessage') }}</span>
-                  <span class="content">{{ item.message }}</span>
-                </div>
-              </div>
-            </template>
-            <template v-else>
-              <div class="grid">
-                <div class="item remark c0">
-                  <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                  <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                </div>
-                <div class="item c1">
-                  <span class="header">{{ $t('__transactionNumber') }}</span>
-                  <span class="content">{{ item.order_number }}</span>
-                </div>
-                <div class="item c2">
-                  <span class="header">{{ $t('__operationTime') }}</span>
-                  <span class="content">{{ item.operationTime }}</span>
-                </div>
-                <div class="item c3">
-                  <span class="header">{{ $t('__agent') }}</span>
-                  <span class="content">{{ item.agent }}</span>
-                </div>
-                <div class="item c4">
-                  <span class="header">{{ $t('__recordType') }}</span>
-                  <span class="content">{{ item.type }}</span>
-                </div>
-                <div class="item c5">
-                  <span class="header">IP</span>
-                  <span class="content">{{ item.ip }}</span>
-                </div>
-              </div>
-              <template v-if="item.open">
-                <div class="grid">
-                  <div class="item c1">
-                    <span class="header">{{ $t('__counterparty') }}</span>
-                    <span class="content">{{ item.counterparty }}</span>
-                  </div>
-                  <div class="item c2">
-                    <span class="header">{{ $t('__superiorAgent') }}</span>
-                    <span class="content">{{ item.superiorAgent }}</span>
-                  </div>
-                  <div class="item c3">
-                    <span class="header">{{ $t('__operator') }}</span>
-                    <span class="content">{{ item.operator }}</span>
-                  </div>
-                </div>
-                <div class="grid">
-                  <div class="item c1">
-                    <span class="header">{{ $t('__preTradeBalance') }}</span>
-                    <span class="content">{{ item.pre_trade_balance }}</span>
-                  </div>
-                  <div class="item c2">
-                    <span class="header">{{ $t('__income') }}</span>
-                    <span :class="{'front' : item.income > 0}">{{ item.incomeLabel }}</span>
-                  </div>
-                  <div class="item c3">
-                    <span class="header">{{ $t('__payout') }}</span>
-                    <span :class="{'back' : item.payout < 0}">{{ item.payoutLabel }}</span>
-                  </div>
-                  <div class="item c4">
-                    <span class="header">{{ $t('__balanceAfterTrade') }}</span>
-                    <span class="content">{{ item.balance_after_trade }}</span>
-                  </div>
-                </div>
-                <div class="grid contentWrap">
-                  <div class="item c1">
-                    <span class="header">{{ $t('__content') }}</span>
-                    <span class="content">{{ item.message }}</span>
-                  </div>
-                </div>
-              </template>
-            </template>
-          </div>
-        </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
-      </div>
     </div>
-
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handleCurrentChange"
-      />
-    </div>
+    <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
   </div>
 </template>
 
@@ -438,133 +302,211 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.view {
-  &-container {
-    &-seachForm{
-      &-option{
-        .checkbox{
-          position: relative;
-          top: 50%;
-          transform: translateY(-50%);
-        }
-      }
-    }
-    &-table {
-      &-row {
+<style lang="scss">
+.agentBalanceRecord {
+  overflow:auto;
+  max-height: 100%;
+  position: relative;
+  .search_frame {
+    padding-top: 1.5rem;
+    flex-flow: wrap;
+    .day_frame {
+      padding: 0.41667rem 0.83333rem;
+      .search_frame_size {
         display: flex;
-        flex-direction: column;
-        position: relative;
-        .left{
-          width: 100%;
-          display: flex;
-          flex-direction: column;
+        width: 23.33333rem;
+        justify-content: space-evenly;
+        padding-right: 1.8rem;
+        .el-range-input {
+          font-size: 1rem;
+          padding: 0;
+          margin: 0 0.1rem;
+          width: 41%;
         }
-        .right {
-          width: 0%;
+        .el-range-separator {
+          height: auto !important;
+          line-height: 1 !important;
+          width: 2.08333rem;
+        }
+        .el-input__icon.el-range__close-icon {
           display: none;
-        }
-        .item {
-          .header {
-            width: 100px;
-            min-width: 100px;
-          }
-          &.col {
-            flex-direction: column;
-          }
-          &.displayItem {
-            display: flex;
+          &.el-icon-circle-close {
+            display: none;
           }
         }
-        .expand {
-          position: absolute;
-          top: 5px;
-          right: 5px;
+      }
+      .more_option {
+        width: 5rem;
+        cursor: pointer;
+        line-height: 1;
+        font-size: 1.16667rem;
+        justify-content: space-evenly;
+        text-decoration: underline;
+        .icon {
+          height: 0.916667rem;
+          width: 0.916667rem;
         }
-        .mobileExpand{
-          display: flex;
-          flex-direction: column;
+      }
+    }
+    .search_options {
+      border-bottom: 0.25rem solid #f9c901;
+      position: relative;
+      padding: 0 0.83333rem 0.41667rem 0.83333rem;
+      .option {
+        .el-input.el-input--suffix {
+          font-size: 1rem;
+          height: 100%;
+          .el-input__inner {
+            height: 100%!important;
+          }
         }
-        .front {
-          color: blue;
-          font-weight: bolder;
+        .el-input__inner {
+          font-size: 1rem;
+          height: 2.7rem;
+          padding-left: 0.8rem;
         }
-        .back {
-          color: red;
-          font-weight: bolder;
+        .el-select__tags {
+          .el-select__input {
+            // height: 0!important;
+          }
         }
-        .base + .mobileExpand {
-          margin-top: 5px;
+      }
+    }
+    .search_option_width{
+      width: 23.33333rem;
+    }
+    .field {
+      width: 11.41667rem;
+      .option {
+        width: 100%;
+        margin-right: 0.83333rem;
+        padding-top: 0.41667rem;
+        padding-bottom: 0.41667rem;
+        &.el-select {
+          height: 3.5rem;
         }
+      }
+      .checkbox {
+        margin-left: 2.66667rem;
+        margin-right: auto;
+        .el-checkbox__inner {
+          background-color: transparent;
+          border-color: #f9c901;
+        }
+        .el-checkbox__label {
+          color: white;
+          font-size: 1rem;
+        }
+      }
+    }
+    .search_frame_size {
+      width: 23.33333rem;
+      height: 2.66667rem;
+      &.search_input{
+        &.el-input{
+          .el-input__inner {
+            font-size: 1rem;
+            padding-left: 0.83333rem;
+            height: 2.66667rem;
+            line-height: 2.66667rem;
+            width: 100%;
+          }
+        }
+      }
+    }
+    .search_btn_frame {
+      display: flex;
+      .search_btn {
+        color: #000;
+        background: #f9c901;
+        border: 0.08333rem solid #f9c901;
+        border-radius: 0.25rem;
+        padding: 0.70833rem 0.95833rem;
+        font-size: 1rem;
+        margin: 0.41667rem;
+        font-weight: bold;
+        position: static !important;
+        height: 2.66667rem;
+        width: 5.2rem;
+        align-self: flex-end;
+        margin-left: 0.5rem !important;
       }
     }
   }
-}
 
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .base {
-            display: flex;
-            flex-direction: row;
-            .left,
-            .right {
-              width: 50%;
-              display: flex;
-              flex-direction: column;
-            }
-          }
-          .mobileExpand {
-            .item {
-              &.displayItem {
-                display: none;
-              }
-            }
-          }
-        }
+  .data_content {
+    position: relative;
+    padding: 0.625rem 1.16667rem 0.625rem 1.16667rem;
+    .expand_ctrl {
+      position: absolute;
+      right: 1.3rem;
+      &.more_open {
+        top: 0.83333rem;
       }
+      &.more_close {
+        top: 25.83333rem;
+      }
+      .svg-icon {
+        fill: #a3a3a3;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+    .base {
+      width: 100%;
+      padding: 0;
+      align-items: flex-start;
+    }
+    .field {
+      width: 50%;
+      flex-wrap: wrap;
+      padding-right: 0.41667rem;
+      padding-top: 0.41667rem;
+      padding-bottom: 0.41667rem;
+    }
+    .title {
+      width: 100%;
+      padding-bottom: 0.5rem;
+      font-size: 1.16667rem;
+      color: #6e6e6e;
+      word-break: break-word;
+      &.line_height {
+        line-height: 1.5;
+      }
+    }
+    .news {
+      font-size: 1.16667rem;
+      font-weight: bold;
+      word-break: break-all;
+      &.line_height {
+        line-height: 1.5;
+      }
+    }
+    .front {
+      color: blue;
+      font-weight: bolder;
+    }
+    .back {
+      color: red;
+      font-weight: bolder;
+    }
+    .text_align_right {
+      width: 100%;
+      text-align: right !important;
+      padding-right: 0px !important;
     }
   }
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .grid {
-            display: grid;
-            grid-template-columns: 50px repeat(5, 330px);
-            grid-template-areas:
-            "c0 c1 c2 c3 c4 c5";
-            .c0 {
-              grid-area: c0;
-            }
-            .c1 {
-              grid-area: c1;
-            }
-            .c2 {
-              grid-area: c2;
-            }
-            .c3 {
-              grid-area: c3;
-            }
-            .c4 {
-              grid-area: c4;
-            }
-            .c5 {
-              grid-area: c5;
-            }
-            &.contentWrap {
-              grid-template-areas:
-              ". c1 c1 c1 c1 c1";
-            }
-          }
-        }
-      }
-    }
+  .noInformation {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  .even-row {
+    position: relative;
+    background-color: #fff;
+  }
+  .odd-row {
+    position: relative;
+    background-color: #f4f4f4;
   }
 }
 </style>

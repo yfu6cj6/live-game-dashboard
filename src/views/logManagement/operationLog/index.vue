@@ -286,18 +286,6 @@ export default {
       height: 2.8rem;
       font-weight: bold;
     }
-    .search_bottom {
-      align-items: center;
-      .tips {
-        width: 21.6rem;
-        color: #fff;
-        padding-top: 0;
-      }
-    }
-    .export_btn {
-      margin-left: 0.5rem;
-      font-weight: bold;
-    }
     .search_frame_size {
       width: 23.33333rem;
       height: 2.66667rem;

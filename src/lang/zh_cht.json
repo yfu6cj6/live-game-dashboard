@@ -305,5 +305,7 @@
     "__agentOrSubAccount": "代理帳號/子帳號",
     "__searchMoreValue": "瀏覽更多",
     "__noMoreInformation": "沒有更多資料",
-    "__options": "選項"
+    "__options": "選項",
+    "__beforeTradeBalance": "交易前餘額",
+    "__afterTradeBalance": "交易後餘額"
 }

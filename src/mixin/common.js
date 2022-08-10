@@ -1,7 +1,7 @@
 export default {
   data() {
     return {
-      selectCollapseCount: 3
+      selectCollapseCount: 1
     }
   },
   methods: {
