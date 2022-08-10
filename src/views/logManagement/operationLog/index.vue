@@ -147,8 +147,7 @@ export default {
         }]
       },
       searchTime: defaultSearchTime,
-      showDetail: false,
-      pageSizeCount: 1
+      showDetail: false
     }
   },
   computed: {

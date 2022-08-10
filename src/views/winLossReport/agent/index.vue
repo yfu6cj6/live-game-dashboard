@@ -264,6 +264,16 @@
               </div>
             </div>
           </div>
+          <div v-if="totalCount > pageSize" class="text-center view-more-container bg-white">
+            <template v-if="tableData.length >= totalCount">
+              <span class="border-dark">
+                {{ $t("__noMoreInformation") }}
+              </span>
+            </template>
+            <template v-else>
+              <span class="view-more border-bottom border-dark" @click.stop="moreInfo">{{ $t("__searchMoreValue") }}</span>
+            </template>
+          </div>
         </template>
         <div v-else class="no-result">{{ $t('__noInformation') }}</div>
       </div>
@@ -371,6 +381,10 @@ export default {
     ])
   },
   methods: {
+    moreInfo() {
+      this.pageSizeCount++;
+      this.handleCurrentChange(1)
+    },
     setSearchTime(agentId) {
       localStorage.setItem(`winLossReportSearchTime${agentId}`, this.payoutTime.toString())
     },
@@ -383,13 +397,14 @@ export default {
     },
     // 父物件呼叫
     onSearch(agentId) {
+      this.pageSizeCount = 1
       this.agentId = agentId
       this.handleCurrentChange(this.currentPage)
     },
     onSubmit() {
       const data = {
         page: this.currentPage,
-        rowsCount: this.pageSize,
+        rowsCount: this.pageSize * this.pageSizeCount,
         payoutTime: [],
         agentId: this.agentId
       }

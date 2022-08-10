@@ -164,13 +164,15 @@
               </div>
             </div>
           </div>
-          <div v-if="totalCount > pageSize" class="more_btn_space">
-            <div v-if="tableData.length >= totalCount" class="search_more">
-              <span>{{ $t("__noMoreInformation") }}</span>
-            </div>
-            <div v-else class="search_more">
-              <span class="search_more_btn" @click.stop="moreInfo">{{ $t("__searchMoreValue") }}</span>
-            </div>
+          <div v-if="totalCount > pageSize" class="text-center view-more-container bg-white">
+            <template v-if="tableData.length >= totalCount">
+              <span class="border-dark">
+                {{ $t("__noMoreInformation") }}
+              </span>
+            </template>
+            <template v-else>
+              <span class="view-more border-bottom border-dark" @click.stop="moreInfo">{{ $t("__searchMoreValue") }}</span>
+            </template>
           </div>
         </div>
         <div v-else class="no-result">{{ $t('__noInformation') }}</div>
@@ -278,8 +280,7 @@ export default {
     return {
       agentId: null,
       subtotalCountData: {},
-      totalCountData: {},
-      pageSizeCount: 1
+      totalCountData: {}
     }
   },
   computed: {

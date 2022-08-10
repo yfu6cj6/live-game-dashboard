@@ -56,6 +56,32 @@
     margin-right: 0!important;
 }
 
+.bg-white {
+    background-color: #fff!important;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #dee2e6!important;
+}
+
+.view-more {
+    cursor: pointer;
+    border-bottom: 0.08333rem solid #000;
+    padding-bottom: 0.01667rem;
+}
+
+.border-dark {
+    border-color: #343a40!important;
+}
+
+#app.safari .view-more-container {
+    padding: 1.5rem;
+}
+
+#app .view-more-container {
+    padding: 1.5rem;
+}
+
 #app .el-input__inner,
 #app input {
     line-height: 100%;
