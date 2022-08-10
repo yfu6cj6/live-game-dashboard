@@ -143,6 +143,92 @@
           -
         </template>
       </div>
+      <div v-if="totalCount > pageSize" class="more_btn_space">
+        <div v-if="tableData.length >= totalCount" class="search_more">
+          <span>{{ $t("__noMoreInformation") }}</span>
+        </div>
+        <div v-else class="search_more">
+          <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+        </div>
+      </div>
+      
+      <!-- <div v-if="tableData.length > 0" class="page-total">
+        <div class="w-100 list-row">
+          <div class="list-item">
+            <div class="name list-sub-item d-flex align-items-center">
+              <span class="text-link text-golden">{{ $t('__subtotalCount') }}</span>
+            </div>
+            <div class="item-content list-sub-item d-flex flex-wrap align-items-end">
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__validBetAmount') }}</span>
+                <span class="value">
+                  <span>{{ subtotalCountData.validBetAmount }}</span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__result') }}</span>
+                <span class="value" style="position: relative;">
+                  <span :class="{'text-red': subtotalCountData.winLoss > 0, 'text-blue': subtotalCountData.winLoss < 0}">{{ subtotalCountData.winLossLabel }}</span>
+                  <span class="w-rate">
+                    <span
+                      :class="{
+                        'text-red': (((subtotalCountData.netPL === 0 || subtotalCountData.netPL === '-') && Number(subtotalCountData.winLossRate) > 0) || subtotalCountData.netPL > 0),
+                        'text-blue': (((subtotalCountData.netPL === 0 || subtotalCountData.netPL === '-') && Number(subtotalCountData.winLossRate) < 0) || subtotalCountData.netPL < 0)}"
+                    >
+                      {{ subtotalCountData.winLossRateLabel }}
+                    </span>
+                  </span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount" />
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__totalAmount') }}</span>
+                <span class="value">
+                  <span :class="{'text-red': Number(subtotalCountData.netPL) > 0, 'text-blue': Number(subtotalCountData.netPL) < 0}">{{ subtotalCountData.netPLLabel }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-100 list-row">
+          <div class="list-item">
+            <div class="name list-sub-item d-flex align-items-center">
+              <span class="text-link text-golden">{{ $t('__totalCount') }}</span>
+            </div>
+            <div class="item-content list-sub-item d-flex flex-wrap align-items-end">
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__validBetAmount') }}</span>
+                <span class="value">
+                  <span>{{ 0/*totalCountData.validBetAmount*/ }}</span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__result') }}</span>
+                <span class="value" style="position: relative;">
+                  <span :class="{'text-red': totalCountData.winLoss > 0, 'text-blue': totalCountData.winLoss < 0}">{{ totalCountData.winLossLabel }}</span>
+                  <span class="w-rate">
+                    <span
+                      :class="{
+                        'text-red': (((totalCountData.netPL === 0 || totalCountData.netPL === '-') && Number(totalCountData.winLossRate) > 0) || totalCountData.netPL > 0),
+                        'text-blue': (((totalCountData.netPL === 0 || totalCountData.netPL === '-') && Number(totalCountData.winLossRate) < 0) || totalCountData.netPL < 0)}"
+                    >
+                      {{ totalCountData.winLossRateLabel }}
+                    </span>
+                  </span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount" />
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__totalAmount') }}</span>
+                <span class="value">
+                  <span :class="{'text-red': Number(totalCountData.netPL) > 0, 'text-blue': Number(totalCountData.netPL) < 0}">{{ totalCountData.netPLLabel }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
     </div>
     <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
   </div>
@@ -200,7 +286,8 @@ export default {
       searchTime: defaultSearchTime,
       searchForm: {},
       searchItems: {},
-      fuzzyMatchingByOrderNumber: false
+      fuzzyMatchingByOrderNumber: false,
+      searchFormOpen: false
     }
   },
   computed: {
@@ -364,11 +451,6 @@ export default {
           height: 2.7rem;
           padding-left: 0.8rem;
         }
-        .el-select__tags {
-          .el-select__input {
-            // height: 0!important;
-          }
-        }
       }
     }
     .search_option_width{
@@ -506,6 +588,53 @@ export default {
   .odd-row {
     position: relative;
     background-color: #f4f4f4;
+  }
+  .more_btn_space {
+    padding: 1.5rem;
+    text-align: center;
+    background-color: #fff;
+  }
+  .search_more {
+    width: 100%;
+    height: 4.5rem;
+    .search_more_btn {
+      padding-bottom: 0.01667rem;
+      border-bottom: 1px solid #343a40;
+    }
+  }
+  .page-total {
+    background-color: #e9e9e9;
+    padding: 0.83333rem 1.25rem;
+    position: relative;
+    .page-item {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      font-size: 1.16667rem;
+      width: 50%;
+      &.is-amount {
+        padding-right: 0.83333rem !important;
+        .label {
+          width: 100%;
+          text-align: right !important;
+        }
+        .value {
+          width: 100%;
+          text-align: right !important;
+        }
+      }
+      .label {
+        width: 100%;
+        margin-bottom: 0.41667rem;
+        margin-right: 0;
+        color: #898989;
+      }
+    }
   }
 }
 </style>
