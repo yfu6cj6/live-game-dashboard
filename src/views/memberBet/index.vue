@@ -2,7 +2,7 @@
   <div v-loading="dataLoading" class="scroll-wrap flex-column flex-fill">
     <div class="scroll-inner flex-column flex-fill off">
       <div class="scroll-view flex-column flex-fill">
-        <div class="flex-column flex-fill">
+        <div class="report-theme ab-record all-bet bet-record red-packet flex-column flex-fill">
           <div class="flex-column flex-fill">
             <div class="scroll-wrap flex-column flex-fill flex-column flex-fill">
               <div class="scroll-inner flex-column flex-fill off">
@@ -49,19 +49,54 @@
                             />
                           </div>
                           <span>
-                            <a class="more-opiton text-link text-underline text-yellow align-items-center">
+                            <a class="more-opiton text-link text-underline text-yellow align-items-center" :class="{'d-flex': searchOpen, 'd-none': !searchOpen}" @click.stop="setSearchOpen">
                               <div class="fas label icon d-flex align-items-center yellow">
                                 <svg-icon icon-class="less" style="height: 1.08333rem;width: 1.08333rem;" />
                               </div>
                               {{ $t('__options') }}
                             </a>
-                            <a class="more-opiton text-link text-underline text-yellow align-items-center">
+                            <a class="more-opiton text-link text-underline text-yellow align-items-center" :class="{'d-flex': !searchOpen, 'd-none': searchOpen}" @click.stop="setSearchOpen">
                               <div class="fas label icon d-flex align-items-center yellow">
                                 <svg-icon icon-class="add" style="height: 1.08333rem;width: 1.08333rem;" />
                               </div>
                               {{ $t('__options') }}
                             </a>
                           </span>
+                        </div>
+                      </div>
+                      <div class="filters flex-wrap pl-2 pr-2">
+                        <div class="d-flex w-100">
+                          <div>
+                            <div class="filter-options">
+                              <div class="options gameTypes">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="comp selected-filter custom">
+                                      <el-select
+                                        ref="agentSelect"
+                                        v-model="searchForm.agent_id"
+                                        class="d-flex"
+                                        multiple
+                                        :popper-append-to-body="false"
+                                        :collapse-tags="agentIdCollapse"
+                                        :placeholder="$t('__agent')"
+                                        :popper-class="'custom-dropdown w-auto'"
+                                        @visible-change="test"
+                                      >
+                                        <el-option
+                                          v-for="item in searchItems.agents"
+                                          :key="item.key"
+                                          :label="item.nickname"
+                                          :value="item.key"
+                                        />
+                                      </el-select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -85,15 +120,15 @@ import handlePageChange from '@/mixin/handlePageChange';
 import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime, getLastWeekDateTime,
   getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
-import PlaybackDialog from './playbackDialog';
-import GameResultDialog from '@/components/GameResult/gameResultDialog';
+// import PlaybackDialog from './playbackDialog';
+// import GameResultDialog from '@/components/GameResult/gameResultDialog';
 
 const defaultSearchTimeType = 'betTime'
 const defaultSearchTime = getTodayDateTime()
 
 export default {
   name: 'MemberBet',
-  components: { PlaybackDialog, GameResultDialog },
+  // components: { PlaybackDialog, GameResultDialog },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -149,7 +184,8 @@ export default {
       curGameResultIndex: 0,
       roundInfo: {},
       countInfo: {},
-      scoreCards: []
+      scoreCards: [],
+      searchOpen: false
     }
   },
   computed: {
@@ -225,6 +261,28 @@ export default {
     })
   },
   methods: {
+    test(test) {
+      if (test) {
+        const str = document.createElement('div')
+        str.className = 'el-filter'
+        str.innerHTML = `<input type="text" autocomplete="off" class="el-select__input el-filter_input w-100">
+                          <div class="el-filter_option">
+                            <div class="select-filter">
+                              <div class="inner-box">
+                                <div class="w-100 text-right">
+                                  <span class="text-link">${this.$t('__selectAll')}</span>
+                                  <span class="pl-2 pr-2">|</span>
+                                  <span class="text-link">${this.$t('__clear')}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>`
+        document.getElementsByClassName('custom-dropdown')[0].prepend(str)
+      }
+    },
+    setSearchOpen() {
+      this.searchOpen = !this.searchOpen
+    },
     remarkExpand(row) {
       const obj = this.tableData.find(item => item.order_number === row.order_number);
       this.$nextTick(() => {

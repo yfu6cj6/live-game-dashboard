@@ -307,5 +307,7 @@
     "__noMoreInformation": "沒有更多資料",
     "__options": "選項",
     "__beforeTradeBalance": "交易前餘額",
-    "__afterTradeBalance": "交易後餘額"
+    "__afterTradeBalance": "交易後餘額",
+    "__selectAll": "全選",
+    "__clear": "清除"
 }
