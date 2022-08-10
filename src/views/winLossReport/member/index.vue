@@ -1,163 +1,213 @@
 <template>
   <div>
-    <div class="profit-list player">
+    <div class="profit-list">
       <div>
-        <div v-if="tableData.length > 0" class="agent-group">
-          <div class="groups">
-            <div
-              v-for="(item, index) in tableData"
-              :key="index"
-              class="w-100 d-flex list-row in-group"
-              :class="{even: (index % 2 === 0), odd: (index % 2 !== 0)}"
-            >
-              <div class="list-item info">
-                <div class="name list-sub-item d-flex align-items-center">
-                  <span class="icon">
-                    <div class="fas gold">
-                      <svg-icon icon-class="user" style="height: 1.5rem;width: 1.5rem;" />
-                    </div>
-                  </span>
-                  <router-link :to="`/memberBet/memberBet/${item.member_id}`">
-                    <span class="text-link text-underline">{{ item.member }}</span>
-                  </router-link>
-                </div>
-                <div class="agent-list-detail">
-                  <div class="game-halls">
-                    <div v-if="item.open" class="halls">
-                      <div class="halls-row d-flex">
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span class="hall-name">{{ $t('__liveGame') }}</span>
+        <template v-if="tableData.length > 0">
+          <div
+            v-for="(item, index) in tableData"
+            :key="index"
+            class="agent-group none-group"
+            :class="{even: (index % 2 === 0), odd: (index % 2 !== 0)}"
+          >
+            <div class="groups">
+              <div class="w-100 d-flex list-row in-group">
+                <div class="list-item info">
+                  <div class="name list-sub-item d-flex align-items-center">
+                    <span class="icon">
+                      <div class="fas gold">
+                        <svg-icon icon-class="user" style="height: 1.5rem;width: 1.5rem;" />
+                      </div>
+                    </span>
+                    <span>
+                      <router-link :to="`/memberBet/memberBet/${item.member_id}`">
+                        <span class="text-link text-underline">{{ item.member }}</span>
+                      </router-link>
+                    </span>
+                  </div>
+                  <div class="agent-list-detail">
+                    <div class="game-halls">
+                      <div v-if="item.open" class="halls">
+                        <div class="halls-row d-flex">
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span class="hall-name">{{ $t('__liveGame') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end" />
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="halls-row d-flex">
-                        <div class="halls-col">
-                          <div class="halls-label text-right">
-                            <span>{{ $t('__betAmount') }}</span>
-                          </div>
-                          <div class="halls-value text-right">
-                            <span>{{ item.betAmount }}</span>
-                          </div>
-                        </div>
-                        <div class="halls-col">
-                          <div class="halls-label text-right">
-                            <span>{{ $t('__validBetAmount') }}</span>
-                          </div>
-                          <div class="halls-value text-right">
-                            <span>{{ item.validBetAmount }}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="halls-row d-flex">
-                        <div class="halls-col">
-                          <div class="halls-label">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span class="text-parent">none</span>
+                        <div class="halls-row d-flex">
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__betAmount') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ item.betAmount }}</span>
+                              </div>
                             </div>
                           </div>
-                          <div class="halls-value">
-                            <div class="d-flex align-items-center justify-content-end">
-                              <span style="word-break: keep-all; white-space: nowrap;">
-                                <span
-                                  :class="{
-                                    'text-red': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) > 0) || item.netPL > 0),
-                                    'text-blue': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) < 0) || item.netPL < 0)}"
-                                >
-                                  {{ item.winLossRateLabel }}
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__validBetAmount') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ item.validBetAmount }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="halls-row d-flex">
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span class="text-parent">none</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span style="word-break: keep-all; white-space: nowrap;">
+                                  <span
+                                    :class="{
+                                      'text-red': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) > 0) || item.netPL > 0),
+                                      'text-blue': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) < 0) || item.netPL < 0)}"
+                                  >
+                                    {{ item.winLossRateLabel }}
+                                  </span>
                                 </span>
-                              </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__result') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span :class="{'text-red': item.winLoss > 0, 'text-blue': item.winLoss < 0}">{{ item.winLossLabel }}</span>
+                              </div>
                             </div>
                           </div>
                         </div>
-                        <div class="halls-col">
-                          <div class="halls-label text-right">
-                            <span>{{ $t('__result') }}</span>
+                        <div class="halls-row d-flex">
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ `${$t('__rollingRate')}%` }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span style="word-break: keep-all; white-space: nowrap;">
+                                  <span>{{ item.rollingCommissionLabel }}</span>
+                                </span>
+                              </div>
+                            </div>
                           </div>
-                          <div class="halls-value text-right">
-                            <span :class="{'text-red': item.winLoss > 0, 'text-blue': item.winLoss < 0}">{{ item.winLossLabel }}</span>
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__rollingCommission') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span :class="{'text-red': Number(item.rollingCommission) > 0, 'text-blue': Number(item.rollingCommission) < 0}">{{ item.rollingCommissionLabel }}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="halls-row d-flex align-items-end">
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end" />
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>
+                                  <span>{{ item.commissionRate }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__totalAmount') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div class="halls-row d-flex">
-                        <div class="halls-col">
-                          <div class="halls-label text-right">
-                            <span>{{ $t('__rollingRate') }}</span>
-                          </div>
-                          <div class="halls-value text-right">
-                            <span>{{ item.rollingCommissionLabel }}</span>
-                          </div>
-                        </div>
-                        <div class="halls-col">
-                          <div class="halls-label text-right">
-                            <span>{{ $t('__rollingCommission') }}</span>
-                          </div>
-                          <div class="halls-value text-right">
-                            <span :class="{'text-red': Number(item.rollingCommission) > 0, 'text-blue': Number(item.rollingCommission) < 0}">{{ item.rollingCommissionLabel }}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="halls-row d-flex">
-                        <div class="halls-col" />
-                        <div class="halls-col">
-                          <div class="halls-label align-items-center text-right">
-                            <span>{{ $t('__totalAmount') }}</span>
-                          </div>
-                          <div class="halls-value text-right">
-                            <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
-                          </div>
-                        </div>
-                      </div>
+                      <div v-if="item.open" class="bottom-line" />
                     </div>
-                    <div v-if="item.open" class="bottom-line" />
-                  </div>
-                </div>
-                <div class="list-sub-item d-flex align-items-center">
-                  <div class="list-sub-item-col win-loss text-right">
-                    <span class="label">{{ $t('__validBetAmount') }}</span>
-                    <span class="value">
-                      <span>{{ item.validBetAmount }}</span>
-                    </span>
-                  </div>
-                  <div class="list-sub-item-col win-loss text-right">
-                    <span class="label">{{ $t('__result') }}</span>
-                    <span class="value" style="position: relative;">
-                      <span :class="{'text-red': item.winLoss > 0, 'text-blue': item.winLoss < 0}">{{ item.winLossLabel }}</span>
-                      <span class="w-rate">
-                        <span
-                          :class="{
-                            'text-red': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) > 0) || item.netPL > 0),
-                            'text-blue': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) < 0) || item.netPL < 0)}"
-                        >
-                          {{ item.winLossRateLabel }}
+                    <div class="list-sub-item d-flex align-items-center">
+                      <div class="list-sub-item-col text-right">
+                        <span class="label">{{ $t('__validBetAmount') }}</span>
+                        <span class="value">
+                          <span>{{ item.validBetAmount }}</span>
                         </span>
-                      </span>
-                    </span>
-                  </div>
-                </div>
-                <div class="list-sub-item d-flex align-items-center">
-                  <div class="list-sub-item-col win-loss text-right">
-                    <span class="label">{{ $t('__rollingCommission') }}</span>
-                    <span class="value">
-                      <span :class="{'text-red': Number(item.rollingCommission) > 0, 'text-blue': Number(item.rollingCommission) < 0}">{{ item.rollingCommissionLabel }}</span>
-                    </span>
-                  </div>
-                  <div class="list-sub-item-col win-loss text-right">
-                    <span class="label">{{ $t('__totalAmount') }}</span>
-                    <span class="value">
-                      <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
-                    </span>
-                  </div>
-                </div>
-                <div class="ctrl" :class="{'exp': item.open}" @click.stop="remarkExpand(item)">
-                  <div class="item-inner">
-                    <div :class="{'d-none': item.open}">
-                      <svg-icon class="fas text-gray" icon-class="more" style="height: 2.16667rem;width: 2.16667rem;" />
+                      </div>
+                      <div class="win-loss list-sub-item-col text-right">
+                        <div class="to-superiors">
+                          <span class="label">{{ $t('__result') }}</span>
+                          <span class="value" style="position: relative;">
+                            <span :class="{'text-red': item.winLoss > 0, 'text-blue': item.winLoss < 0}">{{ item.winLossLabel }}</span>
+                            <span class="w-rate">
+                              <span
+                                :class="{
+                                  'text-red': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) > 0) || item.netPL > 0),
+                                  'text-blue': (((item.netPL === 0 || item.netPL === '-') && Number(item.winLossRate) < 0) || item.netPL < 0)}"
+                              >
+                                {{ item.winLossRateLabel }}
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="list-sub-item-icon-col-with-icon">
+                        <div class="ctrl" :class="{'exp': item.open}" @click.stop="remarkExpand(item)">
+                          <div class="item-inner">
+                            <div :class="{'d-none': item.open}">
+                              <svg-icon class="fas text-gray" icon-class="more" style="height: 2.16667rem;width: 2.16667rem;" />
+                            </div>
+                            <div :class="{'d-none': !item.open}">
+                              <svg-icon class="fas text-gray" icon-class="up" style="height: 1.83333rem;width: 1.83333rem;" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div :class="{'d-none': !item.open}">
-                      <svg-icon class="fas text-gray" icon-class="up" style="height: 1.83333rem;width: 1.83333rem;" />
+                    <div class="list-sub-item d-flex align-items-end">
+                      <div class="win-loss list-sub-item-col text-right">
+                        <span class="label">{{ $t('__rollingCommission') }}</span>
+                        <span class="value">
+                          <span :class="{'text-red': Number(item.rollingCommission) > 0, 'text-blue': Number(item.rollingCommission) < 0}">{{ item.rollingCommissionLabel }}</span>
+                        </span>
+                      </div>
+                      <div class="to-superiors list-sub-item-col text-right">
+                        <div class="to-superiors">
+                          <span class="label">{{ $t('__totalAmount') }}</span>
+                          <span class="value">
+                            <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -174,7 +224,7 @@
               <span class="view-more border-bottom border-dark" @click.stop="moreInfo">{{ $t("__searchMoreValue") }}</span>
             </template>
           </div>
-        </div>
+        </template>
         <div v-else class="no-result">{{ $t('__noInformation') }}</div>
       </div>
     </div>
@@ -321,6 +371,7 @@ export default {
       })
       this.setDataLoading(true)
       memberWinLossReportSearch(data).then((res) => {
+        const open = this.tableData.filter(item => item.open).map(item => item.member_id)
         res.rows.forEach(element => {
           element.betAmount = numberFormat(element.betAmount)
           element.winLossLabel = numberFormat(element.winLoss)
@@ -328,6 +379,7 @@ export default {
           element.validBetAmount = numberFormat(element.validBetAmount)
           element.rollingCommissionLabel = numberFormat(element.rollingCommission)
           element.netPLLabel = numberFormat(element.netPL)
+          element.open = open.includes(element.member_id)
         })
         this.tableData = res.rows.slice(0, res.rows.length - 2)
         this.subtotalCountData = res.rows[res.rows.length - 2]
@@ -346,5 +398,188 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.halls {
+  margin-bottom: 0.41667rem;
+  .halls-row {
+    width: 100%;
+    .halls-col {
+      padding-right: 0.41667rem;
+      padding-top: 0.41667rem;
+      padding-bottom: 0.41667rem;
+      -webkit-box-flex: 0;
+      -ms-flex: none;
+      flex: none;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      width: 45%;
+      .halls-label {
+        width: 100%;
+        padding-bottom: 0.5rem;
+        color: #6e6e6e;
+        word-break: break-word;
+      }
+      .halls-value {
+        font-weight: bold;
+        word-break: break-word;
+        width: 100%;
+      }
+    }
+    .hall-name {
+      font-size: 1.08333rem;
+      color: #000;
+      font-weight: bold;
+    }
+  }
+}
 
+#app .profit-report {
+  .profit-list {
+    background-color: transparent;
+  }
+  .agent-group {
+    -webkit-transform: translateZ(0);
+    background-color: transparent;
+    &.odd {
+      background-color: #e9e9e9;
+    }
+    .groups {
+      padding: 0.83333rem;
+      .in-group {
+        background: #fff;
+        margin-bottom: 1.25rem;
+        -webkit-box-shadow: 0px 1px 3px 1px #a6a6a6;
+        box-shadow: 0px 1px 3px 1px #a6a6a6;
+        padding: 0.08333rem 0.41667rem 0.41667rem 0.41667rem !important;
+        .agent-list-detail {
+          width: 100%;
+        }
+      }
+      .ctrl {
+        position: absolute;
+        right: 0;
+        top: 0.83333rem;
+        z-index: 1;
+        &.exp {
+          top: auto !important;
+          bottom: 0.83333rem;
+        }
+      }
+    }
+    &.none-group {
+      .groups {
+        padding: 0 0.83333rem 0.83333rem 0.83333rem;
+        .in-group {
+          margin-bottom: 0.41667rem;
+        }
+      }
+    }
+    &:first-child {
+      &.none-group {
+        .groups {
+          padding: 0.83333rem;
+        }
+      }
+    }
+  }
+  .list-row {
+    padding-top: 0;
+    padding-bottom: 0;
+    -webkit-transform: translateZ(0);
+    .list-item {
+      margin-top: 0.41667rem;
+    }
+  }
+  .list-sub-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    word-break: break-word;
+    margin-bottom: 0.83333rem;
+    width: 100%;
+    margin-top: 0.83333rem;
+    .list-sub-item-col {
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      width: 45%;
+      padding-right: 0.41667rem;
+      .label {
+        width: 100%;
+        margin-right: 0.41667rem;
+        color: #6e6e6e;
+        width: 100%;
+        display: block;
+        padding-bottom: 0.5rem;
+      }
+      .value {
+        width: 100%;
+        font-weight: bold;
+        width: 100%;
+        display: block;
+      }
+      &.name {
+        font-weight: bold;
+        font-size: 1.16667rem;
+        width: 100% !important;
+        padding-bottom: 0.41667rem;
+        border-bottom: 0.08333rem solid #ce9600;
+      }
+    }
+    .w-rate {
+      position: absolute;
+      top: 2px;
+      left: 100%;
+      white-space: nowrap;
+      word-break: keep-all;
+      text-align: left;
+      padding-left: 0.41667rem;
+      -webkit-transform: scale(0.6);
+      transform: scale(0.6);
+      -webkit-transform-origin: left center;
+      transform-origin: left center;
+    }
+  }
+  .bottom-line {
+    display: block;
+    border-bottom: 0.08333rem solid #ddd;
+    width: 85%;
+    margin: 0.41667rem auto 0 auto;
+    padding: 0rem 0.41667rem;
+  }
+}
+
+.page-total {
+  background-color: #e9e9e9;
+  padding: 0.83333rem 1.25rem;
+  position: relative;
+  .page-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 1.16667rem;
+    width: 50%;
+    &.is-amount {
+      padding-right: 0.83333rem !important;
+      .label {
+        width: 100%;
+        text-align: right !important;
+      }
+      .value {
+        width: 100%;
+        text-align: right !important;
+      }
+    }
+    .label {
+      width: 100%;
+      margin-bottom: 0.41667rem;
+      margin-right: 0;
+      color: #898989;
+    }
+  }
+}
 </style>

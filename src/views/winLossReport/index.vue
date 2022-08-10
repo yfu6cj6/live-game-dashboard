@@ -268,10 +268,10 @@
                                   <div class="ctrl" :class="{'exp': agentInfo.open}" @click.stop="remarkExpand">
                                     <div class="item-inner">
                                       <div :class="{'d-none': agentInfo.open}">
-                                        <svg-icon class="fas text-gray" icon-class="more" />
+                                        <svg-icon class="fas text-gray" icon-class="more" style="height: 2.16667rem;width: 2.16667rem;" />
                                       </div>
                                       <div :class="{'d-none': !agentInfo.open}">
-                                        <svg-icon class="fas text-gray" icon-class="up" />
+                                        <svg-icon class="fas text-gray" icon-class="up" style="height: 1.83333rem;width: 1.83333rem;" />
                                       </div>
                                     </div>
                                   </div>
@@ -776,7 +776,55 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.total {
+.halls {
+  margin-bottom: 0.41667rem;
+  .halls-row {
+    width: 100%;
+    .halls-col {
+      padding-right: 0.41667rem;
+      padding-top: 0.41667rem;
+      padding-bottom: 0.41667rem;
+      -webkit-box-flex: 0;
+      -ms-flex: none;
+      flex: none;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      width: 45%;
+      .halls-label {
+        width: 100%;
+        padding-bottom: 0.5rem;
+        color: #6e6e6e;
+        word-break: break-word;
+      }
+      .halls-value {
+        font-weight: bold;
+        word-break: break-word;
+        width: 100%;
+      }
+    }
+  }
+  .hall-name {
+    color: #000;
+    font-weight: bold;
+  }
+}
+#app .total {
+  padding-bottom: 0.41667rem;
+  position: relative;
+  .w-rate {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    white-space: nowrap;
+    word-break: keep-all;
+    text-align: left;
+    padding-left: 0.41667rem;
+    -webkit-transform: scale(0.75);
+    transform: scale(0.75);
+    -webkit-transform-origin: left center;
+    transform-origin: left center;
+  }
   .betnum {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -785,6 +833,37 @@ export default {
     -ms-flex-align: center;
     align-items: center;
     width: 7.5rem;
+  }
+}
+
+#app .total-details {
+  padding-bottom: 0.41667rem;
+  .details-row {
+    padding: 0rem 1.25rem 0rem 1.25rem;
+    margin-right: 0.41667rem;
+    .details-col {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: start;
+      -ms-flex-align: start;
+      align-items: flex-start;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      width: 45%;
+      margin-bottom: 0.41667rem;
+      margin-top: 0.41667rem;
+      .details-label {
+        width: 100%;
+        padding-bottom: 0.5rem;
+        color: #6e6e6e;
+      }
+      .details-value {
+        width: 100%;
+        margin-left: auto;
+        font-weight: bold;
+      }
+    }
   }
 }
 </style>

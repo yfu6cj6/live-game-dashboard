@@ -130,6 +130,7 @@ export default {
       top: 45px;
       left: 0;
       z-index: 12;
+      visibility: visible;
     }
 
     .appMain {
