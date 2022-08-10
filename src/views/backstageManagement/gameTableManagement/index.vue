@@ -274,7 +274,6 @@ import { gameTableSearch, gameTableCreate, gameTableEdit, gameTableDelete,
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import EditDialog from './editDialog'
 import ChipSettingDialog from './chipSettingDialog'
 import ChipEditDialog from './chipEditDialog'
@@ -282,7 +281,7 @@ import ChipEditDialog from './chipEditDialog'
 export default {
   name: 'GameTableManagement',
   components: { EditDialog, ChipSettingDialog, ChipEditDialog },
-  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
       dialogEnum: Object.freeze({

@@ -13,7 +13,7 @@ const getDefaultState = () => {
     nickname: '',
     permissions: [],
     balance: '',
-    agentFullName: '',
+    agentAccount: '',
     permission_routes: [],
     isAdminister: null,
     isAgentSubAccount: null
@@ -30,7 +30,7 @@ const mutations = {
     state.nickname = data.user.nickname
     state.permissions = data.permissions
     state.balance = data.user.agent.balance
-    state.agentFullName = `${data.user.agentName}(${data.user.agent.user.account})`
+    state.agentAccount = data.user.agent.user.account
     state.isAdminister = data.roles.some(role => role === 'Administer')
     state.isAgentSubAccount = data.roles.some(role => role === 'AgentSubAccount')
   },

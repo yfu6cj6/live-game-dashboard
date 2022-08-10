@@ -101,7 +101,6 @@ import { operationLogSearch, operationLogExport } from '@/api/logManagement/oper
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime, getLastWeekDateTime,
   getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate';
 import { mapGetters } from 'vuex'
@@ -110,7 +109,7 @@ const defaultSearchTime = getTodayDateTime()
 
 export default {
   name: 'OperationLog',
-  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
       pickerOptions: {

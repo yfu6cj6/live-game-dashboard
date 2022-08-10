@@ -490,7 +490,6 @@
 <script>
 import { agentWinLossReportExport, agentWinLossReportBetMemberCount } from '@/api/winLossReport/agent'
 import viewCommon from '@/mixin/viewCommon';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import Agent from './agent/index'
 import Member from './member/index'
 import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime, getLastWeekDateTime,
@@ -502,7 +501,7 @@ const defaultSearchTime = getTodayDateTime()
 export default {
   name: 'WinLossReport',
   components: { Agent, Member },
-  mixins: [viewCommon, handleSearchFormOpen],
+  mixins: [viewCommon],
   data() {
     return {
       pickerOptions: {

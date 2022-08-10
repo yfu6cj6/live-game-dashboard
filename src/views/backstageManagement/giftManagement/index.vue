@@ -216,7 +216,6 @@ import { giftSearch, giftCreate, giftEdit } from '@/api/backstageManagement/gift
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { numberFormat } from '@/utils/numberFormat';
 import EditDialog from './editDialog';
 import SortDialog from './sortDialog';
@@ -224,7 +223,7 @@ import SortDialog from './sortDialog';
 export default {
   name: 'GiftManagement',
   components: { EditDialog, SortDialog },
-  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
       dialogEnum: Object.freeze({

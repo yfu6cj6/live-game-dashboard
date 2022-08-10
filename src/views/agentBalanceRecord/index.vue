@@ -153,7 +153,6 @@ import { agentBalanceRecordSearch, agentBalanceRecordExport } from '@/api/agentB
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime, getLastWeekDateTime,
   getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
 import { numberFormat } from '@/utils/numberFormat'
@@ -162,7 +161,7 @@ const defaultSearchTime = getTodayDateTime()
 
 export default {
   name: 'AgentBalanceRecord',
-  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
       pickerOptions: {

@@ -112,14 +112,13 @@ import { whitelistSearch, whitelistCreate, whitelistEdit, whitelistDelete } from
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import EditDialog from './editDialog';
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'IpWhitelist',
   components: { EditDialog },
-  mixins: [handlePageChange, handleSearchFormOpen, common, viewCommon],
+  mixins: [handlePageChange, common, viewCommon],
   data() {
     return {
       dialogEnum: Object.freeze({

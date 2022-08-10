@@ -541,7 +541,6 @@ import { gameResultSearch, gameResultGetPlaybackUrl, gameResultGetPlaybackPic, g
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { getFullDate, getYesterdayDateTime, getTodayDateTime, getLastWeekDateTime,
   getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
@@ -565,7 +564,7 @@ const roundInfo = {
 export default {
   name: 'GameResult',
   components: { OperateDialog, PlaybackDialog },
-  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
       pickerOptions: {

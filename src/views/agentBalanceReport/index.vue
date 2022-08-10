@@ -119,14 +119,13 @@ import { agentBalanceReportExport } from '@/api/agentBalanceReport/agent'
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { getFullDateString } from '@/utils/transDate'
 import { numberFormat } from '@/utils/numberFormat'
 
 export default {
   name: 'AgentBalanceReport',
   components: { },
-  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
       tableEnum: Object.freeze({

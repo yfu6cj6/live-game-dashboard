@@ -292,7 +292,6 @@ import { announcementSearch, announcementCreate, announcementEdit, announcementD
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import EditDialog from './editDialog'
 import { mapGetters } from 'vuex'
 import { getFullDate, getNextDate } from '@/utils/transDate'
@@ -300,7 +299,7 @@ import { getFullDate, getNextDate } from '@/utils/transDate'
 export default {
   name: 'AnnouncementManagement',
   components: { EditDialog },
-  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
       pickerOptions: {

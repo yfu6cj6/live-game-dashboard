@@ -257,7 +257,6 @@ import { accountSearch, accountCreate, accountEdit, resetPassword } from '@/api/
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { mapGetters } from 'vuex'
 import EditDialog from './editDialog'
 import ResetPasswordDialog from './resetPasswordDialog'
@@ -270,7 +269,7 @@ const defaultForm = {
 export default {
   name: 'AccountManagement',
   components: { EditDialog, ResetPasswordDialog },
-  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
       dialogEnum: Object.freeze({

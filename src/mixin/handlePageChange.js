@@ -16,33 +16,10 @@ export default {
     }
   },
   computed: {
-    pagerCount() {
-      return this.paginationPagerCount;
-    }
   },
   watch: {
-    currentPage() {
-      // this.$refs.container.scrollTop = 0;
-      // this.$refs.table.scrollTop = 0;
-    }
-  },
-  beforeMount() {
-    window.addEventListener('resize', this.resizeHandler);
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.resizeHandler);
   },
   methods: {
-    resizeHandler() {
-      const vw = window.innerWidth;
-      if (vw <= 768) {
-        this.paginationPagerCount = 5;
-      } else if (vw > 768 && vw < 992) {
-        this.paginationPagerCount = 7;
-      } else {
-        this.paginationPagerCount = 7;
-      }
-    },
     handleSizeChange(val) {
       this.pageSize = val
       this.handleCurrentChange(1)

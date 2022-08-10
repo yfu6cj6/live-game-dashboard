@@ -1,246 +1,78 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
-        <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-select v-model="searchTimeType" filterable class="memberBetTimeType">
-                <el-option v-for="item in memberBetTimeType" :key="item.key" :label="$t(item.nickname)" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-date-picker
-                v-model="searchTime"
-                type="datetimerange"
-                align="right"
-                unlink-panels
-                :range-separator="$t('__to')"
-                :start-placeholder="$t('__startDate')"
-                :end-placeholder="$t('__endDate')"
-                :picker-options="pickerOptions"
-                :default-time="['12:00:00', '11:59:59']"
-              />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.agent_id" multiple filterable :collapse-tags="agentIdCollapse" :placeholder="$t('__agent')">
-                <el-option v-for="item in searchItems.agents" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.member_id" multiple filterable :collapse-tags="memberIdCollapse" :placeholder="$t('__member')">
-                <el-option v-for="item in searchItems.members" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.order_number" :placeholder="$t('__orderNumber')" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.game_type" multiple filterable :collapse-tags="gameTypeCollapse" :placeholder="$t('__gameType')">
-                <el-option v-for="item in searchItems.gameType" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.round_id" :placeholder="$t('__roundId')" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.table_id" multiple filterable :collapse-tags="tableIdCollapse" :placeholder="$t('__tableId')">
-                <el-option v-for="item in searchItems.tables" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.gameResult" multiple filterable :collapse-tags="gameResultCollapse" :placeholder="$t('__gameResult')">
-                <el-option v-for="item in searchItems.gameResult" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.status" multiple filterable :collapse-tags="statusCollapse" :placeholder="$t('__status')">
-                <el-option v-for="item in searchItems.orderStatus" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.game_play" multiple filterable :collapse-tags="gamePlayCollapse" :placeholder="$t('__gamePlay')">
-                <el-option v-for="item in searchItems.game_play" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.bet_amount" type="number" :placeholder="$t('__betAmount')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.payout" type="number" :placeholder="$t('__result')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.valid_bet_amount" type="number" :placeholder="$t('__validBetAmount')" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.device" multiple filterable :collapse-tags="deviceCollapse" :placeholder="$t('__device')">
-                <el-option v-for="item in searchItems.deviceType" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.user_ip" placeholder="IP" />
-            </p>
-          </div>
-          <div class="view-container-seachForm-operate">
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="handleCurrentChange(1)">{{ $t("__search") }}</el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">{{ $t("__searchAndExport") }}</el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
-                {{ $t("__moreSearch") }}
-              </el-button>
-            </p>
-          </div>
-        </template>
-      </div>
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
-            v-for="(item, index) in tableData"
-            :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
-          >
-            <template v-if="device === 'mobile'">
-              <div class="wrap" @click="remarkExpand(item)">
-                <div class="expand">
-                  <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
-                  <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__agent') }}</span>
-                  <span class="content">{{ item.agent }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__member') }}</span>
-                  <span class="content">{{ item.member }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__orderNumber') }}</span>
-                  <span class="content">{{ item.order_number }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__betTime') }}</span>
-                  <span class="content">{{ item.bet_time }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__payoutTime') }}</span>
-                  <span>{{ item.payout_time }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__gameType') }}</span>
-                  <span>{{ item.game_type }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__roundId') }}</span>
-                  <span>{{ item.round_id }}</span>
-                </div>
-                <template v-if="item.open">
-                  <div class="item">
-                    <span class="header">{{ $t('__gameResult') }}</span>
-                    <div class="gameResult" @click.stop="gameResultClick(item.round_id)">
-                      <span
-                        class="mr-5"
-                        :class="{
-                          'banker': item.gameResult.result === 0,
-                          'player': item.gameResult.result === 1,
-                          'tie': item.gameResult.result === 2}"
-                      >
-                        {{ item.gameResult.resultLabel }}
-                      </span>
-                      <span>{{ "[" }}</span>
-                      <span class="mr-5 player">
-                        <span>{{ $t('__player') }}</span>
-                        <span>{{ item.gameResult.player_point }}</span>
-                      </span>
-                      <span class="banker">
-                        <span>{{ $t('__banker') }}</span>
-                        <span>{{ item.gameResult.banker_point }}</span>
-                      </span>
-                      <span>{{ "]" }}</span>
-                    </div>
-                    <div>
-                      <i class="el-icon-picture playbackIcon" @click.stop="onPlaybackPic(item)" />
-                      <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click.stop="onPlaybackUrl(item)">
+  <div v-loading="dataLoading" class="scroll-wrap flex-column flex-fill">
+    <div class="scroll-inner flex-column flex-fill off">
+      <div class="scroll-view flex-column flex-fill">
+        <div class="flex-column flex-fill">
+          <div class="flex-column flex-fill">
+            <div class="scroll-wrap flex-column flex-fill flex-column flex-fill">
+              <div class="scroll-inner flex-column flex-fill off">
+                <div class="scroll-view flex-column flex-fill">
+                  <div class="comp profit-report flex-column flex-fill">
+                    <div class="bg-black w-100">
+                      <div class="pt-3 pl-2 pr-2">
+                        <div class="option">
+                          <span class="prefix-label" />
+                          <div class="comp selected-filter">
+                            <select class="el-select">
+                              <option v-for="item in memberBetTimeType" :key="item.key" :value="item.key">
+                                {{ $t(item.nickname) }}
+                              </option>
+                            </select>
+                            <div class="fas gray-deep">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 63 63"
+                                style="height: 0.916667rem; width: 0.916667rem;"
+                              >
+                                <title>arrow_2</title>
+                                <g id="hGqiqI.tif">
+                                  <path d="M63,10.44,31.74,52.56,0,10.44Z" />
+                                </g>
+                              </svg>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="day-range pl-2 pr-2">
+                        <div class="date-time-picker-box">
+                          <div class="picker datetimerange datetimerange">
+                            <el-date-picker
+                              v-model="searchTime"
+                              type="datetimerange"
+                              align="right"
+                              unlink-panels
+                              :range-separator="$t('__to')"
+                              :start-placeholder="$t('__startDate')"
+                              :end-placeholder="$t('__endDate')"
+                              :picker-options="pickerOptions"
+                              :default-time="['12:00:00', '11:59:59']"
+                            />
+                          </div>
+                          <span>
+                            <a class="more-opiton text-link text-underline text-yellow align-items-center">
+                              <div class="fas label icon d-flex align-items-center yellow">
+                                <svg-icon icon-class="less" style="height: 1.08333rem;width: 1.08333rem;" />
+                              </div>
+                              {{ $t('__options') }}
+                            </a>
+                            <a class="more-opiton text-link text-underline text-yellow align-items-center">
+                              <div class="fas label icon d-flex align-items-center yellow">
+                                <svg-icon icon-class="add" style="height: 1.08333rem;width: 1.08333rem;" />
+                              </div>
+                              {{ $t('__options') }}
+                            </a>
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__status') }}</span>
-                    <span class="status" :class="{'statusOpen': item.status === '已派彩' }">{{ item.status }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__gamePlay') }}</span>
-                    <span>{{ item.game_play }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__betAmount') }}</span>
-                    <span>{{ item.bet_amount }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__result') }}</span>
-                    <span>{{ item.payout }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__validBetAmount') }}</span>
-                    <span>{{ item.valid_bet_amount }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">{{ $t('__device') }}</span>
-                    <span>{{ item.device }}</span>
-                  </div>
-                  <div class="item">
-                    <span class="header">IP</span>
-                    <span>{{ item.ip }}</span>
-                  </div>
-                </template>
+                </div>
               </div>
-            </template>
+            </div>
           </div>
         </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
       </div>
     </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
-    </div>
-    <playbackDialog
-      v-if="curPlaybackIndex === playbackEnum.pic"
-      :title="`${$t('__gameType')}:${selectForm.game_type} ${$t('__roundId')}:${selectForm.round_id}`"
-      :visible="curPlaybackIndex === playbackEnum.pic"
-      :playback-type="playbackEnum.pic"
-      :url="imagePlaybackpic"
-      @close="closePlaybackDialogEven"
-    />
-
-    <playbackDialog
-      v-if="curPlaybackIndex === playbackEnum.video"
-      :title="`${$t('__gameType')}:${selectForm.game_type} ${$t('__roundId')}:${selectForm.round_id}`"
-      :visible="curPlaybackIndex === playbackEnum.video"
-      :playback-type="playbackEnum.video"
-      :url="videoPlaybackUrl"
-      @close="closePlaybackDialogEven"
-    />
-
-    <gameResultDialog
-      :visible="curGameResultIndex === gameResultEnum.resultdialog"
-      :round-info="roundInfo"
-      :count-info="countInfo"
-      :score-cards="scoreCards"
-      @close="closeGameResultEven"
-    />
   </div>
 </template>
 
@@ -250,7 +82,6 @@ import { gameResultGetPlaybackUrl, gameResultGetPlaybackPic, gameResultGetScoreC
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime, getLastWeekDateTime,
   getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
@@ -263,7 +94,7 @@ const defaultSearchTime = getTodayDateTime()
 export default {
   name: 'MemberBet',
   components: { PlaybackDialog, GameResultDialog },
-  mixins: [common, viewCommon, handlePageChange, handleSearchFormOpen],
+  mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
       pickerOptions: {
@@ -378,8 +209,6 @@ export default {
     }
   },
   created() {
-    this.searchFormNormalHeight = "68px";
-    this.resizeHandler();
     this.$store.dispatch('memberBet/setMemberBetTimeType')
     if (this.tempRoute.params?.id !== undefined) {
       this.memberId = parseInt(this.$route.params.id)

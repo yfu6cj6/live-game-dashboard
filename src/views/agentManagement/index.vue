@@ -31,7 +31,6 @@
 <script>
 import { agentTotalPlayerCount } from '@/api/agentManagement/agent'
 import viewCommon from '@/mixin/viewCommon';
-import handleSearchFormOpen from '@/mixin/handleSearchFormOpen';
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
 import Agent from './agent/index'
@@ -39,7 +38,7 @@ import Agent from './agent/index'
 export default {
   name: 'AgentManagement',
   components: { Agent },
-  mixins: [viewCommon, handleSearchFormOpen],
+  mixins: [viewCommon],
   data() {
     return {
       tableEnum: Object.freeze({

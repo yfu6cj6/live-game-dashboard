@@ -28,7 +28,7 @@
                 <span class="strong">Hi,</span>
               </div>
               <div class="value">
-                <span class="strong">{{ nickname }}</span>
+                <span class="strong">{{ account }}</span>
               </div>
             </div>
           </div>
@@ -49,7 +49,7 @@
               <span class="strong">Hi, </span>
             </span>
             <span class="value">
-              <span class="strong">{{ nickname }}</span>
+              <span class="strong">{{ account }}</span>
             </span>
           </div>
           <div class="info-item">
@@ -57,7 +57,7 @@
               <span class="strong">{{ `${$t('__currentAgent')}: ` }}</span>
             </span>
             <span class="value">
-              <span class="strong">{{ agentFullName }}</span>
+              <span class="strong">{{ agentAccount }}</span>
             </span>
           </div>
           <div class="info-item">
@@ -96,8 +96,8 @@ export default {
     ...mapGetters([
       'sidebar',
       'marqueeMsg',
-      'agentFullName',
-      'nickname',
+      'agentAccount',
+      'account',
       'balance',
       'agent_id',
       'device'
