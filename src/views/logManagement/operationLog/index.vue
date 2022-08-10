@@ -83,9 +83,9 @@
           -
         </template>
       </div>
-      <div class="more_btn_space">
-        <div v-if="tableData.length >= maxCount" class="search_more">
-          <span>{{ $t("__noInformation") }}</span>
+      <div v-if="totalCount > pageSize" class="more_btn_space">
+        <div v-if="tableData.length >= totalCount" class="search_more">
+          <span>{{ $t("__noMoreInformation") }}</span>
         </div>
         <div v-else class="search_more">
           <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
@@ -148,7 +148,6 @@ export default {
       },
       searchTime: defaultSearchTime,
       showDetail: false,
-      maxCount: 0,
       pageSizeCount: 1
     }
   },
@@ -201,7 +200,6 @@ export default {
       })
     },
     handleRespone(res) {
-      this.maxCount = res.totalCount;
       this.tableData = res.rows;
       this.showDetail = res.showDetail
       this.totalCount = res.totalCount
