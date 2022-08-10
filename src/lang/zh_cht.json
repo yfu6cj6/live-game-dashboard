@@ -304,5 +304,6 @@
     "__level": "級別",
     "__agentOrSubAccount": "代理帳號/子帳號",
     "__searchMoreValue": "瀏覽更多",
-    "__noMoreInformation": "沒有更多資料"
+    "__noMoreInformation": "沒有更多資料",
+    "__options": "選項"
 }

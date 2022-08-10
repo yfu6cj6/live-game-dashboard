@@ -438,6 +438,7 @@ export default {
     background-color: transparent;
   }
   .agent-group {
+    transform: translateZ(0);
     -webkit-transform: translateZ(0);
     background-color: transparent;
     &.odd {
@@ -485,6 +486,7 @@ export default {
   .list-row {
     padding-top: 0;
     padding-bottom: 0;
+    transform: translateZ(0);
     -webkit-transform: translateZ(0);
     .list-item {
       margin-top: 0.41667rem;

@@ -748,60 +748,6 @@ button, input, optgroup, select, textarea {
       }
     }
   }
-  .game-result-list {
-    background: #fff;
-    .agent-group {
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-    }
-    .list-row {
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      padding: 0.41667rem 1.25rem;
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-      .list-item {
-        position: relative;
-        width: 100%;
-        &.info {
-          -webkit-box-flex: 1;
-          -ms-flex: 1;
-          flex: 1;
-          .list-sub-item {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            word-break: break-all;
-            margin-right: 0.83333rem;
-          }
-          .name {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            word-break: break-all;
-            .fas,
-            .text-link,
-            .icon {
-              color: #ce9600;
-            }
-          }
-        }
-        .icon {
-          margin-right: 0.41667rem;
-        }
-        .label {
-          margin-right: 0.41667rem;
-          color: #6e6e6e;
-        }
-      }
-    }
-    .no-result {
-      min-height: 50vh;
-      padding: 1.66667rem;
-      text-align: center;
-    }
-  }
   .superior-summary {
     background-color: #fff;
   }
