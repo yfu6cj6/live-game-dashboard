@@ -63,7 +63,7 @@
                 </div>
               </div>
               <div class="search_btn_frame">
-                <el-button class="bg-yellow search_btn" size="mini" @click="handleCurrentChange(1)">{{ $t("__search") }}</el-button>
+                <el-button class="bg-yellow search_btn" size="mini" @click.stop="search()">{{ $t("__search") }}</el-button>
               </div>
             </div>
           </div>
@@ -155,7 +155,6 @@
           <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
         </div>
       </div>
-      
       <!-- <div v-if="tableData.length > 0" class="page-total">
         <div class="w-100 list-row">
           <div class="list-item">
@@ -305,11 +304,13 @@ export default {
   watch: {
     'searchTime': function() {
       this.$nextTick(() => {
+        this.pageSizeCount = 1
         this.handleCurrentChange(1)
       })
     }
   },
   created() {
+    this.pageSizeCount = 1
     this.handleCurrentChange(this.currentPage)
   },
   methods: {
@@ -319,6 +320,10 @@ export default {
         obj.open = !obj.open;
         this.tableData = JSON.parse(JSON.stringify(this.tableData))
       })
+    },
+    moreInfo() {
+      this.pageSizeCount++;
+      this.handleCurrentChange(1);
     },
     numberFormatStr(number) {
       return numberFormat(number)
@@ -349,9 +354,14 @@ export default {
       })
     },
     onReset() {
+      this.pageSizeCount = 1
       this.searchForm = {}
       this.fuzzyMatchingByOrderNumber = false
       this.searchTime = defaultSearchTime
+      this.handleCurrentChange(1)
+    },
+    search() {
+      this.pageSizeCount = 1;
       this.handleCurrentChange(1)
     },
     handleRequest(data) {
@@ -380,7 +390,7 @@ export default {
     onSubmit() {
       const data = JSON.parse(JSON.stringify(this.searchForm))
       data.page = this.currentPage
-      data.rowsCount = this.pageSize
+      data.rowsCount = this.pageSize * this.pageSizeCount
       this.handleRequest(data)
       memberBalanceRecordSearch(data).then((res) => {
         this.handleRespone(res)
