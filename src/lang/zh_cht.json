@@ -205,7 +205,7 @@
     "__operationMessage": "操作訊息",
     "__enterKeys": "輸入關鍵字",
     "__fuzzyMatching": "模糊查詢",
-    "__subordinateAgentsBalance": "下線代理總額度",
+    "__subordinateAgentsBalance": "下線代理商總額度",
     "__subordinateMembersBalance": "下線玩家總額度",
     "__unassignedBalance": "未分配額度",
     "__totalBalance": "總額度",
@@ -322,6 +322,5 @@
     "__totalIncome": "總收入:",
     "__totalExpenditure": "總支出:",
     "__incomeAndExpenditure": "總收支:",
-    "__totalDataAmount": "共 {0} 筆",
-    "__subAgentTotalBalance": "下線代理商總額度"
+    "__totalDataAmount": "共 {0} 筆"
 }
