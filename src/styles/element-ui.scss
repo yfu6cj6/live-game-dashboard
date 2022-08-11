@@ -21,6 +21,18 @@
   font-size: 1.4rem;
   display: inline-block;
   width: 100%;
+  &.is-disabled {
+    .el-input__inner {
+      background-color: #f5f7fa;
+      border-color: #e4e7ed;
+      color: #c0c4cc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.el-input--small {
+  font-size: 1.3rem;
 }
 
 .el-input__icon {
@@ -211,7 +223,7 @@
     outline: none;
     display: inline-block;
     height: 100%;
-    margin: 0 0.45rem;
+    margin: 0 0.65rem;
     padding: 0;
     width: 39%;
     text-align: center;
@@ -223,8 +235,9 @@
     color: #c0c4cc;
     width: 2.0833325rem;
     display: inline-block;
-    float: right;
+    // float: right;
     line-height: 2.6666656rem;
+    display: none;
   }
 }
 
@@ -308,18 +321,6 @@
   padding: 0;
   position: relative;
   margin: 0;
-}
-
-.el-tabs__nav {
-  white-space: nowrap;
-  position: relative;
-  -webkit-transition: -webkit-transform .3s;
-  transition: -webkit-transform .3s;
-  transition: transform .3s;
-  transition: transform .3s,-webkit-transform .3s;
-  float: left;
-  z-index: 2;
-  background: #fff;
 }
 
 .el-tabs__item {
@@ -412,4 +413,245 @@
       stroke: $yellow;
     }
   }
+}
+
+.el-picker-panel {
+  color: #606266;
+  border: 0.0833333rem solid #e4e7ed;
+  -webkit-box-shadow: 0 0.1666666rem 0.9999996rem 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 0.1666666rem 0.9999996rem 0 rgb(0 0 0 / 10%);
+  background: #fff;
+  border-radius: 0.3333332rem;
+  line-height: 2.499999rem;
+  margin: 0.4166665rem 0;
+  width: 53.8333118rem;
+  .el-button {
+    &.el-picker-panel__link-btn {
+      background-color: #f9c901 !important;
+      color: #000 !important;
+      border: 1px solid #f9c901 !important;
+    }
+  }
+}
+
+.el-date-range-picker {
+  .el-picker-panel__body {
+    min-width: 42.7499829rem;
+  }
+}
+
+.el-date-range-picker__time-header {
+  position: relative;
+  border-bottom: 0.0833333rem solid #e4e4e4;
+  font-size: .9999996rem;
+  padding: 0.6666664rem 0.4166665rem 0.4166665rem;
+  display: table;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.el-date-range-picker__time-header>.el-icon-arrow-right {
+  font-size: 1.666666rem;
+  vertical-align: middle;
+  display: table-cell;
+  color: #303133;
+}
+
+.el-date-range-picker__time-picker-wrap {
+  position: relative;
+  display: table-cell;
+  padding: 0 0.4166665rem;
+}
+
+.el-time-panel,
+.el-time-range-picker__body {
+  border-radius: 0.1666666rem;
+  border: 0.0833333rem solid #e4e7ed;
+}
+
+.el-time-panel {
+  margin: 0.4166665rem 0;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0.1666666rem 0.9999996rem 0 rgb(0 0 0 / 10%);
+  box-shadow: 0 0.1666666rem 0.9999996rem 0 rgb(0 0 0 / 10%);
+  position: absolute;
+  width: 14.999994rem;
+  left: 0;
+  z-index: 1000;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+.el-time-spinner__wrapper {
+  max-height: 15.833327rem;
+  overflow: auto;
+  display: inline-block;
+  width: 50%;
+  vertical-align: top;
+  position: relative;
+}
+
+.el-time-spinner__item {
+  height: 2.6666656rem;
+  line-height: 2.6666656rem;
+  font-size: .9999996rem;
+  color: #606266;
+  &.active:not(.disabled) {
+    color: #303133;
+    font-weight: 700;
+  }
+}
+
+.el-scrollbar__bar {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.2rem;
+  z-index: 1;
+  border-radius: 0.4rem;
+  opacity: 0;
+  -webkit-transition: opacity .12s ease-out;
+  transition: opacity .12s ease-out;
+  &.is-horizontal {
+    height: 0.6rem;
+    left: 0.2rem;
+  }
+  &.is-vertical {
+    width: 0.6rem;
+    top: 0.2rem;
+  }
+}
+
+.el-time-panel__footer {
+  border-top: 0.0833333rem solid #e4e4e4;
+  padding: 0.3333332rem;
+  height: 2.9999988rem;
+  line-height: 2.0833325rem;
+  text-align: right;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.el-time-panel__btn {
+  border: none;
+  line-height: 2.3333324rem;
+  padding: 0 0.4166665rem;
+  margin: 0 0.4166665rem;
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  font-size: .9999996rem;
+  color: #303133;
+}
+
+.el-picker-panel__content {
+  position: relative;
+  margin: 1.2499995rem;
+}
+
+.el-date-range-picker__content {
+  float: left;
+  width: 50%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1.3333328rem;
+  &.is-left {
+    border-right: 0.0833333rem solid #e4e4e4;
+  }
+}
+
+.el-date-range-picker__header {
+  position: relative;
+  text-align: center;
+  height: 2.3333324rem;
+  div {
+    font-size: 1.3333328rem;
+    font-weight: 500;
+    margin-right: 4.166665rem;
+  }
+}
+
+.el-date-table {
+  font-size: .9999996rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  th {
+    padding: 0.4166665rem;
+    color: #606266;
+    font-weight: 400;
+    border-bottom: 0.0833333rem solid #ebeef5;
+  }
+  td {
+    width: 2.6666656rem;
+    padding: 0.3333332rem 0;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    height: 2.499999rem;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    div {
+      height: 2.499999rem;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+    &.disabled {
+      div {
+        background-color: #f5f7fa;
+        opacity: 1;
+        cursor: not-allowed;
+        color: #c0c4cc;
+      }
+    }
+    span {
+      width: 1.9999992rem;
+      height: 1.9999992rem;
+      display: block;
+      margin: 0 auto;
+      line-height: 1.9999992rem;
+      position: absolute;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+      transform: translateX(-50%);
+      border-radius: 50%;
+    }
+  }
+}
+
+.el-picker-panel__footer {
+  border-top: 0.0833333rem solid #e4e4e4;
+  padding: 0.3333332rem;
+  text-align: right;
+  background-color: #fff;
+  position: relative;
+  font-size: 0;
+  button {
+    &:first-child {
+      display: none;
+    }
+  }
+}
+
+.el-button--mini {
+  font-size: 1.2rem;
+  border-radius: -.6rem;
+}
+
+.el-submenu__icon-arrow {
+  position: absolute;
+  top: 50%;
+  right: 2rem;
+  margin-top: -0.7rem;
+  -webkit-transition: -webkit-transform .3s;
+  transition: -webkit-transform .3s;
+  transition: transform .3s;
+  transition: transform .3s,-webkit-transform .3s;
+  font-size: 1.2rem;
 }

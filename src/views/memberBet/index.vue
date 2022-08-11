@@ -38,13 +38,13 @@
                           <el-date-picker
                             v-model="searchTime"
                             type="datetimerange"
+                            popper-class="ams-timeslot-popper"
                             align="right"
-                            unlink-panels
                             :range-separator="$t('__to')"
                             :start-placeholder="$t('__startDate')"
                             :end-placeholder="$t('__endDate')"
-                            :picker-options="pickerOptions"
                             :default-time="['12:00:00', '11:59:59']"
+                            @focus="dateTimeFocus"
                           />
                         </div>
                         <span>
@@ -626,7 +626,8 @@ export default {
       countInfo: {},
       scoreCards: [],
       searchOpen: false,
-      selectOption: {}
+      selectOption: {},
+      hasSet: false
     }
   },
   computed: {
@@ -678,14 +679,14 @@ export default {
         this.$router.replace({ 'query': null })
         this.$store.dispatch('tagsView/updateVisitedView', this.$route)
       }
-    },
-    'searchTime': function() {
-      if (!this.firstCreate) {
-        this.$nextTick(() => {
-          this.handleCurrentChange(1)
-        })
-      }
     }
+    // 'searchTime': function() {
+    //   if (!this.firstCreate) {
+    //     this.$nextTick(() => {
+    //       this.handleCurrentChange(1)
+    //     })
+    //   }
+    // }
   },
   created() {
     this.$store.dispatch('memberBet/setMemberBetTimeType')
@@ -761,6 +762,35 @@ export default {
         this.searchForm.device = []
       }, () => {
         this.selectOption.deviceType = JSON.parse(JSON.stringify(this.searchItems.deviceType)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+    },
+    dateTimeFocus() {
+      if (this.hasSet) return;
+      this.hasSet = true
+      this.$nextTick(() => {
+        const el = document.getElementsByClassName('has-seconds')
+        el.forEach(element => {
+          element.classList.remove('has-seconds')
+        });
+        this.addDateTimeOption(() => {
+          this.searchTime = getLastMonthDateTime()
+        }, () => {
+          this.searchTime = getThisMonthDateTime()
+        }, () => {
+          console.log("onNextMon")
+        }, () => {
+          this.searchTime = getYesterdayDateTime()
+        }, () => {
+          this.searchTime = getTodayDateTime()
+        }, () => {
+          console.log("onNextDay")
+        }, () => {
+          this.searchTime = getLastWeekDateTime()
+        }, () => {
+          this.searchTime = getThisWeekDateTime()
+        }, () => {
+          console.log("onNextWeek")
+        })
       })
     },
     setSearchOpen() {

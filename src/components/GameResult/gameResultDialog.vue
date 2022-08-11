@@ -904,7 +904,7 @@ export default {
             width: 15px;
             height: 15px;
             border-radius: 50%;
-            &::after {
+            &:after {
               position: absolute;
               color: #fff;
               top: 50%;
@@ -916,19 +916,19 @@ export default {
         &-winner {
           &-banker {
             background-color: $red;
-            &::after {
+            &:after {
               content: "莊";
             }
           }
           &-player {
             background-color: $blue;
-            &::after {
+            &:after {
               content: "閒";
             }
           }
           &-tie {
             background-color: $green;
-            &::after {
+            &:after {
               content: "和";
             }
           }
