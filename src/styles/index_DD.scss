@@ -60,3 +60,122 @@
     border-radius: 0.25rem;
   }
 }
+
+.credit-report {
+  .el-tabs {
+    border-top: 0;
+    .el-tabs__header {
+      padding-top: 0;
+    }
+    .el-tabs__item {
+      width: 50%;
+      text-align: center;
+      padding: 0;
+      .tab-item {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        .fas {
+          margin-bottom: 0.25rem;
+          margin-right: 0.41667rem;
+        }
+      }
+    }
+    .el-tabs__nav {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+  .summary {
+    border-bottom: 0.16667rem solid #000;
+  }
+  .profit-tabs {
+    &.el-tabs {
+      &.light {
+        .el-tabs__nav {
+          .el-tabs__item {
+            border-bottom: 0.2rem solid #a3a3a3;
+            background-color: #000;
+            &.is-active {
+              .tab-item {
+                color: #000 !important;
+              }
+            }
+            .tab-item {
+              color: #f9c901 !important;
+            }
+          }
+        }
+      }
+    }
+    &.el-tabs.light {
+      .el-tabs__nav {
+        .el-tabs__item {
+          &.is-active {
+            background-color: #f9c901;
+            border-bottom: 0.16667rem solid #f9c901;
+          }
+        }
+      }
+    }
+  }
+}
+
+#app .fas.black {
+  fill: #000 !important;
+}
+
+#app .el-tabs.light {
+  .el-tabs__nav {
+    float: none;
+    background-color: #ffffff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: relative;
+    .el-tabs__item {
+      &.is-active {
+        border-bottom: 0.16667rem solid #ce9600;
+      }
+    }
+  }
+}
+
+#app .el-tabs__nav {
+  background: #fff;
+}
+
+#app .el-tabs__item {
+  font-size: 1.33333rem;
+}
+
+#app .el-tabs__item .tab-item {
+  float: none;
+}
+
+.report-list {
+  background: #d6d6d6;
+  .items {
+    .ctrl {
+      position: absolute;
+      right: 0;
+      top: 0.83333rem;
+      text-align: center;
+      -webkit-box-flex: initial;
+      -ms-flex: initial;
+      flex: initial;
+      width: 5rem;
+      z-index: 1;
+      &.exp {
+        top: auto;
+        bottom: 0.83333rem;
+      }
+    }
+  }
+}

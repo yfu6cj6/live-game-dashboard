@@ -1,121 +1,124 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
-        <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            -
-          </div>
-          <div class="view-container-seachForm-operate">
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">{{ $t("__export") }}</el-button>
-            </p>
-          </div>
-        </template>
-        <template v-else>
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="handleCurrentChange(currentPage)">{{ $t("__refresh") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onExportBtnClick()">{{ $t("__export") }}</el-button>
-            </p>
-          </div>
-        </template>
-      </div>
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
-            v-for="(item, index) in tableData"
-            :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
-          >
-            <template v-if="device === 'mobile'">
-              <div class="left" @click="remarkExpand(item)">
-                <div class="item">
-                  <span class="header">{{ $t('__agent') }}</span>
-                  <span class="content">{{ item.agent }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__subordinateAgentsBalance') }}</span>
-                  <span class="content">{{ item.subordinateAgentsBalance }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__subordinateMembersBalance') }}</span>
-                  <span>{{ item.subordinateMembersBalance }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__unassignedBalance') }}</span>
-                  <span class="content">{{ item.balance }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__totalBalance') }}</span>
-                  <span :class="{'front' : item.income > 0}">{{ item.totalBalance }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__totalPlayerCount') }}</span>
-                  <span :class="{'back' : item.payout < 0}">{{ item.memberCount }}</span>
-                </div>
-                <div class="expand" @click.stop="remarkExpand(item)">
-                  <svg-icon v-if="item.open" icon-class="up" />
-                  <svg-icon v-else icon-class="more" />
+  <div v-loading="dataLoading" class="scroll-wrap flex-column flex-fill">
+    <div class="scroll-inner flex-column flex-fill off">
+      <div class="scroll-view flex-column flex-fill">
+        <div class="credit-report flex-column flex-fill">
+          <div class="flex-column flex-fill">
+            <div class="credit-report-list flex-column flex-fill bg-new-dark-white">
+              <div class="scroll-wrap flex-column flex-fill">
+                <div class="scroll-inner flex-column flex-fill off">
+                  <div class="scroll-view flex-column flex-fill">
+                    <div class="flex-column flex-fill">
+                      <div class="bg-black">
+                        <div class="mt-4 w-100" />
+                      </div>
+                      <div class="report-list common-list summary">
+                        <div>
+                          <div class="agent-group">
+                            <div class="w-100 items">
+                              <div class="ctrl" :class="{'exp': agentInfo.open}" @click.stop="remarkExpand">
+                                <div class="item-inner">
+                                  <div class="fas text-gray">
+                                    <div :class="{'d-none': agentInfo.open}">
+                                      <svg-icon class="fas text-gray" icon-class="more" style="height: 2.5rem; width: 2.5rem;" />
+                                    </div>
+                                    <div :class="{'d-none': !agentInfo.open}">
+                                      <svg-icon class="fas text-gray" icon-class="up" style="height: 2.33333rem; width: 2.33333rem;" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="agent-list-basic list-row">
+                                <div class="list-item d-flex align-items-center" style="width: 100%;">
+                                  <span class="icon user">
+                                    <div class="fas gold">
+                                      <svg-icon class="fas text-gray" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                                    </div>
+                                  </span>
+                                  <span class="value text-golden">{{ "DDDDDD" }}</span>
+                                </div>
+                                <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subAgentTotalBalance") }}</span>
+                                  <span class="value">
+                                    {{ agentInfo.subordinateAgentsBalance }}
+                                  </span>
+                                </div>
+                                <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subordinateMembersBalance") }}</span>
+                                  <span class="value">
+                                    {{ agentInfo.subordinateMembersBalance }}
+                                  </span>
+                                </div>
+                                <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__unassignedBalance") }}</span>
+                                  <span class="value">
+                                    {{ agentInfo.balance }}
+                                  </span>
+                                </div>
+                                <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__totalBalance") }}</span>
+                                  <span class="value">
+                                    {{ agentInfo.totalBalance }}
+                                  </span>
+                                </div>
+                              </div>
+                              <div v-if="agentInfo.open" class="agent-list-detail list-row">
+                                <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
+                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__directlyMember") }}</span>
+                                  <span class="value">
+                                    {{ agentInfo.memberCount }}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="profit-tabs light el-tabs">
+                        <div class="el-tabs__header">
+                          <div class="el-tabs__nav">
+                            <div class="el-tabs__item is-active" @click.stop="onTableBtnClick(tableEnum.agent)">
+                              <div class="tab-item">
+                                <div class="fas black">
+                                  <svg-icon icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                                  <span> {{ $t("__agent") }} </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="el-tabs__item" @click.stop="onTableBtnClick(tableEnum.member)">
+                              <div class="tab-item">
+                                <div class="fas yellow">
+                                  <svg-icon icon-class="member" style="height: 1.33333rem; width: 1.33333rem;" />
+                                  <span> {{ $t("__member") }} </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="common-list report-list flex-column flex-fill bg-new-dark-white">
+                        -
+                      </div>
+
+                      <div class="page-total">
+                        -
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="right" @click="remarkExpand(item)">
-                -
-              </div>
-              <div class="reportType">
-                <el-button class="agentInfoFormBtn" :class="{'focus': curTableIndex === tableEnum.agent}" @click="onTableBtnClick(tableEnum.agent)">{{ $t("__agent") }}</el-button>
-                <el-button class="agentInfoFormBtn" :class="{'focus': curTableIndex === tableEnum.member}" @click="onTableBtnClick(tableEnum.member)">{{ $t("__member") }}</el-button>
-              </div>
-              <div v-if="item.open" class="mobileExpand" @click="remarkExpand(item)">
-                -
-              </div>
-            </template>
-            <template v-else>
-              -
-            </template>
+            </div>
           </div>
         </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
       </div>
     </div>
-
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handleCurrentChange"
-      />
-    </div>
-
-    <agent
-      v-show="curTableIndex === tableEnum.agent"
-      ref="agent"
-      :view-height="viewHeight"
-      @handleRespone="handleAgentRespone"
-      @setDataLoading="setDataLoading"
-    />
-    <member
-      v-show="curTableIndex === tableEnum.member"
-      ref="member"
-      :view-height="viewHeight"
-      @handleRespone="handleMemberRespone"
-      @setDataLoading="setDataLoading"
-    />
-
   </div>
 </template>
 
 <script>
-import { agentBalanceReportExport } from '@/api/agentBalanceReport/agent'
+import { agentBalanceReportExport, agentBalanceReportSearch } from '@/api/agentBalanceReport/agent'
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
@@ -154,6 +157,12 @@ export default {
     })
   },
   methods: {
+    remarkExpand() {
+      this.$nextTick(() => {
+        this.agentInfo.open = !this.agentInfo.open;
+        this.agentInfo = JSON.parse(JSON.stringify(this.agentInfo))
+      })
+    },
     numberFormatStr(number) {
       return numberFormat(number)
     },
@@ -204,11 +213,21 @@ export default {
       this.dataLoading = true
       switch (this.curTableIndex) {
         case this.tableEnum.agent: {
-          this.$refs.agent.onSearch(this.agentId)
+          // this.$refs.agent.onSearch(this.agentId)
+          const data = {
+            page: this.currentPage,
+            rowsCount: this.pageSize,
+            agentId: this.agentId
+          }
+          agentBalanceReportSearch(data).then((res) => {
+            this.handleAgentRespone(JSON.parse(JSON.stringify(res.agentInfo)));
+          }).catch(() => {
+            this.setDataLoading(false)
+          })
           break
         }
         case this.tableEnum.member: {
-          this.$refs.member.onSearch(this.agentId)
+          // this.$refs.member.onSearch(this.agentId)
           break
         }
       }

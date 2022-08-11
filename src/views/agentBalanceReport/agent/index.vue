@@ -1,71 +1,51 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
-            v-for="(item, index) in tableData"
-            :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
-          >
-            <template v-if="device === 'mobile'">
-              <div class="left">
-                <div class="item">
-                  <span class="header">{{ $t('__agent') }}</span>
-                  <template slot-scope="scope">
-                    <router-link v-if="scope.$index < tableData.length - 2" :to="`/agentBalanceReport/agentBalanceReport/${scope.row.agentId}`">
-                      <el-button class="agentBtn" size="mini">
-                        {{ scope.row.agent }}
-                      </el-button>
-                    </router-link>
-                    <span v-else>{{ scope.row.agent }}</span>
-                  </template>
+  <div>
+    <div class="agent-group">
+      <div
+        v-for="(item, index) in tableData"
+        :key="index"
+        class="agent-group none-group"
+        :class="{even: (index % 2 === 0), odd: (index % 2 !== 0)}"
+      >
+        <div class="w-100 items">
+          <div class="ctrl">
+            <div class="item-inner">
+              <div class="fas text-gray">
+                <div :class="{'d-none': agentInfo.open}">
+                  <svg-icon class="fas text-gray" icon-class="more" style="height: 2.5rem; width: 2.5rem;" />
                 </div>
-                <div class="item">
-                  <span class="header">{{ $t('__subordinateAgentsBalance') }}</span>
-                  <span class="content">{{ item.subordinateAgentsBalance }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__subordinateMembersBalance') }}</span>
-                  <span class="content">{{ item.subordinateMembersBalance }}</span>
+                <div :class="{'d-none': !agentInfo.open}">
+                  <svg-icon class="fas text-gray" icon-class="up" style="height: 2.33333rem; width: 2.33333rem;" />
                 </div>
               </div>
-              <div class="right">
-                <div class="item">
-                  <span class="header">{{ $t('__unassignedBalance') }}</span>
-                  <span class="content">{{ item.balance }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__totalBalance') }}</span>
-                  <span class="content">{{ item.totalBalance }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__totalPlayerCount') }}</span>
-                  <span class="content">{{ item.memberCount }}</span>
-                </div>
-              </div>
-            </template>
-            <template v-else>
-              -
-            </template>
+            </div>
           </div>
+          <div class="agent-list-basic list-row">
+            <div class="list-item d-flex align-items-center" style="width: 100%;">
+              <div class="d-flex align-items-center">
+                <span class="icon user">
+                  <div class="fas gold">
+                    <svg-icon class="fas text-gray" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                  </div>
+                </span>
+                <span class="value text-golden text-underline">{{ tableData.agent }}</span>
+              </div>
+            </div>
+            <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subAgentTotalBalance') }}</span>
+
+
+
+
+              
+            </div>
+            <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;"></div>
+            <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;"></div>
+            <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;"></div>
+          </div>
+          <div class="agent-list-detail list-row"></div>
+          <div class="agent-break-line" />
         </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
-      </div>
-    </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
     </div>
   </div>
 </template>
