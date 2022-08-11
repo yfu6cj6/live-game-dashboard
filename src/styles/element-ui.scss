@@ -16,6 +16,13 @@
   }
 }
 
+.el-input {
+  position: relative;
+  font-size: 1.4rem;
+  display: inline-block;
+  width: 100%;
+}
+
 .el-input__icon {
   width: 2.5rem;
   line-height: 4rem;
@@ -58,6 +65,9 @@
   -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
   transition: border-color .2s cubic-bezier(.645,.045,.355,1);
   width: 100%;
+  &:hover {
+    border-color: #c0c4cc;
+  }
 }
 
 .el-input--suffix {
@@ -143,6 +153,11 @@
   }
 }
 
+#app .el-button {
+  padding: 0.70833rem 0.95833rem;
+  font-size: 1rem;
+}
+
 .el-button {
   display: inline-block;
   line-height: 1;
@@ -164,8 +179,6 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   border-radius: 0.4rem;
-  padding: 0.70833rem 0.95833rem;
-  font-size: 1rem;
 }
 
 .el-date-editor {

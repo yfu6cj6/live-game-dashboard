@@ -842,6 +842,20 @@ a:not([href]):not([tabindex]):hover {
       }
     }
   }
+  .input-filter {
+    height: 2.66667rem;
+    width: 100%;
+    .el-input {
+      height: 100%;
+      width: 100%;
+      input {
+        font-size: 1rem;
+        padding-left: 0.83333rem;
+        height: 100%;
+        width: 100%;
+      }
+    }
+  }
 }
 
 .selected-filter {
@@ -972,6 +986,21 @@ a:not([href]):not([tabindex]):hover {
   .options {
     width: 11rem;
     margin-right: 1.25rem;
+  }
+  .filter-search {
+    position: static !important;
+    font-size: 1.16667rem;
+    height: 2.66667rem;
+    width: 7.2rem;
+    padding: 0.56667rem 0.83333rem;
+    margin-right: auto;
+    -ms-flex-item-align: end;
+    align-self: flex-end;
+    margin-left: 0rem !important;
+  }
+  .el-button {
+    margin: 0.41667rem;
+    font-weight: bold;
   }
 }
 

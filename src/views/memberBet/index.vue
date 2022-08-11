@@ -118,8 +118,221 @@
                                   </div>
                                 </div>
                               </div>
+                              <div class="options betLog">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="input-filter">
+                                      <el-input v-model="searchForm.order_number" :placeholder="$t('__orderNumber')" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options gameRoundId">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="input-filter">
+                                      <el-input v-model="searchForm.round_id" :placeholder="$t('__roundId')" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div v-show="searchOpen" class="filter-options">
+                              <div class="options gameTypes">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="comp selected-filter custom">
+                                      <el-select
+                                        v-model="searchForm.game_type"
+                                        class="d-flex"
+                                        multiple
+                                        :popper-append-to-body="false"
+                                        :collapse-tags="agentIdCollapse"
+                                        :placeholder="$t('__gameType')"
+                                        :popper-class="'custom-dropdown w-auto'"
+                                      >
+                                        <el-option
+                                          v-for="item in selectOption.gameType"
+                                          :key="item.key"
+                                          :label="item.nickname"
+                                          :value="item.key"
+                                        />
+                                      </el-select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options gameTable">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="comp selected-filter custom">
+                                      <el-select
+                                        v-model="searchForm.table_id"
+                                        class="d-flex"
+                                        multiple
+                                        :popper-append-to-body="false"
+                                        :collapse-tags="agentIdCollapse"
+                                        :placeholder="$t('__tableId')"
+                                        :popper-class="'custom-dropdown w-auto'"
+                                      >
+                                        <el-option
+                                          v-for="item in selectOption.tables"
+                                          :key="item.key"
+                                          :label="item.nickname"
+                                          :value="item.key"
+                                        />
+                                      </el-select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options betType">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="comp selected-filter custom">
+                                      <el-select
+                                        v-model="searchForm.game_play"
+                                        class="d-flex"
+                                        multiple
+                                        :popper-append-to-body="false"
+                                        :collapse-tags="agentIdCollapse"
+                                        :placeholder="$t('__gamePlay')"
+                                        :popper-class="'custom-dropdown w-auto'"
+                                      >
+                                        <el-option
+                                          v-for="item in selectOption.game_play"
+                                          :key="item.key"
+                                          :label="item.nickname"
+                                          :value="item.key"
+                                        />
+                                      </el-select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options betAmount">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="input-filter">
+                                      <el-input v-model="searchForm.bet_amount" type="number" :placeholder="$t('__betAmount')" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options winLoss">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="input-filter">
+                                      <el-input v-model="searchForm.payout" type="number" :placeholder="$t('__result')" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options validBetAmount">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="input-filter">
+                                      <el-input v-model="searchForm.valid_bet_amount" type="number" :placeholder="$t('__validBetAmount')" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options gameResult">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="comp selected-filter custom">
+                                      <el-select
+                                        v-model="searchForm.gameResult"
+                                        class="d-flex"
+                                        multiple
+                                        :popper-append-to-body="false"
+                                        :collapse-tags="agentIdCollapse"
+                                        :placeholder="$t('__gameResult')"
+                                        :popper-class="'custom-dropdown w-auto'"
+                                      >
+                                        <el-option
+                                          v-for="item in selectOption.gameResult"
+                                          :key="item.key"
+                                          :label="item.nickname"
+                                          :value="item.key"
+                                        />
+                                      </el-select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options gameRoundStatus">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="comp selected-filter custom">
+                                      <el-select
+                                        v-model="searchForm.status"
+                                        class="d-flex"
+                                        multiple
+                                        :popper-append-to-body="false"
+                                        :collapse-tags="agentIdCollapse"
+                                        :placeholder="$t('__status')"
+                                        :popper-class="'custom-dropdown w-auto'"
+                                      >
+                                        <el-option
+                                          v-for="item in selectOption.orderStatus"
+                                          :key="item.key"
+                                          :label="item.nickname"
+                                          :value="item.key"
+                                        />
+                                      </el-select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options appType">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="comp selected-filter custom">
+                                      <el-select
+                                        v-model="searchForm.device"
+                                        class="d-flex"
+                                        multiple
+                                        :popper-append-to-body="false"
+                                        :collapse-tags="agentIdCollapse"
+                                        :placeholder="$t('__device')"
+                                        :popper-class="'custom-dropdown w-auto'"
+                                      >
+                                        <el-option
+                                          v-for="item in selectOption.deviceType"
+                                          :key="item.key"
+                                          :label="item.nickname"
+                                          :value="item.key"
+                                        />
+                                      </el-select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options ip">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="input-filter">
+                                      <el-input v-model="searchForm.user_ip" placeholder="IP" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
+                          <el-button class="bg-yellow filter-search" @click="handleCurrentChange(1)">{{ $t("__search") }}</el-button>
                         </div>
                       </div>
                     </div>
@@ -301,6 +514,48 @@ export default {
       }, () => {
         this.selectOption.members = JSON.parse(JSON.stringify(this.searchItems.members)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
+      this.addSelectDropDownFilter('options gameTypes', () => {
+        this.searchForm.game_type = JSON.parse(JSON.stringify(this.searchItems.gameType)).map(item => item.key)
+      }, () => {
+        this.searchForm.game_type = []
+      }, () => {
+        this.selectOption.gameType = JSON.parse(JSON.stringify(this.searchItems.gameType)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+      this.addSelectDropDownFilter('options gameTable', () => {
+        this.searchForm.table_id = JSON.parse(JSON.stringify(this.searchItems.tables)).map(item => item.key)
+      }, () => {
+        this.searchForm.table_id = []
+      }, () => {
+        this.selectOption.tables = JSON.parse(JSON.stringify(this.searchItems.tables)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+      this.addSelectDropDownFilter('options betType', () => {
+        this.searchForm.game_play = JSON.parse(JSON.stringify(this.searchItems.game_play)).map(item => item.key)
+      }, () => {
+        this.searchForm.game_play = []
+      }, () => {
+        this.selectOption.game_play = JSON.parse(JSON.stringify(this.searchItems.game_play)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+      this.addSelectDropDownFilter('options gameResult', () => {
+        this.searchForm.gameResult = JSON.parse(JSON.stringify(this.searchItems.gameResult)).map(item => item.key)
+      }, () => {
+        this.searchForm.gameResult = []
+      }, () => {
+        this.selectOption.gameResult = JSON.parse(JSON.stringify(this.searchItems.gameResult)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+      this.addSelectDropDownFilter('options gameRoundStatus', () => {
+        this.searchForm.status = JSON.parse(JSON.stringify(this.searchItems.orderStatus)).map(item => item.key)
+      }, () => {
+        this.searchForm.status = []
+      }, () => {
+        this.selectOption.orderStatus = JSON.parse(JSON.stringify(this.searchItems.orderStatus)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+      this.addSelectDropDownFilter('options appType', () => {
+        this.searchForm.device = JSON.parse(JSON.stringify(this.searchItems.deviceType)).map(item => item.key)
+      }, () => {
+        this.searchForm.device = []
+      }, () => {
+        this.selectOption.deviceType = JSON.parse(JSON.stringify(this.searchItems.deviceType)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
     },
     setSearchOpen() {
       this.searchOpen = !this.searchOpen
@@ -437,48 +692,4 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
-
-.view {
-  &-container {
-    &-table {
-      &-row {
-        .wrap {
-          position: relative;
-          .agentName {
-            vertical-align: top;
-          }
-          .item {
-            .header {
-              width: 100px;
-              min-width: 100px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-.gameResult {
-  cursor: pointer;
-  border-bottom: 1px solid #000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .mr-5 {
-    margin-right: 5px;
-  }
-}
-.playbackIcon {
-  width: 20px;
-  font-size: 24px;
-  vertical-align: middle;
-  cursor: pointer;
-  margin-left: 20px;
-  color: $yellow;
-}
-.expand {
-  position: absolute;
-  right: 0;
-}
 </style>
