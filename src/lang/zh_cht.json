@@ -322,5 +322,6 @@
     "__totalIncome": "總收入:",
     "__totalExpenditure": "總支出:",
     "__incomeAndExpenditure": "總收支:",
-    "__totalDataAmount": "共 {0} 筆"
+    "__totalDataAmount": "共 {0} 筆",
+    "__directlyMember": "直屬玩家"
 }

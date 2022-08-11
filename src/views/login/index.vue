@@ -28,13 +28,14 @@
           v-model="loginForm.password"
           :type="curPasswordType === passwordType.hidePassword ? `password` : `text`"
           name="password"
+          @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" :class="{'isActive': curPasswordType === passwordType.showPassword}" @click="showPwd">
           <svg-icon :icon-class="curPasswordType === passwordType.hidePassword ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
 
-      <el-form-item prop="captcha" :class="{'validateNone': loginFormValidate.captcha === 0, 'validateSuccess': loginFormValidate.captcha === 1, 'validateError': loginFormValidate.captcha === 2}">
+      <!-- <el-form-item prop="captcha" :class="{'validateNone': loginFormValidate.captcha === 0, 'validateSuccess': loginFormValidate.captcha === 1, 'validateError': loginFormValidate.captcha === 2}">
         <el-input
           ref="captcha"
           v-model="loginForm.captcha"
@@ -45,7 +46,7 @@
         />
         <img :src="captchaImg" @click="refreshCaptcha()">
         <i class="el-icon-refresh-right refresh" @click="refreshCaptcha()" />
-      </el-form-item>
+      </el-form-item> -->
 
       <el-button :loading="loading" type="primary" class="bg-yellow" @click.native.prevent="handleLogin">{{ $t('__login') }}</el-button>
 
@@ -126,9 +127,9 @@ export default {
     return {
       loginForm: {
         account: '',
-        password: '',
-        captcha: '',
-        key: ''
+        password: ''
+        // captcha: '',
+        // key: ''
       },
       loginRules: {
         account: [{ required: true, trigger: 'blur', validator: validateAccount }],
@@ -165,7 +166,7 @@ export default {
     }
   },
   created() {
-    this.refreshCaptcha()
+    // this.refreshCaptcha()
     this.getClientIP()
     const nameSplit = browserVersion().split(' ')
     this.browserName = this.$stringFormat('{0} - {1}', nameSplit)
@@ -207,11 +208,12 @@ export default {
               await this.$store.dispatch("backstageManagement/getAnnouncement")
               this.$router.push({ path: '/home' })
             }
-          }).catch((err) => {
-            this.captchaData = err.data.captcha
-            this.loginForm.key = this.captchaData.key
-            this.loginForm.captcha = ''
-            this.$refs.captcha.focus()
+          }).catch(() => {
+            // this.captchaData = err.data.captcha
+            // this.loginForm.key = this.captchaData.key
+            // this.loginForm.captcha = ''
+            // this.$refs.captcha.focus()
+            this.$refs.password.focus()
           }).finally(() => {
             this.loading = false
           });
