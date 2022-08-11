@@ -68,13 +68,12 @@
                         <div class="d-flex w-100">
                           <div>
                             <div class="filter-options">
-                              <div class="options gameTypes">
+                              <div class="options agents">
                                 <div>
                                   <div class="option">
                                     <span class="prefix-label" />
                                     <div class="comp selected-filter custom">
                                       <el-select
-                                        ref="agentSelect"
                                         v-model="searchForm.agent_id"
                                         class="d-flex"
                                         multiple
@@ -82,10 +81,34 @@
                                         :collapse-tags="agentIdCollapse"
                                         :placeholder="$t('__agent')"
                                         :popper-class="'custom-dropdown w-auto'"
-                                        @visible-change="test"
                                       >
                                         <el-option
-                                          v-for="item in searchItems.agents"
+                                          v-for="item in selectOption.agents"
+                                          :key="item.key"
+                                          :label="item.nickname"
+                                          :value="item.key"
+                                        />
+                                      </el-select>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="options players">
+                                <div>
+                                  <div class="option">
+                                    <span class="prefix-label" />
+                                    <div class="comp selected-filter custom">
+                                      <el-select
+                                        v-model="searchForm.member_id"
+                                        class="d-flex"
+                                        multiple
+                                        :popper-append-to-body="false"
+                                        :collapse-tags="agentIdCollapse"
+                                        :placeholder="$t('__member')"
+                                        :popper-class="'custom-dropdown w-auto'"
+                                      >
+                                        <el-option
+                                          v-for="item in selectOption.members"
                                           :key="item.key"
                                           :label="item.nickname"
                                           :value="item.key"
@@ -185,7 +208,8 @@ export default {
       roundInfo: {},
       countInfo: {},
       scoreCards: [],
-      searchOpen: false
+      searchOpen: false,
+      selectOption: {}
     }
   },
   computed: {
@@ -258,27 +282,61 @@ export default {
     this.$nextTick(() => {
       this.handleCurrentChange(this.currentPage)
       this.firstCreate = false
+      this.addSelectFilter()
     })
   },
   methods: {
-    test(test) {
-      if (test) {
-        const str = document.createElement('div')
-        str.className = 'el-filter'
-        str.innerHTML = `<input type="text" autocomplete="off" class="el-select__input el-filter_input w-100">
-                          <div class="el-filter_option">
-                            <div class="select-filter">
-                              <div class="inner-box">
-                                <div class="w-100 text-right">
-                                  <span class="text-link">${this.$t('__selectAll')}</span>
-                                  <span class="pl-2 pr-2">|</span>
-                                  <span class="text-link">${this.$t('__clear')}</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>`
-        document.getElementsByClassName('custom-dropdown')[0].prepend(str)
-      }
+    addSelectFilter() {
+      this.onVisibleChange('options agents', () => {
+        this.searchForm.agent_id = JSON.parse(JSON.stringify(this.searchItems.agents)).map(item => item.key)
+      }, () => {
+        this.searchForm.agent_id = []
+      }, () => {
+        this.selectOption.agents = JSON.parse(JSON.stringify(this.searchItems.agents)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+      this.onVisibleChange('options players', () => {
+        this.searchForm.member_id = JSON.parse(JSON.stringify(this.searchItems.members)).map(item => item.key)
+      }, () => {
+        this.searchForm.member_id = []
+      }, () => {
+        this.selectOption.members = JSON.parse(JSON.stringify(this.searchItems.members)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+    },
+    onVisibleChange(name, onSelectAll, onClear, onInputFilter) {
+      const selectAll = document.createElement('span')
+      selectAll.className = 'text-link'
+      selectAll.onclick = onSelectAll
+      selectAll.innerHTML = `${this.$t('__selectAll')}`
+      const separator = document.createElement('span')
+      separator.className = 'pl-2 pr-2'
+      separator.innerHTML = '|'
+      const clear = document.createElement('span')
+      clear.className = 'text-link'
+      clear.onclick = onClear
+      clear.innerHTML = `${this.$t('__clear')}`
+      const group = document.createElement('div')
+      group.className = 'w-100 text-right'
+      group.appendChild(selectAll)
+      group.appendChild(separator)
+      group.appendChild(clear)
+      const innerBox = document.createElement('div')
+      innerBox.appendChild(group)
+      const selectFilter = document.createElement('div')
+      selectFilter.className = 'select-filter'
+      selectFilter.appendChild(innerBox)
+      const filterOption = document.createElement('div')
+      filterOption.className = 'el-filter_option'
+      filterOption.appendChild(selectFilter)
+      const inputFilter = document.createElement('input')
+      inputFilter.type = 'text'
+      inputFilter.autocomplete = 'off'
+      inputFilter.className = 'el-select__input el-filter_input w-100'
+      inputFilter.addEventListener("input", onInputFilter)
+      const filter = document.createElement('div')
+      filter.className = 'el-filter'
+      filter.appendChild(inputFilter)
+      filter.appendChild(filterOption)
+      document.getElementsByClassName(name)[0].getElementsByClassName('custom-dropdown')[0].prepend(filter)
     },
     setSearchOpen() {
       this.searchOpen = !this.searchOpen
@@ -328,7 +386,8 @@ export default {
     },
     handleRespone(res) {
       this.searchForm[this.searchTimeType] = undefined
-      this.searchItems = res.searchItems
+      this.searchItems = JSON.parse(JSON.stringify(res.searchItems))
+      this.selectOption = JSON.parse(JSON.stringify(res.searchItems))
       this.tableData = res.rows
       for (let i = 0, max = this.tableData.length; i < max; i++) {
         if (i >= max - 2) {
