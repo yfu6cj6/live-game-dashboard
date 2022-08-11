@@ -29,7 +29,30 @@
       </div>
     </template>
     <template v-else>
-      -
+      <div class="bg-black">
+        <div class="d-flex searchFrame">
+          <div class="d-flex pad_frame wrap">
+            <div class="d-flex searchItemBox">
+              <div class="searchItem pad_frame">
+                <div class="input_filter">
+                  <el-input v-model="searchForm.account" class="input_size" :placeholder="$t('__agentOrSubAccount')" />
+                </div>
+              </div>
+              <div class="searchItem pad_frame">
+                <div class="input_filter">
+                  <el-input v-model="searchForm.ip" class="input_size" placeholder="IP" />
+                </div>
+              </div>
+              <div class="d-flex pad_frame">
+                <el-button class="bg-yellow addBtn" size="mini" @click="onSearchBtnClick(searchForm, 1)">{{ $t("__search") }}</el-button>
+              </div>
+              <div v-if="isAdminister" class="d-flex pad_frame">
+                <el-button class="bg-yellow addBtn" size="mini" @click="onCreateBtnClick()">{{ $t("__create") }}</el-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
     <div v-if="allDataByClient.length > 0">
       <div
@@ -375,6 +398,30 @@ export default {
     fill: #a3a3a3;
     width: 2.333rem;
     height: 2.333rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .tableStyle {
+    overflow: auto;
+    max-height: 100%;
+  }
+  .searchFrame {
+    .searchItemBox {
+      width: auto;
+      justify-content: space-between;
+      .d-flex.pad_frame {
+        padding-left: 0;
+      }
+    }
+    .searchItem {
+      width: 11rem;
+      margin-right: 1.25rem;
+    }
+    .addBtn {
+      width: 7.5rem;
+      height: 2.8rem;
+    }
   }
 }
 </style>

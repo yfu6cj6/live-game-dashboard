@@ -28,7 +28,31 @@
       </div>
     </template>
     <template v-else>
-      -
+      <div class="bg-black">
+        <div class="search_frame">
+          <div class="day_frame">
+            <el-date-picker
+              v-model="searchTime"
+              type="datetimerange"
+              align="right"
+              unlink-panels
+              class="search_frame_size"
+              :range-separator="$t('__to')"
+              :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
+              :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
+              :picker-options="pickerOptions"
+              :default-time="['12:00:00', '11:59:59']"
+            />
+          </div>
+          <div v-if="isAdminister" class="pad_frame">
+            <el-input v-model="searchForm.ip" class="search_frame_size search_input" placeholder="IP" />
+          </div>
+          <div class="pad_frame">
+            <el-input v-model="searchForm.description" class="search_frame_size search_input sp_search_frame" :placeholder="$t('__description')" />
+            <el-button class="bg-yellow sp_search_btn" size="mini" @click.stop="search()">{{ $t("__search") }}</el-button>
+          </div>
+        </div>
+      </div>
     </template>
     <div v-if="tableData.length > 0">
       <div
@@ -393,6 +417,15 @@ export default {
     .search_more_btn {
       padding-bottom: 0.01667rem;
       border-bottom: 1px solid #343a40;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .logManagement {
+    .search_frame {
+      display: flex;
+      flex-direction: row;
     }
   }
 }
