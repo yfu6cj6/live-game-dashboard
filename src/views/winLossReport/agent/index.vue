@@ -381,10 +381,6 @@ export default {
     ])
   },
   methods: {
-    moreInfo() {
-      this.pageSizeCount++;
-      this.handleCurrentChange(1)
-    },
     setSearchTime(agentId) {
       localStorage.setItem(`winLossReportSearchTime${agentId}`, this.payoutTime.toString())
     },

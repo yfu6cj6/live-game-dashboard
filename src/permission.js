@@ -24,7 +24,11 @@ router.beforeEach(async(to, from, next) => {
     } else {
       const hasPermissionRoutes = store.getters.permission_routes.length > 0
       if (hasPermissionRoutes || to.path === '/logout') {
-        next()
+        if (store.getters.modPwd && to.path !== '/home' && to.path !== '/logout') {
+          next(`/home?redirect=${to.path}`)
+        } else {
+          next()
+        }
       } else {
         try {
           resetRouter()

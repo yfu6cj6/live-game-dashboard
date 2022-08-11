@@ -339,10 +339,6 @@ export default {
     ])
   },
   methods: {
-    moreInfo() {
-      this.pageSizeCount++;
-      this.handleCurrentChange(1)
-    },
     setSearchTime(member_id) {
       localStorage.setItem(`memberBet${member_id}`, this.payoutTime.toString())
     },

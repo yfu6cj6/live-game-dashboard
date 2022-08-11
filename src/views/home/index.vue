@@ -272,7 +272,8 @@ export default {
     ...mapGetters([
       'gameAnnouncements',
       'agentAnnouncements',
-      'device'
+      'device',
+      'modPwd'
     ]),
     showGameAnnouncements() {
       return this.gameAnnouncements.length > 0

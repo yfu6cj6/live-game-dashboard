@@ -16,7 +16,8 @@ const getDefaultState = () => {
     agentAccount: '',
     permission_routes: [],
     isAdminister: null,
-    isAgentSubAccount: null
+    isAgentSubAccount: null,
+    modPwd: true
   }
 }
 
@@ -33,6 +34,7 @@ const mutations = {
     state.agentAccount = data.user.agent.user.account
     state.isAdminister = data.roles.some(role => role === 'Administer')
     state.isAgentSubAccount = data.roles.some(role => role === 'AgentSubAccount')
+    state.modPwd = data.modPwd
   },
   SET_ROUTES: (state, permissions) => {
     let accessedRoutes
@@ -48,6 +50,9 @@ const mutations = {
   },
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
+  },
+  SETMODPWDSTATE: (state, modPwd) => {
+    state.modPwd = modPwd
   }
 }
 
@@ -57,6 +62,10 @@ const actions = {
     commit('SET_USER', res)
     commit('SET_ROUTES', res.permissions)
     store.dispatch('common/setCommonType')
+  },
+
+  setModPwdState({ commit }, modPwd) {
+    commit("SETMODPWDSTATE", modPwd)
   },
 
   // get user info

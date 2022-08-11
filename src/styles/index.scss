@@ -212,6 +212,15 @@ a:not([href]):not([tabindex]):hover {
 .mr-0, .mx-0 {
   margin-right: 0!important;
 }
+.mr-1, .mx-1 {
+  margin-right: 0.25rem!important;
+}
+.mr-2, .mx-2 {
+  margin-right: 0.5rem!important;
+}
+.mr-3, .mx-3 {
+  margin-right: 1rem!important;
+}
 .mr-auto, .mx-auto {
   margin-right: auto!important;
 }
@@ -220,6 +229,12 @@ a:not([href]):not([tabindex]):hover {
 }
 .ml-1, .mx-1 {
   margin-left: 0.25rem!important;
+}
+.ml-2, .mx-2 {
+  margin-left: 0.5rem!important;
+}
+.ml-3, .mx-3 {
+  margin-left: 1rem!important;
 }
 .ml-auto, .mx-auto {
   margin-left: auto!important;
@@ -304,6 +319,9 @@ a:not([href]):not([tabindex]):hover {
 }
 #app .text-yellow {
   color: #f9c901;
+}
+#app .text-green {
+  color: #56ad10;
 }
 
 // 背景顏色
@@ -1017,6 +1035,24 @@ a:not([href]):not([tabindex]):hover {
       }
     }
   }
+  .report-list {
+    .items {
+      .list-row {
+        .list-item {
+          width: 50%;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+          .label {
+            width: 100%;
+            padding-bottom: 0.5rem;
+          }
+          .value {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
 }
 
 .custom-dropdown  {
@@ -1061,6 +1097,74 @@ a:not([href]):not([tabindex]):hover {
       text-decoration: underline;
       color: #000;
       font-weight: bold;
+    }
+  }
+}
+
+.report-list {
+  .items {
+    position: relative;
+    width: 100%;
+    padding: 0.625rem 1.16667rem 0.625rem 1.16667rem;
+    .list-row {
+      -webkit-box-align: start;
+      -ms-flex-align: start;
+      align-items: flex-start;
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      width: 100%;
+      padding: 0;
+      .list-item {
+        font-size: 1.16667rem;
+        width: 50%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        word-break: break-all;
+        padding-right: 0.41667rem;
+        padding-top: 0.41667rem;
+        padding-bottom: 0.41667rem;
+      }
+      .label {
+        -webkit-box-flex: 0;
+        -ms-flex: none;
+        flex: none;
+        width: auto;
+        color: #6e6e6e;
+        word-break: break-word;
+      }
+      .value {
+        font-weight: bold;
+        word-break: break-word;
+      }
+      .videoBtn {
+        display: inline;
+        margin-right: 0.20833rem;
+      }
+      .is-amount {
+        padding-right: 0.83333rem !important;
+        .label,
+        .value {
+          width: 100%;
+          text-align: right !important;
+          padding-right: 0px !important;
+        }
+      }
+    }
+    &:nth-child(odd) {
+      background-color: #f4f4f4;
+    }
+    &:nth-child(even) {
+      background-color: #fff;
     }
   }
 }

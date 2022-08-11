@@ -20,6 +20,10 @@ export default {
   watch: {
   },
   methods: {
+    moreInfo() {
+      this.pageSizeCount++;
+      this.handleCurrentChange(1)
+    },
     handleSizeChange(val) {
       this.pageSize = val
       this.handleCurrentChange(1)
