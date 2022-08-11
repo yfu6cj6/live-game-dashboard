@@ -1,144 +1,110 @@
 <template>
-  <div v-loading="dataLoading" class="memberBalanceRecord">
-    <template v-if="device === 'mobile'">
-      <div class="bg-black">
-        <div class="search_frame">
-          <div class="d-flex align-items-center day_frame">
-            <el-date-picker
-              v-model="searchTime"
-              type="datetimerange"
-              align="right"
-              unlink-panels
-              class="search_frame_size"
-              :range-separator="$t('__to')"
-              :start-placeholder="`${$t('__operationTime')}(${$t('__start')})`"
-              :end-placeholder="`${$t('__operationTime')}(${$t('__end')})`"
-              :picker-options="pickerOptions"
-              :default-time="['12:00:00', '11:59:59']"
-            />
-            <span>
-              <div class="d-flex align-items-center more_option text-yellow" @click.stop="searchFormOpen = !searchFormOpen">
-                <svg-icon v-if="searchFormOpen" class="icon" icon-class="less" />
-                <svg-icon v-else class="icon" icon-class="add" />
-                <span>{{ $t('__options') }}</span>
-              </div>
-            </span>
-          </div>
-          <div class="d-flex search_options">
-            <div class="d-flex flex-wrap w-100">
-              <div class="d-flex justify-content-between align-items-center search_option_width">
-                <div class="field">
-                  <el-select
-                    v-model="searchForm.type"
-                    class="d-flex flex-wrap justify-content-between align-items-center option"
-                    multiple
-                    :collapse-tags="typeCollapse"
-                    :placeholder="$t('__recordType')"
-                  >
-                    <el-option v-for="item in searchItems.type" :key="item.key" :label="item.nickname" :value="item.key" />
-                  </el-select>
-                </div>
-                <div class="field">
-                  <el-input v-model="searchForm.ip" class="d-flex flex-wrap justify-content-between align-items-center option" placeholder="IP" type="url" />
-                </div>
-              </div>
-              <div v-if="searchFormOpen" class="d-flex flex-column justify-content-between align-items-center search_option_width">
-                <div class="d-flex justify-content-between align-items-center search_option_width">
-                  <div class="field">
-                    <el-input v-model="searchForm.orderNumber" class="option" :placeholder="$t('__transactionNumber')" />
-                  </div>
-                  <div class="field">
-                    <el-checkbox v-model="fuzzyMatchingByOrderNumber" class="checkbox option" :label="$t('__fuzzyMatching')" />
-                  </div>
-                </div>
-                <div class="d-flex justify-content-between align-items-center search_option_width">
-                  <div class="field">
-                    <el-input v-model="searchForm.betOrderNumber" class="option" :placeholder="$t('__orderNumber')" />
-                  </div>
-                  <div class="field">
-                    <el-select v-model="searchForm.members" class="option" multiple :collapse-tags="agentsCollapse" :placeholder="$t('__member')">
-                      <el-option v-for="item in searchItems.members" :key="item.key" :label="item.nickname" :value="item.key" />
-                    </el-select>
-                  </div>
-                </div>
-              </div>
-              <div class="search_btn_frame">
-                <el-button class="bg-yellow search_btn" size="mini" @click.stop="search()">{{ $t("__search") }}</el-button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-    <template v-else>
-      -
-    </template>
-    <div v-if="tableData.length > 0">
-      <div
-        v-for="(item, index) in tableData"
-        :key="index"
-        :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
-      >
+  <div v-loading="dataLoading" class="scroll-wrap memberBalanceRecord">
+    <div class="scroll-inner">
+      <div class="scroll-view">
         <template v-if="device === 'mobile'">
-          <div class="data_content w-100">
-            <div :class="{'expand_ctrl more_open': !item.open, 'expand_ctrl more_close': item.open}" @click.stop="remarkExpand(item)">
-              <svg-icon v-if="item.open" class="more_close" icon-class="up" />
-              <svg-icon v-else class="more_open" icon-class="more" />
-            </div>
-            <div class="d-flex flex-wrap justify-content-between base">
-              <div class="d-flex flex-colum field">
-                <span class="title">{{ $t('__transactionNumber') }}</span>
-                <span class="news">{{ item.order_number }}</span>
+          <div class="bg-black">
+            <div class="search_frame">
+              <div class="d-flex align-items-center day_frame">
+                <el-date-picker
+                  v-model="searchTime"
+                  type="datetimerange"
+                  align="right"
+                  unlink-panels
+                  class="search_frame_size"
+                  :range-separator="$t('__to')"
+                  :start-placeholder="`${$t('__operationTime')}(${$t('__start')})`"
+                  :end-placeholder="`${$t('__operationTime')}(${$t('__end')})`"
+                  :picker-options="pickerOptions"
+                  :default-time="['12:00:00', '11:59:59']"
+                />
+                <span>
+                  <div class="d-flex align-items-center more_option text-yellow" @click.stop="searchFormOpen = !searchFormOpen">
+                    <svg-icon v-if="searchFormOpen" class="icon" icon-class="less" />
+                    <svg-icon v-else class="icon" icon-class="add" />
+                    <span>{{ $t('__options') }}</span>
+                  </div>
+                </span>
               </div>
-              <div class="d-flex flex-colum field">
-                <span class="title">{{ $t('__operationTime') }}</span>
-                <span class="news">{{ item.operationTime }}</span>
-              </div>
-              <div class="d-flex flex-colum field">
-                <span class="title">{{ $t('__member') }}</span>
-                <span class="news">{{ item.member }}</span>
-              </div>
-              <div class="d-flex flex-colum field">
-                <span class="title">{{ $t('__superiorAgent') }}</span>
-                <span class="news text-yellow">{{ item.superiorAgent }}</span>
-              </div>
-              <div class="d-flex flex-colum field">
-                <span class="title">{{ $t('__recordType') }}</span>
-                <span class="news">{{ item.type }}</span>
-              </div>
-              <div class="d-flex flex-colum field">
-                <span class="title text_align_right">{{ $t('__beforeTradeBalance') }}</span>
-                <span class="news text_align_right">{{ item.pre_trade_balance }}</span>
-              </div>
-              <div class="d-flex flex-colum field">
-                <span class="title text_align_right">{{ $t('__income') }}</span>
-                <span :class="{'text_align_right front' : item.income > 0, 'text_align_right news': item.income <= 0}">{{ item.incomeLabel }}</span>
-              </div>
-              <div class="d-flex flex-colum field">
-                <span class="title text_align_right">{{ $t('__payout') }}</span>
-                <span :class="{'back text_align_right' : item.payout < 0, 'news text_align_right': item.payout <= 0}">{{ item.payoutLabel }}</span>
-              </div>
-              <div class="d-flex flex-colum field">
-                <span class="title text_align_right">{{ $t('__afterTradeBalance') }}</span>
-                <span class="news text_align_right">{{ item.balance_after_trade }}</span>
-              </div>
-            </div>
-            <div v-if="item.open" class="d-flex flex-wrap justify-content-between expand">
-              <div class="d-flex flex-colum field">
-                <span class="title">{{ $t('__orderNumber') }}</span>
-                <span class="news">{{ item.betOrderNumber }}</span>
-              </div>
-              <div class="d-flex flex-colum field">
-                <span class="title">IP</span>
-                <span class="news text-yellow">{{ item.ip }}</span>
-              </div>
-              <div class="d-flex flex-colum field">
-                <span class="title">{{ $t('__operator') }}</span>
-                <span class="news">{{ item.operator }}</span>
-              </div>
-              <div class="d-flex flex-colum field col">
-                <span class="title">{{ $t('__operationMessage') }}</span>
-                <span class="news">{{ item.message }}</span>
+              <div class="d-flex search_options">
+                <div class="d-flex flex-wrap w-100">
+                  <div class="d-flex justify-content-between align-items-center search_option_width">
+
+                    <div class="field options select_options">
+                      <div>
+                        <div class="option">
+                          <span class="prefix-label" />
+                          <div class="comp selected-filter custom">
+                            <el-select
+                              v-model="searchForm.type_id"
+                              class="d-flex"
+                              multiple
+                              :popper-append-to-body="false"
+                              :collapse-tags="typeCollapse"
+                              :placeholder="$t('__recordType')"
+                              :popper-class="'custom-dropdown w-auto'"
+                            >
+                              <el-option
+                                v-for="item in selectOption.type"
+                                :key="item.key"
+                                :label="item.nickname"
+                                :value="item.key"
+                              />
+                            </el-select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <el-input v-model="searchForm.ip" class="d-flex flex-wrap justify-content-between align-items-center option" placeholder="IP" type="url" />
+                    </div>
+                  </div>
+                  <div v-show="searchFormOpen">
+                    <div class="d-flex flex-column justify-content-between align-items-center search_option_width">
+                      <div class="d-flex justify-content-between align-items-center search_option_width">
+                        <div class="field">
+                          <el-input v-model="searchForm.orderNumber" class="option" :placeholder="$t('__transactionNumber')" />
+                        </div>
+                        <div class="field">
+                          <el-checkbox v-model="fuzzyMatchingByOrderNumber" class="checkbox option" :label="$t('__fuzzyMatching')" />
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-between align-items-center search_option_width">
+                        <div class="field options member_select_options">
+                          <div>
+                            <div class="option">
+                              <span class="prefix-label" />
+                              <div class="comp selected-filter custom">
+                                <el-select
+                                  v-model="searchForm.member_id"
+                                  class="d-flex"
+                                  multiple
+                                  :popper-append-to-body="false"
+                                  :collapse-tags="membersCollapse"
+                                  :placeholder="$t('__member')"
+                                  :popper-class="'custom-dropdown w-auto'"
+                                >
+                                  <el-option
+                                    v-for="item in selectOption.members"
+                                    :key="item.key"
+                                    :label="item.nickname"
+                                    :value="item.key"
+                                  />
+                                </el-select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="field">
+                          <el-input v-model="searchForm.betOrderNumber" class="option" :placeholder="$t('__orderNumber')" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="search_btn_frame">
+                    <el-button class="bg-yellow search_btn" size="mini" @click.stop="search()">{{ $t("__search") }}</el-button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -146,94 +112,154 @@
         <template v-else>
           -
         </template>
-      </div>
-      <div v-if="totalCount > pageSize" class="more_btn_space">
-        <div v-if="tableData.length >= totalCount" class="search_more">
-          <span>{{ $t("__noMoreInformation") }}</span>
-        </div>
-        <div v-else class="search_more">
-          <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
-        </div>
-      </div>
-      <!-- <div v-if="tableData.length > 0" class="page-total">
-        <div class="w-100 list-row">
-          <div class="list-item">
-            <div class="name list-sub-item d-flex align-items-center">
-              <span class="text-link text-golden">{{ $t('__subtotalCount') }}</span>
+        <div v-if="tableData.length > 0">
+          <div
+            v-for="(item, index) in tableData"
+            :key="index"
+            :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+          >
+            <template v-if="device === 'mobile'">
+              <div class="data_content w-100">
+                <div :class="{'expand_ctrl more_open': !item.open, 'expand_ctrl more_close': item.open}" @click.stop="remarkExpand(item)">
+                  <svg-icon v-if="item.open" class="more_close" icon-class="up" />
+                  <svg-icon v-else class="more_open" icon-class="more" />
+                </div>
+                <div class="d-flex flex-wrap justify-content-between base">
+                  <div class="d-flex flex-colum field">
+                    <span class="title">{{ $t('__transactionNumber') }}</span>
+                    <span class="news">{{ item.order_number }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field">
+                    <span class="title">{{ $t('__operationTime') }}</span>
+                    <span class="news">{{ item.operationTime }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field">
+                    <span class="title">{{ $t('__member') }}</span>
+                    <span class="news">{{ item.member }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field">
+                    <span class="title">{{ $t('__superiorAgent') }}</span>
+                    <span class="news text-yellow">{{ item.superiorAgent }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field">
+                    <span class="title">{{ $t('__recordType') }}</span>
+                    <span class="news">{{ item.type }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field">
+                    <span class="title text_align_right">{{ $t('__beforeTradeBalance') }}</span>
+                    <span class="news text_align_right">{{ item.pre_trade_balance }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field">
+                    <span class="title text_align_right">{{ $t('__income') }}</span>
+                    <span :class="{'text_align_right front' : item.income > 0, 'text_align_right news': item.income <= 0}">{{ item.incomeLabel }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field">
+                    <span class="title text_align_right">{{ $t('__payout') }}</span>
+                    <span :class="{'back text_align_right' : item.payout < 0, 'news text_align_right': item.payout <= 0}">{{ item.payoutLabel }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field">
+                    <span class="title text_align_right">{{ $t('__afterTradeBalance') }}</span>
+                    <span class="news text_align_right">{{ item.balance_after_trade }}</span>
+                  </div>
+                </div>
+                <div v-if="item.open" class="d-flex flex-wrap justify-content-between expand">
+                  <div class="d-flex flex-colum field">
+                    <span class="title">{{ $t('__orderNumber') }}</span>
+                    <span class="news">{{ item.betOrderNumber }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field">
+                    <span class="title">IP</span>
+                    <span class="news text-yellow">{{ item.ip }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field">
+                    <span class="title">{{ $t('__operator') }}</span>
+                    <span class="news">{{ item.operator }}</span>
+                  </div>
+                  <div class="d-flex flex-colum field col">
+                    <span class="title">{{ $t('__operationMessage') }}</span>
+                    <span class="news">{{ item.message }}</span>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              -
+            </template>
+          </div>
+          <div v-if="totalCount > pageSize" class="more_btn_space">
+            <div v-if="tableData.length >= totalCount" class="search_more">
+              <span>{{ $t("__noMoreInformation") }}</span>
             </div>
-            <div class="item-content list-sub-item d-flex flex-wrap align-items-end">
-              <div class="page-item mb-2 is-amount">
-                <span class="label">{{ $t('__validBetAmount') }}</span>
-                <span class="value">
-                  <span>{{ subtotalCountData.validBetAmount }}</span>
-                </span>
-              </div>
-              <div class="page-item mb-2 is-amount">
-                <span class="label">{{ $t('__result') }}</span>
-                <span class="value" style="position: relative;">
-                  <span :class="{'text-red': subtotalCountData.winLoss > 0, 'text-blue': subtotalCountData.winLoss < 0}">{{ subtotalCountData.winLossLabel }}</span>
-                  <span class="w-rate">
-                    <span
-                      :class="{
-                        'text-red': (((subtotalCountData.netPL === 0 || subtotalCountData.netPL === '-') && Number(subtotalCountData.winLossRate) > 0) || subtotalCountData.netPL > 0),
-                        'text-blue': (((subtotalCountData.netPL === 0 || subtotalCountData.netPL === '-') && Number(subtotalCountData.winLossRate) < 0) || subtotalCountData.netPL < 0)}"
-                    >
-                      {{ subtotalCountData.winLossRateLabel }}
+            <div v-else class="search_more">
+              <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+            </div>
+          </div>
+          <div v-if="tableData.length > 0" class="page-total">
+            <div class="w-100 list-row">
+              <div class="list-item">
+                <div class="name list-sub-item d-flex align-items-center">
+                  <span class="text-link text-golden totalCount">{{ $t('__subtotalCount') }}</span>
+                </div>
+                <div class="item-content list-sub-item d-flex flex-wrap align-items-end">
+                  <div class="page-item mb-2 is-amount">
+                    <span class="label">{{ $t('__totalIncome') }}</span>
+                    <span class="value">
+                      <span class="news">{{ subtotalInfo.income }}</span>
                     </span>
-                  </span>
-                </span>
+                  </div>
+                  <div class="page-item mb-2 is-amount">
+                    <span class="label">{{ $t('__totalExpenditure') }}</span>
+                    <span class="value">
+                      <span class="news">{{ subtotalInfo.payout }}</span>
+                    </span>
+                  </div>
+                  <div class="page-item mb-2 mt is-amount">
+                    <span class="label">{{ $t('__incomeAndExpenditure') }}</span>
+                    <span class="value">
+                      <span class="news">{{ subtotalInfo.incomeAndPayout }}</span>
+                    </span>
+                  </div>
+                  <div class="page-item mb-2 is-amount">
+                    <span class="label">{{ `${$stringFormat($t('__totalDataAmount'), [subtotalInfo.totalAmount])}` }}</span>
+                  </div>
+                </div>
               </div>
-              <div class="page-item mb-2 is-amount" />
-              <div class="page-item mb-2 is-amount">
-                <span class="label">{{ $t('__totalAmount') }}</span>
-                <span class="value">
-                  <span :class="{'text-red': Number(subtotalCountData.netPL) > 0, 'text-blue': Number(subtotalCountData.netPL) < 0}">{{ subtotalCountData.netPLLabel }}</span>
-                </span>
+            </div>
+            <div class="w-100 list-row">
+              <div class="list-item">
+                <div class="name list-sub-item d-flex align-items-center">
+                  <span class="text-link text-golden totalCount">{{ $t('__totalCount') }}</span>
+                </div>
+                <div class="item-content list-sub-item d-flex flex-wrap align-items-end">
+                  <div class="page-item mb-2 is-amount">
+                    <span class="label">{{ $t('__totalIncome') }}</span>
+                    <span class="value">
+                      <span class="news">{{ totalInfo.income }}</span>
+                    </span>
+                  </div>
+                  <div class="page-item mb-2 is-amount">
+                    <span class="label">{{ $t('__totalExpenditure') }}</span>
+                    <span class="value">
+                      <span class="news">{{ totalInfo.payout }}</span>
+                    </span>
+                  </div>
+                  <div class="page-item mb-2 mt is-amount">
+                    <span class="label">{{ $t('__incomeAndExpenditure') }}</span>
+                    <span class="value">
+                      <span class="news">{{ totalInfo.incomeAndPayout }}</span>
+                    </span>
+                  </div>
+                  <div class="page-item mb-2 is-amount">
+                    <span class="label">{{ `${$stringFormat($t('__totalDataAmount'), [totalCount])}` }}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="w-100 list-row">
-          <div class="list-item">
-            <div class="name list-sub-item d-flex align-items-center">
-              <span class="text-link text-golden">{{ $t('__totalCount') }}</span>
-            </div>
-            <div class="item-content list-sub-item d-flex flex-wrap align-items-end">
-              <div class="page-item mb-2 is-amount">
-                <span class="label">{{ $t('__validBetAmount') }}</span>
-                <span class="value">
-                  <span>{{ 0/*totalCountData.validBetAmount*/ }}</span>
-                </span>
-              </div>
-              <div class="page-item mb-2 is-amount">
-                <span class="label">{{ $t('__result') }}</span>
-                <span class="value" style="position: relative;">
-                  <span :class="{'text-red': totalCountData.winLoss > 0, 'text-blue': totalCountData.winLoss < 0}">{{ totalCountData.winLossLabel }}</span>
-                  <span class="w-rate">
-                    <span
-                      :class="{
-                        'text-red': (((totalCountData.netPL === 0 || totalCountData.netPL === '-') && Number(totalCountData.winLossRate) > 0) || totalCountData.netPL > 0),
-                        'text-blue': (((totalCountData.netPL === 0 || totalCountData.netPL === '-') && Number(totalCountData.winLossRate) < 0) || totalCountData.netPL < 0)}"
-                    >
-                      {{ totalCountData.winLossRateLabel }}
-                    </span>
-                  </span>
-                </span>
-              </div>
-              <div class="page-item mb-2 is-amount" />
-              <div class="page-item mb-2 is-amount">
-                <span class="label">{{ $t('__totalAmount') }}</span>
-                <span class="value">
-                  <span :class="{'text-red': Number(totalCountData.netPL) > 0, 'text-blue': Number(totalCountData.netPL) < 0}">{{ totalCountData.netPLLabel }}</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
+        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+      </div>
     </div>
-    <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
   </div>
 </template>
 
@@ -290,15 +316,18 @@ export default {
       searchForm: {},
       searchItems: {},
       fuzzyMatchingByOrderNumber: false,
-      searchFormOpen: false
+      searchFormOpen: false,
+      subtotalInfo: {},
+      totalInfo: {},
+      selectOption: {}
     }
   },
   computed: {
     typeCollapse() {
-      return this.searchForm.type && this.searchForm.type.length > this.selectCollapseCount
+      return this.searchForm.type_id && this.searchForm.type_id.length > this.selectCollapseCount
     },
     membersCollapse() {
-      return this.searchForm.members && this.searchForm.members.length > this.selectCollapseCount
+      return this.searchForm.member_id && this.searchForm.member_id.length > this.selectCollapseCount
     }
   },
   watch: {
@@ -312,8 +341,27 @@ export default {
   created() {
     this.pageSizeCount = 1
     this.handleCurrentChange(this.currentPage)
+    this.$nextTick(() => {
+      this.addSelectFilter()
+    })
   },
   methods: {
+    addSelectFilter() {
+      this.addSelectDropDownFilter('field options select_options', () => {
+        this.searchForm.type_id = JSON.parse(JSON.stringify(this.searchItems.type)).map(item => item.key)
+      }, () => {
+        this.searchForm.type_id = []
+      }, () => {
+        this.selectOption.type = JSON.parse(JSON.stringify(this.searchItems.type)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+      this.addSelectDropDownFilter('field options member_select_options', () => {
+        this.searchForm.member_id = JSON.parse(JSON.stringify(this.searchItems.members)).map(item => item.key)
+      }, () => {
+        this.searchForm.member_id = []
+      }, () => {
+        this.selectOption.members = JSON.parse(JSON.stringify(this.searchItems.members)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+    },
     remarkExpand(row) {
       const obj = this.tableData.find(item => item.id === row.id);
       this.$nextTick(() => {
@@ -377,7 +425,11 @@ export default {
       data.fuzzyMatchingByOrderNumber = this.fuzzyMatchingByOrderNumber ? '1' : '0'
     },
     handleRespone(res) {
-      this.searchItems = res.searchItems
+      this.subtotalInfo = res.subtotalInfo
+      this.subtotalInfo.totalAmount = (this.pageSize * this.pageSizeCount) > res.totalCount ? res.totalCount : (this.pageSize * this.pageSizeCount)
+      this.totalInfo = res.totalInfo
+      this.searchItems = JSON.parse(JSON.stringify(res.searchItems))
+      this.selectOption = JSON.parse(JSON.stringify(res.searchItems))
       this.tableData = res.rows
       this.tableData.forEach(element => {
         element.pre_trade_balance = numberFormat(element.pre_trade_balance)
@@ -489,6 +541,8 @@ export default {
           border-color: #f9c901;
         }
         .el-checkbox__label {
+          position: absolute;
+          left: 1.5rem;
           color: white;
           font-size: 1rem;
         }
@@ -539,7 +593,7 @@ export default {
         top: 0.83333rem;
       }
       &.more_close {
-        top: 25.83333rem;
+        top: 23.83333rem;
       }
       .svg-icon {
         fill: #a3a3a3;
@@ -565,14 +619,6 @@ export default {
       font-size: 1.16667rem;
       color: #6e6e6e;
       word-break: break-word;
-      &.line_height {
-        line-height: 1.5;
-      }
-    }
-    .news {
-      font-size: 1.16667rem;
-      font-weight: bold;
-      word-break: break-all;
       &.line_height {
         line-height: 1.5;
       }
@@ -648,6 +694,41 @@ export default {
         margin-right: 0;
         color: #898989;
       }
+    }
+  }
+  .news {
+    font-size: 1.16667rem;
+    font-weight: bold;
+    word-break: break-all;
+    &.line_height {
+      line-height: 1.5;
+    }
+  }
+  .totalCount {
+    font-weight: bold;
+    font-size: 1.16667rem;
+    width: 100% !important;
+    margin-top: 0.83333rem;
+    padding-bottom: 0.41667rem;
+    border-bottom: 0.08333rem solid #ce9600;
+  }
+  .align-items-end {
+    align-items: flex-end!important;
+  }
+  .item-content {
+    margin-top: 0.83333rem;
+    .page-item {
+      padding-right: 0.83333rem !important;
+      width: 50%;
+      &.mt {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+  .label {
+    width: 100%;
+    .value {
+      width: 100%;
     }
   }
 }
