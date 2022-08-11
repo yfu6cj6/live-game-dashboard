@@ -379,7 +379,8 @@
                                 <span class="label">{{ $t('__roundId') }}</span>
                                 <span class="value text-link">
                                   <span>
-                                    <span class="text-underline">{{ item.round_id }}</span>
+                                    <span>{{ item.round_id }}</span>
+                                    <!-- <span class="text-underline">{{ item.round_id }}</span> -->
                                   </span>
                                 </span>
                               </div>
@@ -525,6 +526,31 @@
         </div>
       </div>
     </div>
+    <playbackDialog
+      v-if="curDialogIndex === dialogEnum.pic"
+      :title="`${$t('__gameType')}:${selectForm.game_type} ${$t('__roundId')}:${selectForm.round_id}`"
+      :visible="curDialogIndex === dialogEnum.pic"
+      :playback-type="dialogEnum.pic"
+      :url="imagePlaybackpic"
+      @close="closeDialogEven"
+    />
+
+    <playbackDialog
+      v-if="curDialogIndex === dialogEnum.video"
+      :title="`${$t('__gameType')}:${selectForm.game_type} ${$t('__roundId')}:${selectForm.round_id}`"
+      :visible="curDialogIndex === dialogEnum.video"
+      :playback-type="dialogEnum.video"
+      :url="videoPlaybackUrl"
+      @close="closeDialogEven"
+    />
+
+    <gameResultDialog
+      :visible="curDialogIndex === dialogEnum.resultdialog"
+      :round-info="roundInfo"
+      :count-info="countInfo"
+      :score-cards="scoreCards"
+      @close="closeDialogEven"
+    />
   </div>
 </template>
 
@@ -538,15 +564,15 @@ import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime,
   getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
-// import PlaybackDialog from './playbackDialog';
-// import GameResultDialog from '@/components/GameResult/gameResultDialog';
+import PlaybackDialog from './playbackDialog';
+import GameResultDialog from '@/components/GameResult/gameResultDialog';
 
 const defaultSearchTimeType = 'betTime'
 const defaultSearchTime = getTodayDateTime()
 
 export default {
   name: 'MemberBet',
-  // components: { PlaybackDialog, GameResultDialog },
+  components: { PlaybackDialog, GameResultDialog },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -865,9 +891,6 @@ export default {
         const data = formatJson(filterVal, list)
         export_json_to_excel({ header: tHeader, data: data, filename: 'MemberBet_' + getFullDateString(new Date()) })
       })
-    },
-    closePlaybackDialogEven() {
-      this.curDialogIndex = this.dialogEnum.none
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none

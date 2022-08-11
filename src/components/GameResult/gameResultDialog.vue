@@ -68,7 +68,7 @@
       </div>
       <table class="roundInfo">
         <tr>
-          <td class="yellow-color">
+          <td class="text-yellow">
             {{ `${$t('__totalLength')}: ` }}
           </td>
           <td class="floatRight">
@@ -77,7 +77,7 @@
           <td>
             {{ $t('__round') }}
           </td>
-          <td class="green-color">
+          <td class="text-green">
             {{ `${$t('__tie')}: ` }}
           </td>
           <td class="floatRight">
@@ -88,7 +88,7 @@
           </td>
         </tr>
         <tr>
-          <td class="red-color">
+          <td class="text-red">
             {{ `${$t('__banker')}: ` }}
           </td>
           <td class="floatRight">
@@ -97,7 +97,7 @@
           <td>
             {{ $t('__round') }}
           </td>
-          <td class="blue-color">
+          <td class="text-blue">
             {{ `${$t('__player')}: ` }}
           </td>
           <td class="floatRight">
@@ -108,7 +108,7 @@
           </td>
         </tr>
         <tr>
-          <td class="red-color">
+          <td class="text-red">
             {{ `${$t('__bankerPair')}: ` }}
           </td>
           <td class="floatRight">
@@ -117,7 +117,7 @@
           <td>
             {{ $t('__round') }}
           </td>
-          <td class="blue-color">
+          <td class="text-blue">
             {{ `${$t('__playerPair')}: ` }}
           </td>
           <td class="floatRight">
@@ -128,7 +128,7 @@
           </td>
         </tr>
         <tr>
-          <td class="red-color">
+          <td class="text-red">
             {{ `${$t('__bankerContinuousWin')}: ` }}
           </td>
           <td class="floatRight">
@@ -137,7 +137,7 @@
           <td>
             {{ $t('__round') }}
           </td>
-          <td class="blue-color">
+          <td class="text-blue">
             {{ `${$t('__playerContinuousWin')}: ` }}
           </td>
           <td class="floatRight">
