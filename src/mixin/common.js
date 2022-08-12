@@ -1,7 +1,18 @@
+import { getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
+
 export default {
   data() {
     return {
-      selectCollapseCount: 1
+      selectCollapseCount: 1,
+      searchTime: [],
+      monthIndex: 0,
+      dayIndex: 0,
+      weekIndex: 0
+    }
+  },
+  watch: {
+    'monthIndex': function() {
+      this.monthIndexListener();
     }
   },
   methods: {
@@ -16,6 +27,84 @@ export default {
       }).catch(() => {
       })
     },
+    monthIndexListener() {
+      // const leftArrow = document.querySelector('button.el-button.el-button--default.preMon.line-yellow.arrow')
+      // const rightArrow = document.querySelector('button.el-button.el-button--default.nextMon.line-yellow.arrow')
+      // if (this.monthIndex < -2) {
+      //   if (!leftArrow.classList.contains('disable')) {
+      //     leftArrow.classList += ' disable'
+      //   }
+      // } else {
+      //   if (leftArrow.classList.contains('disable')) {
+      //     leftArrow.classList.remove('disable')
+      //   }
+      // }
+      // if (this.monthIndex >= 0) {
+      //   if (!rightArrow.classList.contains('disable')) {
+      //     rightArrow.classList += ' disable'
+      //   }
+      // } else {
+      //   if (rightArrow.classList.contains('disable')) {
+      //     rightArrow.classList.remove('disable')
+      //   }
+      // }
+    },
+    // 點快捷鈕自動將日其放在右邊的table
+    handleCalendarPage() {
+      this.$nextTick(() => {
+        const el = document.querySelector('button.el-picker-panel__icon-btn.el-icon-arrow-left')
+        if (el) {
+          el.click()
+        }
+        // this.monthIndexListener()
+      })
+    },
+    // 日期範圍選擇器點開後要做的初始化
+    changeInitCalendarPage() {
+      this.handleCalendarPage()
+      this.addDateTimeOption(() => {
+        this.monthIndex--;
+        this.searchTime = getMonthDateTime(this.monthIndex, true);
+        // this.handleCalendarPage()
+        // if (this.monthIndex >= -2) {
+        // }
+      }, () => {
+        this.monthIndex = 0;
+        this.searchTime = getMonthDateTime(this.monthIndex, true);
+        // this.handleCalendarPage()
+      }, () => {
+        this.monthIndex++;
+        this.searchTime = getMonthDateTime(this.monthIndex, true);
+        // this.handleCalendarPage()
+        // if (this.monthIndex < 0) {
+        // }
+      }, () => {
+        this.dayIndex--;
+        this.searchTime = getDayDateTime(this.dayIndex, true);
+        // this.handleCalendarPage()
+      }, () => {
+        this.dayIndex = 0;
+        this.searchTime = getDayDateTime(this.dayIndex, true);
+        // this.handleCalendarPage()
+      }, () => {
+        this.dayIndex++;
+        this.searchTime = getDayDateTime(this.dayIndex, true);
+        // this.handleCalendarPage()
+      }, () => {
+        this.weekIndex--;
+        this.searchTime = getWeekDateTime(this.weekIndex, true)
+        // this.handleCalendarPage()
+      }, () => {
+        this.weekIndex = 0;
+        this.searchTime = getWeekDateTime(this.weekIndex, true)
+        // this.handleCalendarPage()
+      }, () => {
+        this.weekIndex++;
+        this.searchTime = getWeekDateTime(this.weekIndex, true)
+        // this.handleCalendarPage()
+      })
+    },
+    // 新增多選過濾器
     addSelectDropDownFilter(name, onSelectAll, onClear, onInputFilter) {
       const selectAll = document.createElement('span')
       selectAll.className = 'text-link'
@@ -52,6 +141,7 @@ export default {
       filter.appendChild(filterOption)
       document.getElementsByClassName(name)[0].getElementsByClassName('custom-dropdown')[0].prepend(filter)
     },
+    // 新增日期快捷紐
     addDateTimeOption(onPreMon, onThisMon, onNextMon, onPreDay, onToday, onNextDay, onPreWeek, onThisWeek, onNextWeek) {
       // 上月
       const preMonIcon = document.createElement('i')
@@ -155,9 +245,6 @@ export default {
       //
       const el = document.getElementsByClassName('ams-timeslot-popper')[0]
       el.insertBefore(quickSearch, el.children[1])
-      // document.getElementsByClassName('ams-timeslot-popper').forEach(element => {
-      //   element.insertBefore(quickSearch, element.children[1])
-      // })
     }
   }
 }

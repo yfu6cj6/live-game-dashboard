@@ -79,6 +79,11 @@ html [type=button] {
   -webkit-appearance: button;
 }
 
+button:focus {
+  outline: 1px dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
 #app input {
   line-height: 100%;
 }
@@ -1241,6 +1246,11 @@ table {
               span {
                 background-color: #f9c901;
               }
+              &.today {
+                span {
+                  color: #fff !important;
+                }
+              }
             }
           }
         }
@@ -1310,6 +1320,12 @@ table {
         font-size: 1rem;
         &.arrow {
           width: 2rem;
+        }
+        &.disable {
+          &.el-button {
+            background-color: #eee !important;
+            border: 1px solid #eee !important;
+          }
         }
       }
       .icon-arrow {

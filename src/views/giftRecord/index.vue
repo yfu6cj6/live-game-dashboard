@@ -14,7 +14,7 @@
                 :start-placeholder="$t('__startDate')"
                 :end-placeholder="$t('__endDate')"
                 :picker-options="pickerOptions"
-                :default-time="['12:00:00', '11:59:59']"
+                :default-time="['00:00:00', '23:59:59']"
               />
             </p>
             <p class="optionItem">
@@ -94,7 +94,7 @@
                 :start-placeholder="$t('__startDate')"
                 :end-placeholder="$t('__endDate')"
                 :picker-options="pickerOptions"
-                :default-time="['12:00:00', '11:59:59']"
+                :default-time="['00:00:00', '23:59:59']"
               />
             </p>
             <p class="optionItem">

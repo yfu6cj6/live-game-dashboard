@@ -19,7 +19,7 @@
                 :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
                 :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
                 :picker-options="pickerOptions"
-                :default-time="['12:00:00', '11:59:59']"
+                :default-time="['00:00:00', '23:59:59']"
               />
             </p>
             <p class="optionItem">

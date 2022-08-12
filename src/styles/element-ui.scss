@@ -223,7 +223,7 @@
     outline: none;
     display: inline-block;
     height: 100%;
-    margin: 0 0.65rem;
+    margin: 0;
     padding: 0;
     width: 39%;
     text-align: center;
@@ -235,9 +235,8 @@
     color: #c0c4cc;
     width: 2.0833325rem;
     display: inline-block;
-    // float: right;
+    float: right;
     line-height: 2.6666656rem;
-    display: none;
   }
 }
 
@@ -430,6 +429,15 @@
       background-color: #f9c901 !important;
       color: #000 !important;
       border: 1px solid #f9c901 !important;
+    }
+  }
+  .el-date-table {
+    td {
+      &.today {
+        span {
+          color: #f9c901 !important;
+        }
+      }
     }
   }
 }

@@ -34,17 +34,21 @@
                     </div>
                     <div class="day-range pl-2 pr-2">
                       <div class="date-time-picker-box">
-                        <div class="picker datetimerange datetimerange">
+                        <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
                           <el-date-picker
                             v-model="searchTime"
                             type="datetimerange"
                             popper-class="ams-timeslot-popper"
                             align="right"
+                            :clearable="false"
+                            :editable="false"
+                            time-arrow-control
                             :range-separator="$t('__to')"
                             :start-placeholder="$t('__startDate')"
                             :end-placeholder="$t('__endDate')"
-                            :default-time="['12:00:00', '11:59:59']"
-                            @focus="dateTimeFocus"
+                            :default-time="['00:00:00', '23:59:59']"
+                            :picker-options="pickerOptions"
+                            :format="'yyyy-MM-dd HH:mm'"
                           />
                         </div>
                         <span>
@@ -102,7 +106,7 @@
                                       class="d-flex"
                                       multiple
                                       :popper-append-to-body="false"
-                                      :collapse-tags="agentIdCollapse"
+                                      :collapse-tags="memberIdCollapse"
                                       :placeholder="$t('__member')"
                                       :popper-class="'custom-dropdown w-auto'"
                                     >
@@ -149,7 +153,7 @@
                                       class="d-flex"
                                       multiple
                                       :popper-append-to-body="false"
-                                      :collapse-tags="agentIdCollapse"
+                                      :collapse-tags="gameTypeCollapse"
                                       :placeholder="$t('__gameType')"
                                       :popper-class="'custom-dropdown w-auto'"
                                     >
@@ -174,7 +178,7 @@
                                       class="d-flex"
                                       multiple
                                       :popper-append-to-body="false"
-                                      :collapse-tags="agentIdCollapse"
+                                      :collapse-tags="tableIdCollapse"
                                       :placeholder="$t('__tableId')"
                                       :popper-class="'custom-dropdown w-auto'"
                                     >
@@ -199,7 +203,7 @@
                                       class="d-flex"
                                       multiple
                                       :popper-append-to-body="false"
-                                      :collapse-tags="agentIdCollapse"
+                                      :collapse-tags="gamePlayCollapse"
                                       :placeholder="$t('__gamePlay')"
                                       :popper-class="'custom-dropdown w-auto'"
                                     >
@@ -254,7 +258,7 @@
                                       class="d-flex"
                                       multiple
                                       :popper-append-to-body="false"
-                                      :collapse-tags="agentIdCollapse"
+                                      :collapse-tags="gameResultCollapse"
                                       :placeholder="$t('__gameResult')"
                                       :popper-class="'custom-dropdown w-auto'"
                                     >
@@ -279,7 +283,7 @@
                                       class="d-flex"
                                       multiple
                                       :popper-append-to-body="false"
-                                      :collapse-tags="agentIdCollapse"
+                                      :collapse-tags="statusCollapse"
                                       :placeholder="$t('__status')"
                                       :popper-class="'custom-dropdown w-auto'"
                                     >
@@ -304,7 +308,7 @@
                                       class="d-flex"
                                       multiple
                                       :popper-append-to-body="false"
-                                      :collapse-tags="agentIdCollapse"
+                                      :collapse-tags="deviceCollapse"
                                       :placeholder="$t('__device')"
                                       :popper-class="'custom-dropdown w-auto'"
                                     >
@@ -560,15 +564,14 @@ import { gameResultGetPlaybackUrl, gameResultGetPlaybackPic, gameResultGetScoreC
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime, getLastWeekDateTime,
-  getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
+import { getFullDate, getFullDateString, getDayDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
 import PlaybackDialog from './playbackDialog';
 import GameResultDialog from '@/components/GameResult/gameResultDialog';
 
 const defaultSearchTimeType = 'betTime'
-const defaultSearchTime = getTodayDateTime()
+const defaultSearchTime = getDayDateTime(0)
 
 export default {
   name: 'MemberBet',
@@ -576,39 +579,6 @@ export default {
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
-      pickerOptions: {
-        shortcuts: [{
-          text: this.$t('__yesterday'),
-          onClick(picker) {
-            picker.$emit('pick', getYesterdayDateTime())
-          }
-        }, {
-          text: this.$t('__today'),
-          onClick(picker) {
-            picker.$emit('pick', getTodayDateTime())
-          }
-        }, {
-          text: this.$t('__lastWeek'),
-          onClick(picker) {
-            picker.$emit('pick', getLastWeekDateTime())
-          }
-        }, {
-          text: this.$t('__thisWeek'),
-          onClick(picker) {
-            picker.$emit('pick', getThisWeekDateTime())
-          }
-        }, {
-          text: this.$t('__lastMonth'),
-          onClick(picker) {
-            picker.$emit('pick', getLastMonthDateTime())
-          }
-        }, {
-          text: this.$t('__thisMonth'),
-          onClick(picker) {
-            picker.$emit('pick', getThisMonthDateTime())
-          }
-        }]
-      },
       dialogEnum: Object.freeze({
         'none': 0,
         'pic': 1,
@@ -616,7 +586,6 @@ export default {
         'resultdialog': 3
       }),
       searchTimeType: defaultSearchTimeType,
-      searchTime: defaultSearchTime,
       memberId: null,
       firstCreate: true,
       playbackPic: undefined,
@@ -627,7 +596,14 @@ export default {
       scoreCards: [],
       searchOpen: false,
       selectOption: {},
-      hasSet: false
+      pickerOptions: {
+        // disabledDate(time) {
+        //   const preThirdDay = new Date()
+        //   preThirdDay.setMonth(preThirdDay.getMonth() - 3)
+        //   preThirdDay.setDate(preThirdDay.getDate() - 1)
+        //   return time.getTime() > Date.now() || time.getTime() < preThirdDay
+        // }
+      }
     }
   },
   computed: {
@@ -680,13 +656,6 @@ export default {
         this.$store.dispatch('tagsView/updateVisitedView', this.$route)
       }
     }
-    // 'searchTime': function() {
-    //   if (!this.firstCreate) {
-    //     this.$nextTick(() => {
-    //       this.handleCurrentChange(1)
-    //     })
-    //   }
-    // }
   },
   created() {
     this.$store.dispatch('memberBet/setMemberBetTimeType')
@@ -699,6 +668,7 @@ export default {
     this.$router.replace({ 'query': null })
     this.tempRoute.query = null
     this.$store.dispatch('tagsView/updateVisitedView', this.$route)
+    this.searchTime = defaultSearchTime
     this.$nextTick(() => {
       this.handleCurrentChange(this.currentPage)
       this.firstCreate = false
@@ -762,35 +732,6 @@ export default {
         this.searchForm.device = []
       }, () => {
         this.selectOption.deviceType = JSON.parse(JSON.stringify(this.searchItems.deviceType)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
-      })
-    },
-    dateTimeFocus() {
-      if (this.hasSet) return;
-      this.hasSet = true
-      this.$nextTick(() => {
-        const el = document.getElementsByClassName('has-seconds')
-        el.forEach(element => {
-          element.classList.remove('has-seconds')
-        });
-        this.addDateTimeOption(() => {
-          this.searchTime = getLastMonthDateTime()
-        }, () => {
-          this.searchTime = getThisMonthDateTime()
-        }, () => {
-          console.log("onNextMon")
-        }, () => {
-          this.searchTime = getYesterdayDateTime()
-        }, () => {
-          this.searchTime = getTodayDateTime()
-        }, () => {
-          console.log("onNextDay")
-        }, () => {
-          this.searchTime = getLastWeekDateTime()
-        }, () => {
-          this.searchTime = getThisWeekDateTime()
-        }, () => {
-          console.log("onNextWeek")
-        })
       })
     },
     setSearchOpen() {
