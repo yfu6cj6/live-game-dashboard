@@ -21,6 +21,7 @@ export default {
   background-color: #000 !important;
   background-position: center !important;
   background-size: cover !important;
+  background-image: url("/static/images/logo/loginBG.png");
   height: 100%;
   width: 100%;
 }

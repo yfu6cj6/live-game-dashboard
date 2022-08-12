@@ -1,89 +1,95 @@
 <template>
-  <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-
-      <div class="logo" />
-
-      <div class="title">{{ $t('__projectName') }}</div>
-
-      <el-form-item prop="account" :class="{'validateNone': loginFormValidate.account === 0, 'validateSuccess': loginFormValidate.account === 1, 'validateError': loginFormValidate.account === 2}">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="account"
-          v-model="loginForm.account"
-          name="account"
-          type="text"
-        />
-      </el-form-item>
-
-      <el-form-item prop="password" :class="{'validateNone': loginFormValidate.password === 0, 'validateSuccess': loginFormValidate.password === 1, 'validateError': loginFormValidate.password === 2}">
-        <span class="svg-container">
-          <svg-icon icon-class="key" />
-        </span>
-        <el-input
-          :key="curPasswordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="curPasswordType === passwordType.hidePassword ? `password` : `text`"
-          name="password"
-          @keyup.enter.native="handleLogin"
-        />
-        <span class="show-pwd" :class="{'isActive': curPasswordType === passwordType.showPassword}" @click="showPwd">
-          <svg-icon :icon-class="curPasswordType === passwordType.hidePassword ? 'eye' : 'eye-open'" />
-        </span>
-      </el-form-item>
-
-      <!-- <el-form-item prop="captcha" :class="{'validateNone': loginFormValidate.captcha === 0, 'validateSuccess': loginFormValidate.captcha === 1, 'validateError': loginFormValidate.captcha === 2}">
-        <el-input
-          ref="captcha"
-          v-model="loginForm.captcha"
-          name="captcha"
-          type="text"
-          class="captcha"
-          @keyup.enter.native="handleLogin"
-        />
-        <img :src="captchaImg" @click="refreshCaptcha()">
-        <i class="el-icon-refresh-right refresh" @click="refreshCaptcha()" />
-      </el-form-item> -->
-
-      <el-button :loading="loading" type="primary" class="bg-yellow" @click.native.prevent="handleLogin">{{ $t('__login') }}</el-button>
-
-      <div>
-        <div v-if="device === 'desktop'" class="footer">
-          <div class="device-icon">
-            <svg-icon icon-class="computer" />
+  <div class="login">
+    <div class="form-container el-row is-align-middle el-row--flex">
+      <div class="w-100 loginContent">
+        <language class="language" :lang="curLang" @changLang="language" />
+        <div class="content">
+          <div class="logo">
+            <div class="white-label logoPic" />
           </div>
-          <div class="user-info">
-            <div class="version">
-              <div class="info">FV: 0.0.1</div>
-              <div class="info">BR: {{ browserName }}</div>
-            </div>
-            <div class="version">
-              <div class="info">BV: 0.0.1</div>
-              <div class="info">IP: {{ clientInfo_IP }}</div>
-            </div>
-          </div>
-        </div>
-        <div v-else class="footer">
-          <div class="device-icon">
-            <svg-icon icon-class="phone" />
-          </div>
-          <div class="user-info">
-            <div class="version">
-              <div class="info">FV: 0.0.1</div>
-              <div class="info">BV: 0.0.1</div>
-            </div>
-            <div class="version">
-              <div class="info">BR: {{ browserName }}</div>
-              <div class="info">IP: {{ clientInfo_IP }}</div>
-            </div>
+          <div class="page-name">{{ $t('__projectName') }}</div>
+          <div class="form">
+            <el-form ref="loginForm" class="login-form" :model="loginForm" :rules="loginRules">
+              <el-form-item prop="account" :class="{'validateSuccess': loginFormValidate.account === 1, 'validateError': loginFormValidate.account === 2}">
+                <el-input
+                  ref="account"
+                  v-model="loginForm.account"
+                  name="account"
+                  type="text"
+                >
+                  <template slot="prefix">
+                    <div class="login-input-prefix">
+                      <div class="fas yellow text-yellow">
+                        <svg-icon class="icon" icon-class="user" />
+                      </div>
+                    </div>
+                  </template>
+                </el-input>
+              </el-form-item>
+              <el-form-item prop="password" :class="{'validateSuccess': loginFormValidate.password === 1, 'validateError': loginFormValidate.password === 2}">
+                <el-input
+                  :key="curPasswordType"
+                  ref="password"
+                  v-model="loginForm.password"
+                  class="custom-psw"
+                  :type="curPasswordType === passwordType.hidePassword ? `password`: `text`"
+                  name="password"
+                  @keyup.enter.native="handleLogin"
+                >
+                  <template slot="prefix">
+                    <div class="login-input-prefix">
+                      <div class="fas yellow text-yellow">
+                        <svg-icon class="icon" icon-class="key" />
+                      </div>
+                    </div>
+                  </template>
+                  <template slot="suffix">
+                    <i class="el-input__icon el-icon-view clickable" :class="{'text-line-gray-deep': curPasswordType === passwordType.hidePassword, 'text-white': curPasswordType === passwordType.showPassword}" @click="showPwd" />
+                  </template>
+                </el-input>
+              </el-form-item>
+              <el-form-item class="submit mb-0">
+                <div class="flex-wrap el-row is-align-middle el-row--flex">
+                  <el-button :loading="loading" class="bg-yellow w-100" @click.native.prevent="handleLogin">{{ $t('__login') }}</el-button>
+                </div>
+              </el-form-item>
+              <div class="form-alert" :class="{'d-none': loginTip === ''}">
+                <div class="el-alert el-alert--warning is-light">
+                  <i class="el-alert__icon el-icon-warning" />
+                  <div class="el-alert__content">
+                    <span class="el-alert__title">{{ loginTip }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="menu-footer">
+                <div class="d-flex">
+                  <div class="w-25 device text-gold-light">
+                    <svg-icon v-if="device==='mobile'" class="icon-device" icon-class="phone" style="height: 3.33333rem; width: 3.33333rem;" />
+                    <svg-icon v-if="device==='desktop'" class="icon-desktop" icon-class="computer" style="height: 3.33333rem; width: 3.33333rem;" />
+                  </div>
+                  <div class="w-75">
+                    <div class="d-flex">
+                      <div class="w-35">
+                        <div class="menu-item w-100 text-left">FV: 0.0.1</div>
+                      </div>
+                      <div class="w-65">
+                        <div class="menu-item w-100 text-left">BV: 0.0.1</div>
+                      </div>
+                    </div>
+                    <div class="d-flex">
+                      <div class="menu-item w-100 text-left">BR: {{ browserName }}</div>
+                    </div>
+                    <div class="d-flex">
+                      <div class="menu-item w-100 text-left">IP: {{ clientInfo_IP }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </el-form>
           </div>
         </div>
       </div>
-
-    </el-form>
+    </div>
   </div>
 </template>
 
@@ -92,9 +98,12 @@ import { login, generateCaptcha } from "@/api/user";
 import { mapGetters } from "vuex";
 import ResizeMixin from '@/mixin/ResizeHandler'
 import { browserVersion, clientIP } from '@/utils/clientInfo'
+import Language from '@/components/Language'
+import { getLanguage, setLanguage } from '@/lang/lang'
 
 export default {
   name: "Login",
+  components: { Language },
   mixins: [ResizeMixin],
   data() {
     const validateAccount = (rule, value, callback) => {
@@ -159,10 +168,14 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'device'
+      'device',
+      'loginTip'
     ]),
     captchaImg() {
       return this.captchaData.img;
+    },
+    curLang() {
+      return getLanguage()
     }
   },
   created() {
@@ -172,6 +185,9 @@ export default {
     this.browserName = this.$stringFormat('{0} - {1}', nameSplit)
   },
   methods: {
+    language(lang) {
+      setLanguage(lang)
+    },
     async getClientIP() {
       this.clientInfo_IP = await clientIP()
     },
@@ -200,10 +216,7 @@ export default {
                 type: "error"
               })
             } else {
-              this.$message({
-                message: "Login successfully",
-                type: "success"
-              })
+              this.$store.dispatch("login/setLoginTip", '')
               this.$store.dispatch("user/login", res)
               await this.$store.dispatch("backstageManagement/getAnnouncement")
               this.$router.push({ path: '/home' })
@@ -225,166 +238,179 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/styles/variables.scss";
-
-.login-container {
-  background-position: center !important;
-  background-color: #000;
-  background-size: cover !important;
-  background-image: url("/static/images/logo/loginBG.png");
-  width: 100vw;
-  height: 100vh;
-  min-height: 600px;
-  display: flex;
-  align-items: center;
-
-  .login-form {
-    width: 400px;
-    max-width: calc(100vw - 40px);
-    min-height: 600px;
+#app .login {
+  background-position: center;
+  background-size: contain;
+  position: relative;
+  .form-container {
+    max-width: 31.25rem;
+    padding: 0 2.5rem 2.5rem 2.5rem;
+    height: 90vh;
     margin: 0 auto;
-
-    .logo {
-      width: 450px;
-      max-width: 100vw;
-      height: 180px;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-
-      &::before {
-        position: absolute;
-        content: "";
-        width: 450px;
-        max-width: 100%;
-        height: 280px;
-        top: -40px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-image: url("/static/images/logo/logo.png");
-      }
-    }
-
-    .title {
-      color: $yellow;
-      text-align: center;
-      font-weight: 600;
-      font-size: 20px;
-      margin-top: 22px;
-      margin-bottom: 22px;
-    }
-
-    .el-form-item {
-      background-color: rgba(255, 255, 255, 0.08);
-      margin-left: 1em;
-      margin-right: 1em;
-      box-sizing: border-box;
-
-      .svg-container {
-        padding-left: 1em;
-        color: $yellow;
-
-        .svg-icon {
-          width: 1.5em;
-          height: 1.5em;
-          vertical-align: middle;
-        }
-      }
-
-      .el-input {
-        width: calc(100% - 1em - 1.5em - 1.5em);
-        font-size: 16px;
-
-        .el-input__inner {
-          border: transparent;
-          background-color: transparent;
-          color: #fff;
-          padding: 0 1em;
-        }
-      }
-
-      .show-pwd {
-        color: #6e6e6e;
-      }
-
-      .show-pwd.isActive {
-        color: #fff;
-      }
-
-      .captcha {
-        width: calc(100% - 100px - 30px);
-
-        & ~ img {
-          width: 100px;
-          cursor: pointer;
-          transform: translateY(25%);
-        }
-
-        & ~ i {
-          color: #fff;
-          cursor: pointer;
-          vertical-align: middle;
-          margin-left: .5em;
-          box-sizing: border-box;
-        }
-      }
-    }
-
-    .el-button {
-      width: calc(100% - 2em);
-      font-size: 20px;
-      margin: 0 1em;
-    }
-
-    .el-form-item.validateNone {
-      border-bottom: 2px solid $yellow;
-    }
-
-    .el-form-item.validateSuccess {
-      border-bottom: 2px solid #67c23a;
-    }
-
-    .el-form-item.validateError {
-      border-bottom: 2px solid #f73838;
-    }
-
-    .footer {
-      margin-top: 40px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    .loginContent {
+      display: -webkit-box;
+      display: -ms-flexbox;
       display: flex;
-      justify-content: center;
-
-      .user-info {
-        display: flex;
-
-        .version {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .version + .version {
-          margin-left: 2em;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-pack: start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: auto;
+      min-height: 100%;
+    }
+    .content {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      width: 100%;
+      max-width: 31.25rem;
+      margin: auto;
+      .logo {
+        margin-top: 0.83333rem;
+        margin-bottom: 10px;
+        width: 100%;
+        min-height: 50px;
+        .white-label {
+          width: 240px;
+          height: 150px;
         }
       }
-
-      .info {
-        color: #999;
-        font-size: 1em;
-        text-align: left;
+      .page-name {
+        font-size: 1.66667rem;
+        text-align: center;
+        font-weight: bold;
+        margin-top: 0.83333rem;
+        margin-bottom: 1.25rem;
+        color: #b99e71;
       }
-
-      .device-icon {
-        margin-right: 1em;
-
-        .svg-icon {
-          color: #b99e71;
-          width: 2.5em;
-          height: 2.5em;
+    }
+    .white-label {
+      width: 100%;
+      height: 10rem;
+      margin: 0.83333rem auto 0rem auto;
+      background-position: top;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+  }
+  .language {
+    position: absolute;
+    top: 0.41667rem;
+    right: 0.83333rem;
+    z-index: 2;
+    transform: scale(1.5);
+  }
+  .login-form {
+    max-width: 26.66667rem;
+    font-size: 1rem;
+    .el-form-item {
+      margin-bottom: 1.66667rem;
+      .el-input {
+        border-bottom: 0.16667rem solid #f9c901;
+        .el-input__inner {
+          border: 0;
+          background-color: rgba(255,255,255,0.08) !important;
+          padding: 0.83333rem 3.33333rem 0.83333rem 4.16667rem;
+          height: 3.95833rem;
+          line-height: 3.95833rem;
+          font-size: 1.33333rem;
+          color: #fff;
+          -webkit-text-fill-color: #fff;
+          -webkit-transition: background-color 5000s ease-in-out 0s;
+          transition: background-color 5000s ease-in-out 0s;
+        }
+      }
+      .el-button {
+        font-size: 1.33333rem;
+        margin-top: 0.83333rem;
+        margin-bottom: 0.83333rem;
+        margin-left: 0;
+        font-weight: bold;
+      }
+      &.validateSuccess {
+        .el-input {
+          border-bottom: 0.16667rem solid #67c23a;
+        }
+      }
+      &.validateError {
+        .el-input {
+          border-bottom: 0.16667rem solid #f73838;
         }
       }
     }
-
+    .el-input__inner {
+      line-height: 1 !important;
+    }
+    .login-input-prefix {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      height: 100%;
+      margin-left: 0.83333rem;
+      .fas svg {
+        width: 2rem !important;
+        height: 2rem !important;
+      }
+    }
   }
+  .custom-psw {
+    .el-icon-view {
+      display: inline-block;
+    }
+  }
+  .form-alert {
+    .el-alert {
+      padding: 0 !important;
+    }
+    .el-alert__title {
+      font-size: 1.16667rem;
+    }
+  }
+  .menu-footer {
+    margin-top: 0.83333rem;
+    padding-bottom: 0.83333rem;
+    padding-left: 0;
+    width: 100%;
+    .device {
+      text-align: center;
+    }
+    .menu-item {
+      margin-bottom: 0.41667rem;
+      font-size: .91667rem;
+      color: #999;
+    }
+  }
+}
+
+.logoPic {
+  background-image: url("/static/images/logo/logo.png");
 }
 </style>

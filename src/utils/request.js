@@ -3,6 +3,7 @@ import { getToken, setToken, removeToken, getTokenType, setTokenType, removeToke
 import router from '@/router/index'
 import { Message } from 'element-ui'
 import { i18n } from '@/lang/lang'
+import store from '@/store'
 
 // create an axios instance
 const service = axios.create({
@@ -48,6 +49,7 @@ service.interceptors.response.use(
     if (res.code === 401 || res.code === 101) {
       router.push({ path: '/logout' })
       showMsgLog(res.message)
+      store.dispatch('login/setLoginTip', res.message)
       return Promise.reject(response)
     }
 
@@ -64,6 +66,7 @@ service.interceptors.response.use(
 
     if (res.code !== 200) {
       showMsgLog(res.message)
+      store.dispatch('login/setLoginTip', res.message)
       return Promise.reject(response)
     } else {
       if (res.data) {

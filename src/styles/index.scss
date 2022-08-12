@@ -174,8 +174,20 @@ table {
 }
 
 // 寬
+.w-25 {
+  width: 25%!important;
+}
+.w-35 {
+  width: 35%!important;
+}
 .w-50 {
   width: 50%!important;
+}
+.w-65 {
+  width: 65%!important;
+}
+.w-75 {
+  width: 75%!important;
 }
 .w-100 {
   width: 100%!important;
@@ -240,6 +252,9 @@ table {
 }
 .mr-auto, .mx-auto {
   margin-right: auto!important;
+}
+.mb-0, .my-0 {
+  margin-bottom: 0!important;
 }
 .mb-2, .my-2 {
   margin-bottom: 0.5rem!important;
@@ -317,6 +332,9 @@ table {
 #app .fas.gray-deep {
   fill: #4e4e4e !important;
 }
+.fas.gold-light {
+  fill: #b99e71;
+}
 
 // 顏色
 #app .text-golden {
@@ -339,6 +357,15 @@ table {
 }
 #app .text-green {
   color: #56ad10;
+}
+#app .text-line-gray-deep {
+  color: #6e6e6e;
+}
+.text-white {
+  color: #fff!important;
+}
+.text-gold-light {
+  color: #b99e71;
 }
 
 // 背景顏色
@@ -382,6 +409,9 @@ table {
 }
 .text-right {
   text-align: right!important;
+}
+.text-left {
+  text-align: left!important;
 }
 #app .text-underline {
   text-decoration: underline;
@@ -1339,5 +1369,15 @@ table {
       border: 1px solid #f9c901 !important;
       padding: 0 1rem;
     }
+  }
+}
+
+.form-alert {
+  .el-alert--error,
+  .el-alert--warning {
+    padding: 0.83333rem;
+    background-color: transparent;
+    word-break: break-all;
+    color: #ff473d;
   }
 }

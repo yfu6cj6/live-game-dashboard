@@ -663,3 +663,78 @@
   transition: transform .3s,-webkit-transform .3s;
   font-size: 1.2rem;
 }
+
+.el-form-item__content {
+  line-height: 4rem;
+  position: relative;
+  font-size: 1.4rem;
+}
+
+.el-input__prefix {
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  color: #c0c4cc;
+}
+
+.el-form-item {
+  margin-bottom: 2.2rem;
+}
+
+.el-input__suffix {
+  position: absolute;
+  height: 100%;
+  right: 0.5rem;
+  top: 0;
+  text-align: center;
+  color: #c0c4cc;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  pointer-events: none;
+}
+
+.el-alert {
+  width: 100%;
+  padding: 0.8rem 1.6rem;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 0.4rem;
+  position: relative;
+  background-color: #fff;
+  overflow: hidden;
+  opacity: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-transition: opacity .2s;
+  transition: opacity .2s;
+}
+
+.el-alert__icon {
+  font-size: 1.6rem;
+  width: 1.6rem;
+}
+
+.el-alert__content {
+  display: table-cell;
+  padding: 0 0.8rem;
+}
+
+.el-alert__title {
+  font-size: 1.3rem;
+  line-height: 1.8rem;
+}
+
+.el-alert__closebtn {
+  font-size: 1.2rem;
+  color: #c0c4cc;
+  opacity: 1;
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  cursor: pointer;
+}
