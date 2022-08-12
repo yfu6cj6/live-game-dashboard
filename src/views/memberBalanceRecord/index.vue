@@ -430,6 +430,10 @@ export default {
       this.totalInfo = res.totalInfo
       this.searchItems = JSON.parse(JSON.stringify(res.searchItems))
       this.selectOption = JSON.parse(JSON.stringify(res.searchItems))
+      const open = this.tableData.filter(item => item.open).map(item => item.id)
+      res.rows.forEach(element => {
+        element.open = open.includes(element.id)
+      })
       this.tableData = res.rows
       this.tableData.forEach(element => {
         element.pre_trade_balance = numberFormat(element.pre_trade_balance)

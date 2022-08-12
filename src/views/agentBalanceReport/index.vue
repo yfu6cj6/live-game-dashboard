@@ -32,13 +32,13 @@
                                 <div class="list-item d-flex align-items-center" style="width: 100%;">
                                   <span class="icon user">
                                     <div class="fas gold">
-                                      <svg-icon class="fas text-gray" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                                      <svg-icon class="fas gold" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
                                     </div>
                                   </span>
-                                  <span class="value text-golden">{{ "DDDDDD" }}</span>
+                                  <span class="value text-golden">{{ agentInfo.agent }}</span>
                                 </div>
                                 <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
-                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subAgentTotalBalance") }}</span>
+                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subordinateAgentsBalance") }}</span>
                                   <span class="value">
                                     {{ agentInfo.subordinateAgentsBalance }}
                                   </span>
@@ -77,17 +77,17 @@
                       <div class="profit-tabs light el-tabs">
                         <div class="el-tabs__header">
                           <div class="el-tabs__nav">
-                            <div class="el-tabs__item is-active" @click.stop="onTableBtnClick(tableEnum.agent)">
+                            <div class="el-tabs__item" :class="{'is-active':curTableIndex === 0}" @click.stop="onTableBtnClick(tableEnum.agent)">
                               <div class="tab-item">
-                                <div class="fas black">
+                                <div class="fas black" :class="{'yellow':curTableIndex === 0}">
                                   <svg-icon icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
                                   <span> {{ $t("__agent") }} </span>
                                 </div>
                               </div>
                             </div>
-                            <div class="el-tabs__item" @click.stop="onTableBtnClick(tableEnum.member)">
+                            <div class="el-tabs__item" :class="{'is-active':curTableIndex === 1}" @click.stop="onTableBtnClick(tableEnum.member)">
                               <div class="tab-item">
-                                <div class="fas yellow">
+                                <div class="fas black" :class="{'yellow':curTableIndex === 1}">
                                   <svg-icon icon-class="member" style="height: 1.33333rem; width: 1.33333rem;" />
                                   <span> {{ $t("__member") }} </span>
                                 </div>
@@ -96,9 +96,19 @@
                           </div>
                         </div>
                       </div>
-
                       <div class="common-list report-list flex-column flex-fill bg-new-dark-white">
-                        -
+                        <agent
+                          v-show="curTableIndex === tableEnum.agent"
+                          ref="agent"
+                          @handleRespone="handleAgentRespone"
+                          @setDataLoading="setDataLoading"
+                        />
+                        <member
+                          v-show="curTableIndex === tableEnum.member"
+                          ref="member"
+                          @handleRespone="handleMemberRespone"
+                          @setDataLoading="setDataLoading"
+                        />
                       </div>
 
                       <div class="page-total">
@@ -118,16 +128,19 @@
 </template>
 
 <script>
-import { agentBalanceReportExport, agentBalanceReportSearch } from '@/api/agentBalanceReport/agent'
+// import { agentBalanceReportExport, agentBalanceReportSearch } from '@/api/agentBalanceReport/agent'
+import { agentBalanceReportExport } from '@/api/agentBalanceReport/agent'
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
+import Agent from './agent/index';
+import Member from './member/index';
 import { getFullDateString } from '@/utils/transDate'
 import { numberFormat } from '@/utils/numberFormat'
 
 export default {
   name: 'AgentBalanceReport',
-  components: { },
+  components: { Agent, Member },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -201,7 +214,9 @@ export default {
       multipleSheetExport(excelDatas, 'AgentBalanceReport_' + getFullDateString(new Date()), true, 'xlsx')
     },
     handleAgentRespone(agentInfo) {
+      const open = this.agentInfo.open;
       this.agentInfo = agentInfo
+      this.agentInfo.open = open;
       this.setTagsViewTitle()
       this.dataLoading = false
     },
@@ -213,21 +228,11 @@ export default {
       this.dataLoading = true
       switch (this.curTableIndex) {
         case this.tableEnum.agent: {
-          // this.$refs.agent.onSearch(this.agentId)
-          const data = {
-            page: this.currentPage,
-            rowsCount: this.pageSize,
-            agentId: this.agentId
-          }
-          agentBalanceReportSearch(data).then((res) => {
-            this.handleAgentRespone(JSON.parse(JSON.stringify(res.agentInfo)));
-          }).catch(() => {
-            this.setDataLoading(false)
-          })
+          this.$refs.agent.onSearch(this.agentId)
           break
         }
         case this.tableEnum.member: {
-          // this.$refs.member.onSearch(this.agentId)
+          this.$refs.member.onSearch(this.agentId)
           break
         }
       }

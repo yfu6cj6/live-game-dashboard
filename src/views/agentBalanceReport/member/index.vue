@@ -1,50 +1,84 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
-            v-for="(item, index) in tableData"
-            :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
-          >
-            <template v-if="device === 'mobile'">
-              <div class="left">
-                <div class="item">
-                  <span class="header">{{ $t('__member') }}</span>
-                  <span class="content">{{ item.member }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__totalBalance') }}</span>
-                  <span class="content">{{ item.totalBalance }}</span>
-                </div>
+  <div>
+    <template v-if="tableData.length > 0">
+      <div class="agent-group">
+        <div
+          v-for="(item, index) in tableData"
+          :key="index"
+          class="agent-group none-group"
+          :class="{even: (index % 2 === 0), odd: (index % 2 !== 0)}"
+        >
+          <div class="w-100 items">
+            <div class="agent-list-basic list-row">
+              <div class="list-item d-flex align-items-center" style="width: 50%;">
+                <router-link v-if="index < tableData.length" :to="`/agentBalanceReport/agentBalanceReport/${item.agentId}`">
+                  <div class="d-flex align-items-center">
+                    <span class="icon user">
+                      <div class="fas gold">
+                        <svg-icon class="fas gold" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                      </div>
+                    </span>
+                    <span class="value text-golden text-underline">{{ item.member }}</span>
+                  </div>
+                </router-link>
               </div>
-              <div class="right">
-                -
+              <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subordinateAgentsBalance') }}</span>
+                <span class="value">
+                  <span>{{ item.totalBalance }}</span>
+                </span>
               </div>
-            </template>
-            <template v-else>
-              -
-            </template>
+            </div>
+            <div class="agent-break-line" />
           </div>
         </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
       </div>
-    </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
-    </div>
+      <div v-if="totalCount > pageSize" class="text-center view-more-container bg-white">
+        <template v-if="tableData.length >= totalCount">
+          <span class="border-dark">{{ $t("__noMoreInformation") }}</span>
+        </template>
+        <template v-else>
+          <span class="view-more border-bottom border-dark" @click.stop="moreInfo">{{ $t("__searchMoreValue") }}</span>
+        </template>
+      </div>
+      <div class="page-total">
+        <div class="w-100 list-row">
+          <div class="list-item">
+            <div class="name list-sub-item d-flex align-items-center">
+              <span class="text-link text-golden">{{ $t('__subtotalCount') }}</span>
+            </div>
+            <div class="item-content list-sub-item d-flex flex-wrap align-items-end">
+              <div class="page-item mb-2 is-amount" style="width: 200px; margin-left: 175px;">
+                <span class="label">{{ $t('__balance') }}</span>
+                <span class="value">
+                  <span>
+                    <span>{{ subtotalInfo.totalBalance }}</span>
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-100 list-row">
+          <div class="list-item">
+            <div class="name list-sub-item d-flex align-items-center">
+              <span class="text-link text-golden">{{ $t('__totalCount') }}</span>
+            </div>
+            <div class="item-content list-sub-item d-flex flex-wrap align-items-end">
+              <div class="page-item mb-2 is-amount" style="width: 200px; margin-left: 175px;">
+                <span class="label">{{ $t('__balance') }}</span>
+                <span class="value">
+                  <span>{{ totalData.totalBalance }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <div class="no-result">{{ $t('__noInformation') }}</div>
+    </template>
   </div>
 </template>
 
@@ -67,7 +101,9 @@ export default {
   },
   data() {
     return {
-      agentId: 0
+      agentId: 0,
+      subtotalInfo: {},
+      totalData: {}
     }
   },
   methods: {
@@ -96,7 +132,9 @@ export default {
       }
       this.setDataLoading(true)
       memberBalanceReportSearch(data).then((res) => {
-        this.tableData = res.rows
+        this.tableData = res.rows.slice(0, res.rows.length - 2)
+        this.subtotalInfo = res.subtotalInfo
+        this.totalData = res.totalData
         this.totalCount = res.totalCount
         this.$emit('handleRespone')
       }).catch(() => {
@@ -114,4 +152,54 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+.page-total {
+  background-color: #e9e9e9;
+  padding: 0.83333rem 1.25rem;
+  position: relative;
+  .list-sub-item{
+    margin-top: 0.83333rem;
+    &.name {
+      font-weight: bold;
+      font-size: 1.16667rem;
+      width: 100% !important;
+      padding-bottom: 0.41667rem;
+      border-bottom: 0.08333rem solid #ce9600;
+      .text-link {
+        font-weight: bold;
+      }
+    }
+  }
+  .page-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-size: 1.16667rem;
+    width: 50%;
+    &.is-amount {
+      padding-right: 0.83333rem !important;
+      .label {
+        width: 100%;
+        text-align: right !important;
+      }
+      .value {
+        width: 100%;
+        text-align: right !important;
+      }
+    }
+    .label {
+      width: 100%;
+      margin-bottom: 0.41667rem;
+      margin-right: 0;
+      color: #898989;
+    }
+    .value {
+      font-weight: bold;
+    }
+  }
+}
 </style>

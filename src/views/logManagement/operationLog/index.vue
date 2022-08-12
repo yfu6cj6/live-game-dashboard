@@ -222,6 +222,10 @@ export default {
       })
     },
     handleRespone(res) {
+      const open = this.tableData.filter(item => item.open).map(item => item.id)
+      res.rows.forEach(element => {
+        element.open = open.includes(element.id)
+      })
       this.tableData = res.rows;
       this.showDetail = res.showDetail
       this.totalCount = res.totalCount
