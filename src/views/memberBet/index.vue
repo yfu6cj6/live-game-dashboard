@@ -42,7 +42,6 @@
                             align="right"
                             :clearable="false"
                             :editable="false"
-                            time-arrow-control
                             :range-separator="$t('__to')"
                             :start-placeholder="$t('__startDate')"
                             :end-placeholder="$t('__endDate')"
