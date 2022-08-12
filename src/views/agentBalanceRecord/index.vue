@@ -5,17 +5,20 @@
         <template v-if="device === 'mobile'">
           <div class="bg-black">
             <div class="search_frame">
-              <div class="d-flex align-items-center day_frame">
+              <div class="d-flex align-items-center day_frame" @click.once="changeInitCalendarPage">
                 <el-date-picker
                   v-model="searchTime"
                   type="datetimerange"
-                  align="right"
-                  unlink-panels
                   class="search_frame_size"
+                  popper-class="ams-timeslot-popper"
+                  align="right"
+                  :clearable="false"
+                  :editable="false"
                   :range-separator="$t('__to')"
-                  :start-placeholder="`${$t('__operationTime')}(${$t('__start')})`"
-                  :end-placeholder="`${$t('__operationTime')}(${$t('__end')})`"
-                  :picker-options="pickerOptions"
+                  :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
+                  :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
+                  :default-time="['00:00:00', '23:59:59']"
+                  :format="'yyyy-MM-dd HH:mm'"
                 />
                 <span>
                   <div class="d-flex align-items-center more_option text-yellow" @click.stop="searchFormOpen = !searchFormOpen">
@@ -259,8 +262,7 @@ import { agentBalanceRecordSearch, agentBalanceRecordExport } from '@/api/agentB
 import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
-import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime, getLastWeekDateTime,
-  getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
+import { getFullDate, getFullDateString, getTodayDateTime } from '@/utils/transDate'
 import { numberFormat } from '@/utils/numberFormat'
 
 const defaultSearchTime = getTodayDateTime()
@@ -270,40 +272,6 @@ export default {
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
-      pickerOptions: {
-        shortcuts: [{
-          text: this.$t('__yesterday'),
-          onClick(picker) {
-            picker.$emit('pick', getYesterdayDateTime())
-          }
-        }, {
-          text: this.$t('__today'),
-          onClick(picker) {
-            picker.$emit('pick', getTodayDateTime())
-          }
-        }, {
-          text: this.$t('__lastWeek'),
-          onClick(picker) {
-            picker.$emit('pick', getLastWeekDateTime())
-          }
-        }, {
-          text: this.$t('__thisWeek'),
-          onClick(picker) {
-            picker.$emit('pick', getThisWeekDateTime())
-          }
-        }, {
-          text: this.$t('__lastMonth'),
-          onClick(picker) {
-            picker.$emit('pick', getLastMonthDateTime())
-          }
-        }, {
-          text: this.$t('__thisMonth'),
-          onClick(picker) {
-            picker.$emit('pick', getThisMonthDateTime())
-          }
-        }]
-      },
-      searchTime: defaultSearchTime,
       searchForm: {},
       searchItems: {},
       fuzzyMatchingByOrderNumber: false,
@@ -321,16 +289,10 @@ export default {
       return this.searchForm.agent_id && this.searchForm.agent_id.length > this.selectCollapseCount
     }
   },
-  watch: {
-    'searchTime': function() {
-      this.$nextTick(() => {
-        this.pageSizeCount = 1
-        this.handleCurrentChange(1)
-      })
-    }
-  },
+  watch: { },
   created() {
     this.pageSizeCount = 1
+    this.searchTime = defaultSearchTime
     this.handleCurrentChange(this.currentPage)
     this.$nextTick(() => {
       this.addSelectFilter()
