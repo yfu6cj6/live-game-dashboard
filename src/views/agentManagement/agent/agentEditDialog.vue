@@ -13,7 +13,7 @@
     <el-steps v-if="visible" :active="curIndex" align-center finish-status="success">
       <el-step v-if="hasStep('agentInfo')" :description="$t('__agentInfo')" />
       <el-step v-if="hasStep('rate')" :description="$t('__rate')" />
-      <el-step v-if="hasStep('limit')" :description="$t('_handicapLimit')" />
+      <el-step v-if="hasStep('limit')" :description="$t('__handicapLimit')" />
       <el-step v-if="hasStep('balanceConfig')" :description="$t('__balanceConfig')" />
       <el-step v-if="hasStep('confirm')" :description="$t('__confirm')" />
     </el-steps>
@@ -195,7 +195,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <label>{{ $t('_handicapLimit') }}</label>
+        <label>{{ $t('__handicapLimit') }}</label>
         <div />
         <el-table
           :data="selectHandicaps"

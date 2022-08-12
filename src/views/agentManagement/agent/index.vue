@@ -79,7 +79,7 @@
                       </span>
                     </div>
                     <div class="group2">
-                      <el-button class="bg-yellow" size="mini" @click.stop="onLimitBtnClick(item.handicaps)">{{ $t("_handicapLimit") }}</el-button>
+                      <el-button class="bg-yellow" size="mini" @click.stop="onLimitBtnClick(item.handicaps)">{{ $t("__handicapLimit") }}</el-button>
                       <svg-icon v-if="!isAgentSubAccount" icon-class="key" class="yellow-color key" @click.stop="onModPasswordBtnClick(item)" />
                       <el-button v-if="!isAgentSubAccount" class="bg-normal yellow-color edit" size="mini" icon="el-icon-setting" @click.stop="onEditBtnClick(item)" />
                     </div>
@@ -275,7 +275,7 @@
     />
 
     <limitDialog
-      :title="$t('_handicapLimit')"
+      :title="$t('__handicapLimit')"
       :visible="curDialogIndex === dialogEnum.limit"
       :handicaps="handicaps"
       @close="closeDialogEven"

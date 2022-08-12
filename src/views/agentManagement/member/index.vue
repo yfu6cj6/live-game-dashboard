@@ -54,9 +54,9 @@
         </template>
       </af-table-column>
       <af-table-column prop="cityNameLabel" :label="$t('__timeZone')" align="center" />
-      <af-table-column :label="$t('_handicapLimit')" align="center" :width="100">
+      <af-table-column :label="$t('__handicapLimit')" align="center" :width="100">
         <template slot-scope="scope">
-          <el-button class="labelButton bg-yellow" size="mini" @click="onLimitBtnClick(scope.row.handicaps)">{{ $t("_handicapLimit") }}</el-button>
+          <el-button class="labelButton bg-yellow" size="mini" @click="onLimitBtnClick(scope.row.handicaps)">{{ $t("__handicapLimit") }}</el-button>
         </template>
       </af-table-column>
       <af-table-column :label="$t('__liveGame')" align="center" :width="140">
@@ -178,7 +178,7 @@
     />
 
     <limitDialog
-      :title="$t('_handicapLimit')"
+      :title="$t('__handicapLimit')"
       :visible="curDialogIndex === dialogEnum.limit"
       :handicaps="handicaps"
       @close="closeDialogEven"

@@ -138,7 +138,7 @@
     "__memberBalance": "玩家額度",
     "__agentInfo": "代理資訊",
     "__rate": "佔成",
-    "_handicapLimit": "盤口限紅",
+    "__handicapLimit": "盤口限紅",
     "__balanceConfig": "額度配置",
     "__accountGenerateMode": "帳號生成方式",
     "__auto": "自動",
