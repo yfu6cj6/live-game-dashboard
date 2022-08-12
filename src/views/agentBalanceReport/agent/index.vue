@@ -5,70 +5,67 @@
         <div
           v-for="(item, index) in tableData"
           :key="index"
-          class="agent-group none-group"
-          :class="{even: (index % 2 === 0), odd: (index % 2 !== 0)}"
+          class="w-100 items"
         >
-          <div class="w-100 items">
-            <div class="ctrl" :class="{'exp': item.open}" @click.stop="remarkExpand(item)">
-              <div class="item-inner">
-                <div class="fas text-gray">
-                  <div :class="{'d-none': item.open}">
-                    <svg-icon class="fas text-gray" icon-class="more" style="height: 2.5rem; width: 2.5rem;" />
-                  </div>
-                  <div :class="{'d-none': !item.open}">
-                    <svg-icon class="fas text-gray" icon-class="up" style="height: 2.33333rem; width: 2.33333rem;" />
-                  </div>
+          <div class="ctrl" :class="{'exp': item.open}" @click.stop="remarkExpand(item)">
+            <div class="item-inner">
+              <div class="fas text-gray">
+                <div :class="{'d-none': item.open}">
+                  <svg-icon class="fas text-gray" icon-class="more" style="height: 2.5rem; width: 2.5rem;" />
+                </div>
+                <div :class="{'d-none': !item.open}">
+                  <svg-icon class="fas text-gray" icon-class="up" style="height: 2.33333rem; width: 2.33333rem;" />
                 </div>
               </div>
             </div>
-            <div class="agent-list-basic list-row">
-              <div class="list-item d-flex align-items-center" style="width: 100%;">
-                <router-link v-if="index < tableData.length" :to="`/agentBalanceReport/agentBalanceReport/${item.agentId}`">
-                  <div class="d-flex align-items-center">
-                    <span class="icon user">
-                      <div class="fas gold">
-                        <svg-icon class="fas gold" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
-                      </div>
-                    </span>
-                    <span class="value text-golden text-underline">{{ item.agent }}</span>
-                  </div>
-                </router-link>
-              </div>
-              <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
-                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subordinateAgentsBalance') }}</span>
-                <span class="value">
-                  <span>{{ item.subordinateAgentsBalance }}</span>
-                </span>
-              </div>
-              <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
-                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subordinateMembersBalance') }}</span>
-                <span class="value">
-                  <span>{{ item.subordinateMembersBalance }}</span>
-                </span>
-              </div>
-              <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
-                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__unassignedBalance') }}</span>
-                <span class="value">
-                  <span>{{ item.balance }}</span>
-                </span>
-              </div>
-              <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
-                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__totalBalance') }}</span>
-                <span class="value">
-                  <span>{{ item.totalBalance }}</span>
-                </span>
-              </div>
-            </div>
-            <div v-if="item.open" class="agent-list-detail list-row">
-              <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
-                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__totalPlayerCount') }}</span>
-                <span class="value">
-                  <span>{{ item.memberCount }}</span>
-                </span>
-              </div>
-            </div>
-            <div class="agent-break-line" />
           </div>
+          <div class="agent-list-basic list-row">
+            <div class="list-item d-flex align-items-center" style="width: 100%;">
+              <router-link v-if="index < tableData.length" :to="`/agentBalanceReport/agentBalanceReport/${item.agentId}`">
+                <div class="d-flex align-items-center">
+                  <span class="icon user">
+                    <div class="fas gold">
+                      <svg-icon class="fas gold" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                    </div>
+                  </span>
+                  <span class="value text-golden text-underline">{{ item.agent }}</span>
+                </div>
+              </router-link>
+            </div>
+            <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subordinateAgentsBalance') }}</span>
+              <span class="value">
+                <span>{{ item.subordinateAgentsBalance }}</span>
+              </span>
+            </div>
+            <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subordinateMembersBalance') }}</span>
+              <span class="value">
+                <span>{{ item.subordinateMembersBalance }}</span>
+              </span>
+            </div>
+            <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__unassignedBalance') }}</span>
+              <span class="value">
+                <span>{{ item.balance }}</span>
+              </span>
+            </div>
+            <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__totalBalance') }}</span>
+              <span class="value">
+                <span>{{ item.totalBalance }}</span>
+              </span>
+            </div>
+          </div>
+          <div v-if="item.open" class="agent-list-detail list-row">
+            <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
+              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__totalPlayerCount') }}</span>
+              <span class="value">
+                <span>{{ item.memberCount }}</span>
+              </span>
+            </div>
+          </div>
+          <div class="agent-break-line" />
         </div>
       </div>
       <div v-if="totalCount > pageSize" class="text-center view-more-container bg-white">
@@ -186,6 +183,10 @@ export default {
     }
   },
   methods: {
+    moreInfo() {
+      this.pageSizeCount++;
+      this.handleCurrentChange(1);
+    },
     remarkExpand(row) {
       const obj = this.tableData.find(item => item.agentId === row.agentId);
       this.$nextTick(() => {

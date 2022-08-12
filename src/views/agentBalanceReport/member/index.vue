@@ -5,32 +5,27 @@
         <div
           v-for="(item, index) in tableData"
           :key="index"
-          class="agent-group none-group"
-          :class="{even: (index % 2 === 0), odd: (index % 2 !== 0)}"
+          class="w-100 items"
         >
-          <div class="w-100 items">
-            <div class="agent-list-basic list-row">
-              <div class="list-item d-flex align-items-center" style="width: 50%;">
-                <router-link v-if="index < tableData.length" :to="`/agentBalanceReport/agentBalanceReport/${item.agentId}`">
-                  <div class="d-flex align-items-center">
-                    <span class="icon user">
-                      <div class="fas gold">
-                        <svg-icon class="fas gold" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
-                      </div>
-                    </span>
-                    <span class="value text-golden text-underline">{{ item.member }}</span>
+          <div class="agent-list-basic list-row">
+            <div class="list-item d-flex align-items-center" style="width: 50%;">
+              <div class="d-flex align-items-center">
+                <span class="icon user">
+                  <div class="fas gold">
+                    <svg-icon class="fas gold" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
                   </div>
-                </router-link>
-              </div>
-              <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
-                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subordinateAgentsBalance') }}</span>
-                <span class="value">
-                  <span>{{ item.totalBalance }}</span>
                 </span>
+                <span class="value text-golden text-underline">{{ item.member }}</span>
               </div>
             </div>
-            <div class="agent-break-line" />
+            <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subordinateAgentsBalance') }}</span>
+              <span class="value">
+                <span>{{ item.totalBalance }}</span>
+              </span>
+            </div>
           </div>
+          <div class="agent-break-line" />
         </div>
       </div>
       <div v-if="totalCount > pageSize" class="text-center view-more-container bg-white">
@@ -107,6 +102,10 @@ export default {
     }
   },
   methods: {
+    moreInfo() {
+      this.pageSizeCount++;
+      this.handleCurrentChange(1);
+    },
     numberFormatStr(number) {
       return numberFormat(number)
     },
@@ -121,13 +120,14 @@ export default {
     },
     // 父物件呼叫
     onSearch(agentId) {
+      this.pageSizeCount = 1
       this.agentId = agentId
       this.handleCurrentChange(this.currentPage)
     },
     onSubmit() {
       const data = {
         page: this.currentPage,
-        rowsCount: this.pageSize,
+        rowsCount: this.pageSize * this.pageSizeCount,
         agentId: this.agentId
       }
       this.setDataLoading(true)
