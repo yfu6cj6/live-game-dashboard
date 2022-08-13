@@ -7,8 +7,6 @@
             <div class="expand-icon">
               <div class="fas yellow" @click="toggleSideBar">
                 <svg
-                  id="圖層_1"
-                  data-name="圖層 1"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 63 63"
                 >
@@ -33,9 +31,60 @@
             </div>
           </div>
         </div>
-        <div class="control ml-auto">
+        <div v-if="$route.path === '/home'" class="control ml-auto">
           <div class="d-flex">
             <language class="language" :lang="curLang" @changLang="language" />
+          </div>
+        </div>
+        <div v-if="$route.path !== '/home'" class="page-name ml-auto">
+          <div class="left d-none">
+            <div class="inner clickable text-center">
+              <div class="fas help black">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 63 63"
+                  style="height: 1.16667rem; width: 1.16667rem;"
+                >
+                  <title>question</title>
+                  <g>
+                    <path d="M31.53,63A31.51,31.51,0,1,1,63,31.42,31.47,31.47,0,0,1,31.53,63Zm2.28-19c0-.42.09-.76.08-1.1a10.82,10.82,0,0,1,4.27-9,39.92,39.92,0,0,0,5.05-5,11.32,11.32,0,0,0-.75-15.49c-3.07-3.11-6.9-4.13-11.08-4.13C27,9.28,23,10.44,20,14a15,15,0,0,0-3.3,8.44l5.72.68.26-1.23c1-4.95,4-7.72,8.41-7.88,4.89-.19,9,3.55,9,8.12a6.43,6.43,0,0,1-2,4.62c-2,2-4.06,3.84-6,5.82-3.17,3.19-4,7.15-3.64,11.53Zm.61,11.09V48.89H28.18v6.25Z" />
+                  </g>
+                </svg>
+              </div>
+              <span class="strong text" :class="{'zh_ch': curLang === 'zh_cht' || curLang === 'zh_chs'}">
+                {{ $t(curViewTitle) }}
+              </span>
+            </div>
+          </div>
+          <div class="left">
+            <div class="inner">
+              <div class="fas help black text-center">
+                <span class="strong text" :class="{'zh_ch': curLang === 'zh_cht' || curLang === 'zh_chs'}">
+                  {{ $t(curViewTitle) }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="center">
+            <span class="strong line" />
+          </div>
+          <div class="right" @click.stop="goBack">
+            <div class="inner clickable">
+              <div class="fas clickable black">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 63 63"
+                  style="height: 1.66667rem; width: 1.66667rem;"
+                >
+                  <title>back</title>
+                  <path d="M.72,18.47,6.88,12.3,7,12.19l6-6a2.45,2.45,0,0,1,3.47,0A2.55,2.55,0,0,1,17.2,7.9v9.84H43.11a20,20,0,0,1,14,5.84v0h0a19.84,19.84,0,0,1,0,28.12h0a19.9,19.9,0,0,1-14,5.84H8.92a2.46,2.46,0,0,1,0-4.91H43.11a14.83,14.83,0,0,0,10.53-4.38l.07,0h0a15,15,0,0,0,0-21.14l0,0h0a15,15,0,0,0-10.6-4.42H17.2v9.88A2.43,2.43,0,0,1,14.77,35,2.55,2.55,0,0,1,13,34.26L6.88,28.09,6.75,28l-6-6a2.44,2.44,0,0,1,0-3.46Z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="center d-none" />
+          <div class="right d-none">
+            <div class="inner" />
           </div>
         </div>
       </div>
@@ -90,6 +139,7 @@ export default {
   },
   data: function() {
     return {
+      viewName: ''
     }
   },
   computed: {
@@ -100,7 +150,8 @@ export default {
       'account',
       'balance',
       'agent_id',
-      'device'
+      'device',
+      'curViewTitle'
     ]),
     isCollapse() {
       return !this.sidebar.opened
@@ -112,7 +163,18 @@ export default {
       return getLanguage()
     }
   },
+  watch: {
+    // '$route': {
+    //   handler() {
+    //     console.log(this.$route)
+    //   },
+    //   immediate: true
+    // }
+  },
   methods: {
+    goBack() {
+      this.$router.go(-1)
+    },
     language(lang) {
       setLanguage(lang)
     },
@@ -229,6 +291,99 @@ export default {
       line-height: 1;
       color: #f9c901;
       cursor: pointer;
+    }
+    .page-name {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      padding: 0;
+      color: #000;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      overflow: hidden;
+      max-width: 16.66667rem;
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 95%;
+        height: 0;
+        border-left: 2.5rem solid transparent;
+        border-top: 4.16667rem solid #f9c903;
+        z-index: 1;
+      }
+      .left {
+        z-index: 2;
+        padding-left: 2.91667rem;
+        .inner {
+          padding: 0.83333rem 0rem 0.83333rem 0.41667rem;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+        }
+      }
+      .right {
+        z-index: 2;
+        .inner {
+          padding: 0.83333rem 0.83333rem 0.83333rem 0rem;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+        }
+      }
+      .fas {
+        z-index: 2;
+        &.help {
+          margin-right: 0.83333rem;
+          margin-bottom: 2px;
+        }
+        path {
+          fill: inherit !important;
+        }
+      }
+      .strong {
+        font-size: 1.16667rem;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        z-index: 2;
+        &.text {
+          font-size: .83333rem !important;
+          word-break: break-word;
+          &.zh_ch {
+            font-size: 1rem !important;
+          }
+        }
+        &.line {
+          height: 75%;
+          border-right: 0.08333rem solid #4e4e4e;
+          margin-left: 0.83333rem;
+          margin-right: 0.83333rem;
+        }
+      }
+      .center {
+        padding: 0.83333rem 0rem;
+        height: 3.75rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+      }
     }
   }
 }

@@ -1,6 +1,7 @@
 const state = {
   visitedViews: [],
-  cachedViews: []
+  cachedViews: [],
+  curViewTitle: ''
 }
 
 const mutations = {
@@ -11,6 +12,7 @@ const mutations = {
         title: view.meta.title || 'no-name'
       })
     )
+    state.curViewTitle = view.meta.title
   },
   ADD_CACHED_VIEW: (state, view) => {
     if (state.cachedViews.includes(view.name)) {
@@ -62,6 +64,7 @@ const mutations = {
     for (let v of state.visitedViews) {
       if (v.path === view.path) {
         v = Object.assign(v, view)
+        state.curViewTitle = v.title
         break
       }
     }

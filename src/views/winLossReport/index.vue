@@ -556,36 +556,54 @@ export default {
         getFullDate(yesterday[1]) === getFullDate(this.searchTime[1])) {
         hasSet = true
         this.curDateEnumIndex = this.dateEnum.yesterday
+        if (!this.firstCreate) {
+          this.onTableBtnClick(this.curTableIndex)
+        }
       }
       const today = getDayDateTime()
       if (!hasSet && getFullDate(today[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(today[1]) === getFullDate(this.searchTime[1])) {
         hasSet = true
         this.curDateEnumIndex = this.dateEnum.today
+        if (!this.firstCreate) {
+          this.onTableBtnClick(this.curTableIndex)
+        }
       }
       const lastWeek = getWeekDateTime(-1)
       if (!hasSet && getFullDate(lastWeek[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(lastWeek[1]) === getFullDate(this.searchTime[1])) {
         hasSet = true
         this.curDateEnumIndex = this.dateEnum.lastWeek
+        if (!this.firstCreate) {
+          this.onTableBtnClick(this.curTableIndex)
+        }
       }
       const thisWeek = getWeekDateTime()
       if (!hasSet && getFullDate(thisWeek[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(thisWeek[1]) === getFullDate(this.searchTime[1])) {
         hasSet = true
         this.curDateEnumIndex = this.dateEnum.thisWeek
+        if (!this.firstCreate) {
+          this.onTableBtnClick(this.curTableIndex)
+        }
       }
       const lastMonth = getMonthDateTime(-1)
       if (!hasSet && getFullDate(lastMonth[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(lastMonth[1]) === getFullDate(this.searchTime[1])) {
         hasSet = true
         this.curDateEnumIndex = this.dateEnum.lastMonth
+        if (!this.firstCreate) {
+          this.onTableBtnClick(this.curTableIndex)
+        }
       }
       const thisMonth = getMonthDateTime()
       if (!hasSet && getFullDate(thisMonth[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(thisMonth[1]) === getFullDate(this.searchTime[1])) {
         hasSet = true
         this.curDateEnumIndex = this.dateEnum.thisMonth
+        if (!this.firstCreate) {
+          this.onTableBtnClick(this.curTableIndex)
+        }
       }
     }
   },

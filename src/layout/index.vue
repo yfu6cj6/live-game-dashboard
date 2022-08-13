@@ -2,6 +2,7 @@
   <div :class="classObj" class="app-container">
     <template v-if="device === 'mobile'">
       <navbar class="navbar" />
+      <tags-view class="tagsView d-none" />
       <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
       <sidebar class="sidebar" :class="{'opened': sidebar.opened}" />
       <agent-level class="agentLevel" />

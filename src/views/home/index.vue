@@ -286,7 +286,6 @@ export default {
     }
   },
   created() {
-    console.log(this.modPwd)
   },
   methods: {
     setAgentAnnouncementsExpanded(id) {

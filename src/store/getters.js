@@ -8,6 +8,7 @@ const getters = {
   agentLevelExpandedKeys: state => state.agentManagement.agentLevelExpandedKeys,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews,
+  curViewTitle: state => state.tagsView.curViewTitle,
   accountStatusType: state => state.common.accountStatusType,
   announcementMarqueeStatusType: state => state.common.announcementMarqueeStatusType,
   roles: state => state.common.roles,
