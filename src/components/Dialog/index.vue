@@ -3,7 +3,7 @@
     <div class="mask" @click.stop="onClickMask" />
     <div v-loading="loading" class="dialog">
       <div class="dialog-header">
-        <i class="el-icon-close dialog-header-close" @click.stop="onCloseEven" />
+        <i v-if="showClose" class="el-icon-close dialog-header-close" @click.stop="onCloseEven" />
         <div>{{ title }}</div>
       </div>
       <div class="dialog-body">
@@ -53,6 +53,13 @@ export default {
       default() {
         return () => {}
       }
+    },
+    'showClose': {
+      type: Boolean,
+      require: true,
+      default() {
+        return true
+      }
     }
   },
   methods: {
@@ -96,8 +103,8 @@ export default {
   color: #fff;
   .dialog-header {
     text-align: center;
-    font-size: 22px;
-    padding: 20px 20px 10px;
+    font-size: 1.4rem;
+    padding: 2rem 1rem;
     .dialog-header-close {
       position: fixed;
       top: 5px;
@@ -106,16 +113,22 @@ export default {
     }
   }
   .dialog-body {
-    padding: 0 10px;
+    padding: 0 .7rem;
     overflow-y: auto;
     .dialog-body-footer {
       text-align: center;
-      padding: 10px 20px 20px;
+      padding: .7rem 1.4rem 1.4rem;
+      .el-button {
+        width: 12rem;
+      }
     }
   }
   .dialog-footer {
     text-align: center;
-    padding: 10px 20px 20px;
+    padding: .7rem 1.4rem 1.4rem;
+    .el-button {
+      width: 12rem;
+    }
   }
 }
 
@@ -133,6 +146,19 @@ export default {
 @media screen and (min-width: 992px) {
   .dialog {
     max-width: 50%;
+    .dialog-body {
+      padding: 0 3rem;
+      .dialog-body-footer {
+        .el-button {
+          width: 18rem;
+        }
+      }
+    }
+    .dialog-footer {
+      .el-button {
+        width: 18rem;
+      }
+    }
   }
 }
 </style>

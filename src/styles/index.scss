@@ -361,6 +361,9 @@ table {
 #app .text-line-gray-deep {
   color: #6e6e6e;
 }
+#app .text-line-gray-shallow {
+  color: #cecece;
+}
 .text-white {
   color: #fff!important;
 }
@@ -382,6 +385,12 @@ table {
   color: #000;
   background: #f9c901;
   border: 0.08333rem solid #f9c901;
+  border-radius: 0.25rem;
+}
+#app .bg-gray {
+  color: #fff;
+  background: #4e4e4e;
+  border: 0.08333rem solid #4e4e4e;
   border-radius: 0.25rem;
 }
 

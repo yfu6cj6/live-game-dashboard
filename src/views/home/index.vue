@@ -250,6 +250,7 @@
                     </div>
                   </div>
                 </template>
+                <modPwdDialog v-if="modPwd" />
               </div>
             </div>
           </div>
@@ -261,9 +262,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import ModPwdDialog from './modPwdDialog'
 
 export default {
   name: 'Home',
+  components: { ModPwdDialog },
   data() {
     return {
     }
@@ -283,6 +286,7 @@ export default {
     }
   },
   created() {
+    console.log(this.modPwd)
   },
   methods: {
     setAgentAnnouncementsExpanded(id) {
