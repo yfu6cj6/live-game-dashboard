@@ -20,7 +20,7 @@
                     </span>
                     <span>
                       <router-link :to="`/memberBet/memberBet/${item.member_id}`">
-                        <span class="text-link text-underline">{{ item.member }}</span>
+                        <span class="text-link text-underline" @click.stop="setSearchTime(item.member_id)">{{ item.member }}</span>
                       </router-link>
                     </span>
                   </div>

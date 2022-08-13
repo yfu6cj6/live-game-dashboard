@@ -645,13 +645,10 @@ export default {
   watch: {
     '$route.path': function() {
       if (this.tempRoute.path === this.$route.path) {
-        if (this.$route.query?.searchTime) {
-          this.searchTime = this.$route.query.searchTime.split(',')
-          this.$nextTick(() => {
-            this.handleCurrentChange(this.currentPage)
-          })
-        }
-        this.$router.replace({ 'query': null })
+        this.searchTime = localStorage.getItem(`memberBet${this.memberId}`).split(',') || defaultSearchTime
+        this.$nextTick(() => {
+          this.handleCurrentChange(this.currentPage)
+        })
         this.$store.dispatch('tagsView/updateVisitedView', this.$route)
       }
     },
@@ -660,17 +657,15 @@ export default {
     }
   },
   created() {
+    this.searchTime = defaultSearchTime
     this.$store.dispatch('memberBet/setMemberBetTimeType')
+    this.tempRoute = Object.assign({}, this.$route)
     if (this.tempRoute.params?.id !== undefined) {
       this.memberId = parseInt(this.$route.params.id)
       this.searchForm.member_id = [this.memberId]
-      this.searchTime = this.tempRoute.query.searchTime?.split(',') || defaultSearchTime
+      this.searchTime = localStorage.getItem(`memberBet${this.memberId}`).split(',') || defaultSearchTime
       this.$router.name = this.$stringFormat(this.tempRoute.name, [`${this.memberId}`])
-    } else {
-      this.searchTime = defaultSearchTime
     }
-    this.$router.replace({ 'query': null })
-    this.tempRoute.query = null
     this.$store.dispatch('tagsView/updateVisitedView', this.$route)
     this.$nextTick(() => {
       this.handleCurrentChange(this.currentPage)

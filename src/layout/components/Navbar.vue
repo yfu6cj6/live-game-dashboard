@@ -65,10 +65,10 @@
               </div>
             </div>
           </div>
-          <div class="center">
+          <div v-show="$route.meta.showBack" class="center">
             <span class="strong line" />
           </div>
-          <div class="right" @click.stop="goBack">
+          <div v-show="$route.meta.showBack" class="right" @click.stop="goBack">
             <div class="inner clickable">
               <div class="fas clickable black">
                 <svg
@@ -82,8 +82,8 @@
               </div>
             </div>
           </div>
-          <div class="center d-none" />
-          <div class="right d-none">
+          <div v-show="!$route.meta.showBack" class="center" />
+          <div v-show="!$route.meta.showBack" class="right">
             <div class="inner" />
           </div>
         </div>
@@ -164,12 +164,6 @@ export default {
     }
   },
   watch: {
-    // '$route': {
-    //   handler() {
-    //     console.log(this.$route)
-    //   },
-    //   immediate: true
-    // }
   },
   methods: {
     goBack() {

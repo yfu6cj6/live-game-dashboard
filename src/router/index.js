@@ -183,7 +183,7 @@ export const asyncRoutes = [
       path: 'agentManagement/:id(\\d+)',
       name: 'AgentManagement{0}',
       component: () => import('@/views/agentManagement/index'),
-      meta: { title: '__agentManagement', activeMenu: '/agentManagement/agentManagement' },
+      meta: { title: '__agentManagement', activeMenu: '/agentManagement/agentManagement', showBack: true },
       hidden: true
     }]
   },
@@ -204,7 +204,7 @@ export const asyncRoutes = [
       path: 'winLossReport/:id(\\d+)',
       name: 'WinLossReport{0}',
       component: () => import('@/views/winLossReport/index'),
-      meta: { title: '__winLossReport', activeMenu: '/winLossReport/winLossReport' },
+      meta: { title: '__winLossReport', activeMenu: '/winLossReport/winLossReport', showBack: true },
       hidden: true
     }]
   },
@@ -225,7 +225,7 @@ export const asyncRoutes = [
       path: 'memberBet/:id(\\d+)',
       name: 'MemberBet{0}',
       component: () => import('@/views/memberBet/index'),
-      meta: { title: '__memberBet', activeMenu: '/memberBet/memberBet' },
+      meta: { title: '__memberBet', activeMenu: '/memberBet/memberBet', showBack: true },
       hidden: true
     }]
   },
@@ -288,7 +288,7 @@ export const asyncRoutes = [
       path: 'agentBalanceReport/:id(\\d+)',
       name: 'AgentBalanceReport{0}',
       component: () => import('@/views/agentBalanceReport/index'),
-      meta: { title: '__agentBalanceReport', activeMenu: '/agentBalanceReport/agentBalanceReport' },
+      meta: { title: '__agentBalanceReport', activeMenu: '/agentBalanceReport/agentBalanceReport', showBack: true },
       hidden: true
     }]
   },
@@ -309,7 +309,7 @@ export const asyncRoutes = [
       path: 'giftRecord/:id(\\d+)',
       name: 'GiftRecord{0}',
       component: () => import('@/views/giftRecord/index'),
-      meta: { title: '__giftRecord', activeMenu: '/giftRecord/giftRecord' },
+      meta: { title: '__giftRecord', activeMenu: '/giftRecord/giftRecord', showBack: true },
       hidden: true
     }]
   },
@@ -330,7 +330,7 @@ export const asyncRoutes = [
       path: 'giftReport/:id(\\d+)',
       name: 'GiftReport{0}',
       component: () => import('@/views/giftReport/index'),
-      meta: { title: '__giftReport', activeMenu: '/giftReport/giftReport' },
+      meta: { title: '__giftReport', activeMenu: '/giftReport/giftReport', showBack: true },
       hidden: true
     }]
   },
