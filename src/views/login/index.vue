@@ -2,7 +2,9 @@
   <div class="login">
     <div class="form-container el-row is-align-middle el-row--flex">
       <div class="w-100 loginContent">
-        <language class="language" :lang="curLang" @changLang="language" />
+        <div class="language-container">
+          <language :lang="curLang" @changLang="language" />
+        </div>
         <div class="content">
           <div class="logo">
             <div class="white-label logoPic" />
@@ -318,12 +320,12 @@ export default {
       background-repeat: no-repeat;
     }
   }
-  .language {
+  .language-container {
     position: absolute;
-    top: 0.41667rem;
-    right: 0.83333rem;
+    top: -0.41667rem;
+    right: -0.83333rem;
     z-index: 2;
-    transform: scale(1.5);
+    transform: scale(1.8);
   }
   .login-form {
     max-width: 26.66667rem;

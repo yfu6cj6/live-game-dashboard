@@ -11,17 +11,20 @@
                     <div class="bg-black w-100 pt-4">
                       <div class="day-range">
                         <div class="date-time-picker-box">
-                          <div class="picker datetimerange datetimerange">
+                          <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
                             <el-date-picker
                               v-model="searchTime"
                               type="datetimerange"
+                              popper-class="ams-timeslot-popper"
                               align="right"
-                              unlink-panels
+                              :clearable="false"
+                              :editable="false"
+                              time-arrow-control
                               :range-separator="$t('__to')"
                               :start-placeholder="$t('__startDate')"
                               :end-placeholder="$t('__endDate')"
-                              :picker-options="pickerOptions"
                               :default-time="['00:00:00', '23:59:59']"
+                              :format="'yyyy-MM-dd HH:mm'"
                             />
                           </div>
                           <el-button class="bg-yellow ml-auto mr-0 search-range" @click="onTableBtnClick(curTableIndex)">
@@ -489,54 +492,22 @@
 
 <script>
 import { agentWinLossReportExport, agentWinLossReportBetMemberCount } from '@/api/winLossReport/agent'
+import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import Agent from './agent/index'
 import Member from './member/index'
-import { getFullDate, getFullDateString, getYesterdayDateTime, getTodayDateTime, getLastWeekDateTime,
-  getThisWeekDateTime, getLastMonthDateTime, getThisMonthDateTime } from '@/utils/transDate'
+import { getFullDate, getFullDateString, getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
 import { numberFormat } from '@/utils/numberFormat'
 
-const defaultSearchTime = getTodayDateTime()
+const defaultSearchTime = getDayDateTime()
 
 export default {
   name: 'WinLossReport',
   components: { Agent, Member },
-  mixins: [viewCommon],
+  mixins: [common, viewCommon],
   data() {
     return {
-      pickerOptions: {
-        shortcuts: [{
-          text: this.$t('__yesterday'),
-          onClick(picker) {
-            picker.$emit('pick', getYesterdayDateTime())
-          }
-        }, {
-          text: this.$t('__today'),
-          onClick(picker) {
-            picker.$emit('pick', getTodayDateTime())
-          }
-        }, {
-          text: this.$t('__lastWeek'),
-          onClick(picker) {
-            picker.$emit('pick', getLastWeekDateTime())
-          }
-        }, {
-          text: this.$t('__thisWeek'),
-          onClick(picker) {
-            picker.$emit('pick', getThisWeekDateTime())
-          }
-        }, {
-          text: this.$t('__lastMonth'),
-          onClick(picker) {
-            picker.$emit('pick', getLastMonthDateTime())
-          }
-        }, {
-          text: this.$t('__thisMonth'),
-          onClick(picker) {
-            picker.$emit('pick', getThisMonthDateTime())
-          }
-        }]
-      },
+      pickerOptions: { },
       tableEnum: Object.freeze({
         'agent': 0,
         'member': 1
@@ -553,7 +524,6 @@ export default {
       curDateEnumIndex: 0,
       agentInfo: {},
       curTableIndex: 0,
-      searchTime: defaultSearchTime,
       agentId: null,
       firstCreate: true
     }
@@ -579,45 +549,35 @@ export default {
     },
     'searchTime': function() {
       localStorage.setItem(`winLossReportSearchTime${this.agentId}`, this.searchTime.toString())
-      if (!this.firstCreate) {
-        this.$nextTick(() => {
-          this.onTableBtnClick(this.curTableIndex)
-        })
+      const yesterday = getDayDateTime(-1)
+      if (getFullDate(yesterday[0]) === getFullDate(this.searchTime[0]) &&
+        getFullDate(yesterday[1]) === getFullDate(this.searchTime[1])) {
+        this.curDateEnumIndex = this.dateEnum.yesterday
       }
-      switch (this.searchTime.toString()) {
-        case (getYesterdayDateTime().toString()):
-        {
-          this.curDateEnumIndex = this.dateEnum.yesterday
-          break;
-        }
-        case (getTodayDateTime().toString()):
-        {
-          this.curDateEnumIndex = this.dateEnum.today
-          break;
-        }
-        case (getLastWeekDateTime().toString()):
-        {
-          this.curDateEnumIndex = this.dateEnum.lastWeek
-          break;
-        }
-        case (getThisWeekDateTime().toString()):
-        {
-          this.curDateEnumIndex = this.dateEnum.thisWeek
-          break;
-        }
-        case (getLastMonthDateTime().toString()):
-        {
-          this.curDateEnumIndex = this.dateEnum.lastMonth
-          break;
-        }
-        case (getThisMonthDateTime().toString()):
-        {
-          this.curDateEnumIndex = this.dateEnum.thisMonth
-          break;
-        }
-        default: {
-          this.curDateEnumIndex = this.dateEnum.none
-        }
+      const today = getDayDateTime()
+      if (getFullDate(today[0]) === getFullDate(this.searchTime[0]) &&
+        getFullDate(today[1]) === getFullDate(this.searchTime[1])) {
+        this.curDateEnumIndex = this.dateEnum.today
+      }
+      const lastWeek = getWeekDateTime(-1)
+      if (getFullDate(lastWeek[0]) === getFullDate(this.searchTime[0]) &&
+        getFullDate(lastWeek[1]) === getFullDate(this.searchTime[1])) {
+        this.curDateEnumIndex = this.dateEnum.lastWeek
+      }
+      const thisWeek = getWeekDateTime()
+      if (getFullDate(thisWeek[0]) === getFullDate(this.searchTime[0]) &&
+        getFullDate(thisWeek[1]) === getFullDate(this.searchTime[1])) {
+        this.curDateEnumIndex = this.dateEnum.thisWeek
+      }
+      const lastMonth = getMonthDateTime(-1)
+      if (getFullDate(lastMonth[0]) === getFullDate(this.searchTime[0]) &&
+        getFullDate(lastMonth[1]) === getFullDate(this.searchTime[1])) {
+        this.curDateEnumIndex = this.dateEnum.lastMonth
+      }
+      const thisMonth = getMonthDateTime()
+      if (getFullDate(thisMonth[0]) === getFullDate(this.searchTime[0]) &&
+        getFullDate(thisMonth[1]) === getFullDate(this.searchTime[1])) {
+        this.curDateEnumIndex = this.dateEnum.thisMonth
       }
     }
   },
@@ -626,12 +586,13 @@ export default {
       this.agentId = parseInt(this.tempRoute.params.id)
       this.searchTime = localStorage.getItem(`winLossReportSearchTime${this.agentId}`).split(',') || defaultSearchTime
       this.$router.name = this.$stringFormat(this.tempRoute.name, [`${this.agentId}`])
+    } else {
+      this.searchTime = defaultSearchTime
     }
     this.$store.dispatch('tagsView/updateVisitedView', this.$route)
     this.$nextTick(() => {
       this.onTableBtnClick(this.curTableIndex)
       this.firstCreate = false
-      this.resizeHandler();
     })
   },
   methods: {
@@ -674,32 +635,32 @@ export default {
       switch (dateType) {
         case (this.dateEnum.yesterday):
         {
-          this.searchTime = getYesterdayDateTime();
+          this.searchTime = getDayDateTime(-1);
           break;
         }
         case (this.dateEnum.today):
         {
-          this.searchTime = getTodayDateTime();
+          this.searchTime = getDayDateTime();
           break;
         }
         case (this.dateEnum.lastWeek):
         {
-          this.searchTime = getLastWeekDateTime();
+          this.searchTime = getWeekDateTime(-1);
           break;
         }
         case (this.dateEnum.thisWeek):
         {
-          this.searchTime = getThisWeekDateTime();
+          this.searchTime = getWeekDateTime();
           break;
         }
         case (this.dateEnum.lastMonth):
         {
-          this.searchTime = getLastMonthDateTime();
+          this.searchTime = getMonthDateTime(-1);
           break;
         }
         case (this.dateEnum.thisMonth):
         {
-          this.searchTime = getThisMonthDateTime();
+          this.searchTime = getMonthDateTime();
           break;
         }
       }

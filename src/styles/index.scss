@@ -440,6 +440,10 @@ table {
       border: 0.08333rem solid #f9c901;
       border-radius: 0.25rem;
   }
+  &.active {
+    background: #f9c901 !important;
+    color: #000 !important;
+  }
 }
 
 // scroll-wrap

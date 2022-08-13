@@ -243,8 +243,12 @@ export default {
       quickSearch.appendChild(dayGroup)
       quickSearch.appendChild(weekGroup)
       //
-      const el = document.getElementsByClassName('ams-timeslot-popper')[0]
-      el.insertBefore(quickSearch, el.children[1])
+      const el = document.getElementsByClassName('ams-timeslot-popper')
+      el.forEach(element => {
+        if (!element.querySelector('quickSearch')) {
+          element.insertBefore(quickSearch, element.children[1])
+        }
+      });
     }
   }
 }

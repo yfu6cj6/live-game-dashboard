@@ -571,7 +571,7 @@ import PlaybackDialog from './playbackDialog';
 import GameResultDialog from '@/components/GameResult/gameResultDialog';
 
 const defaultSearchTimeType = 'betTime'
-const defaultSearchTime = getDayDateTime(0)
+const defaultSearchTime = getDayDateTime()
 
 export default {
   name: 'MemberBet',
@@ -587,7 +587,6 @@ export default {
       }),
       searchTimeType: defaultSearchTimeType,
       memberId: null,
-      firstCreate: true,
       playbackPic: undefined,
       playbackUrl: undefined,
       curDialogIndex: 0,
@@ -655,6 +654,9 @@ export default {
         this.$router.replace({ 'query': null })
         this.$store.dispatch('tagsView/updateVisitedView', this.$route)
       }
+    },
+    'searchTime': function() {
+      localStorage.setItem(`memberBet${this.memberId}`, this.searchTime.toString())
     }
   },
   created() {
@@ -664,14 +666,14 @@ export default {
       this.searchForm.member_id = [this.memberId]
       this.searchTime = this.tempRoute.query.searchTime?.split(',') || defaultSearchTime
       this.$router.name = this.$stringFormat(this.tempRoute.name, [`${this.memberId}`])
+    } else {
+      this.searchTime = defaultSearchTime
     }
     this.$router.replace({ 'query': null })
     this.tempRoute.query = null
     this.$store.dispatch('tagsView/updateVisitedView', this.$route)
-    this.searchTime = defaultSearchTime
     this.$nextTick(() => {
       this.handleCurrentChange(this.currentPage)
-      this.firstCreate = false
       this.addSelectFilter()
     })
   },
