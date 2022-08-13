@@ -514,6 +514,10 @@ export default {
       this.currentPage = 1
       this.onSubmit(this.searchForm.account)
     },
+    onSearchByString(str) {
+      this.currentPage = 1
+      this.onSubmit(str)
+    },
     onFullNameResetBtnClick() {
       this.searchForm.account = ''
       this.onFullNameSearchBtnClick()

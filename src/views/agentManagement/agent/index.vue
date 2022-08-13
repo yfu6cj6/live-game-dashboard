@@ -198,21 +198,8 @@
             </template>
           </div>
         </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        <div v-else class="no-result">{{ $t("__noInformation") }}</div>
       </div>
-    </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
     </div>
 
     <agentEditDialog
@@ -606,7 +593,6 @@ export default {
     handleRespone(res) {
       this.agentInfo = res.agentInfo
       this.agentInfo.fullName = `${this.agentInfo.nickname}(${this.agentInfo.account})`
-
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
         element.fullName = `${element.nickname}(${element.account})`
@@ -627,7 +613,6 @@ export default {
       })
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)
-
       this.closeDialogEven()
       this.$emit('serverResponse', JSON.parse(JSON.stringify(res)))
     },
@@ -649,6 +634,10 @@ export default {
       this.popover = false
       this.currentPage = 1
       this.onSubmit(this.searchForm.account)
+    },
+    onSearchByString(str) {
+      this.currentPage = 1
+      this.onSubmit(str)
     },
     onFullNameResetBtnClick() {
       this.searchForm.account = ''
