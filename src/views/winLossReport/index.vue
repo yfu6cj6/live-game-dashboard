@@ -549,34 +549,42 @@ export default {
     },
     'searchTime': function() {
       localStorage.setItem(`winLossReportSearchTime${this.agentId}`, this.searchTime.toString())
+
+      let hasSet = false
       const yesterday = getDayDateTime(-1)
-      if (getFullDate(yesterday[0]) === getFullDate(this.searchTime[0]) &&
+      if (!hasSet && getFullDate(yesterday[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(yesterday[1]) === getFullDate(this.searchTime[1])) {
+        hasSet = true
         this.curDateEnumIndex = this.dateEnum.yesterday
       }
       const today = getDayDateTime()
-      if (getFullDate(today[0]) === getFullDate(this.searchTime[0]) &&
+      if (!hasSet && getFullDate(today[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(today[1]) === getFullDate(this.searchTime[1])) {
+        hasSet = true
         this.curDateEnumIndex = this.dateEnum.today
       }
       const lastWeek = getWeekDateTime(-1)
-      if (getFullDate(lastWeek[0]) === getFullDate(this.searchTime[0]) &&
+      if (!hasSet && getFullDate(lastWeek[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(lastWeek[1]) === getFullDate(this.searchTime[1])) {
+        hasSet = true
         this.curDateEnumIndex = this.dateEnum.lastWeek
       }
       const thisWeek = getWeekDateTime()
-      if (getFullDate(thisWeek[0]) === getFullDate(this.searchTime[0]) &&
+      if (!hasSet && getFullDate(thisWeek[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(thisWeek[1]) === getFullDate(this.searchTime[1])) {
+        hasSet = true
         this.curDateEnumIndex = this.dateEnum.thisWeek
       }
       const lastMonth = getMonthDateTime(-1)
-      if (getFullDate(lastMonth[0]) === getFullDate(this.searchTime[0]) &&
+      if (!hasSet && getFullDate(lastMonth[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(lastMonth[1]) === getFullDate(this.searchTime[1])) {
+        hasSet = true
         this.curDateEnumIndex = this.dateEnum.lastMonth
       }
       const thisMonth = getMonthDateTime()
-      if (getFullDate(thisMonth[0]) === getFullDate(this.searchTime[0]) &&
+      if (!hasSet && getFullDate(thisMonth[0]) === getFullDate(this.searchTime[0]) &&
         getFullDate(thisMonth[1]) === getFullDate(this.searchTime[1])) {
+        hasSet = true
         this.curDateEnumIndex = this.dateEnum.thisMonth
       }
     }

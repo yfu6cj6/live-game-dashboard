@@ -110,11 +110,6 @@
                           @setDataLoading="setDataLoading"
                         />
                       </div>
-
-                      <div class="page-total">
-                        -
-                      </div>
-
                     </div>
                   </div>
                 </div>

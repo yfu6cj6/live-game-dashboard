@@ -503,6 +503,21 @@ export default {
           color: white;
           font-size: 1rem;
         }
+        &.is-checked {
+          .el-checkbox__inner {
+            &:after {
+              -webkit-transform: rotate(45deg) scale(1.5);
+              transform: rotate(45deg) scale(1.5);
+              border: 0.16667rem solid #f9c901;
+              width: 0.25rem;
+              height: 0.75rem;
+              top: -0.25rem;
+              left: 0.5rem;
+              border-left: 0;
+              border-top: 0;
+            }
+          }
+        }
       }
     }
     .search_frame_size {
