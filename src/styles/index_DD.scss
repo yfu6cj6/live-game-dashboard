@@ -361,8 +361,22 @@
     background-color: #fff;
     position: relative;
     padding-right: 3.75rem;
-    .force-wrap {
+    .agent-list-detail {
       width: 100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-box-align: start;
+      -ms-flex-align: start;
+      align-items: flex-start;
+      padding: 0.83333rem 0.41667rem;
+      margin: 0;
+      background-color: transparent;
+      position: relative;
+      padding-left: 2.08333rem;
+      padding-right: 0rem;
     }
     .list-item {
       display: -webkit-box;
@@ -372,8 +386,44 @@
       -ms-flex-align: start;
       align-items: flex-start;
       font-size: 1.16667rem;
+      .handicap {
+        position: relative;
+        .h-t {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 5.83333rem;
+          position: relative;
+          display: block;
+        }
+      }
       .label {
         margin-right: 0.41667rem;
+      }
+      .v-line {
+        -ms-flex-item-align: center;
+        align-self: center;
+        width: 0.16667rem;
+        height: 2.66667rem;
+        background: #f9c901;
+        margin: 0 0.625rem;
+      }
+      .solid-circle {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -ms-flex-item-align: center;
+        align-self: center;
+        background: #f9c901;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 50%;
+        .fas {
+          margin: auto;
+        }
       }
       .index {
         text-align: center;
@@ -434,6 +484,11 @@
           }
         }
       }
+      &.ctrl {
+        .item-inner {
+          padding: 0 0.41667rem;
+        }
+      }
     }
     .force-wrap {
       width: 100%;
@@ -461,4 +516,8 @@
 
 .mt-1, .my-1 {
   margin-top: 0.25rem!important;
+}
+
+.d-block {
+  display: block!important;
 }
