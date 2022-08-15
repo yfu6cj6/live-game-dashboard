@@ -485,6 +485,14 @@
         }
       }
       &.ctrl {
+        text-align: center;
+        -webkit-box-flex: initial;
+        -ms-flex: initial;
+        flex: initial;
+        position: absolute;
+        right: 0;
+        top: 0.41667rem;
+        width: 3.33333rem;
         .item-inner {
           padding: 0 0.41667rem;
         }
