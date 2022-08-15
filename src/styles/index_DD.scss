@@ -333,7 +333,7 @@
   }
 }
 
-.text-link {
+#app .text-link {
   cursor: pointer;
 }
 
@@ -341,4 +341,124 @@
   display: block;
   clear: both;
   content: "";
+}
+
+.agent-list {
+  width: 100%;
+  max-width: 100%;
+  background-color: #fff;
+  .list-row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    padding: 0.83333rem 0.41667rem;
+    margin: 0;
+    background-color: #fff;
+    position: relative;
+    padding-right: 3.75rem;
+    .force-wrap {
+      width: 100%;
+    }
+    .list-item {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: start;
+      -ms-flex-align: start;
+      align-items: flex-start;
+      font-size: 1.16667rem;
+      .label {
+        margin-right: 0.41667rem;
+      }
+      .index {
+        text-align: center;
+        margin: 0 0.41667rem;
+        font-weight: bold;
+        -webkit-box-flex: 0;
+        -ms-flex: none;
+        flex: none;
+        width: 1.66667rem;
+      }
+      .value {
+        font-weight: bold;
+        .fas {
+          max-height: 2rem;
+          overflow-y: hidden;
+        }
+        .tag-name {
+          font-weight: normal;
+        }
+      }
+      .two-row-items {
+        text-align: center;
+        .items-value {
+          font-weight: bold;
+          margin-bottom: 0.83333rem;
+        }
+        .items-label {
+          color: #a3a3a3;
+        }
+      }
+      .credit {
+        .items-label-icon {
+          display: inline;
+        }
+      }
+      &.share {
+        text-align: center;
+        -webkit-box-flex: initial;
+        -ms-flex: initial;
+        flex: initial;
+        width: 5.83333rem;
+        .items-label {
+          font-size: .91667rem;
+          color: #a3a3a3;
+        }
+      }
+      &.state {
+        text-align: center;
+        -webkit-box-flex: initial;
+        -ms-flex: initial;
+        flex: initial;
+        width: 3.33333rem;
+        .item-inner {
+          font-size: .91667rem;
+          padding: 0 0.41667rem;
+          .fas {
+            margin-bottom: 0.66667rem;
+          }
+        }
+      }
+    }
+    .force-wrap {
+      width: 100%;
+    }
+    &:nth-child(odd) {
+      background-color: #f4f4f4;
+    }
+    &:nth-child(even) {
+      background-color: #fff;
+    }
+  }
+}
+
+.pb-1, .py-1 {
+  padding-bottom: 0.25rem!important;
+}
+
+.mt-2, .my-2 {
+  margin-top: 0.5rem!important;
+}
+
+.fas.green {
+  fill: #56ad10 !important;
+}
+
+.mt-1, .my-1 {
+  margin-top: 0.25rem!important;
 }
