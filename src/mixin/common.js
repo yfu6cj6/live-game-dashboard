@@ -1,4 +1,5 @@
 import { getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
+// import { getFullDate, getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
 
 export default {
   data() {
@@ -7,12 +8,32 @@ export default {
       searchTime: [],
       monthIndex: 0,
       dayIndex: 0,
-      weekIndex: 0
+      weekIndex: 0,
+      pickerOptions: { }
     }
   },
   watch: {
-    'monthIndex': function() {
-      this.monthIndexListener();
+  },
+  created() {
+    this.pickerOptions = {
+      // onPick: ({ maxDate, minDate }) => {
+      //   if (maxDate) {
+      //     this.searchTime = [getFullDate(minDate), getFullDate(maxDate)]
+      //     this.$refs.datePicker.picker.handleChangeRange({
+      //       minDate: this.$refs.datePicker.picker.minDate,
+      //       maxDate: this.$refs.datePicker.picker.maxDate,
+      //       rangeState: {
+      //         selecting: true
+      //       }
+      //     })
+      //   }
+      // }
+      // disabledDate: (time) => {
+      //   const preThirdDay = new Date()
+      //   preThirdDay.setMonth(preThirdDay.getMonth() - 3)
+      //   preThirdDay.setDate(preThirdDay.getDate() - 1)
+      //   return time.getTime() > Date.now() || time.getTime() < preThirdDay
+      // }
     }
   },
   methods: {
@@ -27,28 +48,6 @@ export default {
       }).catch(() => {
       })
     },
-    monthIndexListener() {
-      // const leftArrow = document.querySelector('button.el-button.el-button--default.preMon.line-yellow.arrow')
-      // const rightArrow = document.querySelector('button.el-button.el-button--default.nextMon.line-yellow.arrow')
-      // if (this.monthIndex < -2) {
-      //   if (!leftArrow.classList.contains('disable')) {
-      //     leftArrow.classList += ' disable'
-      //   }
-      // } else {
-      //   if (leftArrow.classList.contains('disable')) {
-      //     leftArrow.classList.remove('disable')
-      //   }
-      // }
-      // if (this.monthIndex >= 0) {
-      //   if (!rightArrow.classList.contains('disable')) {
-      //     rightArrow.classList += ' disable'
-      //   }
-      // } else {
-      //   if (rightArrow.classList.contains('disable')) {
-      //     rightArrow.classList.remove('disable')
-      //   }
-      // }
-    },
     // 點快捷鈕自動將日其放在右邊的table
     handleCalendarPage() {
       this.$nextTick(() => {
@@ -56,7 +55,6 @@ export default {
         if (el) {
           el.click()
         }
-        // this.monthIndexListener()
       })
     },
     // 日期範圍選擇器點開後要做的初始化
@@ -64,44 +62,40 @@ export default {
       this.handleCalendarPage()
       this.addDateTimeOption(() => {
         this.monthIndex--;
-        this.searchTime = getMonthDateTime(this.monthIndex, true);
-        // this.handleCalendarPage()
-        // if (this.monthIndex >= -2) {
-        // }
+        this.searchTime = getMonthDateTime(this.monthIndex, true)
+        this.handleCalendarPage()
       }, () => {
         this.monthIndex = 0;
-        this.searchTime = getMonthDateTime(this.monthIndex, true);
-        // this.handleCalendarPage()
+        this.searchTime = getMonthDateTime(this.monthIndex, true)
+        this.handleCalendarPage()
       }, () => {
         this.monthIndex++;
-        this.searchTime = getMonthDateTime(this.monthIndex, true);
-        // this.handleCalendarPage()
-        // if (this.monthIndex < 0) {
-        // }
+        this.searchTime = getMonthDateTime(this.monthIndex, true)
+        this.handleCalendarPage()
       }, () => {
         this.dayIndex--;
-        this.searchTime = getDayDateTime(this.dayIndex, true);
-        // this.handleCalendarPage()
+        this.searchTime = getDayDateTime(this.dayIndex, true)
+        this.handleCalendarPage()
       }, () => {
         this.dayIndex = 0;
-        this.searchTime = getDayDateTime(this.dayIndex, true);
-        // this.handleCalendarPage()
+        this.searchTime = getDayDateTime(this.dayIndex, true)
+        this.handleCalendarPage()
       }, () => {
         this.dayIndex++;
         this.searchTime = getDayDateTime(this.dayIndex, true);
-        // this.handleCalendarPage()
+        this.handleCalendarPage()
       }, () => {
         this.weekIndex--;
         this.searchTime = getWeekDateTime(this.weekIndex, true)
-        // this.handleCalendarPage()
+        this.handleCalendarPage()
       }, () => {
         this.weekIndex = 0;
         this.searchTime = getWeekDateTime(this.weekIndex, true)
-        // this.handleCalendarPage()
+        this.handleCalendarPage()
       }, () => {
         this.weekIndex++;
         this.searchTime = getWeekDateTime(this.weekIndex, true)
-        // this.handleCalendarPage()
+        this.handleCalendarPage()
       })
     },
     // 新增多選過濾器
