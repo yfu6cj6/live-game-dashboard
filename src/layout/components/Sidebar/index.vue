@@ -156,7 +156,7 @@ export default {
 .mobile.sidebar-container {
   display: flex;
   flex-direction: column;
-  width: 20.83333rem;
+  width: $sideBarWidth;
   height: 100%;
   background-color: #000;
   transform: translateX(-(20.83333rem + 1));

@@ -83,7 +83,8 @@
                                     <span class="text-link">{{ agentInfo.agent }}</span>
                                     <span>
                                       {{ `[${$t('__level')}:` }}
-                                      <span class="text-link">{{ `${$t('__agent')}]` }}</span>
+                                      <span class="text-link">{{ `${$t('__agent')}` }}</span>
+                                      {{ ']' }}
                                     </span>
                                   </span>
                                 </div>

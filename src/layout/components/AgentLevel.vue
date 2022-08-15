@@ -1,11 +1,11 @@
 <template>
   <div ref="agentLevel" class="agentLevel-container" :class="{'open': agentLevelSidebar}">
     <div class="agentLevel-header" @click="onHandleBtnClick()">
-      <i class="el-icon-arrow-left" />
+      <i class="el-icon-arrow-left ml-2" />
       <span>{{ $t('__agentManagement') }}</span>
     </div>
     <div v-loading="agentLevelLoading" class="agentLevel-item">
-      <el-input v-model="filterText" :placeholder="$t('__enterKeys')" />
+      <!-- <el-input v-model="filterText" :placeholder="$t('__enterKeys')" /> -->
       <div class="scroll-view">
         <el-tree
           ref="tree"
@@ -66,7 +66,7 @@ export default {
     },
     renderContent(h, { node, data, store }) {
       return (
-        <span style='font-size: 14px'>
+        <span style='font-size: 1.16667rem'>
           {data.AgentName}
         </span>
       )
@@ -87,18 +87,18 @@ export default {
   display: flex;
   flex-direction: column;
   width: $sideBarWidth;
-  height: calc(100vh - 45px);
+  height: calc(100vh - 3.75rem);
   background-color: #000;
-  transition: transform .3s;
   transform: translateX(-($sideBarWidth + 1));
   color: #fff;
   .agentLevel-header {
-    padding: 10px 0;
     cursor: pointer;
     border-bottom: 0.08333rem solid $gray;
+    height: 3.33333rem;
+    line-height: 3.33333rem;
+    margin-top: 0.91667rem;
   }
   .agentLevel-item {
-    padding: 10px 0;
     max-height: 100%;
     overflow: auto;
     cursor: pointer;
@@ -109,8 +109,12 @@ export default {
         display: inline-block;
         .el-tree-node {
           .el-tree-node__content {
+            height: 2.66667rem;
             .el-tree-node__expand-icon {
               color: $yellow;
+              font-size: 1.5rem;
+              margin-left: 0.5rem;
+              padding: 0.33333rem !important;
             }
             &:hover {
               background-color: #000;
@@ -131,5 +135,6 @@ export default {
 
 .open.agentLevel-container {
   transform: translateX(0);
+  transition: transform .5s;
 }
 </style>

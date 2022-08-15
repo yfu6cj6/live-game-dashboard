@@ -196,7 +196,7 @@ export default {
   z-index: 13;
   .header {
     width: 100%;
-    height: 3.75rem;
+    height: $navBarHeight;
     padding: 0.41667rem;
     background-color: #262626;
     position: relative;
@@ -370,7 +370,7 @@ export default {
       }
       .center {
         padding: 0.83333rem 0rem;
-        height: 3.75rem;
+        height: $navBarHeight;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -391,7 +391,7 @@ export default {
   z-index: 13;
   .header {
     width: 100%;
-    height: 3.75rem;
+    height: $navBarHeight;
     background-color: #262626;
     position: relative;
     .app-name {

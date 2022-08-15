@@ -1262,7 +1262,7 @@ table {
       }
     }
     .el-time-panel {
-      width: 20.83333rem;
+      width: $sideBarWidth;
       .el-time-panel__btn {
         &.confirm {
           color: #f9c901 !important;

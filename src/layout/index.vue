@@ -93,12 +93,12 @@ export default {
   }
   .agentLevel {
     position: fixed;
-    z-index: 1000;
+    z-index: 12;
     border-right: 2px solid $yellow;
     top: $navBarHeight;
   }
   .appMain {
-    padding-top: 3.75rem;
+    padding-top: $navBarHeight;
     -ms-flex-preferred-size: 0;
     flex-basis: 0;
     -ms-flex-positive: 1;
