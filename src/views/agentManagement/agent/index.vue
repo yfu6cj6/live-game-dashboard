@@ -1,361 +1,364 @@
 <template>
-  <div>
-    <div ref="container" class="view-container">
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
-            v-for="(item, index) in tableData"
-            :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
-          >
-            <template v-if="device === 'mobile'">
-              <div class="wrap" @click.stop="remarkExpand(item)">
-                <div class="expand">
-                  <svg-icon v-if="item.open" icon-class="up" @click.stop="remarkExpand(item)" />
-                  <svg-icon v-else icon-class="more" @click.stop="remarkExpand(item)" />
-                </div>
-                <div class="visible">
-                  <div class="userInfo">
-                    <div class="user">
-                      <div>
-                        <svg-icon icon-class="user" />
-                      </div>
-                      <div class="column">
-                        <router-link :to="`/agentManagement/agentManagement/${item.id}`">
-                          <el-button class="bg-normal stroke" size="mini">
-                            {{ item.account }}
-                          </el-button>
-                        </router-link>
-                        {{ `(${$t('__nickname')} : ${item.nickname})` }}
-                      </div>
-                    </div>
-                    <div class="column liveCommissionRate">
-                      <span class="conten">{{ `${item.live_commission_rate}%` }}</span>
-                      <span class="header">{{ `${$t('__liveGame')}${$t('__rate')}` }}</span>
-                    </div>
-                    <div class="column state">
-                      <span v-if="item.status === '1'" class="statusOpen">
-                        <svg-icon icon-class="enable" />
-                      </span>
-                      <span v-else class="status">
-                        <svg-icon icon-class="disable" />
-                      </span>
-                      <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-                    </div>
-                  </div>
-                  <div class="otherInfo">
-                    <div class="currency">
-                      <span class="conten">{{ item.currency }}</span>
-                    </div>
-                    <div class="balance">
-                      <span class="header">{{ $t('__balance') }}</span>
-                      <svg-icon icon-class="coin" />
-                      <span class="conten">{{ item.balance }}</span>
-                    </div>
-                    <div class="timeZone">
-                      <span class="conten">{{ item.cityNameLabel }}</span>
-                    </div>
-                  </div>
-                </div>
-                <div v-if="item.open">
-                  <div class="btnGroup">
-                    <div class="group1">
-                      <el-button v-if="!isAgentSubAccount" class="bg-yellow" size="mini" @click.stop="onDepositBtnClick(item)">{{ $t("__deposit") }}</el-button>
-                      <el-button v-if="!isAgentSubAccount" class="bg-yellow" size="mini" @click.stop="onWithdrawBtnClick(item)">{{ $t("__withdraw") }}</el-button>
-                      <el-button
-                        v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'"
-                        class="bg-yellow"
-                        size="mini"
-                        :title="$t('__agentOneClickRecyclingTitle')"
-                        @click.stop="onOneClickRecyclingBtnClick(item)"
-                      >
-                        {{ $t("__oneClickRecycling") }}
-                      </el-button>
-                      <span class="winLossReport">
-                        <router-link :to="`/winLossReport/winLossReport/${item.id}`">
-                          <el-button class="bg-yellow" size="mini">{{ $t("__winLossReport") }}</el-button>
-                        </router-link>
-                      </span>
-                    </div>
-                    <div class="group2">
-                      <el-button class="bg-yellow" size="mini" @click.stop="onLimitBtnClick(item.handicaps)">{{ $t("__handicapLimit") }}</el-button>
-                      <svg-icon v-if="!isAgentSubAccount" icon-class="key" class="yellow-color key" @click.stop="onModPasswordBtnClick(item)" />
-                      <el-button v-if="!isAgentSubAccount" class="bg-normal yellow-color edit" size="mini" icon="el-icon-setting" @click.stop="onEditBtnClick(item)" />
-                    </div>
-                  </div>
-                  <div class="infoGroup">
-                    <div class="agentCount">
-                      <div class="infoGroup-item">
-                        <span class="infoGroup-item-header">{{ $t('__directAgentCount') }}</span>
-                        <span class="infoGroup-item-content">{{ item.directAgentCount }}</span>
-                      </div>
-                      <div class="infoGroup-item">
-                        <span class="infoGroup-item-header">{{ $t('__directPlayerCount') }}</span>
-                        <span class="infoGroup-item-content">{{ item.directPlayerCount }}</span>
-                      </div>
-                    </div>
-                    <div class="liveGame">
-                      <div class="liveGame-title">
-                        {{ $t('__liveGame') }}
-                      </div>
-                      <div class="liveGame-wrap">
-                        <div class="infoGroup-item">
-                          <span class="infoGroup-item-header">
-                            {{ $t('__commissionRate') }}
-                            <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click.stop="onCommissionRateLogBtnClick(item)" />
-                          </span>
-                          <span class="infoGroup-item-content">
-                            {{ item.live_commission_rate }}
-                            <span>%</span>
-                          </span>
-                        </div>
-                        <div class="infoGroup-item">
-                          <span class="infoGroup-item-header">
-                            {{ $t('__rollingRate') }}
-                            <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click.stop="onRollingRateLogBtnClick(item)" />
-                          </span>
-                          <span class="infoGroup-item-content">
-                            {{ item.live_rolling_rate }}
-                            <span>%</span>
-                          </span>
-                        </div>
-                        <div class="infoGroup-item">
-                          <span class="infoGroup-item-header">
-                            {{ $t('__giftRate') }}
-                            <el-button class="iconButton" size="mini" icon="el-icon-tickets" @click.stop="onGiftRateLogBtnClick(item)" />
-                          </span>
-                          <span class="infoGroup-item-content">
-                            {{ item.live_gift_rate }}
-                            <span>%</span>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="operate">
-                      <el-checkbox
-                        v-model="item.totallyDisabled"
-                        class="red-tick"
-                        :label="$t('__totallyDisabled')"
-                        :disabled="agentInfoTotallyDisabled"
-                        @mousedown.native="onOperateCheckboxClick(dialogEnum.totallyDisabled, item)"
-                      />
-                      <el-checkbox
-                        v-model="item.lockLogin"
-                        class="red-tick"
-                        :label="$t('__lockLogin')"
-                        @mousedown.native="onOperateCheckboxClick(dialogEnum.lockLogin, item)"
-                      />
-                      <el-checkbox
-                        v-model="item.debarBet"
-                        class="red-tick"
-                        :label="$t('__debarBet')"
-                        :disabled="agentInfoBetStatusDisabled"
-                        @mousedown.native="onOperateCheckboxClick(dialogEnum.debarBet, item)"
-                      />
-                      <template v-if="agentInfo.weekly_loss_settlement === '1'">
-                        <el-checkbox
-                          v-model="item.weeklyLossSettlement"
-                          class="red-tick"
-                          :label="$t('__weeklyLossSettlement')"
-                          @mousedown.native="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, item)"
-                        />
-                      </template>
-                      <template v-if="agentInfo.one_click_recycling === '1'">
-                        <el-checkbox
-                          v-model="item.oneClickRecycling"
-                          class="red-tick"
-                          :label="$t('__oneClickRecycling')"
-                          @mousedown.native="onOperateCheckboxClick(dialogEnum.oneClickRecycling, item)"
-                        />
-                      </template>
-                      <template v-if="agentInfo.gift_status === '1'">
-                        <el-checkbox
-                          v-model="item.giftEffect"
-                          class="red-tick"
-                          :label="$t('__giftEffect')"
-                          @mousedown.native="onOperateCheckboxClick(dialogEnum.giftEffect, item)"
-                        />
-                      </template>
-                    </div>
-                    <div>
-                      <div class="infoGroup-item">
-                        <span class="infoGroup-item-header">{{ $t('__createdAt') }}</span>
-                        <span class="infoGroup-item-content">{{ item.created_at }}</span>
-                      </div>
-                      <div class="infoGroup-item">
-                        <span class="infoGroup-item-header">{{ $t('__lastLoginAt') }}</span>
-                        <span class="infoGroup-item-content">{{ item.lastLoginAt }}</span>
-                      </div>
-                      <div class="infoGroup-item">
-                        <span class="infoGroup-item-header">{{ $t('__remark') }}</span>
-                        <span class="infoGroup-item-content">{{ item.remark }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  <div class="agent-list">
+    <div class="agent-list">
+      <div>
+        <div
+          v-for="(item, index) in tableData"
+          :key="index"
+          class="list-row"
+        >
+          <div class="force-wrap" />
+          <div class="list-item index">
+            <span class="value">{{ (index+1) }}</span>
+          </div>
+          <div class="list-item" style="width: 50%;">
+            <span class="value" style="display: flex; word-break: break-all; padding-bottom: 0.75rem;">
+              <div class="fas gray-deep">
+                <svg-icon style="height: 1.25rem; width: 1.25rem;" icon-class="user" />
               </div>
-            </template>
+              <div class="item-inner">
+                <span>
+                  <router-link :to="`/agentManagement/agentManagement/${item.id}`">
+                    <div class="text-link text-underline text-golden pl-1 pb-1">{{ item.account }}</div>
+                  </router-link>
+                </span>
+                <span>
+                  <div class="tag-name">{{ `(${$t('__nickname')}: ${item.nickname})` }}</div>
+                </span>
+              </div>
+            </span>
+          </div>
+          <div class="list-item share" style="width: 22%; margin-left: auto;">
+            <span class="value">
+              <span>
+                <div class="two-row-items">
+                  <div class="items-value mb-0">{{ `${ item.live_commission_rate }%` }}</div>
+                  <div class="items-label mt-2">{{ `${$t('__liveGame')}${$t('__rate')}` }}</div>
+                </div>
+              </span>
+            </span>
+          </div>
+          <div class="list-item state" style="width: 15%; margin-left: 0.5rem;">
+            <span class="value">
+              <span>
+                <div class="item-inner">
+                  <span class="fas">
+                    <svg-icon :icon-class="item.lockLogin ? 'disable' : 'enable'" :class="{'text-red': item.lockLogin, 'text-green': !item.lockLogin}" style="height: 1.25rem; width: 1.25rem;" />
+                  </span>
+                </div>
+                <div class="item-inner mt-2" :class="{'text-red':item.lockLogin, 'text-green':!item.lockLogin}">{{ item.lockLoginLabel }}</div>
+              </span>
+            </span>
+          </div>
+          <div class="force-wrap" />
+          <div class="list-item" style="width: 100%; margin-left: 2.5rem; display: flex; align-items: center;">
+            <div class="two-row-items credit">
+              <div class="items-label text-left mt-1">
+                <span class="label w-100">
+                  {{ ` ${$t('__balance')} ` }}
+                  <div class="items-label-icon">
+                    <svg-icon icon-class="coin" class="fas  gray-deep" style="height: 1.08333rem; width: 1.08333rem;" />
+                  </div>
+                  {{ item.balance }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="list-item ctrl">
+            <div class="item-inner">
+              <div class="fas gray-deep" :class="{'d-none': item.open}" @click.stop="remarkExpand(item)">
+                <svg-icon icon-class="more" style="height: 2rem; width: 2rem;" />
+              </div>
+              <div class="fas gray-deep" :class="{'d-none': !item.open}" @click.stop="remarkExpand(item)">
+                <svg-icon icon-class="up" style="height: 2rem; width: 2rem;" />
+              </div>
+            </div>
+          </div>
+          <div class="force-wrap" />
+          <div v-if="item.open" class="agent-list-detail">
+            <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+              <span class="value">
+                <span class="solid-circle">
+                  <div class="fas black" @click.stop="onEditBtnClick(item)">
+                    <svg-icon icon-class="top" style="height: 1.5rem; width: 1.5rem;" />
+                  </div>
+                </span>
+              </span>
+            </div>
+            <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+              <span class="value">
+                <span>
+                  <span class="v-line d-block" />
+                </span>
+              </span>
+            </div>
+            <div class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+              <span class="value">
+                <router-link :to="`/winLossReport/winLossReport/${item.id}`">
+                  <button class="el-button bg-yellow el-button--default">
+                    <span>{{ $t('__winLossReport') }}</span>
+                  </button>
+                </router-link>
+              </span>
+            </div>
+            <div class="force-wrap" />
+            <div class="list-item" style="width: auto; flex-wrap: wrap; align-self: center; margin: 1rem auto 1.5rem 0px;">
+              <span class="label mr-2">{{ `${$t('__handicapLimit')}:` }}</span>
+              <span class="value handicap text-yellow" @click.stop="onLimitBtnClick(item.handicaps)">
+                <span class="h-t">{{ item.handicaps_info }}</span>
+              </span>
+              <span class="label ml-2">
+                <div class="fas yellow">
+                  <img src="@/assets/agentManagement/updown.png" style="height: 1.33333rem; width: 1.33333rem;">
+                </div>
+              </span>
+            </div>
+            <div class="force-wrap" />
+            <div class="list-item" style="width: auto; padding-right: 2rem;">
+              <span class="label" style="width: auto; padding-bottom: 0.5rem; padding-right: 1rem;">{{ $t('__level') }}</span>
+              <span class="value">{{ ` ${$t('__agent')} ` }}</span>
+            </div>
+            <div class="list-item" style="width: 100%;">
+              <span class="value gameHall" style="width: 100%;">
+                <div class="hall-row first">
+                  <div class="w-100 hall-title">
+                    <div class="hall-item">
+                      <span class="value">{{ $t('__liveGame') }}</span>
+                    </div>
+                  </div>
+                  <div class="w-100 hall-content">
+                    <div class="d-flex">
+                      <div class="hall-item w-50">
+                        <span class="label">{{ `${$t('__rate')}% ` }}</span>
+                        <span class="value">{{ `${item.live_commission_rate}%` }}</span>
+                        <div class="fas yellow" @click.stop="onCommissionRateLogBtnClick(item)">
+                          <img src="@/assets/agentManagement/share.png" style="height: 1.5rem; width: 1.5rem;">
+                        </div>
+                      </div>
+                      <div class="hall-item w-50">
+                        <span class="label">{{ `${$t('__rollingRate')}% ` }}</span>
+                        <span class="value">{{ `${item.live_rolling_rate}%` }}</span>
+                        <div class="fas yellow" @click.stop="onRollingRateLogBtnClick(item)">
+                          <img src="@/assets/agentManagement/rollCoin.png" style="height: 1.5rem; width: 1.5rem;">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display: none;" />
+              </span>
+            </div>
+            <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <span class="value">
+                <span class="el-checkbox red-tick">
+                  <span class="el-checkbox__input is-disabled">
+                    <span class="el-checkbox__inner" />
+                  </span>
+                </span>
+                <span class="label">{{ $t('__totallyDisabled') }}</span>
+              </span>
+            </div>
+            <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <span class="value">
+                <span class="el-checkbox red-tick">
+                  <span class="el-checkbox__input is-disabled">
+                    <span class="el-checkbox__inner" />
+                  </span>
+                </span>
+                <span class="label">{{ $t('__debarBet') }}</span>
+              </span>
+            </div>
+            <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <span class="value">
+                <span class="el-checkbox red-tick">
+                  <span class="el-checkbox__input is-disabled">
+                    <span class="el-checkbox__inner" />
+                  </span>
+                </span>
+                <span class="label">{{ $t('__lockLogin') }}</span>
+              </span>
+            </div>
+            <div class="list-item" style="width: 100%; margin-top: 1rem;">
+              <span class="label" style="width: 50%;">{{ $t('__createdAt') }}</span>
+              <span class="value" style="width: 50%;">{{ item.created_at }}</span>
+            </div>
+            <div class="list-item" style="width: 100%; margin-top: 1rem;">
+              <span class="label" style="width: 50%;">{{ $t('__lastLoginAt') }}</span>
+              <span class="value" style="width: 50%;">{{ item.lastLoginAt }}</span>
+            </div>
+            <div class="list-item" style="width: 100%; margin-top: 1rem;">
+              <span class="label">{{ $t('__remark') }}</span>
+            </div>
+            <div class="list-item" style="width: 100%; margin-top: 1rem;">
+              <span class="value" style="word-break: break-word;">{{ item.remark }}</span>
+            </div>
           </div>
         </div>
-        <div v-else class="no-result">{{ $t("__noInformation") }}</div>
+        <div v-if="totalCount > pageSize" class="text-center p-3">
+          <div v-if="tableData.length >= totalCount">
+            <span>{{ $t("__noMoreInformation") }}</span>
+          </div>
+          <div v-else>
+            <span class="view-more border-bottom border-dark mb-1" @click="moreInfoByClient">{{ $t('__searchMoreValue') }}</span>
+          </div>
+        </div>
+        <div style="display: none;" />
       </div>
+      <agentEditDialog
+        ref="editDialog"
+        :title="$t('__editSubAgent')"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :operation-type="2"
+        :agent-info="agentInfo"
+        :confirm="$t('__revise')"
+        :form="editForm"
+        :step-enum="editStepEnum"
+        @close="closeDialogEven"
+        @editSuccess="handleRespone"
+      />
+
+      <agentEditDialog
+        ref="createDialog"
+        :title="$t('__addSubAgent')"
+        :visible="curDialogIndex === dialogEnum.create"
+        :operation-type="1"
+        :agent-info="agentInfo"
+        :confirm="$t('__confirm')"
+        :form="editForm"
+        :step-enum="editStepEnum"
+        @close="closeDialogEven"
+        @editSuccess="createDialogEditSuccess"
+      />
+
+      <balanceDialog
+        ref="depositBalanceDialog"
+        :title="$t('__depositBalance')"
+        :visible="curDialogIndex === dialogEnum.depositBalance"
+        :confirm="$t('__confirm')"
+        :form="editForm"
+        :operation-type="1"
+        :mode-type="1"
+        @close="closeDialogEven"
+        @depositBalance="depositBalance"
+      />
+
+      <balanceDialog
+        ref="withdrawBalanceDialog"
+        :title="$t('__withdrawBalance')"
+        :visible="curDialogIndex === dialogEnum.withdrawBalance"
+        :confirm="$t('__confirm')"
+        :form="editForm"
+        :operation-type="2"
+        :mode-type="1"
+        @close="closeDialogEven"
+        @withdrawBalance="withdrawBalance"
+      />
+
+      <operateDialog
+        ref="balanceOneClickRecyclingDialog"
+        :visible="curDialogIndex === dialogEnum.balanceOneClickRecycling"
+        :content="$stringFormat($t('__agentBalanceOneClickRecyclingMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
+
+      <limitDialog
+        :title="$t('__handicapLimit')"
+        :visible="curDialogIndex === dialogEnum.limit"
+        :handicaps="handicaps"
+        @close="closeDialogEven"
+      />
+
+      <modPasswordDialog
+        ref="modPasswordDialog"
+        :title="$t('__modPassword')"
+        :visible="curDialogIndex === dialogEnum.modPassword"
+        :confirm="$t('__revise')"
+        :name-label="`${$t('__agent')}`"
+        :form="editForm"
+        @close="closeDialogEven"
+        @modPassword="modPassword"
+      />
+
+      <agentRateLogDialog
+        :title="`${$t('__liveGame')} ${$t('__commissionRate')}`"
+        :visible="curDialogIndex === dialogEnum.liveCommissionRate"
+        :list-data="rateData"
+        :operation-type="1"
+        @close="closeDialogEven"
+      />
+
+      <agentRateLogDialog
+        :title="`${$t('__liveGame')} ${$t('__rollingRate')}`"
+        :visible="curDialogIndex === dialogEnum.liveRollingRate"
+        :list-data="rateData"
+        :operation-type="2"
+        @close="closeDialogEven"
+      />
+
+      <agentRateLogDialog
+        :title="`${$t('__liveGame')} ${$t('__giftRate')}`"
+        :visible="curDialogIndex === dialogEnum.liveGiftRate"
+        :list-data="rateData"
+        :operation-type="3"
+        @close="closeDialogEven"
+      />
+
+      <operateDialog
+        ref="totallyDisabledDialog"
+        :visible="curDialogIndex === dialogEnum.totallyDisabled"
+        :content="$stringFormat($t('__agentTotallyDisabledMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
+
+      <operateDialog
+        ref="lockLoginDialog"
+        :visible="curDialogIndex === dialogEnum.lockLogin"
+        :content="$stringFormat($t('__agentLockLoginMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
+
+      <operateDialog
+        ref="debarBetDialog"
+        :visible="curDialogIndex === dialogEnum.debarBet"
+        :content="$stringFormat($t('__agentDebarBetMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
+
+      <operateDialog
+        ref="weeklyLossSettlementDialog"
+        :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
+        :content="$stringFormat($t('__agentWeeklyLossSettlement'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
+
+      <operateDialog
+        ref="oneClickRecyclingDialog"
+        :visible="curDialogIndex === dialogEnum.oneClickRecycling"
+        :content="$stringFormat($t('__agentOneClickRecyclingMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
+
+      <operateDialog
+        ref="giftEffectDialog"
+        :visible="curDialogIndex === dialogEnum.giftEffect"
+        :content="$stringFormat($t('__agentGiftEffectMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
     </div>
-
-    <agentEditDialog
-      ref="editDialog"
-      :title="$t('__editSubAgent')"
-      :visible="curDialogIndex === dialogEnum.edit"
-      :operation-type="2"
-      :agent-info="agentInfo"
-      :confirm="$t('__revise')"
-      :form="editForm"
-      :step-enum="editStepEnum"
-      @close="closeDialogEven"
-      @editSuccess="handleRespone"
-    />
-
-    <agentEditDialog
-      ref="createDialog"
-      :title="$t('__addSubAgent')"
-      :visible="curDialogIndex === dialogEnum.create"
-      :operation-type="1"
-      :agent-info="agentInfo"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      :step-enum="editStepEnum"
-      @close="closeDialogEven"
-      @editSuccess="createDialogEditSuccess"
-    />
-
-    <balanceDialog
-      ref="depositBalanceDialog"
-      :title="$t('__depositBalance')"
-      :visible="curDialogIndex === dialogEnum.depositBalance"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      :operation-type="1"
-      :mode-type="1"
-      @close="closeDialogEven"
-      @depositBalance="depositBalance"
-    />
-
-    <balanceDialog
-      ref="withdrawBalanceDialog"
-      :title="$t('__withdrawBalance')"
-      :visible="curDialogIndex === dialogEnum.withdrawBalance"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      :operation-type="2"
-      :mode-type="1"
-      @close="closeDialogEven"
-      @withdrawBalance="withdrawBalance"
-    />
-
-    <operateDialog
-      ref="balanceOneClickRecyclingDialog"
-      :visible="curDialogIndex === dialogEnum.balanceOneClickRecycling"
-      :content="$stringFormat($t('__agentBalanceOneClickRecyclingMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <limitDialog
-      :title="$t('__handicapLimit')"
-      :visible="curDialogIndex === dialogEnum.limit"
-      :handicaps="handicaps"
-      @close="closeDialogEven"
-    />
-
-    <modPasswordDialog
-      ref="modPasswordDialog"
-      :title="$t('__modPassword')"
-      :visible="curDialogIndex === dialogEnum.modPassword"
-      :confirm="$t('__revise')"
-      :name-label="`${$t('__agent')}`"
-      :form="editForm"
-      @close="closeDialogEven"
-      @modPassword="modPassword"
-    />
-
-    <agentRateLogDialog
-      :title="`${$t('__liveGame')} ${$t('__commissionRate')}`"
-      :visible="curDialogIndex === dialogEnum.liveCommissionRate"
-      :list-data="rateData"
-      :operation-type="1"
-      @close="closeDialogEven"
-    />
-
-    <agentRateLogDialog
-      :title="`${$t('__liveGame')} ${$t('__rollingRate')}`"
-      :visible="curDialogIndex === dialogEnum.liveRollingRate"
-      :list-data="rateData"
-      :operation-type="2"
-      @close="closeDialogEven"
-    />
-
-    <agentRateLogDialog
-      :title="`${$t('__liveGame')} ${$t('__giftRate')}`"
-      :visible="curDialogIndex === dialogEnum.liveGiftRate"
-      :list-data="rateData"
-      :operation-type="3"
-      @close="closeDialogEven"
-    />
-
-    <operateDialog
-      ref="totallyDisabledDialog"
-      :visible="curDialogIndex === dialogEnum.totallyDisabled"
-      :content="$stringFormat($t('__agentTotallyDisabledMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="lockLoginDialog"
-      :visible="curDialogIndex === dialogEnum.lockLogin"
-      :content="$stringFormat($t('__agentLockLoginMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="debarBetDialog"
-      :visible="curDialogIndex === dialogEnum.debarBet"
-      :content="$stringFormat($t('__agentDebarBetMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="weeklyLossSettlementDialog"
-      :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
-      :content="$stringFormat($t('__agentWeeklyLossSettlement'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="oneClickRecyclingDialog"
-      :visible="curDialogIndex === dialogEnum.oneClickRecycling"
-      :content="$stringFormat($t('__agentOneClickRecyclingMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="giftEffectDialog"
-      :visible="curDialogIndex === dialogEnum.giftEffect"
-      :content="$stringFormat($t('__agentGiftEffectMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
   </div>
 </template>
 
@@ -578,6 +581,7 @@ export default {
     },
     // 父物件呼叫
     async create() {
+      this.pageSizeCount = 1
       this.setDataLoading(true)
       const timezone = await timezoneSearch({})
       this.$refs.createDialog.setTimeZone(timezone)
@@ -601,6 +605,8 @@ export default {
         element.cityNameLabel = element.timeZone.city_name
         element.totallyDisabled = element.totally_disabled === '1'
         element.lockLogin = element.status === '0'
+        const lockLoginLabel = element.lockLogin === true ? this.$t('__disabled') : this.$t('__enabled')
+        element.lockLoginLabel = lockLoginLabel
         element.debarBet = element.bet_status === '0'
         element.weeklyLossSettlement = element.weekly_loss_settlement === '1'
         element.oneClickRecycling = element.one_click_recycling === '1'
@@ -610,6 +616,15 @@ export default {
         element.live_commission_rate = numberFormat(element.live_commission_rate)
         element.live_rolling_rate = numberFormat(element.live_rolling_rate)
         element.live_gift_rate = numberFormat(element.live_gift_rate)
+
+        var limit = ''
+        for (var i = 0; i < element.handicaps.length; i++) {
+          limit += element.handicaps[i].nickname
+          if (i < element.handicaps.length - 1) {
+            limit += ','
+          }
+        }
+        element.handicaps_info = limit;
       })
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)
@@ -644,6 +659,7 @@ export default {
       this.onFullNameSearchBtnClick()
     },
     onSubmit(accountKeyWord) {
+      this.pageSizeCount = 1
       this.setDataLoading(true)
       agentSearch({ agentId: this.agentInfo.id, accountKeyWord: accountKeyWord }).then((res) => {
         this.handleRespone(res)
@@ -763,167 +779,46 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/variables.scss";
-
-.view {
-  &-container {
-    &-table {
-      &-row {
-        .wrap {
-          flex-direction: column;
-          position: relative;
-          .visible {
-            display: flex;
-            flex-direction: column;
-            .userInfo {
-              display: flex;
-              .user {
-                display: flex;
-                width: 50%;
-              }
-              .liveCommissionRate {
-                width: 22%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                .header {
-                  font-size: 12px;
-                  color: #a3a3a3;
-                }
-                .conten {
-                  font-weight: bold;
-                }
-              }
-              .state {
-                width: 15%;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-              }
-            }
-            .otherInfo {
-              display: flex;
-              flex-wrap: wrap;
-              margin-top: 3px;
-              color: #a3a3a3;
-              .conten {
-                margin-left: 3px;
-              }
-              .balance {
-                margin-left: 15px;
-                display: flex;
-                align-items: center;
-              }
-              .timeZone {
-                margin-left: 15px;
-              }
-            }
-            .column {
-              display: flex;
-              flex-direction: column;
-            }
-          }
-          .btnGroup {
-            margin-top: 5px;
-            .group2 {
-              margin-top: 10px;
-              display: flex;
-              align-items: center;
-              .key {
-                margin-left: 20px;
-                font-size: 22px;
-              }
-              .edit {
-                font-size: 22px;
-                margin-left: 10px;
-              }
-            }
-            .winLossReport {
-              margin-left: 10px;
-            }
-          }
-          .infoGroup {
-            margin-top: 10px;
-            display: flex;
-            flex-direction: column;
-            .agentCount {
-              display: flex;
-              padding-bottom: 2px;
-              border-bottom: 2px solid $yellow;
-            }
-            .liveGame {
-              margin-top: 5px;
-              padding-bottom: 2px;
-              border-bottom: 2px solid $yellow;
-              .liveGame-title {
-                font-weight: bold;
-                margin-bottom: 5px;
-              }
-              .liveGame-wrap {
-                display: flex;
-                flex-wrap: wrap;
-                .infoGroup-item {
-                  .infoGroup-item-content {
-                    display: flex;
-                    justify-content: space-between;
-                  }
-                }
-              }
-              .iconButton {
-                padding: 0;
-                background: transparent;
-                color: #000;
-                -webkit-text-stroke: 0.5px $yellow;
-                border: none;
-                font-size: 16px;
-                margin-left: 0;
-                vertical-align: middle;
-                .icon {
-                  color: $yellow;
-                  margin-left: 5px;
-                }
-              }
-            }
-            .infoGroup-item {
-              min-width: 50%;
-              display: flex;
-              .infoGroup-item-header {
-                width: 50%;
-                min-width: 120px;
-              }
-              .infoGroup-item-content {
-                width: 50%;
-              }
-            }
-            .operate {
-              display: flex;
-              flex-wrap: wrap;
-              margin-top: 10px;
-              .el-checkbox {
-                margin-right: 0;
-                width: 50%;
-                height: 30px;
-                text-align: center;
-              }
-            }
-          }
-        }
+.hall-row {
+  width: 100vw;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0px -3.4rem;
+  border-bottom: 0.08333rem solid #f9c901;
+  border-top: 0rem solid #f9c901;
+  &.first {
+    border-top: 0.08333rem solid #f9c901;
+  }
+  .hall-title {
+    padding: 1.25rem 0.83333rem 0rem 2.16667rem;
+    color: #000;
+  }
+  .hall-content {
+    padding: 0.41667rem 1rem;
+    color: #000;
+    font-size: .91667rem;
+    .hall-item {
+      padding: 0.41667rem 0.41667rem 0.41667rem 1.16667rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      .label {
+        color: #a3a3a3;
+        margin-right: 0.83333rem;
+      }
+      .value {
+        font-weight: bold;
+        color: #000;
+        margin-right: 0.83333rem;
+        width: auto;
       }
     }
   }
 }
 
-.expand {
-  position: absolute;
-  right: 0;
-}
-
-.stroke {
-  padding: 0;
-  font-size: 16px;
-  color: #ce9600;
-  font-weight: bold;
-  border-bottom: 1px solid #ce9600;
-  vertical-align: top;
-}
 </style>

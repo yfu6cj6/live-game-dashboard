@@ -186,7 +186,7 @@
                           :view-height="viewHeight"
                           @serverResponse="handleRespone"
                           @setDataLoading="setDataLoading"
-                        />
+                        /> -->
 
                         <subAccount
                           v-show="curTableIndex === tableEnum.subAccount"
@@ -196,7 +196,7 @@
                           @setDataLoading="setDataLoading"
                         />
 
-                        <limitDialog
+                        <!-- <limitDialog
                           :title="$t('_handicapLimit')"
                           :visible="curDialogIndex === dialogEnum.limit"
                           :handicaps="handicaps"
@@ -224,12 +224,13 @@ import { agentTotalPlayerCount } from '@/api/agentManagement/agent'
 import viewCommon from '@/mixin/viewCommon';
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
-// import { t } from 'element-ui/lib/locale';
 import Agent from './agent/index'
+import SubAccount from './subAccount/index'
+
 
 export default {
   name: 'AgentManagement',
-  components: { Agent },
+  components: { Agent, SubAccount },
   mixins: [viewCommon],
   data() {
     return {
@@ -341,10 +342,6 @@ export default {
       switch (this.curTableIndex) {
         case this.tableEnum.agent: {
           this.$refs.agent.onSearch(this.agentInfo.id)
-          // this.setDataLoading(true)
-          // agentSearch({ agentId: this.agentInfo.id, accountKeyWord: '' }).then((res) => {
-          //   this.handleRespone(res)
-          // })
           break
         }
         case this.tableEnum.member: {
@@ -352,7 +349,7 @@ export default {
           break
         }
         case this.tableEnum.subAccount: {
-          // this.$refs.subAccount.onSearch(this.agentInfo.id)
+          this.$refs.subAccount.onSearch(this.agentInfo.id)
           break
         }
       }

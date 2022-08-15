@@ -24,6 +24,10 @@ export default {
       this.pageSizeCount++;
       this.handleCurrentChange(1)
     },
+    moreInfoByClient() {
+      this.pageSizeCount++;
+      this.tableData = this.allDataByClient.slice((this.currentPage - 1) * this.pageSize, this.currentPage * (this.pageSize * this.pageSizeCount))
+    },
     handleSizeChange(val) {
       this.pageSize = val
       this.handleCurrentChange(1)
