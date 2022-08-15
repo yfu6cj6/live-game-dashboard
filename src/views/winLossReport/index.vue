@@ -13,6 +13,7 @@
                         <div class="date-time-picker-box">
                           <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
                             <el-date-picker
+                              ref="datePicker"
                               v-model="searchTime"
                               type="datetimerange"
                               popper-class="ams-timeslot-popper"
@@ -24,6 +25,7 @@
                               :start-placeholder="$t('__startDate')"
                               :end-placeholder="$t('__endDate')"
                               :default-time="['00:00:00', '23:59:59']"
+                              :picker-options="pickerOptions"
                               :format="'yyyy-MM-dd HH:mm'"
                             />
                           </div>
@@ -507,7 +509,6 @@ export default {
   mixins: [common, viewCommon],
   data() {
     return {
-      pickerOptions: { },
       tableEnum: Object.freeze({
         'agent': 0,
         'member': 1
@@ -586,6 +587,9 @@ export default {
         hasSet = true
         this.curDateEnumIndex = this.dateEnum.thisMonth
       }
+      if (!hasSet) {
+        this.curDateEnumIndex = this.dateEnum.none
+      }
     }
   },
   created() {
@@ -642,52 +646,37 @@ export default {
         case (this.dateEnum.yesterday):
         {
           this.searchTime = getDayDateTime(-1);
-          this.$nextTick(() => {
-            this.onTableBtnClick(this.curTableIndex)
-          })
           break;
         }
         case (this.dateEnum.today):
         {
           this.searchTime = getDayDateTime();
-          this.$nextTick(() => {
-            this.onTableBtnClick(this.curTableIndex)
-          })
           break;
         }
         case (this.dateEnum.lastWeek):
         {
           this.searchTime = getWeekDateTime(-1);
-          this.$nextTick(() => {
-            this.onTableBtnClick(this.curTableIndex)
-          })
           break;
         }
         case (this.dateEnum.thisWeek):
         {
           this.searchTime = getWeekDateTime();
-          this.$nextTick(() => {
-            this.onTableBtnClick(this.curTableIndex)
-          })
           break;
         }
         case (this.dateEnum.lastMonth):
         {
           this.searchTime = getMonthDateTime(-1);
-          this.$nextTick(() => {
-            this.onTableBtnClick(this.curTableIndex)
-          })
           break;
         }
         case (this.dateEnum.thisMonth):
         {
           this.searchTime = getMonthDateTime();
-          this.$nextTick(() => {
-            this.onTableBtnClick(this.curTableIndex)
-          })
           break;
         }
       }
+      this.$nextTick(() => {
+        this.onTableBtnClick(this.curTableIndex)
+      })
     },
     onExportBtnClick() {
       const data = this.getData()

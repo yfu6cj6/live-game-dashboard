@@ -594,15 +594,7 @@ export default {
       countInfo: {},
       scoreCards: [],
       searchOpen: false,
-      selectOption: {},
-      pickerOptions: {
-        // disabledDate(time) {
-        //   const preThirdDay = new Date()
-        //   preThirdDay.setMonth(preThirdDay.getMonth() - 3)
-        //   preThirdDay.setDate(preThirdDay.getDate() - 1)
-        //   return time.getTime() > Date.now() || time.getTime() < preThirdDay
-        // }
-      }
+      selectOption: {}
     }
   },
   computed: {
@@ -795,7 +787,7 @@ export default {
         const pointResult = player + playerPoint + ' ' + banker + bankerPoint
         element.gameResultPoints = '[' + pointResult + ']'
         element.gamePlayLabel = this.game_play.find(item => item.key === element.game_play.key).nickname
-        element.statusLabel = this.statusType.find(item => item.key === element.status).nickname
+        element.statusLabel = this.statusType.find(item => item.key === element.status.toString()).nickname
       })
       this.totalCount = res.totalCount
       this.setTagsViewTitle()
