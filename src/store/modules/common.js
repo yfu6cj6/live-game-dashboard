@@ -35,31 +35,31 @@ const roles = [{
 }]
 
 const statusType = [{
-  key: 1,
+  key: "1",
   nickname: '__payouted'
 },
 {
-  key: 2,
+  key: "2",
   nickname: '__statusNoPayout'
 },
 {
-  key: 3,
+  key: "3",
   nickname: '__dealerNoSettle'
 },
 {
-  key: 4,
+  key: "4",
   nickname: '__backedNoSettle'
 },
 {
-  key: 5,
+  key: "5",
   nickname: '__backedSettle'
 },
 {
-  key: 6,
+  key: "6",
   nickname: '__betting'
 },
 {
-  key: 7,
+  key: "7",
   nickname: '__stopBet'
 }]
 

@@ -324,5 +324,7 @@
     "__incomeAndExpenditure": "總收支:",
     "__totalDataAmount": "共 {0} 筆",
     "__directlyMember": "直屬玩家",
-    "__submit": "提交"
+    "__submit": "提交",
+    "__disabled": "禁用",
+    "__enabled": "啟用"
 }

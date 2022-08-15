@@ -335,7 +335,7 @@ export default {
             element.rolesNickname.push(roleObj.nickname)
           }
         })
-        const statusNickname = this.accountStatusType.find(statusType => statusType.key === element.status).nickname
+        const statusNickname = this.accountStatusType.find(statusType => statusType.key === element.status.toString()).nickname
         element.statusLabel = this.$t(statusNickname)
       })
       this.totalCount = this.allDataByClient.length
