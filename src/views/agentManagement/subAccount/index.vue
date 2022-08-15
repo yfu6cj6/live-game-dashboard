@@ -1,182 +1,152 @@
 <template>
-  <div>
-    <el-table class="agentManagement-subAccountTable" :data="tableData" border stripe :max-height="viewHeight">
-      <af-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" inline>
-            <el-form-item :label="$t('__remark')">
-              <span>{{ props.row.remark }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </af-table-column>
-      <af-table-column prop="agentNickname" :label="$t('__mainAccount')" align="center" />
-      <el-table-column align="center" :min-width="fullNameWidth">
-        <template slot-scope="scope">
-          <span class="scope-content">{{ scope.row.fullName }}</span>
-          <br>
-          <el-button v-if="!isAgentSubAccount" class="iconButton" size="mini" icon="el-icon-setting" @click="onEditBtnClick(scope.row)" />
-          <el-button v-if="!isAgentSubAccount" class="iconButton" size="mini" icon="el-icon-unlock" @click="onModPasswordBtnClick(scope.row)" />
-        </template>
-        <template #header>
-          <span>{{ $t('__subAccount') }}</span>
-          <el-popover
-            v-model="popover"
-            placement="right"
-            :visible-arrow="false"
-            @show="showPopover"
-          >
-            <span class="fullNameSearchTitle">{{ $t('__subAccount') }}</span>
-            <input ref="fullNameSearchInput" v-model="searchForm.account" :placeholder="$t('__enterKeys')" @keyup.enter.exact="onFullNameSearchBtnClick">
-            <el-button class="bg-yellow" style="margin-left: 10px;" size="mini" @click="onFullNameSearchBtnClick">{{ $t("__search") }}</el-button>
-            <el-button class="bg-gray" size="mini" @click="onFullNameResetBtnClick">{{ $t("__reset") }}</el-button>
-            <el-button slot="reference" class="search" size="mini">
-              <svg-icon class="icon" icon-class="search" />
-            </el-button>
-          </el-popover>
-        </template>
-      </el-table-column>
-      <af-table-column :label="$t('__accountStatus')" align="center">
-        <template slot-scope="scope">
-          <span :class="{'lock': scope.row.status === '0', 'enable': scope.row.status === '1'}">
-            {{ scope.row.statusLabel }}
+  <div class="agent-list">
+    <div>
+      <div
+        v-for="(item, index) in tableData"
+        :key="index"
+        class="list-row"
+      >
+        <div class="force-wrap" />
+        <div class="list-item index">
+          <span class="value">{{ index + 1 }}</span>
+        </div>
+        <div class="list-item" style="width: 70%;">
+          <span class="value" style="display: flex; word-break: break-all; padding-bottom: 0.75rem;">
+            <div class="fas gray-deep">
+              <svg-icon icon-class="user" style="height: 1.25rem;width: 1.25rem;" />
+            </div>
+            <span>
+              <div class="item-inner">
+                <div class="text-link text-golden pl-1 pb-1">{{ item.account }}</div>
+                <div class="tag-name">{{ `(${$t('__nickname')} : ${item.nickname})` }}</div>
+              </div>
+            </span>
           </span>
-        </template>
-      </af-table-column>
-      <af-table-column :label="$t('__role')" align="center" :width="100">
-        <template slot-scope="scope">
-          <span
-            v-for="(item, index) in scope.row.rolesNickname"
-            :key="index"
-            :class="{'role-admin':scope.row.rolesNickname[index].key==='AgentSubAccountAdmin', 'role-visitor':scope.row.rolesNickname[index].key==='AgentSubAccount'}"
-          >
-            {{ item.nickname + ((index + 1 === scope.row.rolesNickname.length) ? '' : '、') }}
+        </div>
+        <div class="list-item state" style="width: auto; margin-left: auto;">
+          <span class="value">
+            <span>
+              <div class="item-inner">
+                <span class="fas">
+                  <svg-icon icon-class="enable" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}" style="height: 1rem;width: 1rem;" />
+                </span>
+              </div>
+              <div class="item-inner mt-2" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}">
+                {{ item.statusLabel }}
+              </div>
+            </span>
           </span>
-        </template>
-      </af-table-column>
-      <af-table-column prop="creator" :label="$t('__creator')" align="center" />
-      <af-table-column prop="created_at" :label="$t('__createdAt')" align="center" />
-      <af-table-column prop="lastLoginAt" :label="$t('__lastLoginAt')" align="center" />
-      <af-table-column prop="lastLoginIp" :label="$t('__lastLoginIP')" align="center" />
-      <af-table-column v-if="!isAgentSubAccount" :label="$t('__operate')" align="center" :width="180">
-        <template slot-scope="scope">
-          <div class="checkboxGroup">
-            <el-checkbox
-              v-model="scope.row.lockLogin"
-              class="red-tick agentManagement-subAccountCheckbox"
-              :label="$t('__lockLogin')"
-              @mousedown.native="onOperateCheckboxClick(dialogEnum.lockLogin, scope.row)"
-            />
-            <el-checkbox
-              v-model="scope.row.allPermission"
-              class="red-tick agentManagement-subAccountCheckbox"
-              :label="$t('__allPermission')"
-              @mousedown.native="onOperateCheckboxClick(dialogEnum.effectAgentLine, scope.row)"
-            />
+        </div>
+        <div class="force-wrap" />
+        <div class="list-item" style="width: 50%; margin-left: 2.5rem; display: flex; align-items: center;">
+          <span class="value" style="display: flex; align-items: center;">
+            <div class="fas gray-deep pb-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 63 63"
+                style="height: 1.08333rem; width: 1.08333rem;"
+              >
+                <title>ppl</title>
+                <path d="M23.14,37.4A14.77,14.77,0,1,0,7.88,23.14,14.78,14.78,0,0,0,23.14,37.4Z" />
+                <path d="M29.18,41.34H16.1A16.16,16.16,0,0,0,0,57.45V63H45.28V57.45A16.16,16.16,0,0,0,29.18,41.34Z" />
+                <path d="M43.87,0a12.77,12.77,0,0,0-11,7,18.67,18.67,0,0,1,8.26,18.2A12.79,12.79,0,1,0,43.87,0Z" />
+                <path d="M49,29.25H40.15a18.62,18.62,0,0,1-3.85,6.16,18.29,18.29,0,0,1-2.82,2.47A20.11,20.11,0,0,1,48.2,51.19H63V43.65A14.25,14.25,0,0,0,49,29.25Z" />
+              </svg>
+            </div>
+            <span>
+              <span class="ml-1">{{ `${$t('__role')} : ` }}</span>
+              <span
+                v-for="(rolesItem, rolesIndex) in item.rolesNickname"
+                :key="rolesIndex"
+              >
+                <span :class="{'text-blue': rolesItem.key==='AgentSubAccount', 'text-red': rolesItem.key==='AgentSubAccountAdmin'}">
+                  {{ rolesItem.nickname }}
+                </span>
+                <span>{{ (((rolesIndex + 1) === item.rolesNickname.length) ? '' : '、') }}</span>
+              </span>
+            </span>
+          </span>
+        </div>
+        <div class="list-item ctrl">
+          <div class="item-inner">
+            <div v-show="!item.open" class="fas gray-deep">
+              <svg-icon class="fas text-gray" icon-class="more" style="height: 2rem;width: 2rem;" />
+            </div>
+            <div v-show="item.open" class="fas gray-deep">
+              <svg-icon class="fas text-gray" icon-class="up" style="height: 2rem;width: 2rem;" />
+            </div>
           </div>
-          <div>
-            <el-button v-if="!scope.row.allPermission" class="bg-yellow" size="mini" @click="onSubAgentDistribute(scope.row)">{{ $t('__subAgentDistribute') }}</el-button>
+        </div>
+        <div class="force-wrap" />
+        <div class="agent-list-detail">
+          <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+            <span class="value">
+              <span class="solid-circle">
+                <div class="fas">
+                  <svg-icon icon-class="top" class="text-black" style="height: 1.5rem;width: 1.5rem;" />
+                </div>
+              </span>
+            </span>
           </div>
-        </template>
-      </af-table-column>
-    </el-table>
-
-    <el-pagination
-      layout="prev, pager, next, jumper, sizes"
-      class="subAccount-pagination"
-      :total="totalCount"
-      background
-      :page-size="pageSize"
-      :page-sizes="pageSizes"
-      :current-page.sync="currentPage"
-      @size-change="handleSizeChangeByClient"
-      @current-change="handlePageChangeByClient"
-    />
-
-    <modPasswordDialog
-      ref="modPasswordDialog"
-      :title="$t('__modPassword')"
-      :visible="curDialogIndex === dialogEnum.modPassword"
-      :confirm="$t('__revise')"
-      :name-label="`${$t('__subAccount')}: `"
-      :form="editForm"
-      @close="closeDialogEven"
-      @modPassword="modPassword"
-    />
-
-    <subAccountEditDialog
-      ref="editDialog"
-      :title="$t('__editSubAccount')"
-      :visible="curDialogIndex === dialogEnum.edit"
-      :operation-type="2"
-      :confirm="$t('__revise')"
-      :agent-info="agentInfo"
-      :form="editForm"
-      @close="closeDialogEven"
-      @editSuccess="handleRespone"
-    />
-
-    <subAccountEditDialog
-      ref="createDialog"
-      :title="$t('__addSubAccount')"
-      :visible="curDialogIndex === dialogEnum.create"
-      :operation-type="1"
-      :confirm="$t('__confirm')"
-      :agent-info="agentInfo"
-      :form="editForm"
-      @close="closeDialogEven"
-      @editSuccess="createDialogEditSuccess"
-    />
-
-    <operateDialog
-      ref="lockLoginDialog"
-      :visible="curDialogIndex === dialogEnum.lockLogin"
-      :content="$stringFormat($t('__subAccountLockLoginMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <operateDialog
-      ref="effectAgentLineDialog"
-      :visible="curDialogIndex === dialogEnum.effectAgentLine"
-      :content="$stringFormat($t('__subAccountEffectAgentLineMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <subAgentDistributeDialog
-      ref="subAgentDistributeDialog"
-      :title="$t('__subAgentDistribute')"
-      :visible="curDialogIndex === dialogEnum.subAgentDistribute"
-      :sub-agents="subAgent"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="onSubmitSetHasAgents"
-    />
-
-    <passwordTipDialog
-      :title="$t('__tip')"
-      :visible="curDialogIndex === dialogEnum.passwordTip"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      @close="closeDialogEven"
-    />
+          <div class="list-item" style="width: 100%; margin-top: 1rem;">
+            <span class="label" style="width: 50%;">{{ $t('__nickname') }}</span>
+            <span class="value" style="width: 50%;">{{ item.nickname }}</span>
+          </div>
+          <div class="list-item" style="width: 100%; margin-top: 1rem;">
+            <span class="label" style="width: 50%;">{{ $t('__lastLoginAt') }}</span>
+            <span class="value" style="width: 50%;">{{ item.lastLoginAt }}</span>
+          </div>
+          <div class="list-item" style="width: 100%; margin-top: 1rem; align-items: center;">
+            <span class="label" style="width: 50%;">{{ $t('__lastLoginIP') }}</span>
+            <span class="value" style="width: 50%;">
+              <div class="ip-detail">
+                <div class="text-yellow _item">
+                  <div>{{ item.lastLoginIp }}</div>
+                </div>
+              </div>
+            </span>
+          </div>
+          <div class="list-item" style="width: 100%; margin-top: 1rem;">
+            <span class="label" style="width: 50%;">{{ $t('__createdAt') }}</span>
+            <span class="value" style="width: 50%;">{{ item.created_at }}</span>
+          </div>
+          <div class="list-item" style="width: 100%; margin-top: 1rem;">
+            <span class="label" style="width: 50%;">{{ $t('__creator') }}</span>
+            <span class="value" style="width: 50%;">{{ item.creator }}</span>
+          </div>
+          <div class="list-item" style="width: 100%; margin-top: 1rem;">
+            <span class="value">
+              <el-checkbox
+                v-if="!isAgentSubAccount"
+                v-model="item.lockLogin"
+                class=""
+                :label="$t('__lockLogin')"
+                @mousedown.native="onOperateCheckboxClick(dialogEnum.lockLogin, item)"
+              />
+              <el-checkbox
+                v-if="!isAgentSubAccount"
+                v-model="item.allPermission"
+                class=""
+                :label="$t('__allPermission')"
+                @mousedown.native="onOperateCheckboxClick(dialogEnum.effectAgentLine, item)"
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { subAccountSearch, subAccountModPassword, subAccountModStatus, subAccountModEffectAgentLine, subAccountGetAgentLine, subAccountSetHasAgents } from '@/api/agentManagement/subAccount'
 import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
-import handlePageChange from '@/layout/mixin/handlePageChange'
-import handleTableWidth from '@/layout/mixin/handleTableWidth'
-import SubAccountEditDialog from './subAccountEditDialog'
-import SubAgentDistributeDialog from './subAgentDistributeDialog'
-import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
-import OperateDialog from '@/views/agentManagement/operateDialog'
-import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
+import handlePageChange from '@/mixin/handlePageChange'
+// import SubAccountEditDialog from './subAccountEditDialog'
+// import SubAgentDistributeDialog from './subAgentDistributeDialog'
+// import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
+// import OperateDialog from '@/views/agentManagement/operateDialog'
+// import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
 
 const defaultForm = {
@@ -194,16 +164,9 @@ const defaultForm = {
 
 export default {
   name: 'Member',
-  components: { SubAccountEditDialog, ModPasswordDialog, OperateDialog, SubAgentDistributeDialog, PasswordTipDialog },
-  mixins: [handlePageChange, handleTableWidth],
+  // components: { SubAccountEditDialog, ModPasswordDialog, OperateDialog, SubAgentDistributeDialog, PasswordTipDialog },
+  mixins: [handlePageChange],
   props: {
-    'viewHeight': {
-      type: Number,
-      require: true,
-      default() {
-        return 0
-      }
-    }
   },
   data() {
     return {
@@ -228,13 +191,10 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'statusType',
+      'accountStatusType',
       'roles',
       'isAgentSubAccount'
-    ]),
-    fullNameWidth() {
-      return this.calculateWidth(this.$t('__subAccount'), 'fullName', 8, 10) + 'px'
-    }
+    ])
   },
   methods: {
     showPopover() {
@@ -348,7 +308,7 @@ export default {
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
         element.fullName = `${element.nickname}(${element.account})`
-        const statusNickname = this.statusType.find(type => type.key === element.status).nickname
+        const statusNickname = this.accountStatusType.find(type => type.key === element.status).nickname
         element.statusLabel = this.$t(statusNickname)
         element.agentNickname = element.agent.nickname
         element.rolesNickname = []
@@ -410,107 +370,5 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.agentManagement-subAccountCheckbox {
-  .el-checkbox__input+.el-checkbox__label {
-    padding-left: 5px;
-  }
-}
-
-.agentManagement-subAccountTable td .cell {
-  line-height: 2em;
-  padding: 0;
-  margin: 0.1em;
-}
-</style>
-
 <style lang="scss" scoped>
-@import "~@/styles/variables.scss";
-
-.subAccount {
-  &-pagination {
-    padding: 1em;
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-  }
-}
-
-.scope-content {
-  margin-right: 2px;
-}
-
-.role-admin {
-  color: red;
-  font-weight: bolder;
-}
-
-.role-visitor {
-  color: blue;
-  font-weight: bolder;
-}
-
-.lock {
-  color: red;
-  font-weight: bolder;
-}
-
-.enable {
-  color:  green;
-  font-weight: bolder;
-}
-
-.search {
-  margin-left: 3px;
-  padding: 4px;
-  background-color: $yellow;
-  border-color: $yellow;
-  color: #000;
-}
-
-.search:focus,
-.search:hover {
-  color: #000;
-}
-
-.fullNameSearchTitle {
-  color: $yellow;
-  margin-right: 10px;
-  font-weight: 400;
-}
-
-.iconButton {
-  padding: 0;
-  background: transparent;
-  color: #000;
-  -webkit-text-stroke: 0.5px $yellow;
-  border: none;
-  font-size: 16px;
-  margin-left: 0;
-
-  .icon {
-    color: $yellow;
-    margin-left: 5px;
-  }
-}
-
-.labelButton {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.labelWithdrawButton {
-  margin-left: 5px;
-}
-
-.agentManagement-subAccountCheckbox {
-  width: 50%;
-}
-
-.checkboxGroup {
-  text-align: left;
-  padding-left: 10px;
-}
 </style>

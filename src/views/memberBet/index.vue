@@ -404,32 +404,37 @@
                               </div>
                               <div class="list-item d-flex align-items-start" style="width: 100%; line-height: 1.5;">
                                 <span class="label">{{ $t('__gameResult') }}</span>
-                                <span class="value text-link" @click.stop="gameResultClick(item.round_id)">
-                                  <div class="fas videoBtn white">
-                                    <i class="el-icon-picture text-yellow mr-2 playbackPic" @click.stop="onPlaybackPic(item)" />
-                                  </div>
-                                  <div class="fas videoBtn white">
-                                    <img :src="require(`@/assets/gameResult/playbackUrl.png`)" style="height: 1.5rem; width: 1.5rem;" @click.stop="onPlaybackUrl(item)">
-                                  </div>
-                                  <span class="border-bottom border-dark">
-                                    <span
-                                      class="mr-1"
-                                      :class="{
-                                        'text-red': item.gameResult.result === 0,
-                                        'text-blue': item.gameResult.result === 1,
-                                        'text-green': item.gameResult.result === 2
-                                      }"
-                                    >
-                                      {{ item.gameResult.resultLabel }}
+                                <template v-if="item.gameResult.result === -1">
+                                  <div>-</div>
+                                </template>
+                                <template v-else>
+                                  <span class="value text-link">
+                                    <div class="fas videoBtn white">
+                                      <i class="el-icon-picture text-yellow mr-2 playbackPic" @click.stop="onPlaybackPic(item)" />
+                                    </div>
+                                    <div class="fas videoBtn white">
+                                      <img :src="require(`@/assets/gameResult/playbackUrl.png`)" style="height: 1.5rem; width: 1.5rem;" @click.stop="onPlaybackUrl(item)">
+                                    </div>
+                                    <span class="border-bottom border-dark" @click.stop="gameResultClick(item.round_id)">
+                                      <span
+                                        class="mr-1"
+                                        :class="{
+                                          'text-red': item.gameResult.result === 0,
+                                          'text-blue': item.gameResult.result === 1,
+                                          'text-green': item.gameResult.result === 2
+                                        }"
+                                      >
+                                        {{ item.gameResult.resultLabel }}
+                                      </span>
+                                      <span>{{ '[' }}</span>
+                                      <span>{{ $t('__player') }}</span>
+                                      <span class="mr-1">{{ item.gameResult.player_point }}</span>
+                                      <span>{{ $t('__banker') }}</span>
+                                      <span>{{ item.gameResult.banker_point }}</span>
+                                      <span>{{ ']' }}</span>
                                     </span>
-                                    <span>{{ '[' }}</span>
-                                    <span>{{ $t('__player') }}</span>
-                                    <span class="mr-1">{{ item.gameResult.player_point }}</span>
-                                    <span>{{ $t('__banker') }}</span>
-                                    <span>{{ item.gameResult.banker_point }}</span>
-                                    <span>{{ ']' }}</span>
                                   </span>
-                                </span>
+                                </template>
                               </div>
                               <div class="list-item d-flex align-items-start item-bet">
                                 <span class="label">{{ $t('__gamePlay') }}</span>

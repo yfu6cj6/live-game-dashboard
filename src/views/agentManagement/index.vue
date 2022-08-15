@@ -227,7 +227,6 @@ import { numberFormat } from '@/utils/numberFormat'
 import Agent from './agent/index'
 import SubAccount from './subAccount/index'
 
-
 export default {
   name: 'AgentManagement',
   components: { Agent, SubAccount },

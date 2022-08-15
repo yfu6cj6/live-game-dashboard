@@ -218,10 +218,10 @@
                       <div class="list-sub-item-icon-col-with-icon">
                         <div class="ctrl" :class="{'exp': item.open}" @click.stop="remarkExpand(item)">
                           <div class="item-inner">
-                            <div :class="{'d-none': item.open}">
+                            <div v-show="!item.open">
                               <svg-icon class="fas text-gray" icon-class="more" style="height: 2.16667rem;width: 2.16667rem;" />
                             </div>
-                            <div :class="{'d-none': !item.open}">
+                            <div v-show="item.open">
                               <svg-icon class="fas text-gray" icon-class="up" style="height: 1.83333rem;width: 1.83333rem;" />
                             </div>
                           </div>

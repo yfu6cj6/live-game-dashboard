@@ -1,7 +1,7 @@
 <template>
   <Dialog
     :loading="dialogLoading"
-    class="modPwdDialog"
+    class="modPwd-container"
     :title="`${$t('__firstLoginModPassword')}`"
     :close-on-click-modal="false"
     :show-close="false"
@@ -197,63 +197,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-@import "~@/styles/variables.scss";
-
-.modPwdDialog {
-  .account-info {
-    color: $yellow;
-    display: inline-block;
-    padding-bottom: 2rem;
-    font-size: 1.4rem;
-    span {
-      padding-left: .7rem;
-      color: #fff;
-    }
-  }
-  .el-form {
-    margin-bottom: .7rem;
-    .el-form-item {
-      margin-bottom: 0;
-      .el-form-item__content {
-        line-height: 2rem;
-        margin-bottom: 2.1rem;
-        .el-form-item__error {
-          top: 100%;
-        }
-        .item {
-          color: $yellow;
-        }
-        .custom-psw {
-          .el-icon-view {
-            display: inline-block;
-          }
-          .el-input__inner {
-            height: 100%;
-          }
-          &.el-input {
-            height: 3rem;
-          }
-          .el-input__suffix {
-            display: flex;
-            align-items: center;
-          }
-        }
-      }
-    }
-    .el-form-item.newPassword {
-      .el-form-item__content {
-        .item {
-          display: flex;
-          flex-direction: column;
-          .newPasswordTip {
-            color: #fff;
-            font-size: 1.1rem;
-          }
-        }
-      }
-    }
-  }
-}
-</style>
