@@ -541,7 +541,8 @@ export default {
   watch: {
     '$route.path': function() {
       if (this.tempRoute.path === this.$route.path) {
-        this.searchTime = localStorage.getItem(`winLossReportSearchTime${this.agentId}`).split(',') || defaultSearchTime
+        const searchTime = localStorage.getItem(`winLossReportSearchTime${this.agentId}`)
+        this.searchTime = searchTime ? searchTime.split(',') : defaultSearchTime
         this.$nextTick(() => {
           this.onTableBtnClick(this.curTableIndex)
         })
@@ -596,7 +597,8 @@ export default {
   created() {
     if (this.tempRoute.params?.id !== undefined) {
       this.agentId = parseInt(this.tempRoute.params.id)
-      this.searchTime = localStorage.getItem(`winLossReportSearchTime${this.agentId}`).split(',') || defaultSearchTime
+      const searchTime = localStorage.getItem(`winLossReportSearchTime${this.agentId}`)
+      this.searchTime = searchTime ? searchTime.split(',') : defaultSearchTime
       this.$router.name = this.$stringFormat(this.tempRoute.name, [`${this.agentId}`])
     } else {
       this.searchTime = defaultSearchTime

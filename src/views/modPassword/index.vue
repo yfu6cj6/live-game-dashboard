@@ -62,6 +62,7 @@
                         </el-input>
                       </el-form-item>
                     </el-form>
+                    <el-button class="bg-yellow font-weight-bold" @click.native.prevent="onSubmit">{{ $t('__submit') }}</el-button>
                   </div>
                 </div>
               </div>
@@ -187,9 +188,12 @@ export default {
 <style lang="scss" scoped>
 .scroll-view {
   background-color: #000;
-}
-.modPwd-container {
-  height: 100%;
-  padding: 2.5rem;
+  .modPwd-container {
+    height: 100%;
+    padding: 2.5rem;
+    .el-button {
+      width: 100%;
+    }
+  }
 }
 </style>
