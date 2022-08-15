@@ -191,7 +191,6 @@
                         <subAccount
                           v-show="curTableIndex === tableEnum.subAccount"
                           ref="subAccount"
-                          :view-height="viewHeight"
                           @serverResponse="handleRespone"
                           @setDataLoading="setDataLoading"
                         />
