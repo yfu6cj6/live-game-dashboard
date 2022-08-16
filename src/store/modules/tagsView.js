@@ -12,7 +12,6 @@ const mutations = {
         title: view.meta.title || 'no-name'
       })
     )
-    state.curViewTitle = view.meta.title
   },
   ADD_CACHED_VIEW: (state, view) => {
     if (state.cachedViews.includes(view.name)) {
@@ -21,6 +20,9 @@ const mutations = {
     if (!view.meta.noCache) {
       state.cachedViews.push(view.name)
     }
+  },
+  UPDATE_VIEW_TITLE: (state, view) => {
+    state.curViewTitle = view.meta.title
   },
 
   DEL_VISITED_VIEW: (state, view) => {
@@ -64,7 +66,7 @@ const mutations = {
     for (let v of state.visitedViews) {
       if (v.path === view.path) {
         v = Object.assign(v, view)
-        state.curViewTitle = v.title
+        state.curViewTitle = view.title
         break
       }
     }
@@ -76,11 +78,15 @@ const actions = {
     dispatch('addVisitedView', view)
     dispatch('addCachedView', view)
   },
-  addVisitedView({ commit }, view) {
+  addVisitedView({ commit, dispatch }, view) {
     commit('ADD_VISITED_VIEW', view)
+    dispatch('updateCurViewTitle', view)
   },
   addCachedView({ commit }, view) {
     commit('ADD_CACHED_VIEW', view)
+  },
+  updateCurViewTitle({ commit }, view) {
+    commit('UPDATE_VIEW_TITLE', view)
   },
 
   delView({ dispatch, state }, view) {
