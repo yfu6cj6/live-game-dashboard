@@ -384,8 +384,8 @@ export default {
     }
   }
   .custom-psw {
-    .el-icon-view {
-      display: inline-block;
+    &.el-input {
+      height: auto;
     }
   }
   .form-alert {

@@ -436,6 +436,7 @@
       }
       .value {
         font-weight: bold;
+        word-break: break-all;
         .fas {
           max-height: 2rem;
           overflow-y: hidden;

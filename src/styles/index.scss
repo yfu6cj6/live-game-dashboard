@@ -279,6 +279,9 @@ table {
 }
 
 //padding
+.p-3 {
+  padding: 1rem!important;
+}
 .pt-3, .py-3 {
   padding-top: 1rem!important;
 }
@@ -915,6 +918,11 @@ table {
         padding-left: 0.83333rem;
         height: 100%;
         width: 100%;
+      }
+      &.el-input--suffix {
+        .el-input__suffix {
+          display: none;
+        }
       }
     }
   }
