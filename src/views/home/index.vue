@@ -250,7 +250,6 @@
                     </div>
                   </div>
                 </template>
-                <modPwdDialog v-if="modPwd" />
               </div>
             </div>
           </div>
@@ -262,11 +261,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ModPwdDialog from './modPwdDialog'
 
 export default {
   name: 'Home',
-  components: { ModPwdDialog },
+  components: { },
   data() {
     return {
     }
@@ -275,8 +273,7 @@ export default {
     ...mapGetters([
       'gameAnnouncements',
       'agentAnnouncements',
-      'device',
-      'modPwd'
+      'device'
     ]),
     showGameAnnouncements() {
       return this.gameAnnouncements.length > 0

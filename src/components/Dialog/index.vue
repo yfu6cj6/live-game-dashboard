@@ -104,7 +104,7 @@ export default {
   .dialog-header {
     text-align: center;
     font-size: 1.4rem;
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 1rem;
     .dialog-header-close {
       position: fixed;
       top: 5px;

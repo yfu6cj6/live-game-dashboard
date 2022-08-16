@@ -1402,38 +1402,40 @@ table {
 }
 
 .modPwd-container {
-  .account-info {
-    color: $yellow;
-    display: inline-block;
-    padding-bottom: 2rem;
-    font-size: 1.4rem;
-    span {
-      padding-left: .7rem;
-      color: #fff;
-    }
-  }
-  .el-form {
-    margin-bottom: .7rem;
-    .el-form-item {
-      margin-bottom: 0;
-      .el-form-item__content {
-        line-height: 1.5rem;
-        margin-bottom: 2.1rem;
-        .el-form-item__error {
-          top: 100%;
-        }
-        .item {
-          color: $yellow;
-        }
+  .dialog-body {
+    .account-info {
+      color: $yellow;
+      display: inline-block;
+      padding-bottom: 2rem;
+      font-size: 1.4rem;
+      span {
+        padding-left: .7rem;
+        color: #fff;
       }
-      &.newPassword {
+    }
+    .el-form {
+      margin-bottom: .7rem;
+      .el-form-item {
+        margin-bottom: 0;
         .el-form-item__content {
+          line-height: 1.5rem;
+          margin-bottom: 2.1rem;
+          .el-form-item__error {
+            top: 100%;
+          }
           .item {
-            display: flex;
-            flex-direction: column;
-            .newPasswordTip {
-              color: #fff;
-              font-size: 1.1rem;
+            color: $yellow;
+          }
+        }
+        &.newPassword {
+          .el-form-item__content {
+            .item {
+              display: flex;
+              flex-direction: column;
+              .newPasswordTip {
+                color: #fff;
+                font-size: 1.1rem;
+              }
             }
           }
         }
@@ -1458,6 +1460,45 @@ table {
         .el-input__suffix {
           display: flex;
           align-items: center;
+        }
+      }
+    }
+  }
+}
+
+.dialog-body {
+  .el-form {
+    .el-form-item {
+      display: flex;
+      flex-direction: column;
+      .el-form-item__label {
+        color: $yellow;
+        min-width: auto;
+        text-align: left;
+        line-height: 2rem;
+      }
+      .el-form-item__content {
+        line-height: 0;
+        .el-input {
+          .el-input__inner {
+            padding: 0, 15px;
+            color: #000;
+            height: 2.83333rem;
+          }
+        }
+      }
+      .el-form-item__error {
+        padding: 0;
+      }
+      &.disableRequiredIcon {
+        &.is-required {
+          &:not(.is-no-asterisk) {
+            &>.el-form-item__label {
+              &:before {
+                content: '';
+              }
+            }
+          }
         }
       }
     }

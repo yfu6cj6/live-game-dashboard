@@ -11,7 +11,7 @@
       <span>{{ content }}</span>
     </div>
     <el-form ref="form" :model="form" :rules="rules">
-      <el-form-item :label="$t('__userPassword')" prop="userPassword">
+      <el-form-item :label="$t('__userPassword')" prop="userPassword" class="disableRequiredIcon">
         <el-input ref="userPassword" v-model="form.userPassword" :type="userPasswordType" class="custom-psw">
           <template slot="suffix">
             <i class="el-input__icon el-icon-view clickable" :class="{'text-black': userPasswordType !== 'password', 'text-line-gray-shallow': userPasswordType === 'password'}" @click="showUserPasswordType" />
@@ -122,35 +122,8 @@ export default {
   }
   .el-form {
     .el-form-item {
-      display: flex;
-      flex-direction: column;
       .el-form-item__label {
-        color: $yellow;
-        min-width: auto;
-        text-align: left;
         line-height: 3rem;
-      }
-      .el-form-item__content {
-        line-height: 0;
-        .el-input {
-          .el-input__inner {
-            padding: 0, 15px;
-            color: #000;
-            height: 2.83333rem;
-          }
-        }
-      }
-      .el-form-item__error {
-        padding: 0;
-      }
-      &.is-required {
-        &:not(.is-no-asterisk) {
-          &>.el-form-item__label {
-            &:before {
-              content: '';
-            }
-          }
-        }
       }
     }
   }

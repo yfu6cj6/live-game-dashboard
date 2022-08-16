@@ -96,7 +96,8 @@ export default {
     ...mapGetters([
       'permission_routes',
       'sidebar',
-      'device'
+      'device',
+      'modPwd'
     ]),
     activeMenu() {
       const route = this.$route
@@ -139,6 +140,7 @@ export default {
       setLanguage(lang)
     },
     toggleSideBar() {
+      if (this.modPwd) return
       this.$store.dispatch('app/toggleSideBar')
       this.$nextTick(() => {
         if (!this.sidebar.opened) {

@@ -7,6 +7,7 @@
       <sidebar class="sidebar" :class="{'opened': sidebar.opened}" />
       <agent-level class="agentLevel" />
       <app-main class="appMain" :class="{'opened': sidebar.opened}" />
+      <modPwdDialog v-if="modPwd" />
     </template>
     <template v-else>
       <navbar class="navbar" />
@@ -14,12 +15,13 @@
       <sidebar class="sidebar" />
       <agent-level class="agentLevel" />
       <app-main class="appMain" :class="{'opened': sidebar.opened}" />
+      <modPwdDialog v-if="modPwd" />
     </template>
   </div>
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain, TagsView, AgentLevel } from './components'
+import { Navbar, Sidebar, AppMain, TagsView, AgentLevel, ModPwdDialog } from './components'
 import ResizeMixin from '@/mixin/ResizeHandler'
 import { mapGetters } from 'vuex'
 import defaultSettings from '@/settings'
@@ -31,13 +33,15 @@ export default {
     Sidebar,
     AppMain,
     TagsView,
-    AgentLevel
+    AgentLevel,
+    ModPwdDialog
   },
   mixins: [ResizeMixin],
   computed: {
     ...mapGetters([
       'sidebar',
-      'device'
+      'device',
+      'modPwd'
     ]),
     classObj() {
       return {

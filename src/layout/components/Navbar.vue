@@ -151,7 +151,8 @@ export default {
       'balance',
       'agent_id',
       'device',
-      'curViewTitle'
+      'curViewTitle',
+      'modPwd'
     ]),
     isCollapse() {
       return !this.sidebar.opened
@@ -173,6 +174,7 @@ export default {
       setLanguage(lang)
     },
     toggleSideBar() {
+      if (this.modPwd) return
       this.$store.dispatch('app/toggleSideBar')
       this.$nextTick(() => {
         if (!this.sidebar.opened) {
