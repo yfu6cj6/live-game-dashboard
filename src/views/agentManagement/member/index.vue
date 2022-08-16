@@ -52,13 +52,11 @@
           </div>
           <div class="list-item ctrl">
             <div class="item-inner">
-              <div class="item-inner">
-                <div :class="{'d-none': item.open}" @click.stop="remarkExpand(item)">
-                  <svg-icon class="fas gray-deep" icon-class="more" style="height: 2rem; width: 2rem;" />
-                </div>
-                <div :class="{'d-none': !item.open}" @click.stop="remarkExpand(item)">
-                  <svg-icon class="fas gray-deep" icon-class="up" style="height: 2rem; width: 2rem;" />
-                </div>
+              <div :class="{'d-none': item.open}" @click.stop="remarkExpand(item)">
+                <svg-icon class="fas gray-deep" icon-class="more" style="height: 2rem; width: 2rem; margin-right: 0.5rem" />
+              </div>
+              <div :class="{'d-none': !item.open}" @click.stop="remarkExpand(item)">
+                <svg-icon class="fas gray-deep" icon-class="up" style="height: 2rem; width: 2rem;" />
               </div>
             </div>
           </div>
@@ -115,9 +113,9 @@
               </span>
             </div>
             <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value">
+              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
                 <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input is-disabled">
+                  <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin}">
                     <span class="el-checkbox__inner" />
                   </span>
                 </span>
@@ -125,15 +123,39 @@
               </span>
             </div>
             <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value">
+              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.debarBet, item)">
                 <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input is-disabled">
+                  <span class="el-checkbox__input" :class="{'is-disabled': agentInfoBetStatusDisabled, 'is-checked': item.debarBet}">
                     <span class="el-checkbox__inner" />
                   </span>
                 </span>
                 <span class="label">{{ $t('__debarBet') }}</span>
               </span>
             </div>
+            <template v-if="agentInfo.weekly_loss_settlement === '1'">
+              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, item)">
+                  <span class="el-checkbox red-tick">
+                    <span class="el-checkbox__input" :class="{'is-checked': item.weeklyLossSettlement}">
+                      <span class="el-checkbox__inner" />
+                    </span>
+                  </span>
+                  <span class="label">{{ $t('__weeklyLossSettlement') }}</span>
+                </span>
+              </div>
+            </template>
+            <template v-if="agentInfo.gift_status === '1'">
+              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.giftEffect, item)">
+                  <span class="el-checkbox red-tick">
+                    <span class="el-checkbox__input" :class="{'is-checked': item.giftEffect}">
+                      <span class="el-checkbox__inner" />
+                    </span>
+                  </span>
+                  <span class="label">{{ $t('__giftEffect') }}</span>
+                </span>
+              </div>
+            </template>
             <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
               <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__totalValidBetAmount') }}</span>
               <span class="value">{{ item.total_valid_bet_amount }}</span>
@@ -159,7 +181,6 @@
               <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__totalPayout') }}</span>
               <span class="value">{{ item.total_payout }}</span>
             </div>
-
             <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
               <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__weekValidBetAmount') }}</span>
               <span class="value">{{ item.week_valid_bet_amount }}</span>
@@ -168,7 +189,6 @@
               <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__weekPayout') }}</span>
               <span class="value">{{ item.week_payout }}</span>
             </div>
-
             <div class="list-item" style="width: 100%; margin-top: 1rem;">
               <span class="label" style="width: 50%;">{{ $t('__createdAt') }}</span>
               <span class="value" style="width: 50%;">{{ item.created_at }}</span>
@@ -180,14 +200,25 @@
             <div class="list-item" style="width: 100%; margin-top: 1rem;">
               <span class="label" style="width: 50%;">{{ $t('__lastBetTime') }}</span>
               <span class="value" style="width: 50%; height: 33px; position: relative;">
-                <span>
+                <span v-if="!item.lastBetTime">
                   <button class="el-button bg-yellow el-button--default lastBetTime lastBetTime-38755283" style="position: absolute; top: -6px; left: 0;" @click.stop="onLastBetTime(item)">
                     <span>{{ $t('__Watch') }}</span>
                   </button>
                 </span>
+                <span v-else>
+                  <span class="value" style="width: 50%;">{{ item.lastBetTime }}</span>
+                </span>
               </span>
             </div>
           </div>
+        </div>
+      </div>
+      <div v-if="totalCount > pageSize" class="text-center p-3">
+        <div v-if="tableData.length >= totalCount">
+          <span>{{ $t("__noMoreInformation") }}</span>
+        </div>
+        <div v-else>
+          <span class="view-more border-bottom border-dark mb-1" @click="moreInfoByClient">{{ $t('__searchMoreValue') }}</span>
         </div>
       </div>
       <div style="display: none;" />
@@ -398,8 +429,7 @@ export default {
       editStepEnum: {},
       curDialogIndex: 0,
       operateDialogMsgParameter: [],
-      searchForm: {},
-      popover: false
+      searchForm: {}
     }
   },
   computed: {
@@ -419,11 +449,6 @@ export default {
       this.$nextTick(() => {
         obj.open = !obj.open;
         this.tableData = JSON.parse(JSON.stringify(this.tableData))
-      })
-    },
-    showPopover() {
-      this.$nextTick(() => {
-        this.$refs.fullNameSearchInput.focus()
       })
     },
     checkInfo(info) {
@@ -528,6 +553,7 @@ export default {
     },
     // 父物件呼叫
     async create() {
+      this.pageSizeCount = 1
       this.setDataLoading(true)
       const timezone = await timezoneSearch({})
       this.$refs.createDialog.setTimeZone(timezone)
@@ -542,11 +568,11 @@ export default {
       this.onFullNameResetBtnClick()
     },
     onFullNameSearchBtnClick() {
-      this.popover = false
       this.currentPage = 1
       this.onSubmit(this.searchForm.account)
     },
     onSearchByString(str) {
+      this.pageSizeCount = 1
       this.currentPage = 1
       this.onSubmit(str)
     },
@@ -566,6 +592,8 @@ export default {
       this.agentInfo = res.agentInfo
       this.agentInfo.fullName = `${this.agentInfo.nickname}(${this.agentInfo.account})`
 
+      // 設定已經擴展的item
+      const open = this.allDataByClient.filter(item => item.open).map(item => item.id)
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
         element.fullName = `${element.nick_name}(${element.name})`
@@ -577,7 +605,7 @@ export default {
         element.weeklyLossSettlement = element.weekly_loss_settlement === '1'
         element.giftEffect = element.gift_status === '1'
         element.isMute = element.mute === '1'
-
+        element.open = open.includes(element.id)
         var limit = ''
         for (var i = 0; i < element.handicaps.length; i++) {
           limit += element.handicaps[i].nickname
