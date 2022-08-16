@@ -287,7 +287,7 @@
       <operateDialog
         ref="balanceOneClickRecyclingDialog"
         :visible="curDialogIndex === dialogEnum.balanceOneClickRecycling"
-        :content="$stringFormat($t('__agentBalanceOneClickRecyclingMsg'), operateDialogMsgParameter)"
+        :title="$t('__agentBalanceOneClickRecyclingMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -338,7 +338,7 @@
       <operateDialog
         ref="totallyDisabledDialog"
         :visible="curDialogIndex === dialogEnum.totallyDisabled"
-        :content="$stringFormat($t('__agentTotallyDisabledMsg'), operateDialogMsgParameter)"
+        :title="$t('__agentTotallyDisabledMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -347,7 +347,7 @@
       <operateDialog
         ref="lockLoginDialog"
         :visible="curDialogIndex === dialogEnum.lockLogin"
-        :content="$stringFormat($t('__agentLockLoginMsg'), operateDialogMsgParameter)"
+        :title="$t('__agentLockLoginMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -356,7 +356,7 @@
       <operateDialog
         ref="debarBetDialog"
         :visible="curDialogIndex === dialogEnum.debarBet"
-        :content="$stringFormat($t('__agentDebarBetMsg'), operateDialogMsgParameter)"
+        :title="$t('__agentDebarBetMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -365,7 +365,7 @@
       <operateDialog
         ref="weeklyLossSettlementDialog"
         :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
-        :content="$stringFormat($t('__agentWeeklyLossSettlement'), operateDialogMsgParameter)"
+        :title="$t('__agentWeeklyLossSettlement')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -374,7 +374,7 @@
       <operateDialog
         ref="oneClickRecyclingDialog"
         :visible="curDialogIndex === dialogEnum.oneClickRecycling"
-        :content="$stringFormat($t('__agentOneClickRecyclingMsg'), operateDialogMsgParameter)"
+        :title="$t('__agentOneClickRecyclingMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -383,7 +383,7 @@
       <operateDialog
         ref="giftEffectDialog"
         :visible="curDialogIndex === dialogEnum.giftEffect"
-        :content="$stringFormat($t('__agentGiftEffectMsg'), operateDialogMsgParameter)"
+        :title="$t('__agentGiftEffectMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -465,8 +465,7 @@ export default {
       editForm: {},
       editStepEnum: {},
       rateData: [],
-      curDialogIndex: 0,
-      operateDialogMsgParameter: []
+      curDialogIndex: 0
     }
   },
   computed: {
@@ -571,33 +570,27 @@ export default {
         case this.dialogEnum.totallyDisabled: {
           if (this.agentInfoTotallyDisabled) return
           this.curDialogIndex = this.dialogEnum.totallyDisabled
-          this.operateDialogMsgParameter = [rowData.fullName]
           break
         }
         case this.dialogEnum.lockLogin: {
           this.curDialogIndex = this.dialogEnum.lockLogin
-          this.operateDialogMsgParameter = [rowData.fullName]
           break
         }
         case this.dialogEnum.debarBet: {
           if (this.agentInfoBetStatusDisabled) return
           this.curDialogIndex = this.dialogEnum.debarBet
-          this.operateDialogMsgParameter = [rowData.fullName]
           break
         }
         case this.dialogEnum.weeklyLossSettlement: {
           this.curDialogIndex = this.dialogEnum.weeklyLossSettlement
-          this.operateDialogMsgParameter = [rowData.fullName]
           break
         }
         case this.dialogEnum.oneClickRecycling: {
           this.curDialogIndex = this.dialogEnum.oneClickRecycling
-          this.operateDialogMsgParameter = [rowData.fullName]
           break
         }
         case this.dialogEnum.giftEffect: {
           this.curDialogIndex = this.dialogEnum.giftEffect
-          this.operateDialogMsgParameter = [rowData.fullName]
           break
         }
       }
@@ -747,7 +740,6 @@ export default {
     onOneClickRecyclingBtnClick(rowData) {
       this.editForm = { agentId: rowData.id }
       this.curDialogIndex = this.dialogEnum.balanceOneClickRecycling
-      this.operateDialogMsgParameter = [rowData.fullName]
     },
     async onEditBtnClick(rowData) {
       this.setDataLoading(true)

@@ -490,6 +490,19 @@ table {
       left: 0
     }
   }
+  &.float {
+    .scroll-inner {
+      position: static;
+      .scroll-view {
+        min-width: 100%;
+        width: auto;
+        height: 100%;
+        float: left;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
 }
 
 // view-more
@@ -1511,4 +1524,37 @@ table {
       }
     }
   }
+}
+
+.animated {
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.fadeInUp {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+
+@keyframes fadeInUp {
+  0% {
+    bottom: -20%;
+  }
+  100% {
+    bottom: 0;
+  }
+}
+
+.notice {
+  background-color: #000;
+  padding: 1.66667rem 1.66667rem 1.66667rem 1.66667rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 4;
+  border-top: 0.25rem solid #f9c901;
+  height: auto;
 }

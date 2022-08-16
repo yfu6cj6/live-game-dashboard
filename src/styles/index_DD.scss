@@ -509,6 +509,49 @@
       background-color: #fff;
     }
   }
+  .notice {
+    .el-form {
+      margin: 0 auto;
+      .el-form-item {
+        width: 100%;
+        .el-form-item__content {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: start;
+          -ms-flex-align: start;
+          align-items: flex-start;
+          line-height: 1;
+          .value-group {
+            width: auto;
+            display: inline-block;
+            -webkit-box-flex: 1;
+            -ms-flex: auto;
+            flex: auto;
+          }
+        }
+      }
+      .custom-psw {
+        margin-bottom: 0 !important;
+        .el-input__icon {
+          display: none;
+        }
+        .el-icon-view {
+          display: inline-block;
+        }
+        &.is-error {
+          .has-error {
+            display: inline-block;
+          }
+        }
+        &.is-success {
+          .no-error {
+            display: inline-block;
+          }
+        }
+      }
+    }
+  }
 }
 
 .pb-1, .py-1 {

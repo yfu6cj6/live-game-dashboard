@@ -105,6 +105,7 @@ export default {
     text-align: center;
     font-size: 1.4rem;
     padding: 2rem 1rem 1rem;
+    word-break: break-all;
     .dialog-header-close {
       position: fixed;
       top: 5px;
@@ -115,9 +116,11 @@ export default {
   .dialog-body {
     padding: 0 .7rem;
     overflow-y: auto;
+    word-break: break-all;
     .dialog-body-footer {
       text-align: center;
       padding: .7rem 1.4rem 1.4rem;
+      word-break: break-all;
       .el-button {
         width: 12rem;
       }
@@ -126,6 +129,7 @@ export default {
   .dialog-footer {
     text-align: center;
     padding: .7rem 1.4rem 1.4rem;
+    word-break: break-all;
     .el-button {
       width: 12rem;
     }

@@ -273,7 +273,7 @@
       <operateDialog
         ref="oneClickRecyclingDialog"
         :visible="curDialogIndex === dialogEnum.oneClickRecycling"
-        :content="$stringFormat($t('__memberOneClickRecyclingMsg'), operateDialogMsgParameter)"
+        :title="$t('__memberOneClickRecyclingMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -308,7 +308,7 @@
       <operateDialog
         ref="lockLoginDialog"
         :visible="curDialogIndex === dialogEnum.lockLogin"
-        :content="$stringFormat($t('__memberLockLoginMsg'), operateDialogMsgParameter)"
+        :title="$t('__memberLockLoginMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -317,7 +317,7 @@
       <operateDialog
         ref="debarBetDialog"
         :visible="curDialogIndex === dialogEnum.debarBet"
-        :content="$stringFormat($t('__memberDebarBetMsg'), operateDialogMsgParameter)"
+        :title="$t('__memberDebarBetMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -326,7 +326,7 @@
       <operateDialog
         ref="weeklyLossSettlementDialog"
         :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
-        :content="$stringFormat($t('__memberWeeklyLossSettlementMsg'), operateDialogMsgParameter)"
+        :title="$t('__memberWeeklyLossSettlementMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -335,7 +335,7 @@
       <operateDialog
         ref="giftEffectDialog"
         :visible="curDialogIndex === dialogEnum.giftEffect"
-        :content="$stringFormat($t('__memberGiftEffectMsg'), operateDialogMsgParameter)"
+        :title="$t('__memberGiftEffectMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -344,7 +344,7 @@
       <operateDialog
         ref="isMuteDialog"
         :visible="curDialogIndex === dialogEnum.isMute"
-        :content="$stringFormat($t('__memberIsMuteMsg'), operateDialogMsgParameter)"
+        :title="$t('__memberIsMuteMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -433,8 +433,7 @@ export default {
       handicaps: [],
       editForm: {},
       editStepEnum: {},
-      curDialogIndex: 0,
-      operateDialogMsgParameter: []
+      curDialogIndex: 0
     }
   },
   computed: {
@@ -531,7 +530,6 @@ export default {
     },
     onOperateCheckboxClick(operateType, rowData) {
       this.editForm = { memberId: rowData.id }
-      this.operateDialogMsgParameter = [rowData.fullName]
       switch (operateType) {
         case this.dialogEnum.lockLogin: {
           this.curDialogIndex = this.dialogEnum.lockLogin
@@ -683,7 +681,6 @@ export default {
     onOneClickRecyclingBtnClick(rowData) {
       this.editForm = { memberId: rowData.id }
       this.curDialogIndex = this.dialogEnum.oneClickRecycling
-      this.operateDialogMsgParameter = [rowData.fullName]
     },
     modPassword(data) {
       this.$refs.modPasswordDialog.setDialogLoading(true)

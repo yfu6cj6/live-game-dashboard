@@ -1,37 +1,54 @@
 <template>
-  <Dialog :loading="dialogLoading" :title="`${title} [${form.fullName}]`" :on-close-even="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
-    <el-table
-      ref="subAgentsTable"
-      :data="subAgents"
-      tooltip-effect="dark"
-      header-cell-class-name="bg-black_table_header"
-      row-class-name="bg-black_table_col"
-      style="background: black;"
-      @selection-change="handleSelection"
-    >
-      <el-table-column type="selection" align="center" />
-      <el-table-column prop="nickname" :label="$t('__agent')" align="center" :show-overflow-tooltip="true" />
-    </el-table>
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
-      <el-form-item :label="$t('__userPassword')" prop="userPassword">
-        <el-input v-model="form.userPassword" show-password />
+  <Dialog
+    v-if="visible"
+    :loading="dialogLoading"
+    :title="title"
+    :on-close-even="onClose"
+    :close-on-click-modal="device === 'mobile'"
+    class="subAgentDistributeDialog"
+  >
+    <table class="subAgent">
+      <tr>
+        <th>
+          <el-checkbox v-model="selectAll" class="red-tick" @change="selection" />
+        </th>
+        <th align="right" class="agent">{{ $t('__agent') }}</th>
+      </tr>
+      <tr
+        v-for="(item, index) in selectSubAgents"
+        :key="index"
+      >
+        <td>
+          <el-checkbox v-model="item.exist" class="red-tick" @change="handleCheckboxChange" />
+        </td>
+        <td align="right" class="agent">{{ item.nickname }}</td>
+      </tr>
+    </table>
+    <el-form ref="form" :model="form" :rules="rules">
+      <el-form-item :label="$t('__userPassword')" prop="userPassword" class="disableRequiredIcon">
+        <el-input ref="userPassword" v-model="form.userPassword" :type="userPasswordType" class="custom-psw">
+          <template slot="suffix">
+            <i class="el-input__icon el-icon-view clickable" :class="{'text-black': userPasswordType !== 'password', 'text-line-gray-shallow': userPasswordType === 'password'}" @click="showUserPasswordType" />
+          </template>
+        </el-input>
       </el-form-item>
     </el-form>
-    <span v-if="!dialogLoading" slot="bodyFooter">
-      <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
+    <span slot="bodyFooter">
+      <el-button class="bg-yellow font-weight-bold" @click="onSubmit">{{ $t('__confirm') }}</el-button>
+      <el-button class="bg-gray font-weight-bold" @click="onClose">{{ $t('__cancel') }}</el-button>
     </span>
   </Dialog>
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
-import common from '@/mixin/common'
 import Dialog from '@/components/Dialog'
+import dialogCommon from '@/mixin/dialogCommon'
+import common from '@/mixin/common'
 
 export default {
   name: 'SubAgentDistributeDialog',
   components: { Dialog },
-  mixins: [handleDialogWidth, common],
+  mixins: [dialogCommon, common],
   props: {
     'title': {
       type: String,
@@ -44,25 +61,18 @@ export default {
       type: Boolean,
       require: true
     },
-    'subAgents': {
-      type: Array,
-      require: true,
-      default() {
-        return []
-      }
-    },
-    'confirm': {
-      type: String,
-      require: true,
-      default() {
-        return ''
-      }
-    },
     'form': {
       type: Object,
       require: true,
       default() {
         return {}
+      }
+    },
+    'subAgents': {
+      type: Array,
+      require: true,
+      default() {
+        return []
       }
     }
   },
@@ -78,20 +88,49 @@ export default {
       rules: {
         userPassword: [{ required: true, trigger: 'blur', validator: validate }]
       },
-      dialogLoading: false,
-      multipleSelection: []
+      userPasswordType: 'password',
+      selectAll: false,
+      selectSubAgents: []
+    }
+  },
+  watch: {
+    visible() {
+      if (!this.visible) {
+        this.$refs.form.clearValidate()
+      }
     }
   },
   methods: {
-    handleSelection(val) {
-      this.multipleSelection = val
+    showUserPasswordType() {
+      if (this.userPasswordType === 'password') {
+        this.userPasswordType = ''
+      } else {
+        this.userPasswordType = 'password'
+      }
+      this.$nextTick(() => {
+        this.$refs.userPassword.focus()
+      })
     },
     setData(boundAgents) {
-      this.subAgents.forEach(subAgent => {
+      this.selectSubAgents = JSON.parse(JSON.stringify(this.subAgents))
+      this.selectSubAgents.forEach(subAgent => {
         if (boundAgents.some(boundAgent => boundAgent === subAgent.key)) {
-          this.$refs.subAgentsTable.toggleRowSelection(subAgent, true)
+          subAgent.exist = true
         }
       })
+    },
+    selection(select) {
+      this.selectSubAgents.forEach(element => {
+        element.exist = select
+      });
+      this.selectSubAgents = JSON.parse(JSON.stringify(this.selectSubAgents))
+    },
+    handleCheckboxChange(select) {
+      if (select) {
+        this.selectAll = !this.selectSubAgents.some(subAgent => subAgent.exist === false)
+      } else {
+        this.selectAll = false;
+      }
     },
     onSubmit() {
       this.$refs.form.validate((valid) => {
@@ -99,26 +138,52 @@ export default {
           this.confirmMsg(`${this.$t('__confirmOperation')}?`, () => {
             const data = JSON.parse(JSON.stringify(this.form))
             data.agents = []
-            this.multipleSelection.forEach(element => {
+            this.selectSubAgents.filter(item => item.exist).forEach(element => {
               data.agents.push(element.key)
             })
             this.$emit('onSubmit', data)
           })
         }
       })
-    },
-    setDialogLoading(dialogLoading) {
-      this.dialogLoading = dialogLoading
-    },
-    onClose() {
-      this.$emit('close')
     }
   }
 }
 </script>
 
-<style scoped>
-.el-table--fit {
-  padding: 0 0 10px 0
+<style lang="scss">
+#app .subAgentDistributeDialog {
+  .subAgent {
+    width: 100%;
+    .el-checkbox {
+      .el-checkbox__input {
+        .el-checkbox__inner {
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+      &.red-tick {
+        .is-checked {
+          .el-checkbox__inner {
+            &:after {
+              width: 0.5rem;
+              height: 1.5rem;
+              left: 1rem;
+              top: -0.5rem;
+            }
+          }
+        }
+      }
+    }
+    .agent {
+      font-size: 1.5rem;
+    }
+  }
+  .el-form {
+    .el-form-item {
+      .el-form-item__label {
+        line-height: 2rem;
+      }
+    }
+  }
 }
 </style>

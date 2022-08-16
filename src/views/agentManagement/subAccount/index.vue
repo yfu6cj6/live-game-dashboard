@@ -114,6 +114,10 @@
             <span class="label" style="width: 50%;">{{ $t('__creator') }}</span>
             <span class="value" style="width: 50%;">{{ item.creator }}</span>
           </div>
+          <div class="list-item flex-column" style="width: 100%; margin-top: 1rem; line-height: 1.2;">
+            <span class="label" style="width: 100%;">{{ $t('__remark') }}</span>
+            <span class="value" style="width: 100%;">{{ item.remark }}</span>
+          </div>
           <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
             <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
               <span class="el-checkbox red-tick">
@@ -126,7 +130,7 @@
           </div>
           <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
             <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.effectAgentLine, item)">
-              <span class="el-checkbox red-tick">
+              <span class="el-checkbox green-tick">
                 <span class="el-checkbox__input" :class="{'is-checked': item.allPermission}">
                   <span class="el-checkbox__inner" />
                 </span>
@@ -150,7 +154,7 @@
       <operateDialog
         ref="lockLoginDialog"
         :visible="curDialogIndex === dialogEnum.lockLogin"
-        :content="$stringFormat($t('__subAccountLockLoginMsg'), operateDialogMsgParameter)"
+        :title="$t('__subAccountLockLoginMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
@@ -159,10 +163,21 @@
       <operateDialog
         ref="effectAgentLineDialog"
         :visible="curDialogIndex === dialogEnum.effectAgentLine"
-        :content="$stringFormat($t('__subAccountEffectAgentLineMsg'), operateDialogMsgParameter)"
+        :title="$t('__subAccountEffectAgentLineMsg')"
         :form="editForm"
         @close="closeDialogEven"
         @onSubmit="operateSubmit"
+      />
+
+      <subAgentDistributeDialog
+        ref="subAgentDistributeDialog"
+        :title="`${$t('__subAgentDistribute')} ${editForm.fullName}`"
+        :visible="curDialogIndex === dialogEnum.subAgentDistribute"
+        :sub-agents="subAgent"
+        :confirm="$t('__confirm')"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="onSubmitSetHasAgents"
       />
     </div>
   </div>
@@ -173,7 +188,7 @@ import { subAccountSearch, subAccountModPassword, subAccountModStatus, subAccoun
 import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
 import handlePageChange from '@/mixin/handlePageChange'
 // import SubAccountEditDialog from './subAccountEditDialog'
-// import SubAgentDistributeDialog from './subAgentDistributeDialog'
+import SubAgentDistributeDialog from './subAgentDistributeDialog'
 // import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import OperateDialog from '@/views/agentManagement/operateDialog'
 // import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
@@ -194,8 +209,8 @@ const defaultForm = {
 
 export default {
   name: 'Member',
-  components: { OperateDialog },
-  // components: { SubAccountEditDialog, ModPasswordDialog, OperateDialog, SubAgentDistributeDialog, PasswordTipDialog },
+  components: { OperateDialog, SubAgentDistributeDialog },
+  // components: { SubAccountEditDialog, ModPasswordDialog, SubAgentDistributeDialog, PasswordTipDialog },
   mixins: [handlePageChange],
   props: {
   },
@@ -214,8 +229,7 @@ export default {
       agentInfo: {},
       editForm: {},
       curDialogIndex: 0,
-      subAgent: [],
-      operateDialogMsgParameter: []
+      subAgent: []
     }
   },
   computed: {
@@ -290,13 +304,11 @@ export default {
         case this.dialogEnum.lockLogin: {
           if (this.isAgentSubAccount) return
           this.curDialogIndex = this.dialogEnum.lockLogin
-          this.operateDialogMsgParameter = [rowData.fullName]
           break
         }
         case this.dialogEnum.effectAgentLine: {
           if (this.isAgentSubAccount) return
           this.curDialogIndex = this.dialogEnum.effectAgentLine
-          this.operateDialogMsgParameter = [rowData.fullName]
           break
         }
       }
@@ -397,5 +409,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.notice-cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 3;
+}
 </style>

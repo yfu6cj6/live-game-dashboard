@@ -33,6 +33,10 @@
 
 .el-input--small {
   font-size: 1.3rem;
+  .el-input__inner {
+    height: 3.2rem;
+    line-height: 3.2rem;
+  }
 }
 
 .el-input__icon {
@@ -76,9 +80,6 @@
   -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
   transition: border-color .2s cubic-bezier(.645,.045,.355,1);
   width: 100%;
-  &:hover {
-    border-color: #c0c4cc;
-  }
 }
 
 .el-input--suffix {
@@ -429,6 +430,7 @@
         font-weight: bold;
         p {
           line-height: 2rem;
+          word-break: break-all;
         }
       }
     }
@@ -711,6 +713,37 @@
 
 .el-form-item {
   margin-bottom: 2.2rem;
+  &.is-error {
+    .el-input__inner {
+      border-color: #f56c6c;
+      &:focus {
+        border-color: #f56c6c;
+      }
+    }
+    .el-textarea__inner {
+      border-color: #f56c6c;
+      &:focus {
+        border-color: #f56c6c;
+      }
+    }
+  }
+  &.is-success {
+    .el-input__inner {
+      border-color: #67c23a;
+      &:focus {
+        border-color: #67c23a;
+      }
+    }
+    .el-textarea__inner {
+      border-color: #67c23a;
+      &:focus {
+        border-color: #67c23a;
+      }
+    }
+    .el-input__validateIcon {
+      color: #67c23a;
+    }
+  }
 }
 
 .el-input__suffix {
@@ -854,6 +887,49 @@
       }
     }
   }
+  &.green-tick {
+    margin-right: 5px;
+    .is-disabled {
+      .el-checkbox__inner {
+        background-color: transparent !important;
+        border-color: #b0afaf !important;
+        &:hover {
+          background-color: transparent !important;
+          border-color: #b0afaf !important;
+        }
+      }
+      &.is-checked {
+        .el-checkbox__inner {
+          &:after {
+            -webkit-transform: rotate(45deg) scale(1.5);
+            transform: rotate(45deg) scale(1.5);
+            border: 0.16667rem solid #b0afaf;
+            width: 0.25rem;
+            height: 0.75rem;
+            top: -0.25rem;
+            left: 0.5rem;
+            border-left: 0;
+            border-top: 0;
+          }
+        }
+      }
+    }
+    .is-checked {
+      .el-checkbox__inner {
+        &:after {
+          -webkit-transform: rotate(45deg) scale(1.5);
+          transform: rotate(45deg) scale(1.5);
+          border: .16667rem solid #56ad10;
+          width: 0.25rem;
+          height: 0.75rem;
+          top: -0.25rem;
+          left: 0.5rem;
+          border-left: 0;
+          border-top: 0;
+        }
+      }
+    }
+  }
 }
 
 .el-checkbox__input {
@@ -904,4 +980,17 @@
 
 .el-form-item__error {
   font-size: 1rem;
+}
+
+.el-form-item--small {
+  &.el-form-item {
+    margin-bottom: 1.8rem;
+  }
+  .el-form-item__content,
+  .el-form-item__label {
+    line-height: 3.2rem;
+  }
+  .el-input__icon {
+    line-height: 3.2rem;
+  }
 }
