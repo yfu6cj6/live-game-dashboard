@@ -15,15 +15,12 @@
                   <div id="agentInfo">
                     <div class="breadcrumb-container">
                       <div id="breadcrumb">
-                        <div class="swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-free-mode swiper-container-ios">
+                        <div v-if="agentInfo.parent && agentInfo.parent.nickname !== ''" class="swiper-container swiper-container-initialized swiper-container-horizontal swiper-container-free-mode swiper-container-ios">
                           <div class="swiper-wrapper" style="transition-duration: 0ms; transform: translate3d(0px, 0px, 0px);">
-                            <div
-                              v-for="(parentAgent, index) in agentInfo.parents"
-                              :key="index"
-                              class="swiper-slide"
-                              style="margin-right: 10px;"
-                            >
-                              <span class="text-underline">{{ parentAgent.nickname }}</span>
+                            <div class="swiper-slide" style="margin-right: 10px;">
+                              <router-link :to="`/agentManagement/agentManagement/${agentInfo.parent.id}`">
+                                <span class="text-underline text-gray">{{ agentInfo.parent.nickname }}</span>
+                              </router-link>
                               <span class="breadcrumb-separator">/</span>
                             </div>
                             <div class="swiper-slide" style="margin-right: 10px;">
@@ -86,11 +83,11 @@
                           <span>{{ agentInfo.directPlayerCount }}</span>
                         </div>
                         <div class="info-item" style="height: 0px;">
-                          <button class="el-button bg-yellow el-button--default" style="margin-top: -1rem;">{{ `${$t('__totalPlayerCount')}: ` }} {{ agentInfo.totalPlayerCount }}</button>
+                          <button class="el-button bg-yellow el-button--default" style="margin-top: -1rem;" @click.stop="onTotalPlayerBtnClick()">{{ `${$t('__totalPlayerCount')}: ` }} {{ agentInfo.totalPlayerCount }}</button>
                         </div>
                         <div class="info-item info-item d-flex">
                           <label>{{ `${$t('__handicapLimit')}: ` }}</label>
-                          <span class="value handicap text-yellow text-link">
+                          <span class="value handicap text-yellow text-link" @click.stop="onLimitBtnClick(agentInfo.handicaps)">
                             <span class="h-t">{{ agentInfo.handicaps_info }}</span>
                           </span>
                           <span class="ml-2">
@@ -108,7 +105,9 @@
                           <span>{{ agentInfo.lastLoginAt }}</span>
                         </div>
                         <div class="info-item">
-                          <button class="el-button bg-yellow el-button--default">{{ $t('__winLossReport') }}</button>
+                          <router-link :to="`/winLossReport/winLossReport/${agentInfo.id}`">
+                            <button class="el-button bg-yellow el-button--default">{{ $t('__winLossReport') }}</button>
+                          </router-link>
                         </div>
                       </div>
                     </div>
@@ -180,13 +179,12 @@
                           @serverResponse="handleRespone"
                           @setDataLoading="setDataLoading"
                         />
-                        <!-- <member
+                        <member
                           v-show="curTableIndex === tableEnum.member"
                           ref="member"
-                          :view-height="viewHeight"
                           @serverResponse="handleRespone"
                           @setDataLoading="setDataLoading"
-                        /> -->
+                        />
 
                         <subAccount
                           v-show="curTableIndex === tableEnum.subAccount"
@@ -195,12 +193,12 @@
                           @setDataLoading="setDataLoading"
                         />
 
-                        <!-- <limitDialog
-                          :title="$t('_handicapLimit')"
+                        <limitDialog
+                          :title="$t('__handicapLimit')"
                           :visible="curDialogIndex === dialogEnum.limit"
                           :handicaps="handicaps"
                           @close="closeDialogEven"
-                        /> -->
+                        />
                       </div>
                     </div>
                   </div>
@@ -225,10 +223,12 @@ import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
 import Agent from './agent/index'
 import SubAccount from './subAccount/index'
+import Member from './member/index'
+import LimitDialog from '@/views/agentManagement/limitDialog'
 
 export default {
   name: 'AgentManagement',
-  components: { Agent, SubAccount },
+  components: { Agent, SubAccount, Member, LimitDialog },
   mixins: [viewCommon],
   data() {
     return {
@@ -308,7 +308,6 @@ export default {
       this.agentInfo.betStatus = this.accountStatusType.find(element => element.key === this.agentInfo.bet_status).nickname
       this.agentInfo.weeklyLossSettlement = this.accountStatusType.find(element => element.key === this.agentInfo.weekly_loss_settlement).nickname
       this.agentInfo.giftStatus = this.accountStatusType.find(element => element.key === this.agentInfo.gift_status).nickname
-      this.agentInfo.parents = [res.agentInfo.parent]
 
       var limit = ''
       for (var i = 0; i < this.agentInfo.handicaps.length; i++) {
@@ -343,7 +342,7 @@ export default {
           break
         }
         case this.tableEnum.member: {
-          // this.$refs.member.onSearch(this.agentInfo.id)
+          this.$refs.member.onSearch(this.agentInfo.id)
           break
         }
         case this.tableEnum.subAccount: {
@@ -564,5 +563,9 @@ export default {
       }
     }
   }
+}
+
+.text-gray {
+  color: #4e4e4e;
 }
 </style>

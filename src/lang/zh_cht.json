@@ -327,5 +327,6 @@
     "__submit": "提交",
     "__disabled": "禁用",
     "__enabled": "啟用",
-    "__cancel": "取消"
+    "__cancel": "取消",
+    "__Watch": "查看"
 }

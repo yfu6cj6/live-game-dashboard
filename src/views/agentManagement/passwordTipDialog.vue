@@ -1,5 +1,6 @@
 <template>
   <Dialog
+    v-if="visible"
     :title="title"
     :width="formWidth"
     :on-close-even="onClose"
@@ -20,13 +21,12 @@
 </template>
 
 <script>
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
 import Dialog from '@/components/Dialog'
 
 export default {
   name: 'PasswordTipDialog',
   components: { Dialog },
-  mixins: [handleDialogWidth],
+  mixins: [],
   props: {
     'title': {
       type: String,

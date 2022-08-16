@@ -1,5 +1,5 @@
 <template>
-  <Dialog :loading="dialogLoading" :title="title" :on-close-even="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
+  <Dialog v-if="visible" :loading="dialogLoading" :title="title" :on-close-even="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
     <label class="agentNameLabel">{{ `${$t('__superiorAgent')}: ` }}
       <span class="agentNameSpan">{{ agentInfo.fullName }}</span>
     </label>
@@ -177,7 +177,7 @@
 
 <script>
 import colors from '@/styles/variables.scss'
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon'
 import common from '@/mixin/common'
 import { memberCreateAccount, memberCreate, memberEdit } from '@/api/agentManagement/member'
 import { agentGetSetBalanceInfo } from '@/api/agentManagement/agent'
@@ -188,7 +188,7 @@ import Dialog from '@/components/Dialog'
 export default {
   name: 'MemberEditDialog',
   components: { Dialog },
-  mixins: [handleDialogWidth, common],
+  mixins: [common, dialogCommon],
   props: {
     'title': {
       type: String,

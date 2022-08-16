@@ -1,300 +1,326 @@
 <template>
-  <div>
-    <el-table class="agentManagement-memberTable" :data="tableData" border stripe :max-height="viewHeight">
-      <af-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" inline>
-            <el-form-item :label="$t('__remark')">
-              <span>{{ props.row.remark }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </af-table-column>
-      <el-table-column align="center" :min-width="fullNameWidth">
-        <template slot-scope="scope">
-          <span>{{ scope.row.fullName }}</span>
-          <br>
-          <el-button v-if="!isAgentSubAccount" class="iconButton" size="mini" icon="el-icon-setting" @click="onEditBtnClick(scope.row)" />
-          <el-button v-if="!isAgentSubAccount" class="iconButton" size="mini" icon="el-icon-unlock" @click="onModPasswordBtnClick(scope.row)" />
-        </template>
-        <template #header>
-          <span>{{ $t('__member') }}</span>
-          <el-popover
-            v-model="popover"
-            placement="right"
-            :visible-arrow="false"
-            @show="showPopover"
-          >
-            <span class="fullNameSearchTitle">{{ $t('__member') }}</span>
-            <input ref="fullNameSearchInput" v-model="searchForm.account" :placeholder="$t('__enterKeys')" @keyup.enter.exact="onFullNameSearchBtnClick">
-            <el-button class="bg-yellow" style="margin-left: 10px;" size="mini" @click="onFullNameSearchBtnClick">{{ $t("__search") }}</el-button>
-            <el-button class="bg-gray" size="mini" @click="onFullNameResetBtnClick">{{ $t("__reset") }}</el-button>
-            <el-button slot="reference" class="search" size="mini">
-              <svg-icon class="icon" icon-class="search" />
-            </el-button>
-          </el-popover>
-        </template>
-      </el-table-column>
-      <af-table-column prop="currency" :label="$t('__currency')" align="center" />
-      <af-table-column :label="$t('__balance')" align="center" :width="160">
-        <template slot-scope="scope">
-          <span>{{ numberFormatStr(scope.row.balance) }}</span>
-          <br>
-          <el-button v-if="!isAgentSubAccount" class="labelButton bg-yellow" size="mini" @click="onDepositBtnClick(scope.row)">{{ $t("__deposit") }}</el-button>
-          <el-button v-if="!isAgentSubAccount" class="labelButton bg-yellow" size="mini" @click="onWithdrawBtnClick(scope.row)">{{ $t("__withdraw") }}</el-button>
-          <el-button
-            v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'"
-            class="labelButton bg-yellow"
-            size="mini"
-            :title="$t('__memberOneClickRecyclingTitle')"
-            @click="onOneClickRecyclingBtnClick(scope.row)"
-          >
-            {{ $t("__oneClickRecycling") }}
-          </el-button>
-        </template>
-      </af-table-column>
-      <af-table-column prop="cityNameLabel" :label="$t('__timeZone')" align="center" />
-      <af-table-column :label="$t('__handicapLimit')" align="center" :width="100">
-        <template slot-scope="scope">
-          <el-button class="labelButton bg-yellow" size="mini" @click="onLimitBtnClick(scope.row.handicaps)">{{ $t("__handicapLimit") }}</el-button>
-        </template>
-      </af-table-column>
-      <af-table-column :label="$t('__liveGame')" align="center" :width="140">
-        <template slot-scope="scope">
-          <span class="scope-content">{{ `${$t('__rollingRate')}: ${numberFormatStr(scope.row.live_rolling_rate)}%` }}</span>
-        </template>
-      </af-table-column>
-      <af-table-column :label="$t('__maxWinAmountLimit')" align="center" :fontSize="18">
-        <template slot-scope="scope">
-          <span>{{ checkInfo(scope.row.max_win_amount_limit) }}</span>
-          <template v-if="scope.row.max_win_amount_limit !== '0.00' && scope.row.max_win_amount_limit < scope.row.total_payout">
-            <span class="exceeded">{{ `[${$t('__exceeded')}]` }}</span>
-          </template>
-        </template>
-      </af-table-column>
-      <af-table-column :label="$t('__maxLoseAmountLimit')" align="center" :fontSize="18">
-        <template slot-scope="scope">
-          <span>{{ checkInfo(scope.row.max_lose_amount_limit) }}</span>
-          <template v-if="scope.row.max_lose_amount_limit !== '0.00' && maxLoseAmountLimitExceededCheck(scope.row)">
-            <span class="exceeded">{{ `[${$t('__exceeded')}]` }}</span>
-          </template>
-        </template>
-      </af-table-column>
-      <af-table-column :label="$t('__totalPayout')" align="center" :fontSize="18">
-        <template slot-scope="scope">
-          <span>{{ numberFormatStr(scope.row.total_payout) }}</span>
-        </template>
-      </af-table-column>
-      <af-table-column :label="$t('__totalValidBetAmount')" align="center" :fontSize="18">
-        <template slot-scope="scope">
-          <span>{{ numberFormatStr(scope.row.total_valid_bet_amount) }}</span>
-        </template>
-      </af-table-column>
-      <af-table-column :label="$t('__weekPayout')" align="center">
-        <template slot-scope="scope">
-          <span>{{ numberFormatStr(scope.row.week_payout) }}</span>
-        </template>
-      </af-table-column>
-      <af-table-column :label="$t('__weekValidBetAmount')" align="center">
-        <template slot-scope="scope">
-          <span>{{ numberFormatStr(scope.row.week_valid_bet_amount) }}</span>
-        </template>
-      </af-table-column>
-      <af-table-column prop="created_at" :label="$t('__createdAt')" align="center" />
-      <af-table-column prop="lastLoginAt" :label="$t('__lastLoginAt')" align="center" />
-      <af-table-column :label="$t('__lastBetTime')" align="center" :width="140">
-        <template slot-scope="scope">
-          <el-button class="labelButton bg-yellow" size="mini" @click="onLastBetTime(scope.row)">
-            <span>{{ $t('__lastBetTime') }}</span>
-            <br>
-            <span>{{ scope.row.lastBetTime }}</span>
-          </el-button>
-        </template>
-      </af-table-column>
-      <af-table-column v-if="!isAgentSubAccount" :label="$t('__operate')" align="center" :width="180">
-        <template slot-scope="scope">
-          <div class="checkboxGroup">
-            <el-checkbox
-              v-model="scope.row.lockLogin"
-              class="red-tick agentManagement-memberCheckbox"
-              :label="$t('__lockLogin')"
-              @mousedown.native="onOperateCheckboxClick(dialogEnum.lockLogin, scope.row)"
-            />
-            <el-checkbox
-              v-model="scope.row.debarBet"
-              class="red-tick agentManagement-memberCheckbox"
-              :label="$t('__debarBet')"
-              :disabled="agentInfoBetStatusDisabled"
-              @mousedown.native="onOperateCheckboxClick(dialogEnum.debarBet, scope.row)"
-            />
-            <template v-if="agentInfo.weekly_loss_settlement === '1'">
-              <el-checkbox
-                v-model="scope.row.weeklyLossSettlement"
-                class="red-tick agentManagement-memberCheckbox"
-                :label="$t('__weeklyLossSettlement')"
-                @mousedown.native="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, scope.row)"
-              />
-            </template>
-            <template v-if="agentInfo.gift_status === '1'">
-              <el-checkbox
-                v-model="scope.row.giftEffect"
-                class="red-tick agentManagement-memberCheckbox"
-                :label="$t('__giftEffect')"
-                @mousedown.native="onOperateCheckboxClick(dialogEnum.giftEffect, scope.row)"
-              />
-            </template>
-            <!-- <el-checkbox
-              v-model="scope.row.isMute"
-              class="red-tick agentManagement-memberCheckbox"
-              :label="$t('__mute')"
-              @mousedown.native="onOperateCheckboxClick(dialogEnum.isMute, scope.row)"
-            /> -->
+  <div class="agent-list">
+    <div class="agent-list">
+      <div>
+        <div
+          v-for="(item, index) in tableData"
+          :key="index"
+          class="list-row"
+        >
+          <div class="force-wrap" />
+          <div class="list-item index">
+            <span class="value">{{ (index+1) }}</span>
           </div>
-        </template>
-      </af-table-column>
-    </el-table>
+          <div class="list-item" style="width: 70%;">
+            <span class="value" style="display: flex; word-break: break-all; padding-bottom: 0.75rem;">
+              <div>
+                <svg-icon class="fas gray-deep" icon-class="user" style="height: 1.25rem; width: 1.25rem;" />
+              </div>
+              <div class="item-inner">
+                <span>
+                  <div class="text-link text-golden pl-1 pb-1">{{ item.name }}</div>
+                </span>
+                <span />
+                <span>
+                  <div>{{ `${$t('__nickname')} : ${item.nick_name}` }}</div>
+                </span>
+              </div>
+            </span>
+          </div>
+          <div class="list-item state" style="width: auto; margin-left: auto;">
+            <span class="value">
+              <span>
+                <div class="item-inner">
+                  <span class="fas">
+                    <svg-icon :icon-class="item.status === '1' ? 'enable' : 'disable'" :class="{'green': item.status === '1', 'red': item.status !== '1'}" style="height: 1.25rem; width: 1.25rem;" />
+                  </span>
+                </div>
+                <div class="item-inner mt-2" :class="{'text-green': item.status === '1', 'text-red': item.status !== '1'}">{{ item.status === '1' ? $t('__enabled') : $t('__disabled') }}</div>
+              </span>
+            </span>
+          </div>
+          <div class="force-wrap" />
+          <div class="list-item" style="width: 50%; margin-left: 2.5rem; display: flex; align-items: center;">
+            <span class="value" style="display: flex; align-items: center;">
+              <div class="fas">
+                <svg-icon icon-class="coin" class="gray-deep" style="height: 1.08333rem; width: 1.08333rem;" />
+              </div>
+              <span>
+                <span class="font-weight-bold ml-1">{{ item.balance }}</span>
+              </span>
+            </span>
+          </div>
+          <div class="list-item ctrl">
+            <div class="item-inner">
+              <div class="item-inner">
+                <div :class="{'d-none': item.open}" @click.stop="remarkExpand(item)">
+                  <svg-icon class="fas gray-deep" icon-class="more" style="height: 2rem; width: 2rem;" />
+                </div>
+                <div :class="{'d-none': !item.open}" @click.stop="remarkExpand(item)">
+                  <svg-icon class="fas gray-deep" icon-class="up" style="height: 2rem; width: 2rem;" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="force-wrap" />
+          <div v-if="item.open" class="agent-list-detail">
+            <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+              <span class="value">
+                <span class="solid-circle">
+                  <div class="fas" @click.stop="onEditBtnClick(item)">
+                    <svg-icon class="black" icon-class="top" style="height: 1.5rem; width: 1.5rem;" />
+                  </div>
+                </span>
+              </span>
+            </div>
+            <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+              <span class="value">
+                <span>
+                  <span class="v-line d-block" />
+                </span>
+              </span>
+            </div>
+            <div class="force-wrap" />
+            <div class="list-item" style="width: auto; flex-wrap: wrap; margin: 1rem auto 1.5rem 0px;">
+              <span class="label mr-2">{{ $t('__handicapLimit') }}</span>
+              <span class="value handicap text-yellow" @click.stop="onLimitBtnClick(item.handicaps)">
+                <span class="h-t">{{ item.handicaps_info }}</span>
+              </span>
+              <span class="label ml-2">
+                <div class="fas yellow">
+                  <img src="@/assets/agentManagement/updown.png" style="height: 1.33333rem; width: 1.33333rem;">
+                </div>
+              </span>
+            </div>
+            <div class="list-item" style="width: 100%;">
+              <span class="value gameHall" style="width: 100%;">
+                <div class="hall-row first">
+                  <div class="w-100 hall-title">
+                    <div class="hall-item">
+                      <span class="value">{{ `${$t('__liveGame')} ` }}</span>
+                    </div>
+                  </div>
+                  <div class="w-100 hall-content">
+                    <div class="d-flex">
+                      <div class="hall-item w-50">
+                        <span class="label">{{ `${$t('__rollingRate')}%` }}</span>
+                        <span class="value">
+                          <span>{{ item.live_rolling_rate }}%</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display: none;" />
+              </span>
+            </div>
+            <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <span class="value">
+                <span class="el-checkbox red-tick">
+                  <span class="el-checkbox__input is-disabled">
+                    <span class="el-checkbox__inner" />
+                  </span>
+                </span>
+                <span class="label">{{ $t('__lockLogin') }}</span>
+              </span>
+            </div>
+            <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <span class="value">
+                <span class="el-checkbox red-tick">
+                  <span class="el-checkbox__input is-disabled">
+                    <span class="el-checkbox__inner" />
+                  </span>
+                </span>
+                <span class="label">{{ $t('__debarBet') }}</span>
+              </span>
+            </div>
+            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__totalValidBetAmount') }}</span>
+              <span class="value">{{ item.total_valid_bet_amount }}</span>
+            </div>
+            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__currency') }}</span>
+              <span class="value">{{ item.currency }}</span>
+            </div>
+            <div class="force-wrap" />
+            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__maxWinAmountLimit') }}</span>
+              <span class="value">{{ item.max_win_amount_limit }}</span>
+            </div>
+            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__maxLoseAmountLimit') }}</span>
+              <span class="value">{{ item.max_lose_amount_limit }}</span>
+            </div>
+            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__timeZone') }}</span>
+              <span class="value">{{ item.cityNameLabel }}</span>
+            </div>
+            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__totalPayout') }}</span>
+              <span class="value">{{ item.total_payout }}</span>
+            </div>
 
-    <el-pagination
-      layout="prev, pager, next, jumper, sizes"
-      class="member-pagination"
-      :total="totalCount"
-      background
-      :page-size="pageSize"
-      :page-sizes="pageSizes"
-      :current-page.sync="currentPage"
-      @size-change="handleSizeChangeByClient"
-      @current-change="handlePageChangeByClient"
-    />
+            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__weekValidBetAmount') }}</span>
+              <span class="value">{{ item.week_valid_bet_amount }}</span>
+            </div>
+            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__weekPayout') }}</span>
+              <span class="value">{{ item.week_payout }}</span>
+            </div>
 
-    <modPasswordDialog
-      ref="modPasswordDialog"
-      :title="$t('__modPassword')"
-      :visible="curDialogIndex === dialogEnum.modPassword"
-      :confirm="$t('__revise')"
-      :name-label="`${$t('__member')}: `"
-      :form="editForm"
-      @close="closeDialogEven"
-      @modPassword="modPassword"
-    />
+            <div class="list-item" style="width: 100%; margin-top: 1rem;">
+              <span class="label" style="width: 50%;">{{ $t('__createdAt') }}</span>
+              <span class="value" style="width: 50%;">{{ item.created_at }}</span>
+            </div>
+            <div class="list-item" style="width: 100%; margin-top: 1rem;">
+              <span class="label" style="width: 50%;">{{ $t('__lastLoginAt') }}</span>
+              <span class="value" style="width: 50%;">{{ item.lastLoginAt }}</span>
+            </div>
+            <div class="list-item" style="width: 100%; margin-top: 1rem;">
+              <span class="label" style="width: 50%;">{{ $t('__lastBetTime') }}</span>
+              <span class="value" style="width: 50%; height: 33px; position: relative;">
+                <span>
+                  <button class="el-button bg-yellow el-button--default lastBetTime lastBetTime-38755283" style="position: absolute; top: -6px; left: 0;" @click.stop="onLastBetTime(item)">
+                    <span>{{ $t('__Watch') }}</span>
+                  </button>
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display: none;" />
+      <modPasswordDialog
+        ref="modPasswordDialog"
+        :title="$t('__modPassword')"
+        :visible="curDialogIndex === dialogEnum.modPassword"
+        :confirm="$t('__revise')"
+        :name-label="`${$t('__member')}: `"
+        :form="editForm"
+        @close="closeDialogEven"
+        @modPassword="modPassword"
+      />
 
-    <limitDialog
-      :title="$t('__handicapLimit')"
-      :visible="curDialogIndex === dialogEnum.limit"
-      :handicaps="handicaps"
-      @close="closeDialogEven"
-    />
+      <limitDialog
+        :title="$t('__handicapLimit')"
+        :visible="curDialogIndex === dialogEnum.limit"
+        :handicaps="handicaps"
+        @close="closeDialogEven"
+      />
 
-    <balanceDialog
-      ref="depositBalanceDialog"
-      :title="$t('__depositBalance')"
-      :visible="curDialogIndex === dialogEnum.depositBalance"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      :operation-type="1"
-      :mode-type="2"
-      @close="closeDialogEven"
-      @depositBalance="depositBalance"
-    />
+      <balanceDialog
+        ref="depositBalanceDialog"
+        :title="$t('__depositBalance')"
+        :visible="curDialogIndex === dialogEnum.depositBalance"
+        :confirm="$t('__confirm')"
+        :form="editForm"
+        :operation-type="1"
+        :mode-type="2"
+        @close="closeDialogEven"
+        @depositBalance="depositBalance"
+      />
 
-    <balanceDialog
-      ref="withdrawBalanceDialog"
-      :title="$t('__withdrawBalance')"
-      :visible="curDialogIndex === dialogEnum.withdrawBalance"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      :operation-type="2"
-      :mode-type="2"
-      @close="closeDialogEven"
-      @withdrawBalance="withdrawBalance"
-    />
+      <balanceDialog
+        ref="withdrawBalanceDialog"
+        :title="$t('__withdrawBalance')"
+        :visible="curDialogIndex === dialogEnum.withdrawBalance"
+        :confirm="$t('__confirm')"
+        :form="editForm"
+        :operation-type="2"
+        :mode-type="2"
+        @close="closeDialogEven"
+        @withdrawBalance="withdrawBalance"
+      />
 
-    <operateDialog
-      ref="oneClickRecyclingDialog"
-      :visible="curDialogIndex === dialogEnum.oneClickRecycling"
-      :content="$stringFormat($t('__memberOneClickRecyclingMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
+      <operateDialog
+        ref="oneClickRecyclingDialog"
+        :visible="curDialogIndex === dialogEnum.oneClickRecycling"
+        :content="$stringFormat($t('__memberOneClickRecyclingMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
 
-    <memberEditDialog
-      ref="editDialog"
-      :title="$t('__editMember')"
-      :visible="curDialogIndex === dialogEnum.edit"
-      :operation-type="2"
-      :agent-info="agentInfo"
-      :confirm="$t('__revise')"
-      :form="editForm"
-      :step-enum="editStepEnum"
-      @close="closeDialogEven"
-      @editSuccess="handleRespone"
-    />
+      <memberEditDialog
+        ref="editDialog"
+        :title="$t('__editMember')"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :operation-type="2"
+        :agent-info="agentInfo"
+        :confirm="$t('__revise')"
+        :form="editForm"
+        :step-enum="editStepEnum"
+        @close="closeDialogEven"
+        @editSuccess="handleRespone"
+      />
 
-    <memberEditDialog
-      ref="createDialog"
-      :title="$t('__addMember')"
-      :visible="curDialogIndex === dialogEnum.create"
-      :operation-type="1"
-      :agent-info="agentInfo"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      :step-enum="editStepEnum"
-      @close="closeDialogEven"
-      @editSuccess="createDialogEditSuccess"
-    />
+      <memberEditDialog
+        ref="createDialog"
+        :title="$t('__addMember')"
+        :visible="curDialogIndex === dialogEnum.create"
+        :operation-type="1"
+        :agent-info="agentInfo"
+        :confirm="$t('__confirm')"
+        :form="editForm"
+        :step-enum="editStepEnum"
+        @close="closeDialogEven"
+        @editSuccess="createDialogEditSuccess"
+      />
 
-    <operateDialog
-      ref="lockLoginDialog"
-      :visible="curDialogIndex === dialogEnum.lockLogin"
-      :content="$stringFormat($t('__memberLockLoginMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
+      <operateDialog
+        ref="lockLoginDialog"
+        :visible="curDialogIndex === dialogEnum.lockLogin"
+        :content="$stringFormat($t('__memberLockLoginMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
 
-    <operateDialog
-      ref="debarBetDialog"
-      :visible="curDialogIndex === dialogEnum.debarBet"
-      :content="$stringFormat($t('__memberDebarBetMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
+      <operateDialog
+        ref="debarBetDialog"
+        :visible="curDialogIndex === dialogEnum.debarBet"
+        :content="$stringFormat($t('__memberDebarBetMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
 
-    <operateDialog
-      ref="weeklyLossSettlementDialog"
-      :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
-      :content="$stringFormat($t('__memberWeeklyLossSettlementMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
+      <operateDialog
+        ref="weeklyLossSettlementDialog"
+        :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
+        :content="$stringFormat($t('__memberWeeklyLossSettlementMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
 
-    <operateDialog
-      ref="giftEffectDialog"
-      :visible="curDialogIndex === dialogEnum.giftEffect"
-      :content="$stringFormat($t('__memberGiftEffectMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
+      <operateDialog
+        ref="giftEffectDialog"
+        :visible="curDialogIndex === dialogEnum.giftEffect"
+        :content="$stringFormat($t('__memberGiftEffectMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
 
-    <operateDialog
-      ref="isMuteDialog"
-      :visible="curDialogIndex === dialogEnum.isMute"
-      :content="$stringFormat($t('__memberIsMuteMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
+      <operateDialog
+        ref="isMuteDialog"
+        :visible="curDialogIndex === dialogEnum.isMute"
+        :content="$stringFormat($t('__memberIsMuteMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
 
-    <passwordTipDialog
-      :title="$t('__tip')"
-      :visible="curDialogIndex === dialogEnum.passwordTip"
-      :confirm="$t('__confirm')"
-      :form="editForm"
-      @close="closeDialogEven"
-    />
+      <passwordTipDialog
+        :title="$t('__tip')"
+        :visible="curDialogIndex === dialogEnum.passwordTip"
+        :confirm="$t('__confirm')"
+        :form="editForm"
+        @close="closeDialogEven"
+      />
+    </div>
   </div>
 </template>
 
@@ -304,8 +330,7 @@ import { memberSearch, memberModPassword, memberGetSetBalanceInfo,
   memberModBetStatus, memberGetLastBetTime, memberOneClickRecycling,
   memberWeeklyLossSettlement, memberModGiftStatus, memberModMuteStatus } from '@/api/agentManagement/member'
 import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
-import handlePageChange from '@/layout/mixin/handlePageChange'
-import handleTableWidth from '@/layout/mixin/handleTableWidth'
+import handlePageChange from '@/mixin/handlePageChange'
 import MemberEditDialog from './memberEditDialog'
 import LimitDialog from '@/views/agentManagement/limitDialog'
 import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
@@ -339,7 +364,7 @@ const editFormStepEnum = Object.freeze({ 'memberInfo': 0, 'rate': 1, 'limit': 2,
 export default {
   name: 'Member',
   components: { MemberEditDialog, LimitDialog, ModPasswordDialog, BalanceDialog, OperateDialog, PasswordTipDialog },
-  mixins: [handlePageChange, handleTableWidth],
+  mixins: [handlePageChange],
   props: {
     'viewHeight': {
       type: Number,
@@ -365,7 +390,7 @@ export default {
         'oneClickRecycling': 10,
         'weeklyLossSettlement': 11,
         'giftEffect': 12,
-        'isMute': 13,
+        'isMute': 13
       }),
       agentInfo: {},
       handicaps: [],
@@ -389,6 +414,13 @@ export default {
     }
   },
   methods: {
+    remarkExpand(row) {
+      const obj = this.tableData.find(item => item.id === row.id);
+      this.$nextTick(() => {
+        obj.open = !obj.open;
+        this.tableData = JSON.parse(JSON.stringify(this.tableData))
+      })
+    },
     showPopover() {
       this.$nextTick(() => {
         this.$refs.fullNameSearchInput.focus()
@@ -501,7 +533,7 @@ export default {
       this.$refs.createDialog.setTimeZone(timezone)
       this.editForm = JSON.parse(JSON.stringify(defaultForm))
       this.editStepEnum = createFormStepEnum
-      this.curDialogIndex = this.dialogEnum.create
+      this.curDialogIndex = this.dialogEnum.none
       this.setDataLoading(false)
     },
     // 父物件呼叫
@@ -543,8 +575,17 @@ export default {
         element.lockLogin = element.status === '0'
         element.debarBet = element.bet_status === '0'
         element.weeklyLossSettlement = element.weekly_loss_settlement === '1'
-        element.giftEffect = element.gift_status === '1',
+        element.giftEffect = element.gift_status === '1'
         element.isMute = element.mute === '1'
+
+        var limit = ''
+        for (var i = 0; i < element.handicaps.length; i++) {
+          limit += element.handicaps[i].nickname
+          if (i < element.handicaps.length - 1) {
+            limit += ','
+          }
+        }
+        element.handicaps_info = limit;
       })
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)
@@ -656,92 +697,45 @@ export default {
 </script>
 
 <style lang="scss">
-.agentManagement-memberCheckbox {
-  .el-checkbox__input+.el-checkbox__label {
-    padding-left: 5px;
+.hall-row {
+  width: 100vw;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0px -3.4rem;
+  border-bottom: 0.08333rem solid #f9c901;
+  border-top: 0rem solid #f9c901;
+  .hall-title {
+    padding: 1.25rem 0.83333rem 0rem 2.16667rem;
+    color: #000;
   }
-}
-
-.agentManagement-memberTable td .cell {
-  line-height: 2em;
-  padding: 0;
-  margin: 0.1em;
-}
-</style>
-
-<style lang="scss" scoped>
-@import "~@/styles/variables.scss";
-
-.member {
-  &-pagination {
-    padding: 1em;
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
+  .hall-content {
+    padding: 0.41667rem 1rem;
+    color: #000;
+    font-size: .91667rem;
+    .hall-item {
+      padding: 0.41667rem 0.41667rem 0.41667rem 1.16667rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      .label {
+        color: #a3a3a3;
+        margin-right: 0.83333rem;
+      }
+      .value {
+        font-weight: bold;
+        color: #000;
+        margin-right: 0.83333rem;
+        width: auto;
+      }
+    }
   }
-}
-
-.scope-content {
-  margin-right: 2px;
-}
-
-.search {
-  margin-left: 3px;
-  padding: 4px;
-  background-color: $yellow;
-  border-color: $yellow;
-  color: #000;
-}
-
-.search:focus,
-.search:hover {
-  color: #000;
-}
-
-.fullNameSearchTitle {
-  color: $yellow;
-  margin-right: 10px;
-  font-weight: 400;
-}
-
-.iconButton {
-  padding: 0;
-  background: transparent;
-  color: #000;
-  -webkit-text-stroke: 0.5px $yellow;
-  border: none;
-  font-size: 16px;
-  margin-left: 0;
-
-  .icon {
-    color: $yellow;
-    margin-left: 5px;
+  &.firs {
+    border-top: 0.08333rem solid #f9c901;
   }
-}
-
-.labelButton {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.el-button+.el-button {
-  margin-left: 5px;
-}
-
-.agentManagement-memberCheckbox {
-  width: 50%;
-}
-
-.checkboxGroup {
-  text-align: left;
-  padding-left: 10px;
-}
-
-.exceeded {
-  color: red;
-  display: block;
-  line-height: 16px;
 }
 </style>

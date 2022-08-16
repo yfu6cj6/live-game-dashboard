@@ -66,11 +66,11 @@
           </div>
           <div class="list-item ctrl">
             <div class="item-inner">
-              <div class="fas gray-deep" :class="{'d-none': item.open}" @click.stop="remarkExpand(item)">
-                <svg-icon icon-class="more" style="height: 2rem; width: 2rem;" />
+              <div :class="{'d-none': item.open}" @click.stop="remarkExpand(item)">
+                <svg-icon class="fas gray-deep" icon-class="more" style="height: 2rem; width: 2rem;" />
               </div>
-              <div class="fas gray-deep" :class="{'d-none': !item.open}" @click.stop="remarkExpand(item)">
-                <svg-icon icon-class="up" style="height: 2rem; width: 2rem;" />
+              <div :class="{'d-none': !item.open}" @click.stop="remarkExpand(item)">
+                <svg-icon class="fas gray-deep" icon-class="up" style="height: 2rem; width: 2rem;" />
               </div>
             </div>
           </div>
@@ -149,9 +149,9 @@
               </span>
             </div>
             <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value">
+              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.totallyDisabled, item)">
                 <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input is-disabled">
+                  <span class="el-checkbox__input" :class="{'is-disabled': agentInfoTotallyDisabled, 'is-checked': item.totallyDisabled}">
                     <span class="el-checkbox__inner" />
                   </span>
                 </span>
@@ -159,9 +159,9 @@
               </span>
             </div>
             <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value">
+              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.debarBet, item)">
                 <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input is-disabled">
+                  <span class="el-checkbox__input" :class="{'is-disabled': agentInfoBetStatusDisabled, 'is-checked': item.debarBet}">
                     <span class="el-checkbox__inner" />
                   </span>
                 </span>
@@ -169,13 +169,43 @@
               </span>
             </div>
             <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value">
+              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
                 <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input is-disabled">
+                  <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin}">
                     <span class="el-checkbox__inner" />
                   </span>
                 </span>
                 <span class="label">{{ $t('__lockLogin') }}</span>
+              </span>
+            </div>
+            <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, item)">
+                <span class="el-checkbox red-tick">
+                  <span class="el-checkbox__input" :class="{'is-checked': item.weeklyLossSettlement}">
+                    <span class="el-checkbox__inner" />
+                  </span>
+                </span>
+                <span class="label">{{ $t('__weeklyLossSettlement') }}</span>
+              </span>
+            </div>
+            <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.oneClickRecycling, item)">
+                <span class="el-checkbox red-tick">
+                  <span class="el-checkbox__input" :class="{'is-checked': item.oneClickRecycling}">
+                    <span class="el-checkbox__inner" />
+                  </span>
+                </span>
+                <span class="label">{{ $t('__oneClickRecycling') }}</span>
+              </span>
+            </div>
+            <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.giftEffect, item)">
+                <span class="el-checkbox red-tick">
+                  <span class="el-checkbox__input" :class="{'is-checked': item.giftEffect}">
+                    <span class="el-checkbox__inner" />
+                  </span>
+                </span>
+                <span class="label">{{ $t('__giftEffect') }}</span>
               </span>
             </div>
             <div class="list-item" style="width: 100%; margin-top: 1rem;">
@@ -462,11 +492,6 @@ export default {
         this.tableData = JSON.parse(JSON.stringify(this.tableData))
       })
     },
-    showPopover() {
-      this.$nextTick(() => {
-        this.$refs.fullNameSearchInput.focus()
-      })
-    },
     operateSubmit(data) {
       switch (this.curDialogIndex) {
         case this.dialogEnum.totallyDisabled: {
@@ -597,6 +622,11 @@ export default {
     handleRespone(res) {
       this.agentInfo = res.agentInfo
       this.agentInfo.fullName = `${this.agentInfo.nickname}(${this.agentInfo.account})`
+      // 設定已經擴展的item
+      const open = this.allDataByClient.filter(item => item.open).map(item => item.id)
+      res.rows.forEach(element => {
+        element.open = open.includes(element.id)
+      })
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
         element.fullName = `${element.nickname}(${element.account})`

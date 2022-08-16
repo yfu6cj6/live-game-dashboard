@@ -529,3 +529,9 @@
 .d-block {
   display: block!important;
 }
+
+.align-items-end {
+  -ms-flex-align: end!important;
+  -webkit-box-align: end!important;
+  align-items: flex-end!important;
+}
