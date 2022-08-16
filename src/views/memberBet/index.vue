@@ -735,13 +735,6 @@ export default {
     setSearchOpen() {
       this.searchOpen = !this.searchOpen
     },
-    remarkExpand(row) {
-      const obj = this.tableData.find(item => item.order_number === row.order_number);
-      this.$nextTick(() => {
-        obj.open = !obj.open;
-        this.tableData = JSON.parse(JSON.stringify(this.tableData))
-      })
-    },
     setTagsViewTitle() {
       if (this.memberId !== null) {
         const title = this.$t(this.tempRoute.meta.title)

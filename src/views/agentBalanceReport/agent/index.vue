@@ -191,7 +191,7 @@ export default {
       const obj = this.tableData.find(item => item.agentId === row.agentId);
       this.$nextTick(() => {
         obj.open = !obj.open;
-        this.tableData = JSON.parse(JSON.stringify(this.tableData))
+        this.tableData = Object.assign([], this.tableData)
       })
     },
     numberFormatStr(number) {

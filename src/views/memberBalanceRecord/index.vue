@@ -327,7 +327,7 @@ export default {
       const obj = this.tableData.find(item => item.id === row.id);
       this.$nextTick(() => {
         obj.open = !obj.open;
-        this.tableData = JSON.parse(JSON.stringify(this.tableData))
+        this.tableData = Object.assign([], this.tableData)
       })
     },
     moreInfo() {

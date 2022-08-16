@@ -428,8 +428,7 @@ export default {
       editForm: {},
       editStepEnum: {},
       curDialogIndex: 0,
-      operateDialogMsgParameter: [],
-      searchForm: {}
+      operateDialogMsgParameter: []
     }
   },
   computed: {
@@ -448,7 +447,7 @@ export default {
       const obj = this.tableData.find(item => item.id === row.id);
       this.$nextTick(() => {
         obj.open = !obj.open;
-        this.tableData = JSON.parse(JSON.stringify(this.tableData))
+        this.tableData = Object.assign([], this.tableData)
       })
     },
     checkInfo(info) {
@@ -565,20 +564,12 @@ export default {
     // 父物件呼叫
     onSearch(agentId) {
       this.agentInfo.id = agentId
-      this.onFullNameResetBtnClick()
-    },
-    onFullNameSearchBtnClick() {
-      this.currentPage = 1
-      this.onSubmit(this.searchForm.account)
+      this.onSubmit('')
     },
     onSearchByString(str) {
       this.pageSizeCount = 1
       this.currentPage = 1
       this.onSubmit(str)
-    },
-    onFullNameResetBtnClick() {
-      this.searchForm.account = ''
-      this.onFullNameSearchBtnClick()
     },
     onSubmit(accountKeyWord) {
       this.setDataLoading(true)
