@@ -69,16 +69,16 @@
         </div>
         <div class="list-item ctrl">
           <div class="item-inner">
-            <div v-show="!item.open" class="fas gray-deep">
-              <svg-icon class="fas text-gray" icon-class="more" style="height: 2rem;width: 2rem;" />
+            <div v-show="!item.open" @click.stop="remarkExpand(item)">
+              <svg-icon class="fas gray-deep" icon-class="more" style="height: 2rem;width: 2rem;" />
             </div>
-            <div v-show="item.open" class="fas gray-deep">
-              <svg-icon class="fas text-gray" icon-class="up" style="height: 2rem;width: 2rem;" />
+            <div v-show="item.open" @click.stop="remarkExpand(item)">
+              <svg-icon class="fas gray-deep" icon-class="up" style="height: 2rem;width: 2rem;" />
             </div>
           </div>
         </div>
         <div class="force-wrap" />
-        <div class="agent-list-detail">
+        <div v-if="item.open" class="agent-list-detail">
           <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
             <span class="value">
               <span class="solid-circle">
@@ -114,26 +114,45 @@
             <span class="label" style="width: 50%;">{{ $t('__creator') }}</span>
             <span class="value" style="width: 50%;">{{ item.creator }}</span>
           </div>
-          <div class="list-item" style="width: 100%; margin-top: 1rem;">
-            <span class="value">
-              <el-checkbox
-                v-if="!isAgentSubAccount"
-                v-model="item.lockLogin"
-                class=""
-                :label="$t('__lockLogin')"
-                @mousedown.native="onOperateCheckboxClick(dialogEnum.lockLogin, item)"
-              />
-              <el-checkbox
-                v-if="!isAgentSubAccount"
-                v-model="item.allPermission"
-                class=""
-                :label="$t('__allPermission')"
-                @mousedown.native="onOperateCheckboxClick(dialogEnum.effectAgentLine, item)"
-              />
+          <div class="list-item" style="width: 50%; margin-top: 1rem;">
+            <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
+              <span class="el-checkbox red-tick">
+                <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin, 'is-disabled': isAgentSubAccount}">
+                  <span class="el-checkbox__inner" />
+                </span>
+              </span>
+              <span class="label">{{ $t('__lockLogin') }}</span>
+            </span>
+          </div>
+          <div class="list-item" style="width: 50%; margin-top: 1rem;">
+            <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.effectAgentLine, item)">
+              <span class="el-checkbox red-tick">
+                <span class="el-checkbox__input" :class="{'is-checked': item.allPermission, 'is-disabled': isAgentSubAccount}">
+                  <span class="el-checkbox__inner" />
+                </span>
+              </span>
+              <span class="label">{{ $t('__allPermission') }}</span>
             </span>
           </div>
         </div>
       </div>
+      <operateDialog
+        ref="lockLoginDialog"
+        :visible="curDialogIndex === dialogEnum.lockLogin"
+        :content="$stringFormat($t('__subAccountLockLoginMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
+
+      <operateDialog
+        ref="effectAgentLineDialog"
+        :visible="curDialogIndex === dialogEnum.effectAgentLine"
+        :content="$stringFormat($t('__subAccountEffectAgentLineMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
     </div>
   </div>
 </template>
@@ -145,7 +164,7 @@ import handlePageChange from '@/mixin/handlePageChange'
 // import SubAccountEditDialog from './subAccountEditDialog'
 // import SubAgentDistributeDialog from './subAgentDistributeDialog'
 // import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
-// import OperateDialog from '@/views/agentManagement/operateDialog'
+import OperateDialog from '@/views/agentManagement/operateDialog'
 // import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
 
@@ -164,6 +183,7 @@ const defaultForm = {
 
 export default {
   name: 'Member',
+  components: { OperateDialog },
   // components: { SubAccountEditDialog, ModPasswordDialog, OperateDialog, SubAgentDistributeDialog, PasswordTipDialog },
   mixins: [handlePageChange],
   props: {
@@ -197,9 +217,11 @@ export default {
     ])
   },
   methods: {
-    showPopover() {
+    remarkExpand(row) {
+      const obj = this.tableData.find(item => item.agentId === row.agentId);
       this.$nextTick(() => {
-        this.$refs.fullNameSearchInput.focus()
+        obj.open = !obj.open;
+        this.tableData = JSON.parse(JSON.stringify(this.tableData))
       })
     },
     onSubmitSetHasAgents(data) {
@@ -257,11 +279,13 @@ export default {
       this.editForm = JSON.parse(JSON.stringify(rowData))
       switch (operateType) {
         case this.dialogEnum.lockLogin: {
+          if (this.isAgentSubAccount) return
           this.curDialogIndex = this.dialogEnum.lockLogin
           this.operateDialogMsgParameter = [rowData.fullName]
           break
         }
         case this.dialogEnum.effectAgentLine: {
+          if (this.isAgentSubAccount) return
           this.curDialogIndex = this.dialogEnum.effectAgentLine
           this.operateDialogMsgParameter = [rowData.fullName]
           break

@@ -642,7 +642,8 @@ export default {
   watch: {
     '$route.path': function() {
       if (this.tempRoute.path === this.$route.path) {
-        this.searchTime = localStorage.getItem(`memberBet${this.memberId}`).split(',') || defaultSearchTime
+        const searchTime = localStorage.getItem(`memberBet${this.memberId}`)
+        this.searchTime = searchTime ? searchTime.split(',') : defaultSearchTime
         this.$nextTick(() => {
           this.handleCurrentChange(this.currentPage)
         })
@@ -660,7 +661,8 @@ export default {
     if (this.tempRoute.params?.id !== undefined) {
       this.memberId = parseInt(this.$route.params.id)
       this.searchForm.member_id = [this.memberId]
-      this.searchTime = localStorage.getItem(`memberBet${this.memberId}`).split(',') || defaultSearchTime
+      const searchTime = localStorage.getItem(`memberBet${this.memberId}`)
+      this.searchTime = searchTime ? searchTime.split(',') : defaultSearchTime
       this.$router.name = this.$stringFormat(this.tempRoute.name, [`${this.memberId}`])
     }
     this.$store.dispatch('tagsView/updateVisitedView', this.$route)

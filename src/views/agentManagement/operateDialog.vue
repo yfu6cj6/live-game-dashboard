@@ -5,13 +5,18 @@
     :title="title"
     :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
+    class="operateDialog"
   >
     <div class="contentClass">
       <span>{{ content }}</span>
     </div>
     <el-form ref="form" :model="form" :rules="rules">
       <el-form-item :label="$t('__userPassword')" prop="userPassword">
-        <el-input v-model="form.userPassword" show-password />
+        <el-input v-model="form.userPassword">
+          <template slot="suffix">
+            <i class="el-input__icon el-icon-view clickable" :class="{'text-black': newPasswordType !== 'password', 'text-line-gray-shallow': newPasswordType === 'password'}" @click="showNewPwd" />
+          </template>
+        </el-input>
       </el-form-item>
     </el-form>
     <span v-if="!dialogLoading" slot="bodyFooter">
@@ -23,11 +28,12 @@
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
 import Dialog from '@/components/Dialog'
+import common from '@/mixin/common'
 
 export default {
   name: 'OperateDialog',
   components: { Dialog },
-  mixins: [dialogCommon],
+  mixins: [dialogCommon, common],
   props: {
     'title': {
       type: String,
@@ -92,14 +98,43 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@/styles/variables.scss";
 
-.contentClass {
-  text-align: center;
-  color: $yellow;
-  padding-top: 10px;
-  margin-bottom: 10px;
-  font-size: 20px;
+.operateDialog {
+  .contentClass {
+    text-align: center;
+    color: $yellow;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  .el-form {
+    .el-form-item {
+      display: flex;
+      flex-direction: column;
+      .el-form-item__label {
+        color: $yellow;
+        min-width: auto;
+        text-align: left;
+        line-height: 20px;
+      }
+      .el-form-item__content {
+        line-height: 0;
+        .el-input {
+          .el-input__inner {
+            padding: 0, 15px;
+            color: #000;
+            height: 2.83333rem;
+          }
+        }
+      }
+      .el-form-item__error {
+        padding: 0;
+        left: unset;
+        right: 0;
+      }
+    }
+  }
 }
 </style>
