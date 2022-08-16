@@ -215,9 +215,7 @@ export default {
       editForm: {},
       curDialogIndex: 0,
       subAgent: [],
-      operateDialogMsgParameter: [],
-      searchForm: {},
-      popover: false
+      operateDialogMsgParameter: []
     }
   },
   computed: {
@@ -313,21 +311,12 @@ export default {
     // 父物件呼叫
     onSearch(agentId) {
       this.agentInfo.id = agentId
-      this.onFullNameResetBtnClick()
-    },
-    onFullNameSearchBtnClick() {
-      this.popover = false
-      this.currentPage = 1
-      this.onSubmit(this.searchForm.account)
+      this.onSubmit('')
     },
     onSearchByString(str) {
       this.pageSizeCount = 1
       this.currentPage = 1
       this.onSubmit(str)
-    },
-    onFullNameResetBtnClick() {
-      this.searchForm.account = ''
-      this.onFullNameSearchBtnClick()
     },
     onSubmit(accountKeyWord) {
       this.setDataLoading(true)
