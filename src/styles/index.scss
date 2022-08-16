@@ -180,6 +180,9 @@ table {
 .w-35 {
   width: 35%!important;
 }
+.w-45 {
+  width: 45%!important;
+}
 .w-50 {
   width: 50%!important;
 }
@@ -1422,32 +1425,39 @@ table {
         .item {
           color: $yellow;
         }
-        .custom-psw {
-          .el-icon-view {
-            display: inline-block;
-          }
-          .el-input__inner {
-            height: 100%;
-          }
-          &.el-input {
-            height: 3rem;
-          }
-          .el-input__suffix {
+      }
+      &.newPassword {
+        .el-form-item__content {
+          .item {
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            .newPasswordTip {
+              color: #fff;
+              font-size: 1.1rem;
+            }
           }
         }
       }
     }
-    .el-form-item.newPassword {
-      .el-form-item__content {
-        .item {
+  }
+}
+
+.el-form {
+  .el-form-item {
+    .el-form-item__content {
+      .custom-psw {
+        .el-icon-view {
+          display: inline-block;
+        }
+        .el-input__inner {
+          height: 100%;
+        }
+        &.el-input {
+          height: 3rem;
+        }
+        .el-input__suffix {
           display: flex;
-          flex-direction: column;
-          .newPasswordTip {
-            color: #fff;
-            font-size: 1.1rem;
-          }
+          align-items: center;
         }
       }
     }

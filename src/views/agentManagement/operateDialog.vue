@@ -12,15 +12,16 @@
     </div>
     <el-form ref="form" :model="form" :rules="rules">
       <el-form-item :label="$t('__userPassword')" prop="userPassword">
-        <el-input v-model="form.userPassword">
+        <el-input ref="userPassword" v-model="form.userPassword" :type="userPasswordType" class="custom-psw">
           <template slot="suffix">
-            <i class="el-input__icon el-icon-view clickable" :class="{'text-black': newPasswordType !== 'password', 'text-line-gray-shallow': newPasswordType === 'password'}" @click="showNewPwd" />
+            <i class="el-input__icon el-icon-view clickable" :class="{'text-black': userPasswordType !== 'password', 'text-line-gray-shallow': userPasswordType === 'password'}" @click="showUserPasswordType" />
           </template>
         </el-input>
       </el-form-item>
     </el-form>
-    <span v-if="!dialogLoading" slot="bodyFooter">
-      <el-button class="bg-yellow" @click="onSubmit">{{ $t('__confirm') }}</el-button>
+    <span slot="bodyFooter">
+      <el-button class="bg-yellow font-weight-bold" @click="onSubmit">{{ $t('__confirm') }}</el-button>
+      <el-button class="bg-gray font-weight-bold" @click="onClose">{{ $t('__cancel') }}</el-button>
     </span>
   </Dialog>
 </template>
@@ -73,6 +74,7 @@ export default {
       rules: {
         userPassword: [{ required: true, trigger: 'blur', validator: validate }]
       },
+      userPasswordType: 'password',
       dialogLoading: false
     }
   },
@@ -84,6 +86,16 @@ export default {
     }
   },
   methods: {
+    showUserPasswordType() {
+      if (this.userPasswordType === 'password') {
+        this.userPasswordType = ''
+      } else {
+        this.userPasswordType = 'password'
+      }
+      this.$nextTick(() => {
+        this.$refs.userPassword.focus()
+      })
+    },
     onSubmit() {
       this.$refs.form.validate((valid) => {
         if (valid) {
@@ -104,10 +116,9 @@ export default {
 .operateDialog {
   .contentClass {
     text-align: center;
-    color: $yellow;
-    padding-top: 10px;
-    margin-bottom: 10px;
-    font-size: 20px;
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 2rem;
   }
   .el-form {
     .el-form-item {
@@ -117,7 +128,7 @@ export default {
         color: $yellow;
         min-width: auto;
         text-align: left;
-        line-height: 20px;
+        line-height: 3rem;
       }
       .el-form-item__content {
         line-height: 0;
@@ -131,8 +142,15 @@ export default {
       }
       .el-form-item__error {
         padding: 0;
-        left: unset;
-        right: 0;
+      }
+      &.is-required {
+        &:not(.is-no-asterisk) {
+          &>.el-form-item__label {
+            &:before {
+              content: '';
+            }
+          }
+        }
       }
     }
   }

@@ -326,5 +326,6 @@
     "__directlyMember": "直屬玩家",
     "__submit": "提交",
     "__disabled": "禁用",
-    "__enabled": "啟用"
+    "__enabled": "啟用",
+    "__cancel": "取消"
 }

@@ -114,20 +114,20 @@
             <span class="label" style="width: 50%;">{{ $t('__creator') }}</span>
             <span class="value" style="width: 50%;">{{ item.creator }}</span>
           </div>
-          <div class="list-item" style="width: 50%; margin-top: 1rem;">
+          <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
             <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
               <span class="el-checkbox red-tick">
-                <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin, 'is-disabled': isAgentSubAccount}">
+                <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin}">
                   <span class="el-checkbox__inner" />
                 </span>
               </span>
               <span class="label">{{ $t('__lockLogin') }}</span>
             </span>
           </div>
-          <div class="list-item" style="width: 50%; margin-top: 1rem;">
+          <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
             <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.effectAgentLine, item)">
               <span class="el-checkbox red-tick">
-                <span class="el-checkbox__input" :class="{'is-checked': item.allPermission, 'is-disabled': isAgentSubAccount}">
+                <span class="el-checkbox__input" :class="{'is-checked': item.allPermission}">
                   <span class="el-checkbox__inner" />
                 </span>
               </span>

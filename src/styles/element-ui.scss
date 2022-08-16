@@ -164,7 +164,7 @@
   }
 }
 
-#app .el-button {
+.el-button {
   padding: 0.70833rem 0.95833rem;
   font-size: 1rem;
   &.is-disabled {
@@ -177,6 +177,12 @@
     color: #000;
     background: #f9c901;
     border: 0.08333rem solid #f9c901;
+    border-radius: 0.25rem;
+  }
+  &.bg-gray {
+    color: #fff;
+    background: #4e4e4e;
+    border: 0.08333rem solid #4e4e4e;
     border-radius: 0.25rem;
   }
 }
@@ -396,6 +402,18 @@
   width: calc(100% - 20px);
   .el-message-box__header {
     .el-message-box__headerbtn {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      padding: 0;
+      border: none;
+      outline: 0;
+      background: 0 0;
+      font-size: 1.4rem;
+      cursor: pointer;
+      .el-message-box__close {
+        color: $yellow;
+      }
       &:hover {
         .el-message-box__close {
           color: $yellow;
@@ -407,8 +425,11 @@
     .el-message-box__container {
       .el-message-box__message {
         color: $yellow;
-        font-size: 20px;
+        font-size: 1.4rem;
         font-weight: bold;
+        p {
+          line-height: 2rem;
+        }
       }
     }
   }
@@ -879,4 +900,8 @@
     -webkit-transform-origin: center;
     transform-origin: center;
   }
+}
+
+.el-form-item__error {
+  font-size: 1rem;
 }
