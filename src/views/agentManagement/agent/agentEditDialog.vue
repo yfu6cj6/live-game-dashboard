@@ -355,6 +355,7 @@ export default {
       }
     }
     return {
+      selectAll: false,
       step1Rules: {
         account: [{ required: true, trigger: 'blur', validator: validatePassword }],
         nickname: [{ required: true, trigger: 'blur', validator: validate }],
@@ -474,6 +475,13 @@ export default {
     }
   },
   methods: {
+    handleCheckboxChange(select) {
+      if (select) {
+        this.selectAll = !this.serverData.allPermissions.some(permissions => permissions.exist === false);
+      } else {
+        this.selectAll = false;
+      }
+    },
     hasStep(step) {
       for (const stepKey in this.stepEnum) {
         if (step === stepKey) {

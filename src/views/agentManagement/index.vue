@@ -171,7 +171,11 @@
                             </form>
                             <!-- <div /> 彈跳飾窗 -->
                           </div>
-                          <div class="filter-sort-wrap" />
+                          <div class="filter-sort-wrap">
+                            <button class="el-button bg-yellow el-button--default add_button" @click.stop="onAddSubBtnClick()">
+                              <span>{{ addSubLabel }}</span>
+                            </button>
+                          </div>
                         </div>
                         <agent
                           v-show="curTableIndex === tableEnum.agent"
@@ -563,6 +567,10 @@ export default {
       }
     }
   }
+}
+
+.add_button {
+  margin-left: 0.5333rem;
 }
 
 .text-gray {

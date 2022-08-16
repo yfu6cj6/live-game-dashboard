@@ -210,6 +210,12 @@
                 </span>
               </span>
             </div>
+            <div class="list-item" style="width: 100%; margin-top: 1rem;">
+              <span class="label">{{ $t('__remark') }}</span>
+            </div>
+            <div class="list-item" style="width: 100%; margin-top: 1rem;">
+              <span class="value" style="word-break: break-word;">{{ item.remark }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -558,7 +564,7 @@ export default {
       this.$refs.createDialog.setTimeZone(timezone)
       this.editForm = JSON.parse(JSON.stringify(defaultForm))
       this.editStepEnum = createFormStepEnum
-      this.curDialogIndex = this.dialogEnum.none
+      this.curDialogIndex = this.dialogEnum.create
       this.setDataLoading(false)
     },
     // 父物件呼叫
