@@ -134,6 +134,9 @@
               <span class="label">{{ $t('__allPermission') }}</span>
             </span>
           </div>
+          <div v-if="!item.allPermission" class="list-item" style="width: 100%; margin-top: 1rem;">
+            <el-button class="bg-yellow" size="mini" @click="onSubAgentDistribute(item)">{{ $t('__subAgentDistribute') }}</el-button>
+          </div>
         </div>
       </div>
       <div v-if="totalCount > pageSize" class="text-center p-3">
@@ -226,7 +229,7 @@ export default {
   },
   methods: {
     remarkExpand(row) {
-      const obj = this.tableData.find(item => item.agentId === row.agentId);
+      const obj = this.tableData.find(item => item.id === row.id);
       this.$nextTick(() => {
         obj.open = !obj.open;
         this.tableData = JSON.parse(JSON.stringify(this.tableData))
@@ -318,6 +321,7 @@ export default {
       this.onSubmit(this.searchForm.account)
     },
     onSearchByString(str) {
+      this.pageSizeCount = 1
       this.currentPage = 1
       this.onSubmit(str)
     },

@@ -7,7 +7,7 @@
             <div class="scroll-inner flex-column flex-fill off">
               <div class="scroll-view flex-column flex-fill">
                 <div class="modPwd-container">
-                  <div>
+                  <div class="dialog-body">
                     <div class="account-info">
                       {{ $t('__account') }}
                       <span>{{ account }}</span>

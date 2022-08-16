@@ -26,7 +26,7 @@ export default {
     },
     moreInfoByClient() {
       this.pageSizeCount++;
-      this.tableData = this.allDataByClient.slice((this.currentPage - 1) * this.pageSize, this.currentPage * (this.pageSize * this.pageSizeCount))
+      this.handlePageChangeByClient(1)
     },
     handleSizeChange(val) {
       this.pageSize = val
@@ -42,7 +42,7 @@ export default {
     },
     handlePageChangeByClient(page) {
       this.currentPage = page
-      this.tableData = this.allDataByClient.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize)
+      this.tableData = this.allDataByClient.slice((this.currentPage - 1) * this.pageSize, this.currentPage * (this.pageSize * this.pageSizeCount))
     }
   }
 }
