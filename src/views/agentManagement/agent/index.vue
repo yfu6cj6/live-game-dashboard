@@ -624,9 +624,6 @@ export default {
       this.agentInfo.fullName = `${this.agentInfo.nickname}(${this.agentInfo.account})`
       // 設定已經擴展的item
       const open = this.allDataByClient.filter(item => item.open).map(item => item.id)
-      res.rows.forEach(element => {
-        element.open = open.includes(element.id)
-      })
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
         element.fullName = `${element.nickname}(${element.account})`
@@ -646,6 +643,7 @@ export default {
         element.live_commission_rate = numberFormat(element.live_commission_rate)
         element.live_rolling_rate = numberFormat(element.live_rolling_rate)
         element.live_gift_rate = numberFormat(element.live_gift_rate)
+        element.open = open.includes(element.id)
 
         var limit = ''
         for (var i = 0; i < element.handicaps.length; i++) {
@@ -681,6 +679,7 @@ export default {
       this.onSubmit(this.searchForm.account)
     },
     onSearchByString(str) {
+      this.pageSizeCount = 1
       this.currentPage = 1
       this.onSubmit(str)
     },
@@ -689,7 +688,6 @@ export default {
       this.onFullNameSearchBtnClick()
     },
     onSubmit(accountKeyWord) {
-      this.pageSizeCount = 1
       this.setDataLoading(true)
       agentSearch({ agentId: this.agentInfo.id, accountKeyWord: accountKeyWord }).then((res) => {
         this.handleRespone(res)

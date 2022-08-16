@@ -136,6 +136,14 @@
           </div>
         </div>
       </div>
+      <div v-if="totalCount > pageSize" class="text-center p-3">
+        <div v-if="tableData.length >= totalCount">
+          <span>{{ $t("__noMoreInformation") }}</span>
+        </div>
+        <div v-else>
+          <span class="view-more border-bottom border-dark mb-1" @click="moreInfoByClient">{{ $t('__searchMoreValue') }}</span>
+        </div>
+      </div>
       <operateDialog
         ref="lockLoginDialog"
         :visible="curDialogIndex === dialogEnum.lockLogin"
@@ -329,6 +337,7 @@ export default {
       this.agentInfo = res.agentInfo
       this.agentInfo.fullName = `${this.agentInfo.nickname}(${this.agentInfo.account})`
 
+      const open = this.tableData.filter(item => item.open).map(item => item.id)
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
         element.fullName = `${element.nickname}(${element.account})`
@@ -344,6 +353,7 @@ export default {
         })
         element.lockLogin = element.status === '0'
         element.allPermission = element.effectAgentLine === '1'
+        element.open = open.includes(element.id)
       })
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)

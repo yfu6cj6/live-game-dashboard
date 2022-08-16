@@ -1,5 +1,5 @@
 <template>
-  <div class="agent flex-column flex-fill">
+  <div v-loading="dataLoading" class="agent flex-column flex-fill">
     <div class="agent-container bg-white flex-column flex-fill tree-close">
       <div class="agent-container-inner flex-column flex-fill">
         <div class="agent-content flex-column flex-fill">
