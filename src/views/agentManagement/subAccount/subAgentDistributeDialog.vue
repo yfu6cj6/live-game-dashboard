@@ -96,7 +96,9 @@ export default {
   watch: {
     visible() {
       if (!this.visible) {
-        this.$refs.form.clearValidate()
+        this.userPasswordType = 'password'
+        this.selectAll = false
+        this.selectSubAgents = []
       }
     }
   },
@@ -116,6 +118,8 @@ export default {
       this.selectSubAgents.forEach(subAgent => {
         if (boundAgents.some(boundAgent => boundAgent === subAgent.key)) {
           subAgent.exist = true
+        } else {
+          subAgent.exist = false
         }
       })
     },
@@ -131,6 +135,7 @@ export default {
       } else {
         this.selectAll = false;
       }
+      this.selectSubAgents = JSON.parse(JSON.stringify(this.selectSubAgents))
     },
     onSubmit() {
       this.$refs.form.validate((valid) => {

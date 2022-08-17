@@ -329,5 +329,6 @@
     "__enabled": "啟用",
     "__cancel": "取消",
     "__Watch": "查看",
-    "__pleaseCheckFormContent": "請檢查表單內容是否填寫正確"
+    "__pleaseCheckFormContent": "請檢查表單內容是否填寫正確",
+    "__index": "序號"
 }

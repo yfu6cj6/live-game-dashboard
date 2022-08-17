@@ -62,7 +62,7 @@
           </div>
           <div class="force-wrap" />
           <div v-if="item.open" class="agent-list-detail">
-            <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+            <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
               <span class="value">
                 <span class="solid-circle">
                   <div class="fas">
@@ -70,14 +70,14 @@
                   </div>
                 </span>
               </span>
-            </div>
-            <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+            </div> -->
+            <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
               <span class="value">
                 <span>
                   <span class="v-line d-block" />
                 </span>
               </span>
-            </div>
+            </div> -->
             <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
               <span class="value">
                 <button class="el-button bg-yellow el-button--default" @click.stop="onDepositBtnClick(item)">

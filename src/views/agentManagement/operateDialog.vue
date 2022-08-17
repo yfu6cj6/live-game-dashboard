@@ -13,7 +13,7 @@
                     <div class="el-form-item__content">
                       <div class="value-group">
                         <div class="el-input el-input--small el-input--suffix">
-                          <input v-model="form.userPassword" :type="userPasswordType" autocomplete="off" :placeholder="`${$t('__operator')}${$t('__password')}`" class="el-input__inner" @focus="passwordFocus" @change="passwordChange">
+                          <input ref="userPassword" v-model="form.userPassword" :type="userPasswordType" autocomplete="off" :placeholder="`${$t('__operator')}${$t('__password')}`" class="el-input__inner" @focus="passwordFocus" @change="passwordChange">
                           <span class="el-input__suffix" @click="showUserPasswordType">
                             <span class="el-input__suffix-inner">
                               <i class="el-input__icon el-icon-error has-error" :class="{'el-input__validateIcon': hasError}" />

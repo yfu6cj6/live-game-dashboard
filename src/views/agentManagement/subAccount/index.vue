@@ -79,7 +79,7 @@
         </div>
         <div class="force-wrap" />
         <div v-if="item.open" class="agent-list-detail">
-          <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+          <!-- <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
             <span class="value">
               <span class="solid-circle">
                 <div class="fas">
@@ -87,15 +87,15 @@
                 </div>
               </span>
             </span>
-          </div>
-          <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+          </div> -->
+          <!-- <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
             <span class="value">
               <span>
                 <span class="v-line d-block" />
               </span>
             </span>
-          </div>
-          <div v-if="!item.allPermission" class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.5rem;" @click.stop="onSubAgentDistribute(scope.row)">
+          </div> -->
+          <div v-if="!item.allPermission" class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.5rem;" @click.stop="onSubAgentDistribute(item)">
             <span class="value">
               <button class="el-button bg-yellow el-button--default">
                 <span>{{ $t('__subAgentDistribute') }}</span>
@@ -170,9 +170,6 @@
               <span class="label">{{ $t('__allPermission') }}</span>
             </span>
           </div>
-          <div v-if="!item.allPermission" class="list-item" style="width: 100%; margin-top: 1rem;">
-            <el-button class="bg-yellow" size="mini" @click="onSubAgentDistribute(item)">{{ $t('__subAgentDistribute') }}</el-button>
-          </div>
         </div>
       </div>
       <div v-if="totalCount > pageSize" class="text-center p-3">
@@ -211,6 +208,25 @@
         @close="closeDialogEven"
         @onSubmit="onSubmitSetHasAgents"
       />
+
+      <modPasswordDialog
+        ref="modPasswordDialog"
+        :title="$t('__modPassword')"
+        :visible="curDialogIndex === dialogEnum.modPassword"
+        :confirm="$t('__revise')"
+        :name-label="`${$t('__subAccount')}: `"
+        :form="editForm"
+        @close="closeDialogEven"
+        @modPassword="modPassword"
+      />
+
+      <passwordTipDialog
+        :title="$t('__tip')"
+        :visible="curDialogIndex === dialogEnum.passwordTip"
+        :confirm="$t('__confirm')"
+        :form="editForm"
+        @close="closeDialogEven"
+      />
     </div>
   </div>
 </template>
@@ -221,9 +237,9 @@ import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
 import handlePageChange from '@/mixin/handlePageChange'
 // import SubAccountEditDialog from './subAccountEditDialog'
 import SubAgentDistributeDialog from './subAgentDistributeDialog'
-// import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
+import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import OperateDialog from '@/views/agentManagement/operateDialog'
-// import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
+import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
 
 const defaultForm = {
@@ -241,8 +257,8 @@ const defaultForm = {
 
 export default {
   name: 'Member',
-  components: { OperateDialog, SubAgentDistributeDialog },
-  // components: { SubAccountEditDialog, ModPasswordDialog, SubAgentDistributeDialog, PasswordTipDialog },
+  components: { OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog },
+  // components: { SubAccountEditDialog },
   mixins: [handlePageChange],
   props: {
   },
