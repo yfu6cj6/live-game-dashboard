@@ -88,6 +88,38 @@
               </span>
             </span>
           </div>
+          <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+            <span class="value">
+              <span>
+                <span class="v-line d-block" />
+              </span>
+            </span>
+          </div>
+          <div v-if="!item.allPermission" class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.5rem;" @click.stop="onSubAgentDistribute(scope.row)">
+            <span class="value">
+              <button class="el-button bg-yellow el-button--default">
+                <span>{{ $t('__subAgentDistribute') }}</span>
+              </button>
+            </span>
+          </div>
+          <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center; margin-right: 2.5rem; margin-left: auto;" @click.stop="onModPasswordBtnClick(item)">
+            <span class="value">
+              <span class="key">
+                <div class="fas yellow">
+                  <img src="@/assets/agentManagement/key.png" style="height: 1.83333rem; width: 1.83333rem;">
+                </div>
+              </span>
+            </span>
+          </div>
+          <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-left: 0.5rem; margin-bottom: 0.5rem; align-self: center;" @click.stop="onEditBtnClick(item)">
+            <span class="value">
+              <span class="edit">
+                <div class="fas yellow">
+                  <img src="@/assets/agentManagement/settings.png" style="height: 2rem; width: 2rem;">
+                </div>
+              </span>
+            </span>
+          </div>
           <div class="list-item" style="width: 100%; margin-top: 1rem;">
             <span class="label" style="width: 50%;">{{ $t('__nickname') }}</span>
             <span class="value" style="width: 50%;">{{ item.nickname }}</span>

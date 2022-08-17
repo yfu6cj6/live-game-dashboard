@@ -79,7 +79,7 @@
             <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
               <span class="value">
                 <span class="solid-circle">
-                  <div class="fas black" @click.stop="onEditBtnClick(item)">
+                  <div class="fas black">
                     <svg-icon icon-class="top" style="height: 1.5rem; width: 1.5rem;" />
                   </div>
                 </span>
@@ -90,6 +90,27 @@
                 <span>
                   <span class="v-line d-block" />
                 </span>
+              </span>
+            </div>
+            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+              <span class="value">
+                <button class="el-button bg-yellow el-button--default" @click.stop="onDepositBtnClick(item)">
+                  <span>{{ $t('__deposit') }}</span>
+                </button>
+              </span>
+            </div>
+            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+              <span class="value">
+                <button class="el-button bg-yellow el-button--default" @click.stop="onWithdrawBtnClick(item)">
+                  <span>{{ $t('__withdraw') }}</span>
+                </button>
+              </span>
+            </div>
+            <div v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+              <span class="value">
+                <button class="el-button bg-yellow el-button--default" @click.stop="onOneClickRecyclingBtnClick(item)">
+                  <span>{{ $t('__oneClickRecycling') }}</span>
+                </button>
               </span>
             </div>
             <div class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
@@ -111,6 +132,24 @@
                 <div class="fas yellow">
                   <img src="@/assets/agentManagement/updown.png" style="height: 1.33333rem; width: 1.33333rem;">
                 </div>
+              </span>
+            </div>
+            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center; margin-right: auto;" @click="onModPasswordBtnClick(item)">
+              <span class="value">
+                <span class="key">
+                  <div class="fas yellow">
+                    <img src="@/assets/agentManagement/key.png" style="height: 1.83333rem; width: 1.83333rem;">
+                  </div>
+                </span>
+              </span>
+            </div>
+            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center;" @click="onEditBtnClick(item)">
+              <span class="value">
+                <span class="edit">
+                  <div class="fas yellow">
+                    <img src="@/assets/agentManagement/settings.png" style="height: 1.83333rem; width: 1.83333rem;">
+                  </div>
+                </span>
               </span>
             </div>
             <div class="force-wrap" />
