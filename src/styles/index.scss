@@ -147,6 +147,11 @@ table {
   }
 }
 
+.small, small {
+  font-size: 80%;
+  font-weight: 400;
+}
+
 @media (max-width: 413px) {
   :root {
     font-size: 3.2vw;
@@ -1506,6 +1511,24 @@ table {
           display: flex;
           align-items: center;
         }
+      }
+    }
+  }
+  .custom-psw {
+    .el-input__icon {
+      display: none;
+    }
+    .el-icon-view {
+      display: inline-block;
+    }
+    &.is-error {
+      .has-error {
+        display: inline-block;
+      }
+    }
+    &.is-success {
+      .no-error {
+        display: inline-block;
       }
     }
   }

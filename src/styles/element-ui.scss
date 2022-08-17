@@ -1030,3 +1030,156 @@
     border-bottom: 0.1rem solid #ebeef5;
   }
 }
+
+.el-step {
+  &.is-horizontal {
+    .el-step__line {
+      height: 0.2rem;
+      top: 1.1rem;
+      left: 0;
+      right: 0;
+    }
+  }
+  &:last-of-type.is-flex {
+    -ms-flex-preferred-size: auto!important;
+    flex-basis: auto!important;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    -webkit-box-flex: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+  }
+}
+
+.el-step__line-inner {
+  display: block;
+  border: 0.1rem solid;
+  border-color: inherit;
+  -webkit-transition: .15s ease-out;
+  transition: .15s ease-out;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 0;
+  height: 0;
+}
+
+.el-step__icon {
+  position: relative;
+  z-index: 1;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  font-size: 1.4rem;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #fff;
+  -webkit-transition: .15s ease-out;
+  transition: .15s ease-out;
+  &.is-text {
+    border-radius: 50%;
+    border: 0.2rem solid;
+    border-color: inherit;
+  }
+}
+
+.el-step__title {
+  font-size: 1.6rem;
+  line-height: 3.8rem;
+}
+
+.el-step__description {
+  padding-right: 10%;
+  margin-top: -0.5rem;
+  font-size: 1.2rem;
+  line-height: 2rem;
+  font-weight: 400;
+}
+
+.el-switch {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  position: relative;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  height: 2rem;
+  vertical-align: middle;
+  margin-left: auto;
+  .el-switch__label {
+    &.el-switch__label--left {
+      color: #56ad10;
+    }
+  }
+  * {
+    line-height: 1;
+    font-size: 1.4rem;
+    display: inline-block;
+  }
+  .el-switch__core {
+    width: 4rem !important;
+  }
+}
+
+.el-switch__label {
+  -webkit-transition: .2s;
+  transition: .2s;
+  height: 2rem;
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: 500;
+  cursor: pointer;
+  vertical-align: middle;
+  color: #303133;
+  &.el-switch__label--right {
+    color: #ff473d;
+  }
+}
+
+.el-switch__label--left {
+  margin-right: 1rem;
+}
+
+.el-switch__label--right {
+  margin-left: 1rem;
+}
+
+.el-switch__core {
+  margin: 0;
+  display: inline-block;
+  position: relative;
+  width: 4rem;
+  height: 2rem;
+  border: 0.1rem solid #dcdfe6;
+  outline: none;
+  border-radius: 1rem;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #dcdfe6;
+  cursor: pointer;
+  -webkit-transition: border-color .3s,background-color .3s;
+  transition: border-color .3s,background-color .3s;
+  vertical-align: middle;
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0.1rem;
+    left: 0.1rem;
+    border-radius: 100%;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    width: 1.6rem;
+    height: 1.6rem;
+    background-color: #fff;
+  }
+}

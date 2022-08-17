@@ -13,12 +13,12 @@
                     <div class="el-form-item__content">
                       <div class="value-group">
                         <div class="el-input el-input--small el-input--suffix">
-                          <input ref="userPassword" v-model="form.userPassword" :type="userPasswordType" autocomplete="off" :placeholder="`${$t('__operator')}${$t('__password')}`" class="el-input__inner" @focus="passwordFocus" @change="passwordChange">
-                          <span class="el-input__suffix" @click="showUserPasswordType">
+                          <input v-model="form.userPassword" :type="userPasswordType" autocomplete="off" :placeholder="`${$t('__operator')}${$t('__password')}`" class="el-input__inner" @focus="passwordFocus" @blur="passwordChange" @change="passwordChange">
+                          <span class="el-input__suffix">
                             <span class="el-input__suffix-inner">
-                              <i class="el-input__icon el-icon-error has-error" :class="{'el-input__validateIcon': hasError}" />
-                              <i class="el-input__icon el-icon-success no-error" :class="{'el-input__validateIcon': isSuccess}" />
-                              <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': userPasswordType!=='password'}" />
+                              <i class="el-input__icon el-icon-error el-input__validateIcon has-error" />
+                              <i class="el-input__icon el-icon-success el-input__validateIcon no-error" />
+                              <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': userPasswordType!=='password'}" @click="showUserPasswordType" />
                             </span>
                           </span>
                         </div>
@@ -116,6 +116,7 @@ export default {
   },
   watch: {
     visible() {
+      console.log(123)
       if (!this.visible) {
         this.userPasswordType = 'password'
         this.hasError = false
@@ -131,6 +132,7 @@ export default {
       } else {
         this.isSuccess = false
         this.hasError = true
+        this.errorTip = this.$t('__pleaseCheckFormContent')
       }
     },
     passwordFocus() {
@@ -143,9 +145,6 @@ export default {
       } else {
         this.userPasswordType = 'password'
       }
-      this.$nextTick(() => {
-        this.$refs.userPassword.focus()
-      })
     },
     onSubmit() {
       if (!this.form.userPassword) {

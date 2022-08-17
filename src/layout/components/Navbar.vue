@@ -37,7 +37,7 @@
           </div>
         </div>
         <div v-if="$route.path !== '/home'" class="page-name ml-auto">
-          <div class="left d-none">
+          <div class="left">
             <div class="inner clickable text-center">
               <div class="fas help black">
                 <svg
@@ -56,7 +56,7 @@
               </span>
             </div>
           </div>
-          <div class="left">
+          <div class="left d-none">
             <div class="inner">
               <div class="fas help black text-center">
                 <span class="strong text" :class="{'zh_ch': curLang === 'zh_cht' || curLang === 'zh_chs'}">
