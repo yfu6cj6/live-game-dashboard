@@ -1,402 +1,404 @@
 <template>
-  <div class="agent-list">
+  <div>
     <div class="agent-list">
-      <div>
-        <div
-          v-for="(item, index) in tableData"
-          :key="index"
-          class="list-row"
-        >
-          <div class="force-wrap" />
-          <div class="list-item index">
-            <span class="value">{{ (index+1) }}</span>
-          </div>
-          <div class="list-item" style="width: 70%;">
-            <span class="value" style="display: flex; word-break: break-all; padding-bottom: 0.75rem;">
-              <div>
-                <svg-icon class="fas gray-deep" icon-class="user" style="height: 1.25rem; width: 1.25rem;" />
-              </div>
-              <div class="item-inner">
-                <span>
-                  <div class="text-link text-golden pl-1 pb-1">{{ item.name }}</div>
-                </span>
-                <span />
-                <span>
-                  <div>{{ `${$t('__nickname')} : ${item.nick_name}` }}</div>
-                </span>
-              </div>
-            </span>
-          </div>
-          <div class="list-item state" style="width: auto; margin-left: auto;">
-            <span class="value">
-              <span>
+      <div class="agent-list">
+        <div>
+          <div
+            v-for="(item, index) in tableData"
+            :key="index"
+            class="list-row"
+          >
+            <div class="force-wrap" />
+            <div class="list-item index">
+              <span class="value">{{ (index+1) }}</span>
+            </div>
+            <div class="list-item" style="width: 70%;">
+              <span class="value" style="display: flex; word-break: break-all; padding-bottom: 0.75rem;">
+                <div>
+                  <svg-icon class="fas gray-deep" icon-class="user" style="height: 1.25rem; width: 1.25rem;" />
+                </div>
                 <div class="item-inner">
-                  <span class="fas">
-                    <svg-icon :icon-class="item.status === '1' ? 'enable' : 'disable'" :class="{'green': item.status === '1', 'red': item.status !== '1'}" style="height: 1.25rem; width: 1.25rem;" />
+                  <span>
+                    <div class="text-link text-golden pl-1 pb-1">{{ item.name }}</div>
+                  </span>
+                  <span />
+                  <span>
+                    <div>{{ `${$t('__nickname')} : ${item.nick_name}` }}</div>
                   </span>
                 </div>
-                <div class="item-inner mt-2" :class="{'text-green': item.status === '1', 'text-red': item.status !== '1'}">{{ item.status === '1' ? $t('__enabled') : $t('__disabled') }}</div>
               </span>
-            </span>
-          </div>
-          <div class="force-wrap" />
-          <div class="list-item" style="width: 50%; margin-left: 2.5rem; display: flex; align-items: center;">
-            <span class="value" style="display: flex; align-items: center;">
-              <div class="fas">
-                <svg-icon icon-class="coin" class="gray-deep" style="height: 1.08333rem; width: 1.08333rem;" />
-              </div>
-              <span>
-                <span class="font-weight-bold ml-1">{{ item.balance }}</span>
-              </span>
-            </span>
-          </div>
-          <div class="list-item ctrl">
-            <div class="item-inner">
-              <div :class="{'d-none': item.open}" @click.stop="remarkExpand(item)">
-                <svg-icon class="fas gray-deep" icon-class="more" style="height: 2rem; width: 2rem; margin-right: 0.5rem" />
-              </div>
-              <div :class="{'d-none': !item.open}" @click.stop="remarkExpand(item)">
-                <svg-icon class="fas gray-deep" icon-class="up" style="height: 2rem; width: 2rem;" />
-              </div>
             </div>
-          </div>
-          <div class="force-wrap" />
-          <div v-if="item.open" class="agent-list-detail">
-            <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
-              <span class="value">
-                <span class="solid-circle">
-                  <div class="fas">
-                    <svg-icon class="black" icon-class="top" style="height: 1.5rem; width: 1.5rem;" />
-                  </div>
-                </span>
-              </span>
-            </div> -->
-            <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+            <div class="list-item state" style="width: auto; margin-left: auto;">
               <span class="value">
                 <span>
-                  <span class="v-line d-block" />
+                  <div class="item-inner">
+                    <span class="fas">
+                      <svg-icon :icon-class="item.status === '1' ? 'enable' : 'disable'" :class="{'text-green': item.status === '1', 'text-red': item.status !== '1'}" style="height: 1.25rem; width: 1.25rem;" />
+                    </span>
+                  </div>
+                  <div class="item-inner mt-2" :class="{'text-green': item.status === '1', 'text-red': item.status !== '1'}">{{ item.status === '1' ? $t('__enabled') : $t('__disabled') }}</div>
                 </span>
-              </span>
-            </div> -->
-            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
-              <span class="value">
-                <button class="el-button bg-yellow el-button--default" @click.stop="onDepositBtnClick(item)">
-                  <span>{{ $t('__deposit') }}</span>
-                </button>
-              </span>
-            </div>
-            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
-              <span class="value">
-                <button class="el-button bg-yellow video el-button--default" @click.stop="onWithdrawBtnClick(item)">
-                  <span>{{ $t('__withdraw') }}</span>
-                </button>
-              </span>
-            </div>
-            <div v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
-              <span class="value">
-                <button class="el-button bg-yellow video el-button--default" @click.stop="onOneClickRecyclingBtnClick(item)">
-                  <span>{{ $t('__oneClickRecycling') }}</span>
-                </button>
               </span>
             </div>
             <div class="force-wrap" />
-            <div class="list-item" style="width: auto; flex-wrap: wrap; margin: 1rem auto 1.5rem 0px;">
-              <span class="label mr-2">{{ $t('__handicapLimit') }}</span>
-              <span class="value handicap text-yellow" @click.stop="onLimitBtnClick(item.handicaps)">
-                <span class="h-t">{{ item.handicaps_info }}</span>
-              </span>
-              <span class="label ml-2">
-                <div class="fas yellow">
-                  <img src="@/assets/agentManagement/updown.png" style="height: 1.33333rem; width: 1.33333rem;">
+            <div class="list-item" style="width: 50%; margin-left: 2.5rem; display: flex; align-items: center;">
+              <span class="value" style="display: flex; align-items: center;">
+                <div class="fas">
+                  <svg-icon icon-class="coin" class="gray-deep" style="height: 1.08333rem; width: 1.08333rem;" />
                 </div>
-              </span>
-            </div>
-            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center; margin-right: auto;" @click="onModPasswordBtnClick(item)">
-              <span class="value">
-                <span class="key">
-                  <div class="fas yellow">
-                    <img src="@/assets/agentManagement/key.png" style="height: 1.83333rem; width: 1.83333rem;">
-                  </div>
+                <span>
+                  <span class="font-weight-bold ml-1">{{ item.balance }}</span>
                 </span>
               </span>
             </div>
-            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center;" @click="onEditBtnClick(item)">
-              <span class="value">
-                <span class="edit">
-                  <div class="fas yellow">
-                    <img src="@/assets/agentManagement/settings.png" style="height: 1.83333rem; width: 1.83333rem;">
-                  </div>
-                </span>
-              </span>
+            <div class="list-item ctrl">
+              <div class="item-inner">
+                <div :class="{'d-none': item.open}" @click.stop="remarkExpand(item)">
+                  <svg-icon class="fas gray-deep" icon-class="more" style="height: 2rem; width: 2rem; margin-right: 0.5rem" />
+                </div>
+                <div :class="{'d-none': !item.open}" @click.stop="remarkExpand(item)">
+                  <svg-icon class="fas gray-deep" icon-class="up" style="height: 2rem; width: 2rem;" />
+                </div>
+              </div>
             </div>
-            <div class="list-item" style="width: 100%;">
-              <span class="value gameHall" style="width: 100%;">
-                <div class="hall-row first">
-                  <div class="w-100 hall-title">
-                    <div class="hall-item">
-                      <span class="value">{{ `${$t('__liveGame')} ` }}</span>
+            <div class="force-wrap" />
+            <div v-if="item.open" class="agent-list-detail">
+              <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <span class="solid-circle">
+                    <div class="fas">
+                      <svg-icon class="black" icon-class="top" style="height: 1.5rem; width: 1.5rem;" />
                     </div>
+                  </span>
+                </span>
+              </div> -->
+              <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <span>
+                    <span class="v-line d-block" />
+                  </span>
+                </span>
+              </div> -->
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <button class="el-button bg-yellow el-button--default" @click.stop="onDepositBtnClick(item)">
+                    <span>{{ $t('__deposit') }}</span>
+                  </button>
+                </span>
+              </div>
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <button class="el-button bg-yellow video el-button--default" @click.stop="onWithdrawBtnClick(item)">
+                    <span>{{ $t('__withdraw') }}</span>
+                  </button>
+                </span>
+              </div>
+              <div v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <button class="el-button bg-yellow video el-button--default" @click.stop="onOneClickRecyclingBtnClick(item)">
+                    <span>{{ $t('__oneClickRecycling') }}</span>
+                  </button>
+                </span>
+              </div>
+              <div class="force-wrap" />
+              <div class="list-item" style="width: auto; flex-wrap: wrap; margin: 1rem auto 1.5rem 0px;">
+                <span class="label mr-2">{{ $t('__handicapLimit') }}</span>
+                <span class="value handicap text-yellow" @click.stop="onLimitBtnClick(item.handicaps)">
+                  <span class="h-t">{{ item.handicaps_info }}</span>
+                </span>
+                <span class="label ml-2">
+                  <div class="fas yellow">
+                    <img src="@/assets/agentManagement/updown.png" style="height: 1.33333rem; width: 1.33333rem;">
                   </div>
-                  <div class="w-100 hall-content">
-                    <div class="d-flex">
-                      <div class="hall-item w-50">
-                        <span class="label">{{ `${$t('__rollingRate')}%` }}</span>
-                        <span class="value">
-                          <span>{{ item.live_rolling_rate }}%</span>
-                        </span>
+                </span>
+              </div>
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center; margin-right: auto;" @click="onModPasswordBtnClick(item)">
+                <span class="value">
+                  <span class="key">
+                    <div class="fas yellow">
+                      <img src="@/assets/agentManagement/key.png" style="height: 1.83333rem; width: 1.83333rem;">
+                    </div>
+                  </span>
+                </span>
+              </div>
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center;" @click="onEditBtnClick(item)">
+                <span class="value">
+                  <span class="edit">
+                    <div class="fas yellow">
+                      <img src="@/assets/agentManagement/settings.png" style="height: 1.83333rem; width: 1.83333rem;">
+                    </div>
+                  </span>
+                </span>
+              </div>
+              <div class="list-item" style="width: 100%;">
+                <span class="value gameHall" style="width: 100%;">
+                  <div class="hall-row first">
+                    <div class="w-100 hall-title">
+                      <div class="hall-item">
+                        <span class="value">{{ `${$t('__liveGame')} ` }}</span>
+                      </div>
+                    </div>
+                    <div class="w-100 hall-content">
+                      <div class="d-flex">
+                        <div class="hall-item w-50">
+                          <span class="label">{{ `${$t('__rollingRate')}%` }}</span>
+                          <span class="value">
+                            <span>{{ item.live_rolling_rate }}%</span>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div style="display: none;" />
+                </span>
+              </div>
+              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
+                  <span class="el-checkbox red-tick">
+                    <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin}">
+                      <span class="el-checkbox__inner" />
+                    </span>
+                  </span>
+                  <span class="label">{{ $t('__lockLogin') }}</span>
+                </span>
+              </div>
+              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.debarBet, item)">
+                  <span class="el-checkbox red-tick">
+                    <span class="el-checkbox__input" :class="{'is-disabled': agentInfoBetStatusDisabled, 'is-checked': item.debarBet}">
+                      <span class="el-checkbox__inner" />
+                    </span>
+                  </span>
+                  <span class="label">{{ $t('__debarBet') }}</span>
+                </span>
+              </div>
+              <template v-if="agentInfo.weekly_loss_settlement === '1'">
+                <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                  <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, item)">
+                    <span class="el-checkbox red-tick">
+                      <span class="el-checkbox__input" :class="{'is-checked': item.weeklyLossSettlement}">
+                        <span class="el-checkbox__inner" />
+                      </span>
+                    </span>
+                    <span class="label">{{ $t('__weeklyLossSettlement') }}</span>
+                  </span>
                 </div>
-                <div style="display: none;" />
-              </span>
-            </div>
-            <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
-                <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin}">
-                    <span class="el-checkbox__inner" />
-                  </span>
-                </span>
-                <span class="label">{{ $t('__lockLogin') }}</span>
-              </span>
-            </div>
-            <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.debarBet, item)">
-                <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input" :class="{'is-disabled': agentInfoBetStatusDisabled, 'is-checked': item.debarBet}">
-                    <span class="el-checkbox__inner" />
-                  </span>
-                </span>
-                <span class="label">{{ $t('__debarBet') }}</span>
-              </span>
-            </div>
-            <template v-if="agentInfo.weekly_loss_settlement === '1'">
-              <div class="list-item" style="width: 50%; margin-top: 1rem;">
-                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, item)">
-                  <span class="el-checkbox red-tick">
-                    <span class="el-checkbox__input" :class="{'is-checked': item.weeklyLossSettlement}">
-                      <span class="el-checkbox__inner" />
+              </template>
+              <template v-if="agentInfo.gift_status === '1'">
+                <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                  <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.giftEffect, item)">
+                    <span class="el-checkbox red-tick">
+                      <span class="el-checkbox__input" :class="{'is-checked': item.giftEffect}">
+                        <span class="el-checkbox__inner" />
+                      </span>
                     </span>
+                    <span class="label">{{ $t('__giftEffect') }}</span>
                   </span>
-                  <span class="label">{{ $t('__weeklyLossSettlement') }}</span>
+                </div>
+              </template>
+              <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+                <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__totalValidBetAmount') }}</span>
+                <span class="value">{{ item.total_valid_bet_amount }}</span>
+              </div>
+              <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+                <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__currency') }}</span>
+                <span class="value">{{ item.currency }}</span>
+              </div>
+              <div class="force-wrap" />
+              <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+                <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__maxWinAmountLimit') }}</span>
+                <span class="value">{{ item.max_win_amount_limit }}</span>
+              </div>
+              <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+                <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__maxLoseAmountLimit') }}</span>
+                <span class="value">{{ item.max_lose_amount_limit }}</span>
+              </div>
+              <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+                <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__timeZone') }}</span>
+                <span class="value">{{ item.cityNameLabel }}</span>
+              </div>
+              <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+                <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__totalPayout') }}</span>
+                <span class="value">{{ item.total_payout }}</span>
+              </div>
+              <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+                <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__weekValidBetAmount') }}</span>
+                <span class="value">{{ item.week_valid_bet_amount }}</span>
+              </div>
+              <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
+                <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__weekPayout') }}</span>
+                <span class="value">{{ item.week_payout }}</span>
+              </div>
+              <div class="list-item" style="width: 100%; margin-top: 1rem;">
+                <span class="label" style="width: 50%;">{{ $t('__createdAt') }}</span>
+                <span class="value" style="width: 50%;">{{ item.created_at }}</span>
+              </div>
+              <div class="list-item" style="width: 100%; margin-top: 1rem;">
+                <span class="label" style="width: 50%;">{{ $t('__lastLoginAt') }}</span>
+                <span class="value" style="width: 50%;">{{ item.lastLoginAt }}</span>
+              </div>
+              <div class="list-item" style="width: 100%; margin-top: 1rem;">
+                <span class="label" style="width: 50%;">{{ $t('__lastBetTime') }}</span>
+                <span class="value" style="width: 50%; height: 33px; position: relative;">
+                  <span v-if="!item.lastBetTime">
+                    <button class="el-button bg-yellow el-button--default lastBetTime lastBetTime-38755283" style="position: absolute; top: -6px; left: 0;" @click.stop="onLastBetTime(item)">
+                      <span>{{ $t('__Watch') }}</span>
+                    </button>
+                  </span>
+                  <span v-else>
+                    <span class="value" style="width: 50%;">{{ item.lastBetTime }}</span>
+                  </span>
                 </span>
               </div>
-            </template>
-            <template v-if="agentInfo.gift_status === '1'">
-              <div class="list-item" style="width: 50%; margin-top: 1rem;">
-                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.giftEffect, item)">
-                  <span class="el-checkbox red-tick">
-                    <span class="el-checkbox__input" :class="{'is-checked': item.giftEffect}">
-                      <span class="el-checkbox__inner" />
-                    </span>
-                  </span>
-                  <span class="label">{{ $t('__giftEffect') }}</span>
-                </span>
+              <div class="list-item" style="width: 100%; margin-top: 1rem;">
+                <span class="label">{{ $t('__remark') }}</span>
               </div>
-            </template>
-            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
-              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__totalValidBetAmount') }}</span>
-              <span class="value">{{ item.total_valid_bet_amount }}</span>
-            </div>
-            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
-              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__currency') }}</span>
-              <span class="value">{{ item.currency }}</span>
-            </div>
-            <div class="force-wrap" />
-            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
-              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__maxWinAmountLimit') }}</span>
-              <span class="value">{{ item.max_win_amount_limit }}</span>
-            </div>
-            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
-              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__maxLoseAmountLimit') }}</span>
-              <span class="value">{{ item.max_lose_amount_limit }}</span>
-            </div>
-            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
-              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__timeZone') }}</span>
-              <span class="value">{{ item.cityNameLabel }}</span>
-            </div>
-            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
-              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__totalPayout') }}</span>
-              <span class="value">{{ item.total_payout }}</span>
-            </div>
-            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
-              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__weekValidBetAmount') }}</span>
-              <span class="value">{{ item.week_valid_bet_amount }}</span>
-            </div>
-            <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
-              <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__weekPayout') }}</span>
-              <span class="value">{{ item.week_payout }}</span>
-            </div>
-            <div class="list-item" style="width: 100%; margin-top: 1rem;">
-              <span class="label" style="width: 50%;">{{ $t('__createdAt') }}</span>
-              <span class="value" style="width: 50%;">{{ item.created_at }}</span>
-            </div>
-            <div class="list-item" style="width: 100%; margin-top: 1rem;">
-              <span class="label" style="width: 50%;">{{ $t('__lastLoginAt') }}</span>
-              <span class="value" style="width: 50%;">{{ item.lastLoginAt }}</span>
-            </div>
-            <div class="list-item" style="width: 100%; margin-top: 1rem;">
-              <span class="label" style="width: 50%;">{{ $t('__lastBetTime') }}</span>
-              <span class="value" style="width: 50%; height: 33px; position: relative;">
-                <span v-if="!item.lastBetTime">
-                  <button class="el-button bg-yellow el-button--default lastBetTime lastBetTime-38755283" style="position: absolute; top: -6px; left: 0;" @click.stop="onLastBetTime(item)">
-                    <span>{{ $t('__Watch') }}</span>
-                  </button>
-                </span>
-                <span v-else>
-                  <span class="value" style="width: 50%;">{{ item.lastBetTime }}</span>
-                </span>
-              </span>
-            </div>
-            <div class="list-item" style="width: 100%; margin-top: 1rem;">
-              <span class="label">{{ $t('__remark') }}</span>
-            </div>
-            <div class="list-item" style="width: 100%; margin-top: 1rem;">
-              <span class="value" style="word-break: break-word;">{{ item.remark }}</span>
+              <div class="list-item" style="width: 100%; margin-top: 1rem;">
+                <span class="value" style="word-break: break-word;">{{ item.remark }}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div v-if="totalCount > pageSize" class="text-center p-3">
-        <div v-if="tableData.length >= totalCount">
-          <span>{{ $t("__noMoreInformation") }}</span>
+        <div v-if="totalCount > pageSize" class="text-center p-3">
+          <div v-if="tableData.length >= totalCount">
+            <span>{{ $t("__noMoreInformation") }}</span>
+          </div>
+          <div v-else>
+            <span class="view-more border-bottom border-dark mb-1" @click="moreInfoByClient">{{ $t('__searchMoreValue') }}</span>
+          </div>
         </div>
-        <div v-else>
-          <span class="view-more border-bottom border-dark mb-1" @click="moreInfoByClient">{{ $t('__searchMoreValue') }}</span>
-        </div>
+        <div style="display: none;" />
       </div>
-      <div style="display: none;" />
-      <modPasswordDialog
-        ref="modPasswordDialog"
-        :title="$t('__modPassword')"
-        :visible="curDialogIndex === dialogEnum.modPassword"
-        :confirm="$t('__revise')"
-        :name-label="`${$t('__member')}: `"
-        :form="editForm"
-        @close="closeDialogEven"
-        @modPassword="modPassword"
-      />
-
-      <limitDialog
-        :title="$t('__handicapLimit')"
-        :visible="curDialogIndex === dialogEnum.limit"
-        :handicaps="handicaps"
-        @close="closeDialogEven"
-      />
-
-      <balanceDialog
-        ref="depositBalanceDialog"
-        :title="$t('__depositBalance')"
-        :visible="curDialogIndex === dialogEnum.depositBalance"
-        :confirm="$t('__confirm')"
-        :form="editForm"
-        :operation-type="1"
-        :mode-type="2"
-        @close="closeDialogEven"
-        @depositBalance="depositBalance"
-      />
-
-      <balanceDialog
-        ref="withdrawBalanceDialog"
-        :title="$t('__withdrawBalance')"
-        :visible="curDialogIndex === dialogEnum.withdrawBalance"
-        :confirm="$t('__confirm')"
-        :form="editForm"
-        :operation-type="2"
-        :mode-type="2"
-        @close="closeDialogEven"
-        @withdrawBalance="withdrawBalance"
-      />
-
-      <operateDialog
-        ref="oneClickRecyclingDialog"
-        :visible="curDialogIndex === dialogEnum.oneClickRecycling"
-        :title="$t('__memberOneClickRecyclingMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <memberEditDialog
-        ref="editDialog"
-        :title="$t('__editMember')"
-        :visible="curDialogIndex === dialogEnum.edit"
-        :operation-type="2"
-        :agent-info="agentInfo"
-        :confirm="$t('__revise')"
-        :form="editForm"
-        :step-enum="editStepEnum"
-        @close="closeDialogEven"
-        @editSuccess="handleRespone"
-      />
-
-      <memberEditDialog
-        ref="createDialog"
-        :title="$t('__addMember')"
-        :visible="curDialogIndex === dialogEnum.create"
-        :operation-type="1"
-        :agent-info="agentInfo"
-        :confirm="$t('__confirm')"
-        :form="editForm"
-        :step-enum="editStepEnum"
-        @close="closeDialogEven"
-        @editSuccess="createDialogEditSuccess"
-      />
-
-      <operateDialog
-        ref="lockLoginDialog"
-        :visible="curDialogIndex === dialogEnum.lockLogin"
-        :title="$t('__memberLockLoginMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <operateDialog
-        ref="debarBetDialog"
-        :visible="curDialogIndex === dialogEnum.debarBet"
-        :title="$t('__memberDebarBetMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <operateDialog
-        ref="weeklyLossSettlementDialog"
-        :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
-        :title="$t('__memberWeeklyLossSettlementMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <operateDialog
-        ref="giftEffectDialog"
-        :visible="curDialogIndex === dialogEnum.giftEffect"
-        :title="$t('__memberGiftEffectMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <operateDialog
-        ref="isMuteDialog"
-        :visible="curDialogIndex === dialogEnum.isMute"
-        :title="$t('__memberIsMuteMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <passwordTipDialog
-        :title="$t('__tip')"
-        :visible="curDialogIndex === dialogEnum.passwordTip"
-        :confirm="$t('__confirm')"
-        :form="editForm"
-        @close="closeDialogEven"
-      />
     </div>
+    <modPasswordDialog
+      ref="modPasswordDialog"
+      :title="$t('__modPassword')"
+      :visible="curDialogIndex === dialogEnum.modPassword"
+      :confirm="$t('__revise')"
+      :name-label="`${$t('__member')}: `"
+      :form="editForm"
+      @close="closeDialogEven"
+      @modPassword="modPassword"
+    />
+
+    <limitDialog
+      :title="$t('__handicapLimit')"
+      :visible="curDialogIndex === dialogEnum.limit"
+      :handicaps="handicaps"
+      @close="closeDialogEven"
+    />
+
+    <balanceDialog
+      ref="depositBalanceDialog"
+      :title="$t('__depositBalance')"
+      :visible="curDialogIndex === dialogEnum.depositBalance"
+      :confirm="$t('__confirm')"
+      :form="editForm"
+      :operation-type="1"
+      :mode-type="2"
+      @close="closeDialogEven"
+      @depositBalance="depositBalance"
+    />
+
+    <balanceDialog
+      ref="withdrawBalanceDialog"
+      :title="$t('__withdrawBalance')"
+      :visible="curDialogIndex === dialogEnum.withdrawBalance"
+      :confirm="$t('__confirm')"
+      :form="editForm"
+      :operation-type="2"
+      :mode-type="2"
+      @close="closeDialogEven"
+      @withdrawBalance="withdrawBalance"
+    />
+
+    <operateDialog
+      ref="oneClickRecyclingDialog"
+      :visible="curDialogIndex === dialogEnum.oneClickRecycling"
+      :title="$t('__memberOneClickRecyclingMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <memberEditDialog
+      ref="editDialog"
+      :title="$t('__editMember')"
+      :visible="curDialogIndex === dialogEnum.edit"
+      :operation-type="2"
+      :agent-info="agentInfo"
+      :confirm="$t('__revise')"
+      :form="editForm"
+      :step-enum="editStepEnum"
+      @close="closeDialogEven"
+      @editSuccess="handleRespone"
+    />
+
+    <memberEditDialog
+      ref="createDialog"
+      :title="$t('__addMember')"
+      :visible="curDialogIndex === dialogEnum.create"
+      :operation-type="1"
+      :agent-info="agentInfo"
+      :confirm="$t('__confirm')"
+      :form="editForm"
+      :step-enum="editStepEnum"
+      @close="closeDialogEven"
+      @editSuccess="createDialogEditSuccess"
+    />
+
+    <operateDialog
+      ref="lockLoginDialog"
+      :visible="curDialogIndex === dialogEnum.lockLogin"
+      :title="$t('__memberLockLoginMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="debarBetDialog"
+      :visible="curDialogIndex === dialogEnum.debarBet"
+      :title="$t('__memberDebarBetMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="weeklyLossSettlementDialog"
+      :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
+      :title="$t('__memberWeeklyLossSettlementMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="giftEffectDialog"
+      :visible="curDialogIndex === dialogEnum.giftEffect"
+      :title="$t('__memberGiftEffectMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="isMuteDialog"
+      :visible="curDialogIndex === dialogEnum.isMute"
+      :title="$t('__memberIsMuteMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <passwordTipDialog
+      :title="$t('__tip')"
+      :visible="curDialogIndex === dialogEnum.passwordTip"
+      :confirm="$t('__confirm')"
+      :form="editForm"
+      @close="closeDialogEven"
+    />
   </div>
 </template>
 

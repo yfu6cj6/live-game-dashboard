@@ -1618,7 +1618,12 @@ table {
       .has-error {
         display: inline-block;
       }
-    } 
+    }
+    &.is-success {
+      .no-error {
+        display: inline-block;
+      }
+    }
   }
 }
 

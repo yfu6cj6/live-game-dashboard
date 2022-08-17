@@ -1,433 +1,435 @@
 <template>
-  <div class="agent-list">
+  <div>
     <div class="agent-list">
-      <div>
-        <div
-          v-for="(item, index) in tableData"
-          :key="index"
-          class="list-row"
-        >
-          <div class="force-wrap" />
-          <div class="list-item index">
-            <span class="value">{{ (index+1) }}</span>
-          </div>
-          <div class="list-item" style="width: 50%;">
-            <span class="value" style="display: flex; word-break: break-all; padding-bottom: 0.75rem;">
-              <div class="fas gray-deep">
-                <svg-icon style="height: 1.25rem; width: 1.25rem;" icon-class="user" />
-              </div>
-              <div class="item-inner">
+      <div class="agent-list">
+        <div>
+          <div
+            v-for="(item, index) in tableData"
+            :key="index"
+            class="list-row"
+          >
+            <div class="force-wrap" />
+            <div class="list-item index">
+              <span class="value">{{ (index+1) }}</span>
+            </div>
+            <div class="list-item" style="width: 50%;">
+              <span class="value" style="display: flex; word-break: break-all; padding-bottom: 0.75rem;">
+                <div class="fas gray-deep">
+                  <svg-icon style="height: 1.25rem; width: 1.25rem;" icon-class="user" />
+                </div>
+                <div class="item-inner">
+                  <span>
+                    <router-link :to="`/agentManagement/agentManagement/${item.id}`">
+                      <div class="text-link text-underline text-golden pl-1 pb-1">{{ item.account }}</div>
+                    </router-link>
+                  </span>
+                  <span>
+                    <div class="tag-name">{{ `(${$t('__nickname')}: ${item.nickname})` }}</div>
+                  </span>
+                </div>
+              </span>
+            </div>
+            <div class="list-item share" style="width: 22%; margin-left: auto;">
+              <span class="value">
                 <span>
-                  <router-link :to="`/agentManagement/agentManagement/${item.id}`">
-                    <div class="text-link text-underline text-golden pl-1 pb-1">{{ item.account }}</div>
+                  <div class="two-row-items">
+                    <div class="items-value mb-0">{{ `${ item.live_commission_rate }%` }}</div>
+                    <div class="items-label mt-2">{{ `${$t('__liveGame')}${$t('__rate')}` }}</div>
+                  </div>
+                </span>
+              </span>
+            </div>
+            <div class="list-item state" style="width: 15%; margin-left: 0.5rem;">
+              <span class="value">
+                <span>
+                  <div class="item-inner">
+                    <span class="fas">
+                      <svg-icon :icon-class="item.lockLogin ? 'disable' : 'enable'" :class="{'text-red': item.lockLogin, 'text-green': !item.lockLogin}" style="height: 1.25rem; width: 1.25rem;" />
+                    </span>
+                  </div>
+                  <div class="item-inner mt-2" :class="{'text-red':item.lockLogin, 'text-green':!item.lockLogin}">{{ item.lockLoginLabel }}</div>
+                </span>
+              </span>
+            </div>
+            <div class="force-wrap" />
+            <div class="list-item" style="width: 100%; margin-left: 2.5rem; display: flex; align-items: center;">
+              <div class="two-row-items credit">
+                <div class="items-label text-left mt-1">
+                  <span class="label w-100">
+                    {{ ` ${$t('__balance')} ` }}
+                    <div class="items-label-icon">
+                      <svg-icon icon-class="coin" class="fas  gray-deep" style="height: 1.08333rem; width: 1.08333rem;" />
+                    </div>
+                    {{ item.balance }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="list-item ctrl">
+              <div class="item-inner">
+                <div :class="{'d-none': item.open}" @click.stop="remarkExpand(item)">
+                  <svg-icon class="fas gray-deep" icon-class="more" style="height: 2rem; width: 2rem;" />
+                </div>
+                <div :class="{'d-none': !item.open}" @click.stop="remarkExpand(item)">
+                  <svg-icon class="fas gray-deep" icon-class="up" style="height: 2rem; width: 2rem;" />
+                </div>
+              </div>
+            </div>
+            <div class="force-wrap" />
+            <div v-if="item.open" class="agent-list-detail">
+              <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <span class="solid-circle">
+                    <div class="fas black">
+                      <svg-icon icon-class="top" style="height: 1.5rem; width: 1.5rem;" />
+                    </div>
+                  </span>
+                </span>
+              </div> -->
+              <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <span>
+                    <span class="v-line d-block" />
+                  </span>
+                </span>
+              </div> -->
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <button class="el-button bg-yellow el-button--default" @click.stop="onDepositBtnClick(item)">
+                    <span>{{ $t('__deposit') }}</span>
+                  </button>
+                </span>
+              </div>
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <button class="el-button bg-yellow el-button--default" @click.stop="onWithdrawBtnClick(item)">
+                    <span>{{ $t('__withdraw') }}</span>
+                  </button>
+                </span>
+              </div>
+              <div v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <button class="el-button bg-yellow el-button--default" @click.stop="onOneClickRecyclingBtnClick(item)">
+                    <span>{{ $t('__oneClickRecycling') }}</span>
+                  </button>
+                </span>
+              </div>
+              <div class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                <span class="value">
+                  <router-link :to="`/winLossReport/winLossReport/${item.id}`">
+                    <button class="el-button bg-yellow el-button--default">
+                      <span>{{ $t('__winLossReport') }}</span>
+                    </button>
                   </router-link>
                 </span>
-                <span>
-                  <div class="tag-name">{{ `(${$t('__nickname')}: ${item.nickname})` }}</div>
-                </span>
               </div>
-            </span>
-          </div>
-          <div class="list-item share" style="width: 22%; margin-left: auto;">
-            <span class="value">
-              <span>
-                <div class="two-row-items">
-                  <div class="items-value mb-0">{{ `${ item.live_commission_rate }%` }}</div>
-                  <div class="items-label mt-2">{{ `${$t('__liveGame')}${$t('__rate')}` }}</div>
-                </div>
-              </span>
-            </span>
-          </div>
-          <div class="list-item state" style="width: 15%; margin-left: 0.5rem;">
-            <span class="value">
-              <span>
-                <div class="item-inner">
-                  <span class="fas">
-                    <svg-icon :icon-class="item.lockLogin ? 'disable' : 'enable'" :class="{'text-red': item.lockLogin, 'text-green': !item.lockLogin}" style="height: 1.25rem; width: 1.25rem;" />
-                  </span>
-                </div>
-                <div class="item-inner mt-2" :class="{'text-red':item.lockLogin, 'text-green':!item.lockLogin}">{{ item.lockLoginLabel }}</div>
-              </span>
-            </span>
-          </div>
-          <div class="force-wrap" />
-          <div class="list-item" style="width: 100%; margin-left: 2.5rem; display: flex; align-items: center;">
-            <div class="two-row-items credit">
-              <div class="items-label text-left mt-1">
-                <span class="label w-100">
-                  {{ ` ${$t('__balance')} ` }}
-                  <div class="items-label-icon">
-                    <svg-icon icon-class="coin" class="fas  gray-deep" style="height: 1.08333rem; width: 1.08333rem;" />
-                  </div>
-                  {{ item.balance }}
+              <div class="force-wrap" />
+              <div class="list-item" style="width: auto; flex-wrap: wrap; align-self: center; margin: 1rem auto 1.5rem 0px;">
+                <span class="label mr-2">{{ `${$t('__handicapLimit')}:` }}</span>
+                <span class="value handicap text-yellow" @click.stop="onLimitBtnClick(item.handicaps)">
+                  <span class="h-t">{{ item.handicaps_info }}</span>
                 </span>
-              </div>
-            </div>
-          </div>
-          <div class="list-item ctrl">
-            <div class="item-inner">
-              <div :class="{'d-none': item.open}" @click.stop="remarkExpand(item)">
-                <svg-icon class="fas gray-deep" icon-class="more" style="height: 2rem; width: 2rem;" />
-              </div>
-              <div :class="{'d-none': !item.open}" @click.stop="remarkExpand(item)">
-                <svg-icon class="fas gray-deep" icon-class="up" style="height: 2rem; width: 2rem;" />
-              </div>
-            </div>
-          </div>
-          <div class="force-wrap" />
-          <div v-if="item.open" class="agent-list-detail">
-            <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
-              <span class="value">
-                <span class="solid-circle">
-                  <div class="fas black">
-                    <svg-icon icon-class="top" style="height: 1.5rem; width: 1.5rem;" />
-                  </div>
-                </span>
-              </span>
-            </div> -->
-            <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
-              <span class="value">
-                <span>
-                  <span class="v-line d-block" />
-                </span>
-              </span>
-            </div> -->
-            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
-              <span class="value">
-                <button class="el-button bg-yellow el-button--default" @click.stop="onDepositBtnClick(item)">
-                  <span>{{ $t('__deposit') }}</span>
-                </button>
-              </span>
-            </div>
-            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
-              <span class="value">
-                <button class="el-button bg-yellow el-button--default" @click.stop="onWithdrawBtnClick(item)">
-                  <span>{{ $t('__withdraw') }}</span>
-                </button>
-              </span>
-            </div>
-            <div v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
-              <span class="value">
-                <button class="el-button bg-yellow el-button--default" @click.stop="onOneClickRecyclingBtnClick(item)">
-                  <span>{{ $t('__oneClickRecycling') }}</span>
-                </button>
-              </span>
-            </div>
-            <div class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
-              <span class="value">
-                <router-link :to="`/winLossReport/winLossReport/${item.id}`">
-                  <button class="el-button bg-yellow el-button--default">
-                    <span>{{ $t('__winLossReport') }}</span>
-                  </button>
-                </router-link>
-              </span>
-            </div>
-            <div class="force-wrap" />
-            <div class="list-item" style="width: auto; flex-wrap: wrap; align-self: center; margin: 1rem auto 1.5rem 0px;">
-              <span class="label mr-2">{{ `${$t('__handicapLimit')}:` }}</span>
-              <span class="value handicap text-yellow" @click.stop="onLimitBtnClick(item.handicaps)">
-                <span class="h-t">{{ item.handicaps_info }}</span>
-              </span>
-              <span class="label ml-2">
-                <div class="fas yellow">
-                  <img src="@/assets/agentManagement/updown.png" style="height: 1.33333rem; width: 1.33333rem;">
-                </div>
-              </span>
-            </div>
-            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center; margin-right: auto;" @click="onModPasswordBtnClick(item)">
-              <span class="value">
-                <span class="key">
+                <span class="label ml-2">
                   <div class="fas yellow">
-                    <img src="@/assets/agentManagement/key.png" style="height: 1.83333rem; width: 1.83333rem;">
+                    <img src="@/assets/agentManagement/updown.png" style="height: 1.33333rem; width: 1.33333rem;">
                   </div>
                 </span>
-              </span>
-            </div>
-            <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center;" @click="onEditBtnClick(item)">
-              <span class="value">
-                <span class="edit">
-                  <div class="fas yellow">
-                    <img src="@/assets/agentManagement/settings.png" style="height: 1.83333rem; width: 1.83333rem;">
-                  </div>
-                </span>
-              </span>
-            </div>
-            <div class="force-wrap" />
-            <div class="list-item" style="width: auto; padding-right: 2rem;">
-              <span class="label" style="width: auto; padding-bottom: 0.5rem; padding-right: 1rem;">{{ $t('__level') }}</span>
-              <span class="value">{{ ` ${$t('__agent')} ` }}</span>
-            </div>
-            <div class="list-item" style="width: 100%;">
-              <span class="value gameHall" style="width: 100%;">
-                <div class="hall-row first">
-                  <div class="w-100 hall-title">
-                    <div class="hall-item">
-                      <span class="value">{{ $t('__liveGame') }}</span>
+              </div>
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center; margin-right: auto;" @click="onModPasswordBtnClick(item)">
+                <span class="value">
+                  <span class="key">
+                    <div class="fas yellow">
+                      <img src="@/assets/agentManagement/key.png" style="height: 1.83333rem; width: 1.83333rem;">
                     </div>
-                  </div>
-                  <div class="w-100 hall-content">
-                    <div class="d-flex">
-                      <div class="hall-item w-50">
-                        <span class="label">{{ `${$t('__rate')}% ` }}</span>
-                        <span class="value">{{ `${item.live_commission_rate}%` }}</span>
-                        <div class="fas yellow" @click.stop="onCommissionRateLogBtnClick(item)">
-                          <img src="@/assets/agentManagement/share.png" style="height: 1.5rem; width: 1.5rem;">
-                        </div>
+                  </span>
+                </span>
+              </div>
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem; align-self: center;" @click="onEditBtnClick(item)">
+                <span class="value">
+                  <span class="edit">
+                    <div class="fas yellow">
+                      <img src="@/assets/agentManagement/settings.png" style="height: 1.83333rem; width: 1.83333rem;">
+                    </div>
+                  </span>
+                </span>
+              </div>
+              <div class="force-wrap" />
+              <div class="list-item" style="width: auto; padding-right: 2rem;">
+                <span class="label" style="width: auto; padding-bottom: 0.5rem; padding-right: 1rem;">{{ $t('__level') }}</span>
+                <span class="value">{{ ` ${$t('__agent')} ` }}</span>
+              </div>
+              <div class="list-item" style="width: 100%;">
+                <span class="value gameHall" style="width: 100%;">
+                  <div class="hall-row first">
+                    <div class="w-100 hall-title">
+                      <div class="hall-item">
+                        <span class="value">{{ $t('__liveGame') }}</span>
                       </div>
-                      <div class="hall-item w-50">
-                        <span class="label">{{ `${$t('__rollingRate')}% ` }}</span>
-                        <span class="value">{{ `${item.live_rolling_rate}%` }}</span>
-                        <div class="fas yellow" @click.stop="onRollingRateLogBtnClick(item)">
-                          <img src="@/assets/agentManagement/rollCoin.png" style="height: 1.5rem; width: 1.5rem;">
+                    </div>
+                    <div class="w-100 hall-content">
+                      <div class="d-flex">
+                        <div class="hall-item w-50">
+                          <span class="label">{{ `${$t('__rate')}% ` }}</span>
+                          <span class="value">{{ `${item.live_commission_rate}%` }}</span>
+                          <div class="fas yellow" @click.stop="onCommissionRateLogBtnClick(item)">
+                            <img src="@/assets/agentManagement/share.png" style="height: 1.5rem; width: 1.5rem;">
+                          </div>
+                        </div>
+                        <div class="hall-item w-50">
+                          <span class="label">{{ `${$t('__rollingRate')}% ` }}</span>
+                          <span class="value">{{ `${item.live_rolling_rate}%` }}</span>
+                          <div class="fas yellow" @click.stop="onRollingRateLogBtnClick(item)">
+                            <img src="@/assets/agentManagement/rollCoin.png" style="height: 1.5rem; width: 1.5rem;">
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div style="display: none;" />
-              </span>
-            </div>
-            <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.totallyDisabled, item)">
-                <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input" :class="{'is-disabled': agentInfoTotallyDisabled, 'is-checked': item.totallyDisabled}">
-                    <span class="el-checkbox__inner" />
-                  </span>
+                  <div style="display: none;" />
                 </span>
-                <span class="label">{{ $t('__totallyDisabled') }}</span>
-              </span>
-            </div>
-            <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.debarBet, item)">
-                <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input" :class="{'is-disabled': agentInfoBetStatusDisabled, 'is-checked': item.debarBet}">
-                    <span class="el-checkbox__inner" />
+              </div>
+              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.totallyDisabled, item)">
+                  <span class="el-checkbox red-tick">
+                    <span class="el-checkbox__input" :class="{'is-disabled': agentInfoTotallyDisabled, 'is-checked': item.totallyDisabled}">
+                      <span class="el-checkbox__inner" />
+                    </span>
                   </span>
+                  <span class="label">{{ $t('__totallyDisabled') }}</span>
                 </span>
-                <span class="label">{{ $t('__debarBet') }}</span>
-              </span>
-            </div>
-            <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
-                <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin}">
-                    <span class="el-checkbox__inner" />
+              </div>
+              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.debarBet, item)">
+                  <span class="el-checkbox red-tick">
+                    <span class="el-checkbox__input" :class="{'is-disabled': agentInfoBetStatusDisabled, 'is-checked': item.debarBet}">
+                      <span class="el-checkbox__inner" />
+                    </span>
                   </span>
+                  <span class="label">{{ $t('__debarBet') }}</span>
                 </span>
-                <span class="label">{{ $t('__lockLogin') }}</span>
-              </span>
-            </div>
-            <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, item)">
-                <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input" :class="{'is-checked': item.weeklyLossSettlement}">
-                    <span class="el-checkbox__inner" />
+              </div>
+              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
+                  <span class="el-checkbox red-tick">
+                    <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin}">
+                      <span class="el-checkbox__inner" />
+                    </span>
                   </span>
+                  <span class="label">{{ $t('__lockLogin') }}</span>
                 </span>
-                <span class="label">{{ $t('__weeklyLossSettlement') }}</span>
-              </span>
-            </div>
-            <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.oneClickRecycling, item)">
-                <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input" :class="{'is-checked': item.oneClickRecycling}">
-                    <span class="el-checkbox__inner" />
+              </div>
+              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, item)">
+                  <span class="el-checkbox red-tick">
+                    <span class="el-checkbox__input" :class="{'is-checked': item.weeklyLossSettlement}">
+                      <span class="el-checkbox__inner" />
+                    </span>
                   </span>
+                  <span class="label">{{ $t('__weeklyLossSettlement') }}</span>
                 </span>
-                <span class="label">{{ $t('__oneClickRecycling') }}</span>
-              </span>
-            </div>
-            <div class="list-item" style="width: 50%; margin-top: 1rem;">
-              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.giftEffect, item)">
-                <span class="el-checkbox red-tick">
-                  <span class="el-checkbox__input" :class="{'is-checked': item.giftEffect}">
-                    <span class="el-checkbox__inner" />
+              </div>
+              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.oneClickRecycling, item)">
+                  <span class="el-checkbox red-tick">
+                    <span class="el-checkbox__input" :class="{'is-checked': item.oneClickRecycling}">
+                      <span class="el-checkbox__inner" />
+                    </span>
                   </span>
+                  <span class="label">{{ $t('__oneClickRecycling') }}</span>
                 </span>
-                <span class="label">{{ $t('__giftEffect') }}</span>
-              </span>
-            </div>
-            <div class="list-item" style="width: 100%; margin-top: 1rem;">
-              <span class="label" style="width: 50%;">{{ $t('__createdAt') }}</span>
-              <span class="value" style="width: 50%;">{{ item.created_at }}</span>
-            </div>
-            <div class="list-item" style="width: 100%; margin-top: 1rem;">
-              <span class="label" style="width: 50%;">{{ $t('__lastLoginAt') }}</span>
-              <span class="value" style="width: 50%;">{{ item.lastLoginAt }}</span>
-            </div>
-            <div class="list-item" style="width: 100%; margin-top: 1rem;">
-              <span class="label">{{ $t('__remark') }}</span>
-            </div>
-            <div class="list-item" style="width: 100%; margin-top: 1rem;">
-              <span class="value" style="word-break: break-word;">{{ item.remark }}</span>
+              </div>
+              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.giftEffect, item)">
+                  <span class="el-checkbox red-tick">
+                    <span class="el-checkbox__input" :class="{'is-checked': item.giftEffect}">
+                      <span class="el-checkbox__inner" />
+                    </span>
+                  </span>
+                  <span class="label">{{ $t('__giftEffect') }}</span>
+                </span>
+              </div>
+              <div class="list-item" style="width: 100%; margin-top: 1rem;">
+                <span class="label" style="width: 50%;">{{ $t('__createdAt') }}</span>
+                <span class="value" style="width: 50%;">{{ item.created_at }}</span>
+              </div>
+              <div class="list-item" style="width: 100%; margin-top: 1rem;">
+                <span class="label" style="width: 50%;">{{ $t('__lastLoginAt') }}</span>
+                <span class="value" style="width: 50%;">{{ item.lastLoginAt }}</span>
+              </div>
+              <div class="list-item" style="width: 100%; margin-top: 1rem;">
+                <span class="label">{{ $t('__remark') }}</span>
+              </div>
+              <div class="list-item" style="width: 100%; margin-top: 1rem;">
+                <span class="value" style="word-break: break-word;">{{ item.remark }}</span>
+              </div>
             </div>
           </div>
+          <div v-if="totalCount > pageSize" class="text-center p-3">
+            <div v-if="tableData.length >= totalCount">
+              <span>{{ $t("__noMoreInformation") }}</span>
+            </div>
+            <div v-else>
+              <span class="view-more border-bottom border-dark mb-1" @click="moreInfoByClient">{{ $t('__searchMoreValue') }}</span>
+            </div>
+          </div>
+          <div style="display: none;" />
         </div>
-        <div v-if="totalCount > pageSize" class="text-center p-3">
-          <div v-if="tableData.length >= totalCount">
-            <span>{{ $t("__noMoreInformation") }}</span>
-          </div>
-          <div v-else>
-            <span class="view-more border-bottom border-dark mb-1" @click="moreInfoByClient">{{ $t('__searchMoreValue') }}</span>
-          </div>
-        </div>
-        <div style="display: none;" />
       </div>
-      <agentEditDialog
-        ref="editDialog"
-        :title="$t('__editSubAgent')"
-        :visible="curDialogIndex === dialogEnum.edit"
-        :operation-type="2"
-        :agent-info="agentInfo"
-        :confirm="$t('__revise')"
-        :form="editForm"
-        :step-enum="editStepEnum"
-        @close="closeDialogEven"
-        @editSuccess="handleRespone"
-      />
-
-      <agentEditDialog
-        ref="createDialog"
-        :title="$t('__addSubAgent')"
-        :visible="curDialogIndex === dialogEnum.create"
-        :operation-type="1"
-        :agent-info="agentInfo"
-        :confirm="$t('__confirm')"
-        :form="editForm"
-        :step-enum="editStepEnum"
-        @close="closeDialogEven"
-        @editSuccess="createDialogEditSuccess"
-      />
-
-      <balanceDialog
-        ref="depositBalanceDialog"
-        :title="$t('__depositBalance')"
-        :visible="curDialogIndex === dialogEnum.depositBalance"
-        :confirm="$t('__confirm')"
-        :form="editForm"
-        :operation-type="1"
-        :mode-type="1"
-        @close="closeDialogEven"
-        @depositBalance="depositBalance"
-      />
-
-      <balanceDialog
-        ref="withdrawBalanceDialog"
-        :title="$t('__withdrawBalance')"
-        :visible="curDialogIndex === dialogEnum.withdrawBalance"
-        :confirm="$t('__confirm')"
-        :form="editForm"
-        :operation-type="2"
-        :mode-type="1"
-        @close="closeDialogEven"
-        @withdrawBalance="withdrawBalance"
-      />
-
-      <operateDialog
-        ref="balanceOneClickRecyclingDialog"
-        :visible="curDialogIndex === dialogEnum.balanceOneClickRecycling"
-        :title="$t('__agentBalanceOneClickRecyclingMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <limitDialog
-        :title="$t('__handicapLimit')"
-        :visible="curDialogIndex === dialogEnum.limit"
-        :handicaps="handicaps"
-        @close="closeDialogEven"
-      />
-
-      <modPasswordDialog
-        ref="modPasswordDialog"
-        :title="$t('__modPassword')"
-        :visible="curDialogIndex === dialogEnum.modPassword"
-        :confirm="$t('__revise')"
-        :name-label="`${$t('__agent')}`"
-        :form="editForm"
-        @close="closeDialogEven"
-        @modPassword="modPassword"
-      />
-
-      <agentRateLogDialog
-        :title="`${$t('__liveGame')} ${$t('__commissionRate')}`"
-        :visible="curDialogIndex === dialogEnum.liveCommissionRate"
-        :list-data="rateData"
-        :operation-type="1"
-        @close="closeDialogEven"
-      />
-
-      <agentRateLogDialog
-        :title="`${$t('__liveGame')} ${$t('__rollingRate')}`"
-        :visible="curDialogIndex === dialogEnum.liveRollingRate"
-        :list-data="rateData"
-        :operation-type="2"
-        @close="closeDialogEven"
-      />
-
-      <agentRateLogDialog
-        :title="`${$t('__liveGame')} ${$t('__giftRate')}`"
-        :visible="curDialogIndex === dialogEnum.liveGiftRate"
-        :list-data="rateData"
-        :operation-type="3"
-        @close="closeDialogEven"
-      />
-
-      <operateDialog
-        ref="totallyDisabledDialog"
-        :visible="curDialogIndex === dialogEnum.totallyDisabled"
-        :title="$t('__agentTotallyDisabledMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <operateDialog
-        ref="lockLoginDialog"
-        :visible="curDialogIndex === dialogEnum.lockLogin"
-        :title="$t('__agentLockLoginMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <operateDialog
-        ref="debarBetDialog"
-        :visible="curDialogIndex === dialogEnum.debarBet"
-        :title="$t('__agentDebarBetMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <operateDialog
-        ref="weeklyLossSettlementDialog"
-        :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
-        :title="$t('__agentWeeklyLossSettlement')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <operateDialog
-        ref="oneClickRecyclingDialog"
-        :visible="curDialogIndex === dialogEnum.oneClickRecycling"
-        :title="$t('__agentOneClickRecyclingMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
-
-      <operateDialog
-        ref="giftEffectDialog"
-        :visible="curDialogIndex === dialogEnum.giftEffect"
-        :title="$t('__agentGiftEffectMsg')"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
     </div>
+    <agentEditDialog
+      ref="editDialog"
+      :title="$t('__editSubAgent')"
+      :visible="curDialogIndex === dialogEnum.edit"
+      :operation-type="2"
+      :agent-info="agentInfo"
+      :confirm="$t('__revise')"
+      :form="editForm"
+      :step-enum="editStepEnum"
+      @close="closeDialogEven"
+      @editSuccess="handleRespone"
+    />
+
+    <agentEditDialog
+      ref="createDialog"
+      :title="$t('__addSubAgent')"
+      :visible="curDialogIndex === dialogEnum.create"
+      :operation-type="1"
+      :agent-info="agentInfo"
+      :confirm="$t('__confirm')"
+      :form="editForm"
+      :step-enum="editStepEnum"
+      @close="closeDialogEven"
+      @editSuccess="createDialogEditSuccess"
+    />
+
+    <balanceDialog
+      ref="depositBalanceDialog"
+      :title="$t('__depositBalance')"
+      :visible="curDialogIndex === dialogEnum.depositBalance"
+      :confirm="$t('__confirm')"
+      :form="editForm"
+      :operation-type="1"
+      :mode-type="1"
+      @close="closeDialogEven"
+      @depositBalance="depositBalance"
+    />
+
+    <balanceDialog
+      ref="withdrawBalanceDialog"
+      :title="$t('__withdrawBalance')"
+      :visible="curDialogIndex === dialogEnum.withdrawBalance"
+      :confirm="$t('__confirm')"
+      :form="editForm"
+      :operation-type="2"
+      :mode-type="1"
+      @close="closeDialogEven"
+      @withdrawBalance="withdrawBalance"
+    />
+
+    <operateDialog
+      ref="balanceOneClickRecyclingDialog"
+      :visible="curDialogIndex === dialogEnum.balanceOneClickRecycling"
+      :title="$t('__agentBalanceOneClickRecyclingMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <limitDialog
+      :title="$t('__handicapLimit')"
+      :visible="curDialogIndex === dialogEnum.limit"
+      :handicaps="handicaps"
+      @close="closeDialogEven"
+    />
+
+    <modPasswordDialog
+      ref="modPasswordDialog"
+      :title="$t('__modPassword')"
+      :visible="curDialogIndex === dialogEnum.modPassword"
+      :confirm="$t('__revise')"
+      :name-label="`${$t('__agent')}`"
+      :form="editForm"
+      @close="closeDialogEven"
+      @modPassword="modPassword"
+    />
+
+    <agentRateLogDialog
+      :title="`${$t('__liveGame')} ${$t('__commissionRate')}`"
+      :visible="curDialogIndex === dialogEnum.liveCommissionRate"
+      :list-data="rateData"
+      :operation-type="1"
+      @close="closeDialogEven"
+    />
+
+    <agentRateLogDialog
+      :title="`${$t('__liveGame')} ${$t('__rollingRate')}`"
+      :visible="curDialogIndex === dialogEnum.liveRollingRate"
+      :list-data="rateData"
+      :operation-type="2"
+      @close="closeDialogEven"
+    />
+
+    <agentRateLogDialog
+      :title="`${$t('__liveGame')} ${$t('__giftRate')}`"
+      :visible="curDialogIndex === dialogEnum.liveGiftRate"
+      :list-data="rateData"
+      :operation-type="3"
+      @close="closeDialogEven"
+    />
+
+    <operateDialog
+      ref="totallyDisabledDialog"
+      :visible="curDialogIndex === dialogEnum.totallyDisabled"
+      :title="$t('__agentTotallyDisabledMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="lockLoginDialog"
+      :visible="curDialogIndex === dialogEnum.lockLogin"
+      :title="$t('__agentLockLoginMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="debarBetDialog"
+      :visible="curDialogIndex === dialogEnum.debarBet"
+      :title="$t('__agentDebarBetMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="weeklyLossSettlementDialog"
+      :visible="curDialogIndex === dialogEnum.weeklyLossSettlement"
+      :title="$t('__agentWeeklyLossSettlement')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="oneClickRecyclingDialog"
+      :visible="curDialogIndex === dialogEnum.oneClickRecycling"
+      :title="$t('__agentOneClickRecyclingMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
+
+    <operateDialog
+      ref="giftEffectDialog"
+      :visible="curDialogIndex === dialogEnum.giftEffect"
+      :title="$t('__agentGiftEffectMsg')"
+      :form="editForm"
+      @close="closeDialogEven"
+      @onSubmit="operateSubmit"
+    />
   </div>
 </template>
 
