@@ -14,11 +14,15 @@
                   align="right"
                   :clearable="false"
                   :editable="false"
+                  time-arrow-control
                   :range-separator="$t('__to')"
                   :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
                   :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
                   :default-time="['00:00:00', '23:59:59']"
+                  :picker-options="pickerOptions"
                   :format="'yyyy-MM-dd HH:mm'"
+                  prefix-icon="d-none"
+                  clear-icon="''"
                 />
                 <span>
                   <div class="d-flex align-items-center more_option text-yellow" @click.stop="searchFormOpen = !searchFormOpen">
@@ -37,7 +41,7 @@
                           <span class="prefix-label" />
                           <div class="comp selected-filter custom">
                             <el-select
-                              v-model="searchForm.type_id"
+                              v-model="searchForm.type"
                               class="d-flex"
                               multiple
                               :popper-append-to-body="false"
@@ -77,7 +81,7 @@
                               <span class="prefix-label" />
                               <div class="comp selected-filter custom">
                                 <el-select
-                                  v-model="searchForm.agent_id"
+                                  v-model="searchForm.agents"
                                   class="d-flex"
                                   multiple
                                   :popper-append-to-body="false"
@@ -283,10 +287,10 @@ export default {
   },
   computed: {
     typeCollapse() {
-      return this.searchForm.type_id && this.searchForm.type_id.length > this.selectCollapseCount
+      return this.searchForm.type && this.searchForm.type.length > this.selectCollapseCount
     },
     agentsCollapse() {
-      return this.searchForm.agent_id && this.searchForm.agent_id.length > this.selectCollapseCount
+      return this.searchForm.agents && this.searchForm.agents.length > this.selectCollapseCount
     }
   },
   watch: { },
@@ -301,16 +305,16 @@ export default {
   methods: {
     addSelectFilter() {
       this.addSelectDropDownFilter('field options select_options', () => {
-        this.searchForm.type_id = JSON.parse(JSON.stringify(this.searchItems.type)).map(item => item.key)
+        this.searchForm.type = JSON.parse(JSON.stringify(this.searchItems.type)).map(item => item.key)
       }, () => {
-        this.searchForm.type_id = []
+        this.searchForm.type = []
       }, () => {
         this.selectOption.type = JSON.parse(JSON.stringify(this.searchItems.type)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
       this.addSelectDropDownFilter('field options agent_select_options', () => {
-        this.searchForm.agent_id = JSON.parse(JSON.stringify(this.searchItems.agents)).map(item => item.key)
+        this.searchForm.agents = JSON.parse(JSON.stringify(this.searchItems.agents)).map(item => item.key)
       }, () => {
-        this.searchForm.agent_id = []
+        this.searchForm.agents = []
       }, () => {
         this.selectOption.agents = JSON.parse(JSON.stringify(this.searchItems.agents)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
@@ -378,6 +382,7 @@ export default {
       data.fuzzyMatchingByOrderNumber = this.fuzzyMatchingByOrderNumber ? '1' : '0'
     },
     handleRespone(res) {
+      console.log("handleRespone");
       this.subtotalInfo = res.subtotalInfo
       this.subtotalInfo.totalAmount = (this.pageSize * this.pageSizeCount) > res.totalCount ? res.totalCount : (this.pageSize * this.pageSizeCount)
       this.totalInfo = res.totalInfo
@@ -401,6 +406,7 @@ export default {
       data.page = this.currentPage
       data.rowsCount = this.pageSize * this.pageSizeCount
       this.handleRequest(data)
+      console.log(data);
       agentBalanceRecordSearch(data).then((res) => {
         this.handleRespone(res)
       }).catch(() => {

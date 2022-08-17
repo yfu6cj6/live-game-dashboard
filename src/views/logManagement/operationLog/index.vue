@@ -12,11 +12,15 @@
               align="right"
               :clearable="false"
               :editable="false"
+              time-arrow-control
               :range-separator="$t('__to')"
               :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
               :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
               :default-time="['00:00:00', '23:59:59']"
+              :picker-options="pickerOptions"
               :format="'yyyy-MM-dd HH:mm'"
+              prefix-icon="d-none"
+              clear-icon="''"
             />
           </div>
           <div v-if="isAdminister" class="pad_frame">
@@ -41,11 +45,15 @@
               align="right"
               :clearable="false"
               :editable="false"
+              time-arrow-control
               :range-separator="$t('__to')"
               :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
               :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
               :default-time="['00:00:00', '23:59:59']"
+              :picker-options="pickerOptions"
               :format="'yyyy-MM-dd HH:mm'"
+              prefix-icon="''"
+              clear-icon="''"
             />
           </div>
           <div v-if="isAdminister" class="pad_frame">

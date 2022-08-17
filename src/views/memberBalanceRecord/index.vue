@@ -14,11 +14,15 @@
                   align="right"
                   :clearable="false"
                   :editable="false"
+                  time-arrow-control
                   :range-separator="$t('__to')"
                   :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
                   :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
                   :default-time="['00:00:00', '23:59:59']"
+                  :picker-options="pickerOptions"
                   :format="'yyyy-MM-dd HH:mm'"
+                  prefix-icon="d-none"
+                  clear-icon="''"
                 />
                 <span>
                   <div class="d-flex align-items-center more_option text-yellow" @click.stop="searchFormOpen = !searchFormOpen">
@@ -38,7 +42,7 @@
                           <span class="prefix-label" />
                           <div class="comp selected-filter custom">
                             <el-select
-                              v-model="searchForm.type_id"
+                              v-model="searchForm.type"
                               class="d-flex"
                               multiple
                               :popper-append-to-body="false"
@@ -78,7 +82,7 @@
                               <span class="prefix-label" />
                               <div class="comp selected-filter custom">
                                 <el-select
-                                  v-model="searchForm.member_id"
+                                  v-model="searchForm.members"
                                   class="d-flex"
                                   multiple
                                   :popper-append-to-body="false"
@@ -291,10 +295,10 @@ export default {
   },
   computed: {
     typeCollapse() {
-      return this.searchForm.type_id && this.searchForm.type_id.length > this.selectCollapseCount
+      return this.searchForm.type && this.searchForm.type.length > this.selectCollapseCount
     },
     membersCollapse() {
-      return this.searchForm.member_id && this.searchForm.member_id.length > this.selectCollapseCount
+      return this.searchForm.members && this.searchForm.members.length > this.selectCollapseCount
     }
   },
   watch: { },
@@ -309,16 +313,16 @@ export default {
   methods: {
     addSelectFilter() {
       this.addSelectDropDownFilter('field options select_options', () => {
-        this.searchForm.type_id = JSON.parse(JSON.stringify(this.searchItems.type)).map(item => item.key)
+        this.searchForm.type = JSON.parse(JSON.stringify(this.searchItems.type)).map(item => item.key)
       }, () => {
-        this.searchForm.type_id = []
+        this.searchForm.type = []
       }, () => {
         this.selectOption.type = JSON.parse(JSON.stringify(this.searchItems.type)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
       this.addSelectDropDownFilter('field options member_select_options', () => {
-        this.searchForm.member_id = JSON.parse(JSON.stringify(this.searchItems.members)).map(item => item.key)
+        this.searchForm.members = JSON.parse(JSON.stringify(this.searchItems.members)).map(item => item.key)
       }, () => {
-        this.searchForm.member_id = []
+        this.searchForm.members = []
       }, () => {
         this.selectOption.members = JSON.parse(JSON.stringify(this.searchItems.members)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
