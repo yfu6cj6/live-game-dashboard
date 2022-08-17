@@ -116,7 +116,6 @@ export default {
   },
   watch: {
     visible() {
-      console.log(123)
       if (!this.visible) {
         this.userPasswordType = 'password'
         this.hasError = false

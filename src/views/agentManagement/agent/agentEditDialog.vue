@@ -106,7 +106,7 @@
                       <label class="form-item-label">{{ $t('__accountStatus') }}</label>
                       <small class="tip" />
                     </div>
-                    <select class="el-select">
+                    <select v-model="form.status" class="el-select w-100">
                       <option v-for="item in accountStatusType" :key="item.key" :value="item.key">
                         {{ $t(item.nickname) }}
                       </option>
@@ -119,7 +119,7 @@
                       <label class="form-item-label">{{ $t('__timeZone') }}</label>
                       <small class="tip" />
                     </div>
-                    <select class="el-select">
+                    <select v-model="form.time_zone" class="el-select w-100">
                       <option v-for="item in time_zone" :key="item.id" :value="item.id">
                         {{ $t(item.city_name) }}
                       </option>
@@ -132,7 +132,7 @@
                       <label class="form-item-label">{{ $t('__currency') }}</label>
                       <small class="tip" />
                     </div>
-                    <select class="el-select">
+                    <select v-model="form.currency" class="el-select w-100">
                       <option v-for="item in currency" :key="item.id" :value="item.id">
                         {{ $t(item.name) }}
                       </option>
@@ -847,6 +847,22 @@ export default {
     text-align: right;
     padding: 0.83333rem;
   }
+  .step-content {
+    padding: 0 1.66667rem;
+    position: relative;
+    z-index: 0;
+    .form-ctrl {
+      padding-top: 0.41667rem;
+      padding-bottom: 0.41667rem;
+      width: calc(100vw - 3.33333rem);
+      height: 3.33333rem;
+      background: #000;
+      button {
+        width: 150px;
+        margin: auto;
+      }
+    }
+  }
   .el-form {
     .form-item-title {
       background-color: #f9c901;
@@ -858,9 +874,6 @@ export default {
       width: 100%;
     }
     .step-content {
-      padding: 0 1.66667rem;
-      position: relative;
-      z-index: 0;
       .el-form-item {
         margin-bottom: 0;
         .el-form-item__content {
@@ -870,6 +883,9 @@ export default {
           input {
             border-color: #ff473d !important;
           }
+        }
+        .el-select {
+          height: 2.5rem;
         }
       }
       .form-item-label {

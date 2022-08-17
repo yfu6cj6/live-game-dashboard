@@ -12,7 +12,7 @@
                       <div class="option">
                         <span class="prefix-label" />
                         <div class="comp selected-filter">
-                          <select class="el-select">
+                          <select v-model="searchTimeType" class="el-select">
                             <option v-for="item in memberBetTimeType" :key="item.key" :value="item.key">
                               {{ $t(item.nickname) }}
                             </option>
