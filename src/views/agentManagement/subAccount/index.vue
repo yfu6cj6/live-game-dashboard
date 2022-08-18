@@ -243,6 +243,18 @@
       @editSuccess="createDialogEditSuccess"
     />
 
+    <subAccountEditDialog
+      ref="editDialog"
+      :title="$t('__editSubAccount')"
+      :visible="curDialogIndex === dialogEnum.edit"
+      :operation-type="2"
+      :confirm="$t('__revise')"
+      :agent-info="agentInfo"
+      :form="editForm"
+      @close="closeDialogEven"
+      @editSuccess="handleRespone"
+    />
+
   </div>
 </template>
 
@@ -380,6 +392,8 @@ export default {
       const timezone = await timezoneSearch({})
       this.$refs.createDialog.setTimeZone(timezone)
       this.editForm = JSON.parse(JSON.stringify(defaultForm))
+      this.editForm.effectAgentLine = this.editForm.effectAgentLine ? '1' : '0'
+      this.editForm.isAdmin = this.editForm.isAdmin ? '1' : '0'
       this.curDialogIndex = this.dialogEnum.create
     },
     // 父物件呼叫
@@ -443,8 +457,8 @@ export default {
       this.$refs.editDialog.setTimeZone(timezone)
 
       this.editForm = JSON.parse(JSON.stringify(rowData))
-      this.editForm.effectAgentLine = this.editForm.effectAgentLine === '1'
-      this.editForm.isAdmin = this.editForm.isAdmin === '1'
+      // this.editForm.effectAgentLine = this.editForm.effectAgentLine === '1'
+      // this.editForm.isAdmin = this.editForm.isAdmin === '1'
       this.editForm.timeZone = this.editForm.timeZone.id
       this.curDialogIndex = this.dialogEnum.edit
       this.setDataLoading(false)

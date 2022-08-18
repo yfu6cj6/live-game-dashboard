@@ -6,7 +6,14 @@
           <div class="flex-column flex-fill">
             <div class="agent-form subAccount-form popup-page flex-column flex-fill h-100">
               <div class="form-alert">
-                <div class="parent-info">{{ `${$t('__superiorAgent')}: ${agentInfo.parent.nickname}` }}</div>
+                <div v-show="errorTips === ''" class="parent-info">{{ `${$t('__superiorAgent')}: ${agentInfo.parent.nickname}` }}</div>
+                <div v-show="errorTips !== ''" role="alert" class="el-alert el-alert--warning is-light fade show">
+                  <i class="el-alert__icon el-icon-warning" />
+                  <div class="el-alert__content">
+                    <span class="el-alert__title">{{ errorTips }}</span>
+                    <i class="el-alert__closebtn el-icon-close" style="display: none;" />
+                  </div>
+                </div>
               </div>
               <div class="form-step-content flex-column flex-fill">
                 <form class="el-form flex-column flex-fill el-form--label-left">
@@ -19,73 +26,106 @@
                         </div>
                         <label class="form-item-title">{{ $t('__subAccountBaseInfo') }}</label>
                         <div class="step-content">
-                          <div class="el-form-item el-form-item--feedback el-form-item--small">
+                          <div class="el-form-item el-form-item--feedback el-form-item--small" :class="{'is-error': inputData.account.state === inputState.error, 'is-success': inputData.account.state === inputState.success}">
                             <div class="el-form-item__content">
                               <div class="label-group">
                                 <label class="form-item-label">{{ $t('__account') }}</label>
-                                <small class="tip" style="display: none">{{ `${$t('__lengthLess')}5, ${$t('__lengthLong')}8` }}</small>
+                                <small v-if="operationType === operationEnum.create" class="tip">{{ `${$t('__lengthLess')}5` }}</small>
                               </div>
                               <div class="d-flex">
-                                <div class="el-input el-input--small">
-                                  <input type="text" autocomplete="off" class="el-input__inner">
+                                <div class="el-input el-input--small" :class="{'is-disabled': operationType === operationEnum.edit}">
+                                  <input v-if="operationType === operationEnum.create" v-model="form.account" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkAccount()" @blur="checkAccount()">
+                                  <input v-if="operationType === operationEnum.edit" v-model="form.account" disabled='disabled' type="text" autocomplete="off" class="el-input__inner">
+                                  <span v-if="operationType === operationEnum.create" class="el-input__suffix">
+                                    <span class="el-input__suffix-inner" />
+                                    <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.account.state === inputState.error, 'el-icon-success': inputData.account.state === inputState.success}" />
+                                  </span>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <div class="el-form-item el-form-item--feedback el-form-item--small">
+                          <div class="el-form-item el-form-item--feedback el-form-item--small" :class="{'is-error': inputData.nickname.state === inputState.error, 'is-success': inputData.nickname.state === inputState.success}">
                             <div class="el-form-item__content">
                               <div class="label-group">
                                 <label class="form-item-label">{{ $t('__nickname') }}</label>
-                                <small class="tip" />
+                                <small class="tip">{{ `${$t('__lengthLess')}1` }}</small>
                               </div>
                               <div class="el-input el-input--small">
-                                <input type="text" autocomplete="off" class="el-input__inner">
+                                <input v-model="form.nickname" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.nickname)" @change="checkNickName()" @blur="checkNickName()">
+                                <span class="el-input__suffix">
+                                  <span class="el-input__suffix-inner" />
+                                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.nickname.state === inputState.error, 'el-icon-success': inputData.nickname.state === inputState.success}" />
+                                </span>
                               </div>
                             </div>
                           </div>
-                          <div class="el-form-item custom-psw el-form-item--feedback is-error el-form-item--small">
+                          <div v-if="operationType === operationEnum.create" class="el-form-item custom-psw el-form-item--feedback el-form-item--small" :class="{'is-error': inputData.password.state === inputState.error, 'is-success': inputData.password.state === inputState.success}">
                             <div class="el-form-item__content">
                               <div class="label-group">
                                 <label class="form-item-label">{{ $t('__password') }}</label>
                                 <small class="tip">{{ `${$t('__lengthLess')}5` }}</small>
                               </div>
                               <div class="el-input el-input--small el-input--suffix">
-                                <input type="password" autocomplete="off" class="el-input__inner">
+                                <input v-model="form.password" :type="inputData.password.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.password)" @change="checkPassword()" @blur="checkPassword()">
                                 <span class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
-                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-close has-error" />
-                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-check no-error" />
-                                    <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                    <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': inputData.password.inputType !== 'password'}" @click.stop="showUserPasswordType(inputData.password)" />
                                   </span>
-                                  <i class="el-input__icon el-input__validateIcon el-icon-circle-close" />
+                                  <i class="el-input__icon el-input__validateIcon el-icon-error" />
                                 </span>
                               </div>
                             </div>
                           </div>
-                          <div class="el-form-item custom-psw el-form-item--feedback el-form-item--small">
+                          <div v-if="operationType === operationEnum.create" class="el-form-item custom-psw el-form-item--feedback el-form-item--small" :class="{'is-error': inputData.confirmPassword.state === inputState.error, 'is-success': inputData.confirmPassword.state === inputState.success}">
                             <div class="el-form-item__content">
                               <div class="label-group">
                                 <label class="form-item-label">{{ $t('__confirmPassword') }}</label>
                               </div>
                               <div class="el-input el-input--small el-input--suffix">
-                                <input type="password" autocomplete="off" class="el-input__inner">
+                                <input v-model="form.confirmPassword" :type="inputData.confirmPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
                                 <span class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
-                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-close has-error" />
-                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-check no-error" />
-                                    <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                    <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': inputData.confirmPassword.inputType !== 'password'}" @click.stop="showUserPasswordType(inputData.confirmPassword)" />
                                   </span>
                                 </span>
                               </div>
                             </div>
                           </div>
-                          <div class="el-form-item el-form-item--feedback el-form-item--small">
+                          <div class="el-form-item custom-psw el-form-item--feedback el-form-item--small" :class="{'is-error': inputData.confirmPassword.state === inputState.error, 'is-success': inputData.confirmPassword.state === inputState.success}">
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__accountStatus') }}</label>
+                              </div>
+                              <select v-model="form.status" class="el-select w-100">
+                                <option v-for="item in accountStatusType" :key="item.key" :value="item.key">
+                                  {{ $t(item.nickname) }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="el-form-item custom-psw el-form-item--feedback el-form-item--small" :class="{'is-error': inputData.confirmPassword.state === inputState.error, 'is-success': inputData.confirmPassword.state === inputState.success}">
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__timeZone') }}</label>
+                              </div>
+                              <select v-model="form.timeZone" class="el-select w-100">
+                                <option v-for="item in time_zone" :key="item.id" :value="item.id">
+                                  {{ $t(item.city_name) }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                          <div v-if="operationType===operationEnum.create&&visible" class="el-form-item el-form-item--feedback el-form-item--small">
                             <div class="el-form-item__content">
                               <div class="align-items-center pt-2">
-                                <label class="el-checkbox is-checked">
-                                  <span class="el-checkbox__input is-checked">
+                                <label class="el-checkbox" :class="{'is-checked': form.effectAgentLine === '1'}">
+                                  <span class="el-checkbox__input" :class="{'is-checked': form.effectAgentLine === '1'}">
                                     <span class="el-checkbox__inner" />
-                                    <input type="checkbox" aria-hidden="false" true-value="0" false-value="1" class="el-checkbox__original">
+                                    <input v-model="form.effectAgentLine" type="checkbox" aria-hidden="false" true-value="0" false-value="1" class="el-checkbox__original">
                                   </span>
                                 </label>
                                 <span class="text-yellow">{{ $t('__effectAgentLine') }}</span>
@@ -95,10 +135,10 @@
                           <div class="el-form-item el-form-item--feedback el-form-item--small">
                             <div class="el-form-item__content">
                               <div class="align-items-center pt-2">
-                                <label class="el-checkbox is-checked">
-                                  <span class="el-checkbox__input is-checked">
+                                <label class="el-checkbox" :class="{'is-checked': form.isAdmin === '1'}">
+                                  <span class="el-checkbox__input" :class="{'is-checked': form.isAdmin === '1'}">
                                     <span class="el-checkbox__inner" />
-                                    <input type="checkbox" aria-hidden="false" true-value="1" false-value="2" class="el-checkbox__original">
+                                    <input v-model="form.isAdmin" type="checkbox" aria-hidden="false" true-value="1" false-value="2" class="el-checkbox__original">
                                   </span>
                                 </label>
                                 <span class="text-yellow">{{ $t('__admin') }}</span>
@@ -112,22 +152,22 @@
                                 <small class="tip" />
                               </div>
                               <div class="el-textarea el-input--small">
-                                <textarea autocomplete="off" class="el-textarea__inner" style="min-height: 48.0625px;" />
+                                <textarea v-model="form.remark" autocomplete="off" class="el-textarea__inner" style="min-height: 48.0625px;" />
                               </div>
                             </div>
                           </div>
-                          <div class="el-form-item operator-psw custom-psw el-form-item--feedback el-form-item--small">
+                          <div class="el-form-item operator-psw custom-psw el-form-item--feedback el-form-item--small" :class="{'is-error': inputData.operatePassword.state === inputState.error, 'is-success': inputData.operatePassword.state === inputState.success}">
                             <div class="el-form-item__content">
                               <div class="label-group">
                                 <label class="form-item-label">{{ $t('__userPassword') }}</label>
                               </div>
                               <div class="el-input el-input--small el-input--suffix">
-                                <input type="password" autocomplete="off" class="el-input__inner">
+                                <input v-model="form.userPassword" :type="inputData.operatePassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.operatePassword)" @change="checkOperatePassword()" @blur="checkOperatePassword()">
                                 <span class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
-                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-close has-error" />
-                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-check no-error" />
-                                    <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                    <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': inputData.operatePassword.inputType !== 'password'}" @click.stop="showUserPasswordType(inputData.operatePassword)" />
                                   </span>
                                 </span>
                               </div>
@@ -141,7 +181,7 @@
                   <div class="step-content">
                     <div class="form-ctrl">
                       <div class="el-row is-align-middle el-row--flex">
-                        <button type="button" class="el-button bg-yellow el-button--primary">
+                        <button type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
                           <span>{{ $t('__submit') }}</span>
                         </button>
                       </div>
@@ -290,6 +330,31 @@ export default {
       }
     }
     return {
+      inputState: Object.freeze({
+        'none': 0,
+        'success': 1,
+        'error': 2
+      }),
+      inputData: {
+        account: {
+          state: 0
+        },
+        nickname: {
+          state: 0
+        },
+        password: {
+          inputType: 'password',
+          state: 0
+        },
+        confirmPassword: {
+          inputType: 'password',
+          state: 0
+        },
+        operatePassword: {
+          inputType: 'password',
+          state: 0
+        }
+      },
       rules: {
         account: [{ required: true, trigger: 'blur', validator: validatePassword }],
         nickname: [{ required: true, trigger: 'blur', validator: validate }],
@@ -300,7 +365,8 @@ export default {
       operationEnum: Object.freeze({ 'create': 1, 'edit': 2 }),
       time_zone: [],
       autoGenerateAccount: false,
-      dialogLoading: false
+      dialogLoading: false,
+      errorTips: ''
     }
   },
   computed: {
@@ -314,7 +380,16 @@ export default {
   watch: {
     visible() {
       if (!this.visible) {
-        this.$refs.form.clearValidate()
+        // this.$refs.form.clearValidate()
+        this.inputData.password.inputType = 'password'
+        this.inputData.confirmPassword.inputType = 'password'
+        this.inputData.operatePassword.inputType = 'password'
+        this.inputData.password.state = this.inputState.none
+        this.inputData.confirmPassword.state = this.inputState.none
+        this.inputData.operatePassword.state = this.inputState.none
+        this.inputData.account.state = this.inputState.none
+        this.inputData.nickname.state = this.inputState.none
+        this.errorTips = ''
       }
     },
     autoGenerateAccount() {
@@ -329,34 +404,85 @@ export default {
     }
   },
   methods: {
+    showUserPasswordType(input) {
+      input.inputType = input.inputType === '' ? 'password' : '';
+    },
+    inputFocus(input) {
+      input.state = this.inputState.none
+      this.errorTips = ''
+    },
+    checkAccount() {
+      var valid = this.checkInputFormat(this.form.account)
+      this.inputData.account.state = valid ? this.inputState.success : this.inputState.error
+    },
+    checkNickName() {
+      this.inputData.nickname.state = (this.form.nickname && this.form.nickname.length > 0) ? this.inputState.success : this.inputState.error
+    },
+    checkPassword() {
+      var valid = this.checkInputFormat(this.form.password)
+      this.inputData.password.state = valid ? this.inputState.success : this.inputState.error
+    },
+    checkConfirmPassword() {
+      var valid = this.checkInputFormat(this.form.confirmPassword)
+      if (!valid) {
+        this.inputData.confirmPassword.state = this.inputState.error
+        return
+      }
+      this.inputData.confirmPassword.state = this.form.password === this.form.confirmPassword ? this.inputState.success : this.inputState.error
+    },
+    checkOperatePassword() {
+      this.inputData.operatePassword.state = this.form.userPassword ? this.inputState.success : this.inputState.error
+    },
+    checkInputFormat(formData) {
+      if (!formData) {
+        return false
+      } else if (formData.length < 5) {
+        return false
+      } else {
+        return true
+      }
+    },
     onSubmit() {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          const data = JSON.parse(JSON.stringify(this.form))
-          data.effectAgentLine = data.effectAgentLine ? '1' : '0'
-          data.isAdmin = data.isAdmin ? '1' : '0'
-          if (this.operationType === this.operationEnum.create) {
-            data.agentId = this.agentInfo.id
-            this.dialogLoading = true
-            subAccountCreate(data).then((res) => {
-              this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
-              this.dialogLoading = false
-            }).catch(() => {
-              this.dialogLoading = false
-            })
-          } else if (this.operationType === this.operationEnum.edit) {
-            this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-              this.dialogLoading = true
-              subAccountEdit(data).then((res) => {
-                this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
-                this.dialogLoading = false
-              }).catch(() => {
-                this.dialogLoading = false
-              })
-            })
-          }
+      const data = JSON.parse(JSON.stringify(this.form))
+      data.effectAgentLine = data.effectAgentLine ? '1' : '0'
+      data.isAdmin = data.isAdmin ? '1' : '0'
+      if (this.operationType === this.operationEnum.create) {
+        if (this.form.account.length < 5) {
+          this.errorTips = `${this.$t('__lengthLess') + '5'}`
+          return
         }
-      })
+        if (this.form.password !== this.form.confirmPassword) {
+          this.errorTips = `${this.$t('__confirmPassword')}${this.$t('__and')}${this.$t('__password')}${this.$t('__inconsistent')}`
+          return
+        }
+        if (this.inputData.account.state !== this.inputState.success ||
+            this.inputData.nickname.state !== this.inputState.success ||
+            this.inputData.password.state !== this.inputState.success ||
+            this.inputData.confirmPassword.state !== this.inputState.success ||
+            this.inputData.operatePassword.state !== this.inputState.success) {
+          this.errorTips = this.$t('__pleaseCheckFormContent')
+          return
+        }
+        data.agentId = this.agentInfo.id
+        this.dialogLoading = true
+        subAccountCreate(data).then((res) => {
+          this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
+          this.dialogLoading = false
+        }).catch(() => {
+          this.dialogLoading = false
+        })
+      } else if (this.operationType === this.operationEnum.edit) {
+        this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
+          this.dialogLoading = true
+          console.log(data);
+          subAccountEdit(data).then((res) => {
+            this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
+            this.dialogLoading = false
+          }).catch(() => {
+            this.dialogLoading = false
+          })
+        })
+      }
     },
     onClose() {
       this.$emit('close')
@@ -372,33 +498,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/variables.scss";
+.el-checkbox:last-of-type {
+    margin-right: 0.5rem;
+}
 
 label {
-  font-weight: 300;
-}
-
-.agentNameLabel {
-  font-size: 14px;
-  color: #fff
-}
-
-.el-checkbox,
-.agentNameSpan {
-  color: $yellow;
-}
-
-.el-checkbox+.el-checkbox {
-  margin-left:50px;
-}
-
-.el-steps--horizontal {
-  margin: 15px 0
-}
-
-.el-select,
-.el-input,
-.el-textarea{
-  width: 90%;
+  display: inline-block;
+  margin-bottom: 0.5rem;
 }
 </style>

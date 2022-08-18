@@ -18,7 +18,7 @@
                             <div class="tip">{{ `${$t('__lengthLess')}5` }}</div>
                           </div>
                           <div class="el-input el-input--small el-input--suffix">
-                            <input v-model="form.newPassword" :type="inputData.newPassword.inputType" autocomplete="off" class="el-input__inner" @focus="passwordFocus(inputData.newPassword)" @change="checkNewPassword()" @blur="checkNewPassword()">
+                            <input v-model="form.newPassword" :type="inputData.newPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.newPassword)" @change="checkNewPassword()" @blur="checkNewPassword()">
                             <span class="el-input__suffix">
                               <span class="el-input__suffix-inner">
                                 <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -35,7 +35,7 @@
                             <label class="form-item-label text-yellow">{{ $t('__confirmPassword') }}</label>
                           </div>
                           <div class="el-input el-input--small el-input--suffix">
-                            <input v-model="form.newPassword_confirmation" :type="inputData.confirmPassword.inputType" autocomplete="off" class="el-input__inner" @focus="passwordFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
+                            <input v-model="form.newPassword_confirmation" :type="inputData.confirmPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
                             <span class="el-input__suffix">
                               <span class="el-input__suffix-inner">
                                 <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -52,7 +52,7 @@
                             <label class="form-item-label text-yellow">{{ $t('__userPassword') }}</label>
                           </div>
                           <div class="el-input el-input--small el-input--suffix">
-                            <input v-model="form.userPassword" :type="inputData.operatePassword.inputType" autocomplete="off" class="el-input__inner" @focus="passwordFocus(inputData.operatePassword)" @change="checkOperatePassword()">
+                            <input v-model="form.userPassword" :type="inputData.operatePassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.operatePassword)" @change="checkOperatePassword()" @blur="checkOperatePassword()">
                             <span class="el-input__suffix">
                               <span class="el-input__suffix-inner">
                                 <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -213,7 +213,6 @@ export default {
         userPassword: [{ required: true, trigger: 'blur', validator: validate }]
       },
       dialogLoading: false,
-      had_error: false,
       errorTips: ''
     }
   },
@@ -235,7 +234,7 @@ export default {
     showUserPasswordType(password) {
       password.inputType = password.inputType === '' ? 'password' : '';
     },
-    passwordFocus(password) {
+    inputFocus(password) {
       password.state = this.inputState.none
       this.errorTips = ''
     },
@@ -264,15 +263,15 @@ export default {
       }
     },
     onSubmit() {
+      if (this.form.newPassword !== this.form.newPassword_confirmation) {
+        this.errorTips = `${this.$t('__confirmPassword')}${this.$t('__and')}${this.$t('__password')}${this.$t('__inconsistent')}`
+        return
+      }
+
       if (this.inputData.newPassword.state !== this.inputState.success ||
           this.inputData.confirmPassword.state !== this.inputState.success ||
           this.inputData.operatePassword.state !== this.inputState.success) {
         this.errorTips = this.$t('__pleaseCheckFormContent')
-        return
-      }
-
-      if (this.form.newPassword !== this.form.newPassword_confirmation) {
-        this.errorTips = `${this.$t('__confirmPassword')}${this.$t('__and')}${this.$t('__password')}${this.$t('__inconsistent')}`
         return
       }
 
