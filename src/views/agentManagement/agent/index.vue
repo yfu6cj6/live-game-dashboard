@@ -512,8 +512,7 @@ export default {
   computed: {
     ...mapGetters([
       'isAgentSubAccount',
-      'device',
-      'statusType'
+      'device'
     ]),
     agentInfoTotallyDisabled() {
       return this.agentInfo.totally_disabled === '1'
@@ -668,14 +667,11 @@ export default {
         element.cityNameLabel = element.timeZone.city_name
         element.totallyDisabled = element.totally_disabled === '1'
         element.lockLogin = element.status === '0'
-        const lockLoginLabel = element.lockLogin === true ? this.$t('__disabled') : this.$t('__enabled')
-        element.lockLoginLabel = lockLoginLabel
+        element.lockLoginLabel = element.lockLogin === true ? this.$t('__disabled') : this.$t('__enabled')
         element.debarBet = element.bet_status === '0'
         element.weeklyLossSettlement = element.weekly_loss_settlement === '1'
         element.oneClickRecycling = element.one_click_recycling === '1'
         element.giftEffect = element.gift_status === '1'
-        const statusNickname = this.statusType.find(type => type.key === element.status).nickname
-        element.statusLabel = this.$t(statusNickname)
         element.live_commission_rate = numberFormat(element.live_commission_rate)
         element.live_rolling_rate = numberFormat(element.live_rolling_rate)
         element.live_gift_rate = numberFormat(element.live_gift_rate)
