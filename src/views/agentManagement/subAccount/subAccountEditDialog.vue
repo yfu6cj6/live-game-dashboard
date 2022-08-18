@@ -1,60 +1,218 @@
 <template>
-  <Dialog :loading="dialogLoading" :title="title" :on-close-even="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
-    <label class="agentNameLabel">{{ `${$t('__superiorAgent')}: ` }}
-      <span class="agentNameSpan">{{ agentInfo.fullName }}</span>
-    </label>
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
-      <el-form-item :label="$t('__accountGenerateMode')">
-        <el-switch
-          v-model="autoGenerateAccount"
-          :active-color="color_yellow"
-          :inactive-color="color_yellow"
-          :active-text="$t('__auto')"
-          :inactive-text="$t('__manual')"
-        />
-      </el-form-item>
-      <el-form-item v-if="operationType===operationEnum.create&&visible" :label="$t('__account')" prop="account">
-        <el-input v-model="form.account" />
-      </el-form-item>
-      <el-form-item :label="$t('__nickname')" prop="nickname">
-        <el-input v-model="form.nickname" />
-      </el-form-item>
-      <el-form-item v-if="operationType===operationEnum.create&&visible" :label="$t('__password')" prop="password">
-        <el-input v-model="form.password" show-password />
-      </el-form-item>
-      <el-form-item v-if="operationType===operationEnum.create&&visible" :label="$t('__confirmPassword')" prop="confirmPassword">
-        <el-input v-model="form.confirmPassword" show-password />
-      </el-form-item>
-      <el-form-item :label="$t('__accountStatus')" prop="status">
-        <el-select v-model="form.status">
-          <el-option v-for="item in accountStatusType" :key="item.key" :label="$t(item.nickname)" :value="item.key" />
-        </el-select>
-      </el-form-item>
-      <el-form-item :label="$t('__timeZone')" prop="timeZone">
-        <el-select v-model="form.timeZone">
-          <el-option v-for="item in time_zone" :key="item.id" :label="item.city_name" :value="item.id" />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-checkbox v-model="form.effectAgentLine" class="red-tick" :label="$t('__effectAgentLine')" />
-        <el-checkbox v-model="form.isAdmin" class="red-tick" :label="$t('__admin')" />
-      </el-form-item>
-      <el-form-item :label="$t('__remark')" prop="remark">
-        <el-input v-model="form.remark" type="textarea" :rows="2" />
-      </el-form-item>
-      <el-form-item v-if="visible" :label="$t('__userPassword')" prop="userPassword">
-        <el-input v-model="form.userPassword" show-password />
-      </el-form-item>
-    </el-form>
-    <span v-if="!dialogLoading" slot="bodyFooter">
-      <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-    </span>
-  </Dialog>
+  <div v-if="visible">
+    <template v-if="device==='mobile'">
+      <div class="flex-column flex-fill" style="background: rgb(0, 0, 0);">
+        <div class="flex-column flex-fill">
+          <div class="flex-column flex-fill">
+            <div class="agent-form subAccount-form popup-page flex-column flex-fill h-100">
+              <div class="form-alert">
+                <div class="parent-info">{{ `${$t('__superiorAgent')}: ${agentInfo.parent.nickname}` }}</div>
+              </div>
+              <div class="form-step-content flex-column flex-fill">
+                <form class="el-form flex-column flex-fill el-form--label-left">
+                  <div class="scroll-wrap flex-column flex-fill">
+                    <div id="scroll-inner" class="scroll-inner flex-column flex-fill off">
+                      <div class="scroll-view flex-column flex-fill">
+                        <div class="initPswFormat">
+                          <input type="text" name="uuu">
+                          <input type="password" name="uuu">
+                        </div>
+                        <label class="form-item-title">{{ $t('__subAccountBaseInfo') }}</label>
+                        <div class="step-content">
+                          <div class="el-form-item el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__account') }}</label>
+                                <small class="tip" style="display: none">{{ `${$t('__lengthLess')}5, ${$t('__lengthLong')}8` }}</small>
+                              </div>
+                              <div class="d-flex">
+                                <div class="el-input el-input--small">
+                                  <input type="text" autocomplete="off" class="el-input__inner">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="el-form-item el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__nickname') }}</label>
+                                <small class="tip" />
+                              </div>
+                              <div class="el-input el-input--small">
+                                <input type="text" autocomplete="off" class="el-input__inner">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="el-form-item custom-psw el-form-item--feedback is-error el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__password') }}</label>
+                                <small class="tip">{{ `${$t('__lengthLess')}5` }}</small>
+                              </div>
+                              <div class="el-input el-input--small el-input--suffix">
+                                <input type="password" autocomplete="off" class="el-input__inner">
+                                <span class="el-input__suffix">
+                                  <span class="el-input__suffix-inner">
+                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-close has-error" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-check no-error" />
+                                    <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" />
+                                  </span>
+                                  <i class="el-input__icon el-input__validateIcon el-icon-circle-close" />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="el-form-item custom-psw el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__confirmPassword') }}</label>
+                              </div>
+                              <div class="el-input el-input--small el-input--suffix">
+                                <input type="password" autocomplete="off" class="el-input__inner">
+                                <span class="el-input__suffix">
+                                  <span class="el-input__suffix-inner">
+                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-close has-error" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-check no-error" />
+                                    <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" />
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="el-form-item el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="align-items-center pt-2">
+                                <label class="el-checkbox is-checked">
+                                  <span class="el-checkbox__input is-checked">
+                                    <span class="el-checkbox__inner" />
+                                    <input type="checkbox" aria-hidden="false" true-value="0" false-value="1" class="el-checkbox__original">
+                                  </span>
+                                </label>
+                                <span class="text-yellow">{{ $t('__effectAgentLine') }}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="el-form-item el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="align-items-center pt-2">
+                                <label class="el-checkbox is-checked">
+                                  <span class="el-checkbox__input is-checked">
+                                    <span class="el-checkbox__inner" />
+                                    <input type="checkbox" aria-hidden="false" true-value="1" false-value="2" class="el-checkbox__original">
+                                  </span>
+                                </label>
+                                <span class="text-yellow">{{ $t('__admin') }}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="el-form-item el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__remark') }}</label>
+                                <small class="tip" />
+                              </div>
+                              <div class="el-textarea el-input--small">
+                                <textarea autocomplete="off" class="el-textarea__inner" style="min-height: 48.0625px;" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="el-form-item operator-psw custom-psw el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__userPassword') }}</label>
+                              </div>
+                              <div class="el-input el-input--small el-input--suffix">
+                                <input type="password" autocomplete="off" class="el-input__inner">
+                                <span class="el-input__suffix">
+                                  <span class="el-input__suffix-inner">
+                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-close has-error" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-circle-check no-error" />
+                                    <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" />
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="w-100 p-5" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="step-content">
+                    <div class="form-ctrl">
+                      <div class="el-row is-align-middle el-row--flex">
+                        <button type="button" class="el-button bg-yellow el-button--primary">
+                          <span>{{ $t('__submit') }}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <Dialog v-if="visible" :loading="dialogLoading" :title="title" :on-close-even="onClose" :close-on-click-modal="device === 'mobile'" :close-on-press-escape="false">
+        <label class="agentNameLabel">{{ `${$t('__superiorAgent')}: ` }}
+          <span class="agentNameSpan">{{ agentInfo.fullName }}</span>
+        </label>
+        <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="left">
+          <el-form-item :label="$t('__accountGenerateMode')">
+            <el-switch
+              v-model="autoGenerateAccount"
+              :active-color="color_yellow"
+              :inactive-color="color_yellow"
+              :active-text="$t('__auto')"
+              :inactive-text="$t('__manual')"
+            />
+          </el-form-item>
+          <el-form-item v-if="operationType===operationEnum.create&&visible" :label="$t('__account')" prop="account">
+            <el-input v-model="form.account" />
+          </el-form-item>
+          <el-form-item :label="$t('__nickname')" prop="nickname">
+            <el-input v-model="form.nickname" />
+          </el-form-item>
+          <el-form-item v-if="operationType===operationEnum.create&&visible" :label="$t('__password')" prop="password">
+            <el-input v-model="form.password" show-password />
+          </el-form-item>
+          <el-form-item v-if="operationType===operationEnum.create&&visible" :label="$t('__confirmPassword')" prop="confirmPassword">
+            <el-input v-model="form.confirmPassword" show-password />
+          </el-form-item>
+          <el-form-item :label="$t('__accountStatus')" prop="status">
+            <el-select v-model="form.status">
+              <el-option v-for="item in accountStatusType" :key="item.key" :label="$t(item.nickname)" :value="item.key" />
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('__timeZone')" prop="timeZone">
+            <el-select v-model="form.timeZone">
+              <el-option v-for="item in time_zone" :key="item.id" :label="item.city_name" :value="item.id" />
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-checkbox v-model="form.effectAgentLine" class="red-tick" :label="$t('__effectAgentLine')" />
+            <el-checkbox v-model="form.isAdmin" class="red-tick" :label="$t('__admin')" />
+          </el-form-item>
+          <el-form-item :label="$t('__remark')" prop="remark">
+            <el-input v-model="form.remark" type="textarea" :rows="2" />
+          </el-form-item>
+          <el-form-item v-if="visible" :label="$t('__userPassword')" prop="userPassword">
+            <el-input v-model="form.userPassword" show-password />
+          </el-form-item>
+        </el-form>
+        <span v-if="!dialogLoading" slot="bodyFooter">
+          <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
+        </span>
+      </Dialog>
+    </template>
+  </div>
 </template>
 
 <script>
 import colors from '@/styles/variables.scss'
-import handleDialogWidth from '@/layout/mixin/handleDialogWidth'
+import dialogCommon from '@/mixin/dialogCommon'
 import common from '@/mixin/common'
 import { subAccountCreateAccount, subAccountCreate, subAccountEdit } from '@/api/agentManagement/subAccount'
 import { mapGetters } from 'vuex'
@@ -63,7 +221,7 @@ import Dialog from '@/components/Dialog'
 export default {
   name: 'SubAccountEditDialog',
   components: { Dialog },
-  mixins: [handleDialogWidth, common],
+  mixins: [dialogCommon, common],
   props: {
     'title': {
       type: String,

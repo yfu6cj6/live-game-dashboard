@@ -230,6 +230,19 @@
       :form="editForm"
       @close="closeDialogEven"
     />
+
+    <subAccountEditDialog
+      ref="createDialog"
+      :title="$t('__addSubAccount')"
+      :visible="curDialogIndex === dialogEnum.create"
+      :operation-type="1"
+      :confirm="$t('__confirm')"
+      :agent-info="agentInfo"
+      :form="editForm"
+      @close="closeDialogEven"
+      @editSuccess="createDialogEditSuccess"
+    />
+
   </div>
 </template>
 
@@ -237,7 +250,7 @@
 import { subAccountSearch, subAccountModPassword, subAccountModStatus, subAccountModEffectAgentLine, subAccountGetAgentLine, subAccountSetHasAgents } from '@/api/agentManagement/subAccount'
 import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
 import handlePageChange from '@/mixin/handlePageChange'
-// import SubAccountEditDialog from './subAccountEditDialog'
+import SubAccountEditDialog from './subAccountEditDialog'
 import SubAgentDistributeDialog from './subAgentDistributeDialog'
 import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import OperateDialog from '@/views/agentManagement/operateDialog'
@@ -259,8 +272,7 @@ const defaultForm = {
 
 export default {
   name: 'Member',
-  components: { OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog },
-  // components: { SubAccountEditDialog },
+  components: { SubAccountEditDialog, OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog },
   mixins: [handlePageChange],
   props: {
   },
