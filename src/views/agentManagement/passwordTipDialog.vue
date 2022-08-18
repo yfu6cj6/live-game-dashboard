@@ -2,18 +2,32 @@
   <Dialog
     v-if="visible"
     :title="title"
-    :width="formWidth"
+    :loading="dialogLoading"
     :on-close-even="onClose"
     :close-on-click-modal="device === 'mobile'"
-    :close-on-press-escape="false"
   >
-    <label>{{ `${$t('__account')}: ` }}
-      <span>{{ `${form.account}` }}</span>
-    </label>
-    <br>
-    <label>{{ passwordTitle }}
-      <span>{{ `${form.password}` }}</span>
-    </label>
+    <div v-if="form.backendUrl">
+      <span class="title">{{ `${$t('__backendUrl')}: ` }}</span>
+      <span class="content">{{ `${form.backendUrl}` }}</span>
+    </div>
+    <div v-if="form.gameUrl">
+      <span class="title">{{ `${$t('__gameUrl')}: ` }}</span>
+      <span class="content">{{ `${form.gameUrl}` }}</span>
+    </div>
+    <div
+      v-for="(item, index) in form.accountsInfo"
+      :key="index"
+      class="accountsInfo"
+    >
+      <div>
+        <span class="title">{{ `${$t('__account')}: ` }}</span>
+        <span class="content">{{ `${item.account}` }}</span>
+      </div>
+      <div>
+        <span class="title">{{ passwordTitle }}</span>
+        <span class="content">{{ `${item.password}` }}</span>
+      </div>
+    </div>
     <span slot="bodyFooter">
       <el-button class="bg-yellow" @click="onClose">{{ confirm }}</el-button>
     </span>
@@ -22,11 +36,12 @@
 
 <script>
 import Dialog from '@/components/Dialog'
+import dialogCommon from '@/mixin/dialogCommon'
 
 export default {
   name: 'PasswordTipDialog',
   components: { Dialog },
-  mixins: [],
+  mixins: [dialogCommon],
   props: {
     'title': {
       type: String,
@@ -74,12 +89,14 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
 
-label {
+.title {
   color: $yellow;
-  font-size: 14px;
-  font-weight: 500;
-  span {
-    color: #fff;
-  }
+}
+.content {
+  color: #fff;
+}
+
+.accountsInfo {
+  margin-top: 10px;
 }
 </style>

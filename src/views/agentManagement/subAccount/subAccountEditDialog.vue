@@ -6,7 +6,7 @@
           <div class="flex-column flex-fill">
             <div class="agent-form subAccount-form popup-page flex-column flex-fill h-100">
               <div class="form-alert">
-                <div v-show="errorTips === ''" class="parent-info">{{ `${$t('__superiorAgent')}: ${agentInfo.parent.nickname}` }}</div>
+                <div v-show="errorTips === ''" class="parent-info">{{ `${$t('__superiorAgent')}: ${agentInfo.account}` }}</div>
                 <div v-show="errorTips !== ''" role="alert" class="el-alert el-alert--warning is-light fade show">
                   <i class="el-alert__icon el-icon-warning" />
                   <div class="el-alert__content">
@@ -35,7 +35,7 @@
                               <div class="d-flex">
                                 <div class="el-input el-input--small" :class="{'is-disabled': operationType === operationEnum.edit}">
                                   <input v-if="operationType === operationEnum.create" v-model="form.account" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkAccount()" @blur="checkAccount()">
-                                  <input v-if="operationType === operationEnum.edit" v-model="form.account" disabled='disabled' type="text" autocomplete="off" class="el-input__inner">
+                                  <input v-if="operationType === operationEnum.edit" v-model="form.account" disabled="disabled" type="text" autocomplete="off" class="el-input__inner">
                                   <span v-if="operationType === operationEnum.create" class="el-input__suffix">
                                     <span class="el-input__suffix-inner" />
                                     <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.account.state === inputState.error, 'el-icon-success': inputData.account.state === inputState.success}" />
@@ -125,7 +125,7 @@
                                 <label class="el-checkbox" :class="{'is-checked': form.effectAgentLine === '1'}">
                                   <span class="el-checkbox__input" :class="{'is-checked': form.effectAgentLine === '1'}">
                                     <span class="el-checkbox__inner" />
-                                    <input v-model="form.effectAgentLine" type="checkbox" aria-hidden="false" true-value="0" false-value="1" class="el-checkbox__original">
+                                    <input v-model="form.effectAgentLine" type="checkbox" aria-hidden="false" true-value="1" false-value="0" class="el-checkbox__original">
                                   </span>
                                 </label>
                                 <span class="text-yellow">{{ $t('__effectAgentLine') }}</span>
@@ -138,7 +138,7 @@
                                 <label class="el-checkbox" :class="{'is-checked': form.isAdmin === '1'}">
                                   <span class="el-checkbox__input" :class="{'is-checked': form.isAdmin === '1'}">
                                     <span class="el-checkbox__inner" />
-                                    <input v-model="form.isAdmin" type="checkbox" aria-hidden="false" true-value="1" false-value="2" class="el-checkbox__original">
+                                    <input v-model="form.isAdmin" type="checkbox" aria-hidden="false" true-value="1" false-value="0" class="el-checkbox__original">
                                   </span>
                                 </label>
                                 <span class="text-yellow">{{ $t('__admin') }}</span>
@@ -444,11 +444,15 @@ export default {
     },
     onSubmit() {
       const data = JSON.parse(JSON.stringify(this.form))
-      data.effectAgentLine = data.effectAgentLine ? '1' : '0'
-      data.isAdmin = data.isAdmin ? '1' : '0'
+      // data.effectAgentLine = data.effectAgentLine ? '1' : '0'
+      // data.isAdmin = data.isAdmin ? '1' : '0'
       if (this.operationType === this.operationEnum.create) {
         if (this.form.account.length < 5) {
-          this.errorTips = `${this.$t('__lengthLess') + '5'}`
+          this.errorTips = `${this.$t('__account')}` + `${this.$t('__lengthLess') + '5'}`
+          return
+        }
+        if (this.form.nickname.length < 1) {
+          this.errorTips = `${this.$t('__nickname')}` + `${this.$t('__lengthLess') + '1'}`
           return
         }
         if (this.form.password !== this.form.confirmPassword) {
@@ -472,6 +476,10 @@ export default {
           this.dialogLoading = false
         })
       } else if (this.operationType === this.operationEnum.edit) {
+        if (this.form.nickname.length < 1) {
+          this.errorTips = `${this.$t('__nickname')}` + `${this.$t('__lengthLess')}1`
+          return
+        }
         this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
           this.dialogLoading = true
           console.log(data);

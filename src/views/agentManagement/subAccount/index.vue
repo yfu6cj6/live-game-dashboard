@@ -444,8 +444,7 @@ export default {
     },
     createDialogEditSuccess(res) {
       this.handleRespone(res)
-      const data = JSON.parse(JSON.stringify(this.editForm))
-      this.editForm = { account: data.account, password: data.password, isCreate: true }
+      this.editForm = { accountsInfo: res.accountsInfo, backendUrl: res.backendUrl, isCreate: true }
       this.curDialogIndex = this.dialogEnum.passwordTip
     },
     setDataLoading(dataLoading) {
@@ -472,7 +471,7 @@ export default {
       subAccountModPassword(data).then((res) => {
         this.handleRespone(res)
         this.$refs.modPasswordDialog.setDialogLoading(false)
-        this.editForm = { account: this.editForm.account, password: data.newPassword, isCreate: false }
+        this.editForm = { accountsInfo: [{ account: this.editForm.account, password: data.newPassword }], isCreate: false }
         this.curDialogIndex = this.dialogEnum.passwordTip
       }).catch(() => {
         this.$refs.modPasswordDialog.setDialogLoading(false)
