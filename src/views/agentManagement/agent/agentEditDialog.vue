@@ -57,14 +57,18 @@
                     <div class="label-group">
                       <label class="form-item-label">{{ $t('__account') }}</label>
                       <small class="tip">
-                        {{ `5-8${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}
+                        {{ operationType === operationEnum.edit ? '' : `5-8${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}
                       </small>
                     </div>
-                    <div class="el-input el-input--small">
+                    <div
+                      class="el-input el-input--small"
+                      :class="{'is-disabled': operationType === operationEnum.edit}"
+                    >
                       <input
                         v-model="form.account"
                         type="text"
                         autocomplete="off"
+                        :disabled="operationType===operationEnum.edit"
                         class="el-input__inner"
                         @focus="inputFocus(step1.account)"
                         @blur="passwordChange(step1.account, form.account)"
@@ -122,6 +126,7 @@
                   </div>
                 </div>
                 <div
+                  v-if="operationType === operationEnum.create && visible"
                   class="el-form-item custom-psw el-form-item--feedback el-form-item--small"
                   :class="{
                     'is-error': step1.password.hasError,
@@ -155,6 +160,7 @@
                   </div>
                 </div>
                 <div
+                  v-if="operationType === operationEnum.create && visible"
                   class="el-form-item custom-psw el-form-item--feedback el-form-item--small"
                   :class="{
                     'is-error': step1.confirmPassword.hasError,
@@ -520,7 +526,7 @@
                           class="form-item-label text-white"
                           :style="`letter-spacing: ${(agentBalanceInfo.parentId === 1) ? '-0.2' : '0'}rem`"
                         >
-                          {{ (agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.parentBalance) }}
+                          {{ (agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.parentBalanceLabel) }}
                         </label>
                       </div>
                     </div>
@@ -619,7 +625,7 @@
                     </div>
                     <div v-if="form.remark" class="item d-block">
                       <label class="preview-item-label">{{ $t('__remark') }}</label>
-                      <span class="preview-item-value">{{ form.remark }}</span>
+                      <span class="preview-item-value ml-3" style="display: block;">{{ form.remark }}</span>
                     </div>
                   </div>
                 </div>
@@ -905,8 +911,80 @@ export default {
       if (this.visible) {
         this.curIndex = this.stepEnum.agentInfo
         this.handicaps = JSON.parse(JSON.stringify(this.agentInfo.handicaps))
+        this.handicaps.forEach(element => {
+          element.exist = this.form.handicaps.some(handicap => handicap.id === element.id)
+        })
+        this.selectAllHandicaps = !(this.handicaps.some(handicap => !handicap.exist))
       } else {
         this.autoGenerateAccount = false
+        this.curIndex = 0
+        this.time_zone = []
+        this.currency = []
+        this.step1 = {
+          account: {
+            hasError: false,
+            isSuccess: false
+          },
+          nickname: {
+            hasError: false,
+            isSuccess: false
+          },
+          password: {
+            hasError: false,
+            isSuccess: false,
+            type: 'password'
+          },
+          confirmPassword: {
+            hasError: false,
+            isSuccess: false,
+            type: 'password'
+          }
+        }
+        this.step2 = {
+          live_commission_rate: {
+            hasError: false,
+            isSuccess: false
+          },
+          live_rolling_rate: {
+            hasError: false,
+            isSuccess: false
+          }
+        }
+        this.step3 = {
+          id: {
+            sortable: false,
+            increment: true
+          },
+          nickname: {
+            sortable: false,
+            increment: true
+          },
+          bet_min: {
+            sortable: false,
+            increment: true
+          },
+          bet_max: {
+            sortable: false,
+            increment: true
+          }
+        }
+        this.step4 = {
+          balance: {
+            hasError: false,
+            isSuccess: false
+          }
+        }
+        this.step5 = {
+          userPassword: {
+            hasError: false,
+            isSuccess: false,
+            type: 'password'
+          }
+        }
+        this.handicaps = []
+        this.selectAllHandicaps = false
+        this.errorTip = ''
+        this.hasError = false
       }
     },
     autoGenerateAccount() {
@@ -930,6 +1008,7 @@ export default {
         agentGetSetBalanceInfo(data).then((res) => {
           this.agentBalanceInfo = res.rows
           this.agentBalanceInfo.agentBalanceLabel = numberFormat(this.agentBalanceInfo.agentBalance)
+          this.agentBalanceInfo.parentBalanceLabel = numberFormat(this.agentBalanceInfo.parentBalance)
           this.agentBalanceInfo.agent = `${this.form.nickname}(${this.form.account})`
           this.dialogLoading = false
         }).catch(() => {
@@ -1115,17 +1194,19 @@ export default {
     onNextBtnClick() {
       let success = true
       if (this.curIndex === this.stepEnum.agentInfo) {
-        if (!this.passwordChange(this.step1.account, this.form.account)) {
-          success = false
-        }
         if (!this.inputChange(this.step1.nickname, this.form.nickname)) {
           success = false
         }
-        if (!this.passwordChange(this.step1.password, this.form.password)) {
-          success = false
-        }
-        if (!this.confirmPasswordChange()) {
-          success = false
+        if (this.operationType === this.operationEnum.create && this.visible) {
+          if (!this.passwordChange(this.step1.account, this.form.account)) {
+            success = false
+          }
+          if (!this.passwordChange(this.step1.password, this.form.password)) {
+            success = false
+          }
+          if (!this.confirmPasswordChange()) {
+            success = false
+          }
         }
         if (!success) {
           this.errorTip = this.$t('__pleaseCheckFormContent')
@@ -1243,6 +1324,11 @@ export default {
     }
   }
   .step-content {
+    .is-disabled {
+      .el-input__inner {
+        color: #6e6e6e;
+      }
+    }
     .handicap-table {
       transform: translateZ(0);
       -webkit-transform: translateZ(0);
