@@ -33,7 +33,7 @@
                 <span>
                   <div class="item-inner">
                     <span class="fas">
-                      <svg-icon :icon-class="item.status === '1' ? 'enable' : 'disable'" :class="{'text-green': item.status === '1', 'text-red': item.status !== '1'}" style="height: 1.25rem; width: 1.25rem;" />
+                      <svg-icon :icon-class="item.status === '1' ? 'enable' : 'disable'" :class="{'text-green': item.status === '1', 'text-red': item.status !== '1'}" />
                     </span>
                   </div>
                   <div class="item-inner mt-2" :class="{'text-green': item.status === '1', 'text-red': item.status !== '1'}">{{ item.status === '1' ? $t('__enabled') : $t('__disabled') }}</div>

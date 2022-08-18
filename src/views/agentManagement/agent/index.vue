@@ -44,7 +44,7 @@
                 <span>
                   <div class="item-inner">
                     <span class="fas">
-                      <svg-icon :icon-class="item.lockLogin ? 'disable' : 'enable'" :class="{'text-red': item.lockLogin, 'text-green': !item.lockLogin}" style="height: 1.25rem; width: 1.25rem;" />
+                      <svg-icon :icon-class="item.lockLogin ? 'disable' : 'enable'" :class="{'text-red': item.lockLogin, 'text-green': !item.lockLogin}" />
                     </span>
                   </div>
                   <div class="item-inner mt-2" :class="{'text-red':item.lockLogin, 'text-green':!item.lockLogin}">{{ item.lockLoginLabel }}</div>

@@ -153,6 +153,11 @@
                           <div class="filter-container pb-0">
                             <form>
                               <div class="flex-wrap filter-wrap el-row el-row--flex">
+                                <div v-if="!isAgentSubAccount" class="filter-item add-agent" @click.stop="onAddSubBtnClick()">
+                                  <div>
+                                    <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" />
+                                  </div>
+                                </div>
                                 <div class="filter-item search">
                                   <div class="comp d-flex search-filter">
                                     <input v-model="searchString" class="el-input">
@@ -171,11 +176,8 @@
                             </form>
                             <!-- <div /> 彈跳飾窗 -->
                           </div>
-                          <div class="filter-sort-wrap">
-                            <button class="el-button bg-yellow el-button--default add_button" @click.stop="onAddSubBtnClick()">
-                              <span>{{ addSubLabel }}</span>
-                            </button>
-                          </div>
+                          <!-- <div class="filter-sort-wrap">
+                          </div> -->
                         </div>
                         <agent
                           v-show="curTableIndex === tableEnum.agent"
@@ -257,20 +259,6 @@ export default {
       'accountStatusType',
       'isAgentSubAccount'
     ]),
-    addSubLabel() {
-      switch (this.curTableIndex) {
-        case this.tableEnum.agent: {
-          return this.$t('__addSubAgent')
-        }
-        case this.tableEnum.member: {
-          return this.$t('__addMember')
-        }
-        case this.tableEnum.subAccount: {
-          return this.$t('__addSubAccount')
-        }
-      }
-      return ''
-    },
     agentInfoBalance() {
       return this.agentInfo.id === 1 ? 'oo' : this.numberFormatStr(this.agentInfo.balance)
     }
@@ -562,6 +550,10 @@ export default {
               border-radius: 0 0.20833rem 0.20833rem 0;
               padding: 0 0.83333rem;
             }
+          }
+          &.add-agent {
+            margin-right: 0.83333rem;
+            margin-top: 0.41667rem;
           }
         }
       }
