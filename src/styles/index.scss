@@ -139,6 +139,10 @@ th {
 }
 
 table {
+  font-size: .66667rem;
+}
+
+table {
   border-collapse: collapse;
   th,
   td,
@@ -212,6 +216,11 @@ table {
 }
 .w-auto {
   width: auto!important;
+}
+
+// 高
+.h-100 {
+  height: 100%!important;
 }
 
 // display

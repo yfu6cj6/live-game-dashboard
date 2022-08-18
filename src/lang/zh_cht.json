@@ -331,5 +331,12 @@
     "__Watch": "查看",
     "__pleaseCheckFormContent": "請檢查表單內容是否填寫正確",
     "__index": "序號",
-    "__subAccountBaseInfo": "子帳號基本訊息"
+    "__subAccountBaseInfo": "子帳號基本訊息",
+    "__choose": "請選擇",
+    "__pleaseEnterCorrectValue": "請輸入正確數值",
+    "__indivual": "個",
+    "__character": "字符",
+    "__includeEnglishAlphabetNumberBottomLine": "可包含大小寫字母，數字或下底線",
+    "__info": "資料",
+    "__pleaseEnterUserPassword": "請輸入操作者密碼"
 }

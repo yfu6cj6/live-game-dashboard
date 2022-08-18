@@ -1032,6 +1032,17 @@
   th.is-leaf {
     border-bottom: 0.1rem solid #ebeef5;
   }
+  .cell {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-all;
+    line-height: 2.3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
 .el-step {

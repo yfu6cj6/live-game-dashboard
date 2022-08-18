@@ -282,7 +282,7 @@
       :visible="curDialogIndex === dialogEnum.edit"
       :operation-type="2"
       :agent-info="agentInfo"
-      :confirm="$t('__revise')"
+      :confirm="$t('__submit')"
       :form="editForm"
       :step-enum="editStepEnum"
       @close="closeDialogEven"
@@ -295,7 +295,7 @@
       :visible="curDialogIndex === dialogEnum.create"
       :operation-type="1"
       :agent-info="agentInfo"
-      :confirm="$t('__confirm')"
+      :confirm="$t('__submit')"
       :form="editForm"
       :step-enum="editStepEnum"
       @close="closeDialogEven"
@@ -653,6 +653,10 @@ export default {
     },
     handleRespone(res) {
       this.agentInfo = res.agentInfo
+      this.agentInfo.handicaps.forEach(element => {
+        element.betMinLabel = numberFormat(element.bet_min)
+        element.betMaxLabel = numberFormat(element.bet_max)
+      });
       this.agentInfo.fullName = `${this.agentInfo.nickname}(${this.agentInfo.account})`
       // 設定已經擴展的item
       const open = this.allDataByClient.filter(item => item.open).map(item => item.id)
@@ -693,8 +697,7 @@ export default {
     },
     createDialogEditSuccess(res) {
       this.handleRespone(res)
-      const data = JSON.parse(JSON.stringify(this.editForm))
-      this.editForm = { account: data.account, password: data.password, isCreate: true }
+      this.editForm = { accountsInfo: res.accountsInfo, backendUrl: res.backendUrl, isCreate: true }
       this.curDialogIndex = this.dialogEnum.passwordTip
     },
     setDataLoading(dataLoading) {
@@ -797,7 +800,7 @@ export default {
       agentModPassword(data).then((res) => {
         this.handleRespone(res)
         this.$refs.modPasswordDialog.setDialogLoading(false)
-        this.editForm = { account: this.editForm.account, password: data.newPassword, isCreate: false }
+        this.editForm = { accountsInfo: [{ account: this.editForm.account, password: data.newPassword }], isCreate: true }
         this.curDialogIndex = this.dialogEnum.passwordTip
       }).catch(() => {
         this.$refs.modPasswordDialog.setDialogLoading(false)
