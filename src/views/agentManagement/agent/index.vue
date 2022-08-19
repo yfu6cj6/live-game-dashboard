@@ -2,7 +2,7 @@
   <div>
     <div class="agent-list">
       <div class="agent-list">
-        <div>
+        <div v-show="tableData.length > 0">
           <div
             v-for="(item, index) in tableData"
             :key="index"
@@ -273,6 +273,11 @@
             </div>
           </div>
           <div style="display: none;" />
+        </div>
+        <div v-show="tableData.length <= 0">
+          <div class="noInformation">
+            <span>{{ `${$t('__noHave')}${$t('__directAgent')}` }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -869,5 +874,8 @@ export default {
     }
   }
 }
-
+.noInformation {
+  margin-top: 1rem;
+  text-align: center;
+}
 </style>

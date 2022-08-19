@@ -99,7 +99,6 @@
     "__ipWhitelist": "IP白名單",
     "__agencyAnnouncement": "代理公告",
     "__gameAnnouncement": "遊戲公告",
-    "__noMore": "沒有更多資料",
     "__description": "說明",
     "__createdAt": "創建時間",
     "__operationLog": "操作日誌",
@@ -338,5 +337,7 @@
     "__character": "字符",
     "__includeEnglishAlphabetNumberBottomLine": "可包含大小寫字母，數字或下底線",
     "__info": "資料",
-    "__pleaseEnterUserPassword": "請輸入操作者密碼"
+    "__pleaseEnterUserPassword": "請輸入操作者密碼",
+    "__noHave": "沒有",
+    "__directAgent": "下線代理"
 }

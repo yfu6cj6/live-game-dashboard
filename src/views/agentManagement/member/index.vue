@@ -2,7 +2,7 @@
   <div>
     <div class="agent-list">
       <div class="agent-list">
-        <div>
+        <div v-show="tableData.length > 0">
           <div
             v-for="(item, index) in tableData"
             :key="index"
@@ -257,6 +257,11 @@
                 <span class="value" style="word-break: break-word;">{{ item.remark }}</span>
               </div>
             </div>
+          </div>
+        </div>
+        <div v-show="tableData.length <= 0">
+          <div class="noInformation">
+            <span>{{ `${$t('__noHave')}${$t('__member')}` }}</span>
           </div>
         </div>
         <div v-if="totalCount > pageSize" class="text-center p-3">
@@ -799,5 +804,9 @@ export default {
   &.first {
     border-top: 0.08333rem solid #f9c901;
   }
+}
+.noInformation {
+  margin-top: 1rem;
+  text-align: center;
 }
 </style>

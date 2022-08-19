@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="agent-list">
-      <div>
+      <div v-show="tableData.length > 0">
         <div
           v-for="(item, index) in tableData"
           :key="index"
@@ -180,6 +180,11 @@
           <div v-else>
             <span class="view-more border-bottom border-dark mb-1" @click="moreInfoByClient">{{ $t('__searchMoreValue') }}</span>
           </div>
+        </div>
+      </div>
+      <div v-show="tableData.length <= 0">
+        <div class="noInformation">
+          <span>{{ `${$t('__noHave')}${$t('__subAccount')}` }}</span>
         </div>
       </div>
     </div>
@@ -494,5 +499,9 @@ export default {
   display: block;
   background-color: rgba(0,0,0,0.5);
   z-index: 3;
+}
+.noInformation {
+  margin-top: 1rem;
+  text-align: center;
 }
 </style>
