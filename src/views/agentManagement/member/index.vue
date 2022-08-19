@@ -103,7 +103,7 @@
               <div class="force-wrap" />
               <div class="list-item" style="width: auto; flex-wrap: wrap; margin: 1rem auto 1.5rem 0px;">
                 <span class="label mr-2">{{ $t('__handicapLimit') }}</span>
-                <span class="value handicap text-yellow" @click.stop="onLimitBtnClick(item.handicaps)">
+                <span class="value handicap text-yellow" @click.stop="onLimitBtnClick(item)">
                   <span class="h-t">{{ item.handicaps_info }}</span>
                 </span>
                 <span class="label ml-2">
@@ -289,7 +289,8 @@
     <limitDialog
       :title="$t('__handicapLimit')"
       :visible="curDialogIndex === dialogEnum.limit"
-      :handicaps="handicaps"
+      :form="editForm"
+      :agent-name="account"
       @close="closeDialogEven"
     />
 
@@ -476,10 +477,10 @@ export default {
         'isMute': 13
       }),
       agentInfo: {},
-      handicaps: [],
       editForm: {},
       editStepEnum: {},
-      curDialogIndex: 0
+      curDialogIndex: 0,
+      account: ''
     }
   },
   computed: {
@@ -683,8 +684,9 @@ export default {
       this.curDialogIndex = this.dialogEnum.edit
       this.setDataLoading(false)
     },
-    onLimitBtnClick(handicaps) {
-      this.handicaps = JSON.parse(JSON.stringify(handicaps))
+    onLimitBtnClick(rowData) {
+      this.editForm = JSON.parse(JSON.stringify(rowData))
+      this.account = rowData.name
       this.curDialogIndex = this.dialogEnum.limit
     },
     onLastBetTime(rowData) {

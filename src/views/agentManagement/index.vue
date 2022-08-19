@@ -87,7 +87,7 @@
                         </div>
                         <div class="info-item info-item d-flex">
                           <label>{{ `${$t('__handicapLimit')}: ` }}</label>
-                          <span class="value handicap text-yellow text-link" @click.stop="onLimitBtnClick(agentInfo.handicaps)">
+                          <span class="value handicap text-yellow text-link" @click.stop="onLimitBtnClick()">
                             <span class="h-t">{{ agentInfo.handicaps_info }}</span>
                           </span>
                           <span class="ml-2">
@@ -202,7 +202,8 @@
                         <limitDialog
                           :title="$t('__handicapLimit')"
                           :visible="curDialogIndex === dialogEnum.limit"
-                          :handicaps="handicaps"
+                          :form="agentInfo"
+                          :agent-name="account"
                           @close="closeDialogEven"
                         />
                       </div>
@@ -248,10 +249,10 @@ export default {
         'limit': 1
       }),
       agentInfo: {},
-      handicaps: [],
       curTableIndex: 0,
       curDialogIndex: 0,
-      searchString: ''
+      searchString: '',
+      account: ''
     }
   },
   computed: {
@@ -313,8 +314,9 @@ export default {
       this.setTagsViewTitle()
       this.dataLoading = false
     },
-    onLimitBtnClick(handicaps) {
-      this.handicaps = JSON.parse(JSON.stringify(handicaps))
+    onLimitBtnClick() {
+      this.editForm = JSON.parse(JSON.stringify(this.agentInfo))
+      this.account = this.agentInfo.account
       this.curDialogIndex = this.dialogEnum.limit
     },
     onTotalPlayerBtnClick() {

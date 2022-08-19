@@ -570,6 +570,10 @@
   margin-top: 0.25rem!important;
 }
 
+.ml-4, .mx-4 {
+  margin-left: 1.5rem!important;
+}
+
 .d-block {
   display: block!important;
 }
@@ -668,3 +672,45 @@
     }
   }
 }
+
+.handicaps-list {
+  color: #fff;
+  padding-top: 2.5rem;
+  .ww-5 {
+    width: 4.16667rem;
+  }
+  .ww-9 {
+    width: 7.5rem;
+  }
+  .ww-2 {
+    width: 1.66667rem;
+  }
+  .ww-10 {
+    width: 8.33333rem;
+  }
+  .title {
+    padding: 0.83333rem 0.83333rem 0.41667rem 0.83333rem;
+    border-bottom: 0.08333rem solid #f9c901;
+    color: #f9c901;
+  }
+  .content {
+    padding: 0.83333rem 0.83333rem 0 0.83333rem;
+    .item {
+      padding: 0.41667rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      .preview-item-label {
+        color: #f9c901;
+      }
+      .preview-item-value {
+        margin-left: auto;
+      }
+      .handicap-item {
+        margin: auto;
+        word-break: break-all;
+      }
+    }
+  }
+}
+
