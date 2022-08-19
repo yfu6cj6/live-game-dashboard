@@ -398,7 +398,7 @@ export default {
       this.editForm.effectAgentLine = this.editForm.effectAgentLine ? '1' : '0'
       this.editForm.isAdmin = this.editForm.isAdmin ? '1' : '0'
       this.curDialogIndex = this.dialogEnum.create
-      this.$store.dispatch('common/setHeaderStyle', [this.$t('__addSubAgent'), true, () => {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__addSubAccount'), true, () => {
         this.closeDialogEven()
         this.$store.dispatch('common/setHeaderStyle', [this.$t('__subAccountManagement'), false, () => { }])
       }])
