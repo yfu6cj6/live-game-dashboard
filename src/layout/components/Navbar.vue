@@ -65,10 +65,10 @@
               </div>
             </div>
           </div>
-          <div v-show="showBack" class="center">
+          <div v-show="canShowBack" class="center">
             <span class="strong line" />
           </div>
-          <div v-show="showBack" class="right" @click.stop="showBackEven">
+          <div v-show="canShowBack" class="right" @click.stop="onShowBackEven">
             <div class="inner clickable">
               <div class="fas clickable black">
                 <svg
@@ -82,8 +82,8 @@
               </div>
             </div>
           </div>
-          <div v-show="!showBack" class="center" />
-          <div v-show="!showBack" class="right">
+          <div v-show="!canShowBack" class="center" />
+          <div v-show="!canShowBack" class="right">
             <div class="inner" />
           </div>
         </div>
@@ -139,7 +139,7 @@ export default {
   },
   data: function() {
     return {
-      viewName: ''
+      showBackReady: true
     }
   },
   computed: {
@@ -164,11 +164,22 @@ export default {
     },
     curLang() {
       return getLanguage()
+    },
+    canShowBack() {
+      return this.showBack && this.showBackReady
     }
   },
   watch: {
   },
   methods: {
+    onShowBackEven() {
+      if (!this.showBackReady) return
+      this.showBackReady = false
+      this.showBackEven()
+      setTimeout(() => {
+        this.showBackReady = true
+      }, 300)
+    },
     language(lang) {
       setLanguage(lang)
     },

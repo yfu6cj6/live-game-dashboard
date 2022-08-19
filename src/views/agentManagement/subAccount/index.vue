@@ -407,6 +407,7 @@ export default {
     onSearch(agentId) {
       this.agentInfo.id = agentId
       this.onSubmit('')
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__subAccountManagement'), false, () => { }])
     },
     onSearchByString(str) {
       this.pageSizeCount = 1
