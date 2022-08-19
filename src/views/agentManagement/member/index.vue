@@ -333,7 +333,7 @@
       :visible="curDialogIndex === dialogEnum.edit"
       :operation-type="2"
       :agent-info="agentInfo"
-      :confirm="$t('__revise')"
+      :confirm="$t('__submit')"
       :form="editForm"
       :step-enum="editStepEnum"
       @close="closeDialogEven"
@@ -346,7 +346,7 @@
       :visible="curDialogIndex === dialogEnum.create"
       :operation-type="1"
       :agent-info="agentInfo"
-      :confirm="$t('__confirm')"
+      :confirm="$t('__submit')"
       :form="editForm"
       :step-enum="editStepEnum"
       @close="closeDialogEven"
@@ -633,6 +633,10 @@ export default {
     handleRespone(res) {
       this.agentInfo = res.agentInfo
       this.agentInfo.fullName = `${this.agentInfo.nickname}(${this.agentInfo.account})`
+      this.agentInfo.handicaps.forEach(element => {
+        element.betMinLabel = numberFormat(element.bet_min)
+        element.betMaxLabel = numberFormat(element.bet_max)
+      });
 
       // 設定已經擴展的item
       const open = this.allDataByClient.filter(item => item.open).map(item => item.id)

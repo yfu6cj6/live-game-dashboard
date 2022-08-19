@@ -339,5 +339,6 @@
     "__info": "資料",
     "__pleaseEnterUserPassword": "請輸入操作者密碼",
     "__noHave": "沒有",
-    "__directAgent": "下線代理"
+    "__directAgent": "下線代理",
+    "__atLeast": "至少"
 }
