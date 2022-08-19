@@ -208,7 +208,7 @@
 
     <subAgentDistributeDialog
       ref="subAgentDistributeDialog"
-      :title="`${$t('__subAgentDistribute')} ${editForm.fullName}`"
+      :account="agentInfo.account"
       :visible="curDialogIndex === dialogEnum.subAgentDistribute"
       :sub-agents="subAgent"
       :confirm="$t('__confirm')"
@@ -329,6 +329,7 @@ export default {
       subAccountSetHasAgents(data).then((res) => {
         this.handleRespone(res)
         this.$refs.subAgentDistributeDialog.setDialogLoading(false)
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__subAccountManagement'), false, () => { }])
       }).catch(() => {
         this.$refs.subAgentDistributeDialog.setDialogLoading(false)
       })
@@ -341,6 +342,10 @@ export default {
         subAccountId: rowData.id
       }
       this.$refs.subAgentDistributeDialog.setDialogLoading(true)
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__subAgentDistribute'), true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__subAccountManagement'), false, () => { }])
+      }])
       subAccountGetAgentLine(searchData).then((res) => {
         this.subAgent = res.rows
         this.$nextTick(() => {
