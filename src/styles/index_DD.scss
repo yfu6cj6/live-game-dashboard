@@ -718,3 +718,62 @@
   }
 }
 
+.detail-credit-form {
+  width: 100%;
+  padding: 0;
+  color: #fff !important;
+  background-color: #000 !important;
+  border-top: 0;
+  .credit-item-group {
+    max-width: 31.25rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-bottom: 0.83333rem;
+  }
+  .credit-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 2.5rem;
+    .label {
+      margin-right: 0.83333rem;
+      &.fixed-size {
+        width: 8.33333rem;
+      }
+    }
+    .yellow {
+      color: #f9c901;
+      width: 15rem;
+    }
+    &.big {
+      height: 3.33333rem;
+      .value {
+        height: 2.5rem;
+      }
+    }
+  }
+}
+
+#app .el-input {
+  &.yellow {
+    .el-input__inner {
+      border-radius: 0.25rem;
+      border: 0.08333rem solid #f9c901;
+      background-color: white;
+      padding: 0.83333rem;
+      height: 2.5rem;
+      line-height: 2.5rem;
+      font-size: 1.33333rem;
+      color: #000;
+    }
+  }
+}
