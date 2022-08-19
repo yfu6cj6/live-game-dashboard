@@ -160,8 +160,15 @@ export default {
     this.pageSizeCount = 1
     this.searchTime = defaultSearchTime
     this.handleCurrentChange(1)
+    this.setHeaderStyle()
+  },
+  activated() {
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__operationLog'), false, () => { }])
+    },
     remarkExpand(row) {
       const obj = this.tableData.find(item => item.id === row.id);
       this.$nextTick(() => {

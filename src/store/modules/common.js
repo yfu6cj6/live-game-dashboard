@@ -1,4 +1,7 @@
 const state = {
+  viewTitle: '',
+  showBack: false,
+  showBackEven: () => {},
   accountStatusType: accountStatusType,
   announcementMarqueeStatusType: announcementMarqueeStatusType,
   roles: roles,
@@ -133,11 +136,19 @@ const mutations = {
     state.statusType = statusType
     state.gamePaymentStatusType = gamePaymentStatusType
     state.game_play = game_play
+  },
+  SET_HEADER_STYLE(state, [title, showBack, showBackEven]) {
+    state.viewTitle = title
+    state.showBack = showBack
+    state.showBackEven = showBackEven
   }
 }
 const actions = {
   setCommonType({ commit }) {
     commit('SET_COMMON_TYPE')
+  },
+  setHeaderStyle({ commit }, [title, showBack, showBackEven]) {
+    commit('SET_HEADER_STYLE', [title, showBack, showBackEven])
   }
 }
 

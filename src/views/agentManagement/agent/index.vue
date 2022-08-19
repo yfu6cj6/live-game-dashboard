@@ -483,8 +483,6 @@ export default {
   name: 'Agent',
   components: { BalanceDialog, OperateDialog, LimitDialog, ModPasswordDialog, AgentRateLogDialog, AgentEditDialog },
   mixins: [handlePageChange],
-  props: {
-  },
   data() {
     return {
       dialogEnum: Object.freeze({
@@ -655,6 +653,10 @@ export default {
       this.editStepEnum = createFormStepEnum
       this.curDialogIndex = this.dialogEnum.create
       this.setDataLoading(false)
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__addSubAgent'), true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__agentManagement'), false, () => { }])
+      }])
     },
     handleRespone(res) {
       this.agentInfo = res.agentInfo
@@ -727,6 +729,10 @@ export default {
       this.editForm = JSON.parse(JSON.stringify(rowData))
       this.account = rowData.account
       this.curDialogIndex = this.dialogEnum.limit
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__agentManagement'), true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__agentManagement'), false, () => { }])
+      }])
     },
     onCommissionRateLogBtnClick(rowData) {
       this.setDataLoading(true)
@@ -797,6 +803,10 @@ export default {
       this.editStepEnum = editFormStepEnum
       this.curDialogIndex = this.dialogEnum.edit
       this.setDataLoading(false)
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__editSubAgent'), true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__agentManagement'), false, () => { }])
+      }])
     },
     modPassword(data) {
       this.$refs.modPasswordDialog.setDialogLoading(true)

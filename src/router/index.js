@@ -172,18 +172,18 @@ export const asyncRoutes = [
     path: '/agentManagement',
     component: Layout,
     redirect: '/agentManagement',
-    meta: { title: '__agentManagement', icon: 'tree', permission: 'AgentManage' },
+    meta: { title: '__directAgentManagement', icon: 'tree', permission: 'AgentManage' },
     children: [{
       path: 'agentManagement',
       name: 'AgentManagement',
-      meta: { title: '__agentManagement' },
+      meta: { title: '__directAgentManagement' },
       click: () => { store.dispatch('agentManagement/agentSearch') }
     },
     {
       path: 'agentManagement/:id(\\d+)',
       name: 'AgentManagement{0}',
       component: () => import('@/views/agentManagement/index'),
-      meta: { title: '__agentManagement', activeMenu: '/agentManagement/agentManagement', showBack: true },
+      meta: { title: '__directAgentManagement', activeMenu: '/agentManagement/agentManagement' },
       hidden: true
     }]
   },
@@ -204,7 +204,7 @@ export const asyncRoutes = [
       path: 'winLossReport/:id(\\d+)',
       name: 'WinLossReport{0}',
       component: () => import('@/views/winLossReport/index'),
-      meta: { title: '__winLossReport', activeMenu: '/winLossReport/winLossReport', showBack: true },
+      meta: { title: '__winLossReport', activeMenu: '/winLossReport/winLossReport' },
       hidden: true
     }]
   },
@@ -225,7 +225,7 @@ export const asyncRoutes = [
       path: 'memberBet/:id(\\d+)',
       name: 'MemberBet{0}',
       component: () => import('@/views/memberBet/index'),
-      meta: { title: '__memberBet', activeMenu: '/memberBet/memberBet', showBack: true },
+      meta: { title: '__memberBet', activeMenu: '/memberBet/memberBet' },
       hidden: true
     }]
   },
@@ -288,7 +288,7 @@ export const asyncRoutes = [
       path: 'agentBalanceReport/:id(\\d+)',
       name: 'AgentBalanceReport{0}',
       component: () => import('@/views/agentBalanceReport/index'),
-      meta: { title: '__agentBalanceReport', activeMenu: '/agentBalanceReport/agentBalanceReport', showBack: true },
+      meta: { title: '__agentBalanceReport', activeMenu: '/agentBalanceReport/agentBalanceReport' },
       hidden: true
     }]
   },
@@ -309,7 +309,7 @@ export const asyncRoutes = [
       path: 'giftRecord/:id(\\d+)',
       name: 'GiftRecord{0}',
       component: () => import('@/views/giftRecord/index'),
-      meta: { title: '__giftRecord', activeMenu: '/giftRecord/giftRecord', showBack: true },
+      meta: { title: '__giftRecord', activeMenu: '/giftRecord/giftRecord' },
       hidden: true
     }]
   },
@@ -330,7 +330,7 @@ export const asyncRoutes = [
       path: 'giftReport/:id(\\d+)',
       name: 'GiftReport{0}',
       component: () => import('@/views/giftReport/index'),
-      meta: { title: '__giftReport', activeMenu: '/giftReport/giftReport', showBack: true },
+      meta: { title: '__giftReport', activeMenu: '/giftReport/giftReport' },
       hidden: true
     }]
   },
@@ -340,12 +340,12 @@ export const asyncRoutes = [
     path: '/ipWhitelist',
     component: Layout,
     redirect: '/ipWhitelist',
-    meta: { title: '__ipWhitelist', icon: 'ipWhitelistIcon', permission: 'WhitelistManage' },
+    meta: { title: '__loginIpWhitelist', icon: 'ipWhitelistIcon', permission: 'WhitelistManage' },
     children: [{
       path: 'ipWhitelist',
       name: 'IpWhitelist',
       component: () => import('@/views/ipWhitelist/index'),
-      meta: { title: '__ipWhitelist' }
+      meta: { title: '__loginIpWhitelist' }
     }]
   },
 

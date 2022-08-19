@@ -163,8 +163,15 @@ export default {
   },
   created() {
     this.onSearchBtnClick({}, 1)
+    this.setHeaderStyle()
+  },
+  activated() {
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__loginIpWhitelist'), false, () => { }])
+    },
     remarkExpand(row) {
       const obj = this.allDataByClient.find(item => item.id === row.id);
       this.$nextTick(() => {

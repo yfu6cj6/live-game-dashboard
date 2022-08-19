@@ -163,8 +163,21 @@ export default {
     this.$nextTick(() => {
       this.onTableBtnClick(this.tableEnum.agent)
     })
+    this.setHeaderStyle()
+  },
+  activated() {
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      if (this.agentId || this.agentId === 0) {
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__agentBalanceReport'), true, () => {
+          this.$router.go(-1)
+        }])
+      } else {
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__agentBalanceReport'), false, () => { }])
+      }
+    },
     remarkExpand() {
       this.$nextTick(() => {
         this.agentInfo.open = !this.agentInfo.open;

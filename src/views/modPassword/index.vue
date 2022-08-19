@@ -128,7 +128,16 @@ export default {
       'account'
     ])
   },
+  created() {
+    this.setHeaderStyle()
+  },
+  activated() {
+    this.setHeaderStyle()
+  },
   methods: {
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__modPassword'), false, () => { }])
+    },
     showCurrentPassword() {
       if (this.currentPasswordType === 'password') {
         this.currentPasswordType = ''

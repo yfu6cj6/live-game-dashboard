@@ -672,8 +672,15 @@ export default {
       this.handleCurrentChange(this.currentPage)
       this.addSelectFilter()
     })
+    this.setHeaderStyle()
+  },
+  activated() {
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__memberBet'), false, () => { }])
+    },
     addSelectFilter() {
       this.addSelectDropDownFilter('options agents', () => {
         this.searchForm.agent_id = JSON.parse(JSON.stringify(this.searchItems.agents)).map(item => item.key)

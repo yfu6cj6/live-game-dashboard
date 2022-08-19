@@ -301,8 +301,15 @@ export default {
     this.$nextTick(() => {
       this.addSelectFilter()
     })
+    this.setHeaderStyle()
+  },
+  activated() {
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__agentBalanceRecord'), false, () => { }])
+    },
     addSelectFilter() {
       this.addSelectDropDownFilter('field options select_options', () => {
         this.searchForm.type = JSON.parse(JSON.stringify(this.searchItems.type)).map(item => item.key)
@@ -382,7 +389,6 @@ export default {
       data.fuzzyMatchingByOrderNumber = this.fuzzyMatchingByOrderNumber ? '1' : '0'
     },
     handleRespone(res) {
-      console.log("handleRespone");
       this.subtotalInfo = res.subtotalInfo
       this.subtotalInfo.totalAmount = (this.pageSize * this.pageSizeCount) > res.totalCount ? res.totalCount : (this.pageSize * this.pageSizeCount)
       this.totalInfo = res.totalInfo
@@ -406,7 +412,6 @@ export default {
       data.page = this.currentPage
       data.rowsCount = this.pageSize * this.pageSizeCount
       this.handleRequest(data)
-      console.log(data);
       agentBalanceRecordSearch(data).then((res) => {
         this.handleRespone(res)
       }).catch(() => {

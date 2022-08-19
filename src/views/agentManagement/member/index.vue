@@ -449,15 +449,6 @@ export default {
   name: 'Member',
   components: { MemberEditDialog, LimitDialog, ModPasswordDialog, BalanceDialog, OperateDialog, PasswordTipDialog },
   mixins: [handlePageChange],
-  props: {
-    'viewHeight': {
-      type: Number,
-      require: true,
-      default() {
-        return 0
-      }
-    }
-  },
   data() {
     return {
       dialogEnum: Object.freeze({
@@ -611,6 +602,10 @@ export default {
       this.editStepEnum = createFormStepEnum
       this.curDialogIndex = this.dialogEnum.create
       this.setDataLoading(false)
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__addMember'), true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__memberManagement'), false, () => { }])
+      }])
     },
     // 父物件呼叫
     onSearch(agentId) {
@@ -687,11 +682,19 @@ export default {
       this.editStepEnum = editFormStepEnum
       this.curDialogIndex = this.dialogEnum.edit
       this.setDataLoading(false)
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__editMember'), true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__memberManagement'), false, () => { }])
+      }])
     },
     onLimitBtnClick(rowData) {
       this.editForm = JSON.parse(JSON.stringify(rowData))
       this.account = rowData.name
       this.curDialogIndex = this.dialogEnum.limit
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__memberManagement'), true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__memberManagement'), false, () => { }])
+      }])
     },
     onLastBetTime(rowData) {
       this.setDataLoading(true)

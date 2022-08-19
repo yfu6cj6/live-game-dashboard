@@ -309,8 +309,15 @@ export default {
     this.$nextTick(() => {
       this.addSelectFilter()
     })
+    this.setHeaderStyle()
+  },
+  activated() {
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__memberBalanceRecord'), false, () => { }])
+    },
     addSelectFilter() {
       this.addSelectDropDownFilter('field options select_options', () => {
         this.searchForm.type = JSON.parse(JSON.stringify(this.searchItems.type)).map(item => item.key)

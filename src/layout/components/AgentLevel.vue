@@ -2,7 +2,7 @@
   <div ref="agentLevel" class="agentLevel-container" :class="{'open': agentLevelSidebar}">
     <div class="agentLevel-header" @click="onHandleBtnClick()">
       <i class="el-icon-arrow-left ml-2" />
-      <span>{{ $t('__agentManagement') }}</span>
+      <span>{{ $t('__directAgentManagement') }}</span>
     </div>
     <div v-loading="agentLevelLoading" class="agentLevel-item">
       <!-- <el-input v-model="filterText" :placeholder="$t('__enterKeys')" /> -->

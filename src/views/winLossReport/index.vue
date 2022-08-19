@@ -610,7 +610,20 @@ export default {
       this.onTableBtnClick(this.curTableIndex)
     })
   },
+  activated() {
+    this.setHeaderStyle()
+  },
   methods: {
+    setHeaderStyle() {
+      const viewTitle = (this.agentInfo && this.agentInfo.agent) ? `${this.agentInfo.agent}[${this.$t('__agent')}]` : ''
+      if (this.agentId || this.agentId === 0) {
+        this.$store.dispatch('common/setHeaderStyle', [`${viewTitle}${this.$t('__winLossReport')}`, true, () => {
+          this.$router.go(-1)
+        }])
+      } else {
+        this.$store.dispatch('common/setHeaderStyle', [`${viewTitle}${this.$t('__winLossReport')}`, false, () => { }])
+      }
+    },
     remarkExpand() {
       this.$nextTick(() => {
         this.agentInfo.open = !this.agentInfo.open;
@@ -727,6 +740,7 @@ export default {
       this.agentInfo.commitSuperiorsValidBetAmount = numberFormat(this.agentInfo.commitSuperiorsValidBetAmount)
       this.setTagsViewTitle()
       this.setDataLoading(false)
+      this.setHeaderStyle()
     },
     handleMemberRespone() {
       this.setDataLoading(false)

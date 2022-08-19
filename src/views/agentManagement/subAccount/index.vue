@@ -291,8 +291,6 @@ export default {
   name: 'Member',
   components: { SubAccountEditDialog, OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog },
   mixins: [handlePageChange],
-  props: {
-  },
   data() {
     return {
       dialogEnum: Object.freeze({
@@ -400,6 +398,10 @@ export default {
       this.editForm.effectAgentLine = this.editForm.effectAgentLine ? '1' : '0'
       this.editForm.isAdmin = this.editForm.isAdmin ? '1' : '0'
       this.curDialogIndex = this.dialogEnum.create
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__addSubAgent'), true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__subAccountManagement'), false, () => { }])
+      }])
     },
     // 父物件呼叫
     onSearch(agentId) {
@@ -466,6 +468,10 @@ export default {
       this.editForm.timeZone = this.editForm.timeZone.id
       this.curDialogIndex = this.dialogEnum.edit
       this.setDataLoading(false)
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__editSubAccount'), true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__subAccountManagement'), false, () => { }])
+      }])
     },
     onModPasswordBtnClick(rowData) {
       this.editForm = JSON.parse(JSON.stringify(rowData))

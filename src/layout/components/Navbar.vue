@@ -52,7 +52,7 @@
                 </svg>
               </div>
               <span class="strong text" :class="{'zh_ch': curLang === 'zh_cht' || curLang === 'zh_chs'}">
-                {{ $t(curViewTitle) }}
+                {{ viewTitle }}
               </span>
             </div>
           </div>
@@ -60,15 +60,15 @@
             <div class="inner">
               <div class="fas help black text-center">
                 <span class="strong text" :class="{'zh_ch': curLang === 'zh_cht' || curLang === 'zh_chs'}">
-                  {{ $t(curViewTitle) }}
+                  {{ viewTitle }}
                 </span>
               </div>
             </div>
           </div>
-          <div v-show="$route.meta.showBack" class="center">
+          <div v-show="showBack" class="center">
             <span class="strong line" />
           </div>
-          <div v-show="$route.meta.showBack" class="right" @click.stop="goBack">
+          <div v-show="showBack" class="right" @click.stop="showBackEven">
             <div class="inner clickable">
               <div class="fas clickable black">
                 <svg
@@ -82,8 +82,8 @@
               </div>
             </div>
           </div>
-          <div v-show="!$route.meta.showBack" class="center" />
-          <div v-show="!$route.meta.showBack" class="right">
+          <div v-show="!showBack" class="center" />
+          <div v-show="!showBack" class="right">
             <div class="inner" />
           </div>
         </div>
@@ -151,8 +151,10 @@ export default {
       'balance',
       'agent_id',
       'device',
-      'curViewTitle',
-      'modPwd'
+      'modPwd',
+      'viewTitle',
+      'showBack',
+      'showBackEven'
     ]),
     isCollapse() {
       return !this.sidebar.opened
@@ -167,9 +169,6 @@ export default {
   watch: {
   },
   methods: {
-    goBack() {
-      this.$router.go(-1)
-    },
     language(lang) {
       setLanguage(lang)
     },

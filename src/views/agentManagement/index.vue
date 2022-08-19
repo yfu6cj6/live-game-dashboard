@@ -273,8 +273,30 @@ export default {
     this.$nextTick(() => {
       this.onTableBtnClick(this.tableEnum.agent)
     })
+    this.setHeaderStyle()
+  },
+  activated() {
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      let viewTitle = ''
+      switch (this.curTableIndex) {
+        case this.tableEnum.agent: {
+          viewTitle = this.$t('__agentManagement')
+          break
+        }
+        case this.tableEnum.member: {
+          viewTitle = this.$t('__memberManagement')
+          break
+        }
+        case this.tableEnum.subAccount: {
+          viewTitle = this.$t('__subAccountManagement')
+          break
+        }
+      }
+      this.$store.dispatch('common/setHeaderStyle', [viewTitle, false, () => { }])
+    },
     expandAgentInfo() {
       this.$nextTick(() => {
         this.agentInfo.open = !this.agentInfo.open;
