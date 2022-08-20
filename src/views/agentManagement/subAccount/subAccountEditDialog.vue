@@ -26,6 +26,18 @@
                         </div>
                         <label class="form-item-title">{{ $t('__subAccountBaseInfo') }}</label>
                         <div class="step-content">
+                          <div v-if="operationType === operationEnum.create" class="el-form-item el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="d-flex align-items-center">
+                                <label class="form-item-label">{{ $t('__accountGenerateMode') }}</label>
+                                <el-switch
+                                  v-model="autoGenerateAccount"
+                                  :active-text="$t('__auto')"
+                                  :inactive-text="$t('__manual')"
+                                />
+                              </div>
+                            </div>
+                          </div>
                           <div class="el-form-item el-form-item--feedback el-form-item--small" :class="{'is-error': inputData.account.state === inputState.error, 'is-success': inputData.account.state === inputState.success}">
                             <div class="el-form-item__content">
                               <div class="label-group">
@@ -396,10 +408,14 @@ export default {
       if (this.autoGenerateAccount) {
         subAccountCreateAccount().then((res) => {
           this.form.account = res.account
-          this.$refs.form.clearValidate()
+          this.checkAccount()
+          // this.$refs.form.clearValidate()
         }).catch(() => {
           this.autoGenerateAccount = false
         })
+      } else {
+        this.form.account = ''
+        this.checkAccount()
       }
     }
   },

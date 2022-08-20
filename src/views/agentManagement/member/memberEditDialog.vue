@@ -35,7 +35,7 @@
             <form class="el-form flex-column flex-fill el-form--label-left">
               <label class="form-item-title">{{ $t('__memberInfo') }}</label>
               <div class="step-content">
-                <div class="el-form-item el-form-item--feedback el-form-item--small">
+                <div v-if="operationType === operationEnum.create" class="el-form-item el-form-item--feedback el-form-item--small">
                   <div class="el-form-item__content">
                     <div class="d-flex align-items-center">
                       <label class="form-item-label">{{ $t('__accountGenerateMode') }}</label>

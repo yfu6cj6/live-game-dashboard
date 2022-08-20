@@ -446,7 +446,6 @@ export default {
       })
     },
     onTableBtnClick(tableIndex, searchValue) {
-      console.log("tableIndex: " + tableIndex)
       this.curTableIndex = tableIndex
       switch (this.curTableIndex) {
         case this.tableEnum.agent: {
