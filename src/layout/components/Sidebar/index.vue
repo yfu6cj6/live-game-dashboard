@@ -72,7 +72,7 @@
           </form>
         </div>
         <el-menu
-          class="mainMenu"
+          class="mainMenu el-menu-vertical"
           :default-active="activeMenu"
           :collapse="!isOpened"
           :background-color="variables.menuBg"
@@ -258,6 +258,10 @@ export default {
   border-right: 1px solid $yellow;
   overflow-x: hidden;
   overflow-y: auto;
+  &.open {
+    transition: transform .5s;
+    transform: translateX(0);
+  }
   .search-bar-box {
     padding-top: 2.5rem;
     padding-bottom: 0.83333rem;
@@ -355,44 +359,74 @@ export default {
     }
   }
   .mainMenu {
-    border-right: 0px;
-    .el-menu-item {
-      font-size: 1.4rem;
+    .el-menu-item,
+    .el-submenu {
+      padding-left: 0rem !important;
+      padding-right: 0rem !important;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      position: relative;
+      height: auto;
+      overflow: visible;
+      .el-icon-setting,
+      .fas {
+        font-size: 1.33333rem;
+        width: 2rem;
+        text-align: center;
+        margin-right: 0.41667rem;
+        margin-left: 0.83333rem;
+        color: #f9c901;
+        margin-top: -0.16667rem;
+      }
+      .title-container {
+        width: calc(100% - 5rem);
+      }
+      .text {
+        color: #fff;
+        word-break: break-word;
+        white-space: normal;
+        height: auto;
+        overflow: visible;
+        p {
+          line-height: 2rem;
+          margin-top: 0.7rem;
+          margin-bottom: 0.7rem;
+        }
+      }
+      .el-submenu__title {
+        background-color: transparent;
+        padding-left: 0 !important;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%;
+      }
+      .el-menu--inline {
+        width: 100%;
+      }
+      .el-submenu__icon-arrow {
+        font-size: 1.33333rem;
+        color: #fff !important;
+        right: 1rem;
+      }
+    }
+    .el-menu-item,
+    .el-submenu__title {
       height: auto;
       line-height: 3.5rem;
       &.is-active {
-        background-color: #a3a3a3 !important;
-        i {
-          color: #fc0;
-        }
+        background: #a3a3a3 !important;
       }
     }
     .el-submenu {
-      font-size: unset;
-      .el-submenu__title {
-        font-size: 1.4rem;
-        height: auto;
-        line-height: 3.5rem;
-        .el-submenu__icon-arrow {
-          color: #fff;
-          font-size: 1.4rem;
+      &.is-active {
+        .el-submenu__title {
+          background: #a3a3a3 !important;
         }
       }
-      .el-menu-item {
-        min-width: 0;
-      }
-    }
-    .sub-el-icon {
-      color: $yellow;
-      width: 1.33333rem;
-      height: 1.33333rem;
-      margin-right: .41667rem;
-      font-size: unset;
-    }
-    .icon {
-      color: $yellow;
-      margin-right: .41667rem;
-      font-size: unset;
     }
   }
   .footer {
@@ -402,10 +436,6 @@ export default {
     padding-bottom: 1rem;
     font-size: .91667rem;
     line-height: 1.25rem;
-  }
-  &.open {
-    transition: transform .5s;
-    transform: translateX(0);
   }
 }
 
@@ -509,10 +539,6 @@ export default {
       width: 1em;
       height: 1em;
       margin-right: .2em;
-    }
-    .icon {
-      color: $yellow;
-      margin-right: .5em;
     }
   }
   .footer {

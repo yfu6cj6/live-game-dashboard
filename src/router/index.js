@@ -85,84 +85,84 @@ export const asyncRoutes = [
         path: 'dealerManagement',
         name: 'DealerManagement',
         component: () => import('@/views/backstageManagement/dealerManagement/index'),
-        meta: { title: '__dealerManagement', icon: 'el-icon-s-custom', permission: 'BackStageManage.DealerManage' }
+        meta: { title: '__dealerManagement', permission: 'BackStageManage.DealerManage' }
       },
       {
         // 贈禮管理
         path: 'giftManagement',
         name: 'GiftManagement',
         component: () => import('@/views/backstageManagement/giftManagement/index'),
-        meta: { title: '__giftManagement', icon: 'el-icon-present', permission: 'BackStageManage.GiftManage' }
+        meta: { title: '__giftManagement', permission: 'BackStageManage.GiftManage' }
       },
       {
         // 真人玩法管理
         path: 'liveBetAreaManagement',
         name: 'LiveBetAreaManagement',
         component: () => import('@/views/backstageManagement/liveBetAreaManagement/index'),
-        meta: { title: '__liveBetAreaManagement', icon: 'el-icon-user', permission: 'BackStageManage.LiveBetAreaManage' }
+        meta: { title: '__liveBetAreaManagement', permission: 'BackStageManage.LiveBetAreaManage' }
       },
       {
         // 遊戲桌管理
         path: 'gameTableManagement',
         name: 'GameTableManagement',
         component: () => import('@/views/backstageManagement/gameTableManagement/index'),
-        meta: { title: '__gameTableManagement', icon: 'el-icon-set-up', permission: 'BackStageManage.GameTableManage' }
+        meta: { title: '__gameTableManagement', permission: 'BackStageManage.GameTableManage' }
       },
       {
         // 遊戲區管理
         path: 'gameAreaManagement',
         name: 'GameAreaManagement',
         component: () => import('@/views/backstageManagement/gameAreaManagement/index'),
-        meta: { title: '__gameAreaManagement', icon: 'poker', permission: 'BackStageManage.GameAreaManage' }
+        meta: { title: '__gameAreaManagement', permission: 'BackStageManage.GameAreaManage' }
       },
       {
         // 帳號管理
         path: 'accountManagement',
         name: 'AccountManagement',
         component: () => import('@/views/backstageManagement/accountManagement/index'),
-        meta: { title: '__accountManagement', icon: 'el-icon-postcard', permission: 'BackStageManage.AccountManage' }
+        meta: { title: '__accountManagement', permission: 'BackStageManage.AccountManage' }
       },
       {
         // 角色管理
         path: 'roleManagement',
         name: 'RoleManagement',
         component: () => import('@/views/backstageManagement/roleManagement/index'),
-        meta: { title: '__roleManagement', icon: 'people', permission: 'BackStageManage.RoleManage' }
+        meta: { title: '__roleManagement', permission: 'BackStageManage.RoleManage' }
       },
       {
         // 權限管理
         path: 'permissionManagement',
         name: 'PermissionManagement',
         component: () => import('@/views/backstageManagement/permissionManagement/index'),
-        meta: { title: '__permissionManagement', icon: 'el-icon-s-check', permission: 'BackStageManage.PermissionManage' }
+        meta: { title: '__permissionManagement', permission: 'BackStageManage.PermissionManage' }
       },
       {
         // 時區管理
         path: 'timeZoneManagement',
         name: 'TimeZoneManagement',
         component: () => import('@/views/backstageManagement/timeZoneManagement/index'),
-        meta: { title: '__timeZoneManagement', icon: 'international', permission: 'BackStageManage.TimeZoneManage' }
+        meta: { title: '__timeZoneManagement', permission: 'BackStageManage.TimeZoneManage' }
       },
       {
         // 幣別管理
         path: 'currencyManagement',
         name: 'CurrencyManagement',
         component: () => import('@/views/backstageManagement/currencyManagement/index'),
-        meta: { title: '__currencyManagement', icon: 'money', permission: 'BackStageManage.CurrencyManage' }
+        meta: { title: '__currencyManagement', permission: 'BackStageManage.CurrencyManage' }
       },
       {
         // 公告管理
         path: 'announcementManagement',
         name: 'AnnouncementManagement',
         component: () => import('@/views/backstageManagement/announcementManagement/index'),
-        meta: { title: '__announcementManagement', icon: 'el-icon-s-order', permission: 'BackStageManage.AnnouncementManage' }
+        meta: { title: '__announcementManagement', permission: 'BackStageManage.AnnouncementManage' }
       },
       {
         // 系統管理
         path: 'systemManagement',
         name: 'SystemManagement',
         component: () => import('@/views/backstageManagement/systemManagement/index'),
-        meta: { title: '__systemManagement', icon: 'el-icon-s-tools', permission: 'BackStageManage.SystemParameterManage' }
+        meta: { title: '__systemManagement', permission: 'BackStageManage.SystemParameterManage' }
       }
     ]
   },
@@ -176,7 +176,7 @@ export const asyncRoutes = [
     children: [{
       path: 'agentManagement',
       name: 'AgentManagement',
-      meta: { title: '__directAgentManagement' },
+      meta: { title: '__directAgentManagement', showSuffix: true },
       click: () => { store.dispatch('agentManagement/agentSearch') }
     },
     {
@@ -354,7 +354,7 @@ export const asyncRoutes = [
     path: '/logManagement',
     component: Layout,
     redirect: '/logManagement',
-    meta: { title: '__logManagement', icon: 'el-icon-document', permission: 'LogManage' },
+    meta: { title: '__logManagement', icon: 'operationLogIcon', permission: 'LogManage' },
     children: [{
       // 操作日誌
       path: 'operationLog',

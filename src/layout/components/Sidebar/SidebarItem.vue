@@ -3,19 +3,19 @@
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <template v-if="onlyOneChild.click">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}" @click="onlyOneChild.click()">
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="$t(onlyOneChild.meta.title)" />
+          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="$t(onlyOneChild.meta.title)" :show-suffix="onlyOneChild.meta.showSuffix" />
         </el-menu-item>
       </template>
       <app-link v-else-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="$t(onlyOneChild.meta.title)" />
+          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="$t(onlyOneChild.meta.title)" :show-suffix="onlyOneChild.meta.showSuffix" />
         </el-menu-item>
       </app-link>
     </template>
 
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
-        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="$t(item.meta.title)" />
+        <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="$t(item.meta.title)" :show-suffix="item.meta.showSuffix" />
       </template>
       <sidebar-item
         v-for="child in item.children"
