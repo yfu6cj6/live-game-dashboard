@@ -5,7 +5,9 @@ const state = {
   agentLevelSidebar: localStorage.getItem('agentLevelSidebarStatus') ? localStorage.getItem('agentLevelSidebarStatus') : true,
   agentLevel: [],
   agentLevelLoading: true,
-  agentLevelExpandedKeys: []
+  agentLevelExpandedKeys: [],
+  agentSearchKey: '',
+  agentSearchValue: ''
 }
 
 const mutations = {
@@ -26,6 +28,10 @@ const mutations = {
       state.agentLevelExpandedKeys = []
     }
     state.agentLevelExpandedKeys.push(agentLevelExpandedKeys)
+  },
+  SET_AGENT_SEARCH: (state, [key, value]) => {
+    state.agentSearchKey = key
+    state.agentSearchValue = value
   }
 }
 
@@ -55,6 +61,9 @@ const actions = {
         reject(error)
       })
     })
+  },
+  setAgentSearch({ commit }, [key, value]) {
+    commit('SET_AGENT_SEARCH', [key, value])
   }
 }
 

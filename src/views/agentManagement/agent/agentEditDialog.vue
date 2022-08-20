@@ -295,6 +295,7 @@
                           v-model.number="form.live_commission_rate"
                           type="number"
                           autocomplete="off"
+                          :disabled="agentInfo.live_commission_rate === 0 || operationType === operationEnum.edit"
                           min="0"
                           class="el-input__inner"
                           @focus="inputFocus(step2.live_commission_rate)"
@@ -336,6 +337,7 @@
                           v-model.number="form.live_rolling_rate"
                           type="number"
                           autocomplete="off"
+                          :disabled="agentInfo.live_rolling_rate === 0 || operationType === operationEnum.edit"
                           min="0"
                           class="el-input__inner"
                           @focus="inputFocus(step2.live_rolling_rate)"
@@ -571,6 +573,7 @@
                           autocomplete="off"
                           class="el-input__inner"
                           min="0"
+                          :disabled="balanceDisable"
                           @focus="inputFocus(step4.balance)"
                           @blur="specialInputChange('balance')"
                           @change="specialInputChange('balance')"
@@ -904,6 +907,12 @@ export default {
     },
     existHandicaps() {
       return this.handicaps.filter(item => item.exist)
+    },
+    balanceDisable() {
+      if (this.agentBalanceInfo.parentId === 1) {
+        return false
+      }
+      return Number(this.agentBalanceInfo.parentBalance) === 0
     }
   },
   watch: {

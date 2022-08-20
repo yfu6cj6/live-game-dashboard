@@ -131,17 +131,17 @@
                               <div class="swiper-container el-tabs__nav w-100 swiper-container-initialized swiper-container-horizontal swiper-container-free-mode swiper-container-ios">
                                 <div class="swiper-wrapper" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
                                   <div class="swiper-slide">
-                                    <div class="el-tabs__item" :class="{'is-active': curTableIndex === tableEnum.agent, 'clickable': curTableIndex !== tableEnum.agent}" @click.stop="onTableBtnClick(tableEnum.agent)">
+                                    <div class="el-tabs__item" :class="{'is-active': curTableIndex === tableEnum.agent, 'clickable': curTableIndex !== tableEnum.agent}" @click.stop="onTableBtnClick(tableEnum.agent, searchString.agent)">
                                       <div class="tab-item strong">{{ $t('__agent') }}</div>
                                     </div>
                                   </div>
                                   <div class="swiper-slide">
-                                    <div class="el-tabs__item" :class="{'is-active': curTableIndex === tableEnum.member, 'clickable': curTableIndex !== tableEnum.member}" @click.stop="onTableBtnClick(tableEnum.member)">
+                                    <div class="el-tabs__item" :class="{'is-active': curTableIndex === tableEnum.member, 'clickable': curTableIndex !== tableEnum.member}" @click.stop="onTableBtnClick(tableEnum.member, searchString.member)">
                                       <div class="tab-item strong">{{ $t('__member') }}</div>
                                     </div>
                                   </div>
                                   <div class="swiper-slide">
-                                    <div class="el-tabs__item" :class="{'is-active': curTableIndex === tableEnum.subAccount, 'clickable': curTableIndex !== tableEnum.subAccount}" @click.stop="onTableBtnClick(tableEnum.subAccount)">
+                                    <div class="el-tabs__item" :class="{'is-active': curTableIndex === tableEnum.subAccount, 'clickable': curTableIndex !== tableEnum.subAccount}" @click.stop="onTableBtnClick(tableEnum.subAccount, searchString.subAccount)">
                                       <div class="tab-item strong">{{ $t('__subAccount') }}</div>
                                     </div>
                                   </div>
@@ -158,20 +158,54 @@
                                     <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" />
                                   </div>
                                 </div>
-                                <div class="filter-item search">
-                                  <div class="comp d-flex search-filter">
-                                    <input v-model="searchString" class="el-input">
+                                <template v-if="curTableIndex === tableEnum.agent">
+                                  <div class="filter-item search">
+                                    <div class="comp d-flex search-filter">
+                                      <input v-model="searchString.agent" class="el-input">
+                                    </div>
                                   </div>
-                                </div>
-                                <div class="filter-item button">
-                                  <button type="button" class="el-button el-button--default" @click.stop="onTableSearchByString()">
-                                    <span>
-                                      <div class="black">
-                                        <svg-icon icon-class="search" style="height: 1.5rem; width: 1.5rem;" />
-                                      </div>
-                                    </span>
-                                  </button>
-                                </div>
+                                  <div class="filter-item button">
+                                    <button type="button" class="el-button el-button--default" @click.stop="onTableBtnClick(tableEnum.agent, searchString.agent)">
+                                      <span>
+                                        <div class="black">
+                                          <svg-icon icon-class="search" style="height: 1.5rem; width: 1.5rem;" />
+                                        </div>
+                                      </span>
+                                    </button>
+                                  </div>
+                                </template>
+                                <template v-if="curTableIndex === tableEnum.member">
+                                  <div class="filter-item search">
+                                    <div class="comp d-flex search-filter">
+                                      <input v-model="searchString.member" class="el-input">
+                                    </div>
+                                  </div>
+                                  <div class="filter-item button">
+                                    <button type="button" class="el-button el-button--default" @click.stop="onTableBtnClick(tableEnum.member, searchString.member)">
+                                      <span>
+                                        <div class="black">
+                                          <svg-icon icon-class="search" style="height: 1.5rem; width: 1.5rem;" />
+                                        </div>
+                                      </span>
+                                    </button>
+                                  </div>
+                                </template>
+                                <template v-if="curTableIndex === tableEnum.subAccount">
+                                  <div class="filter-item search">
+                                    <div class="comp d-flex search-filter">
+                                      <input v-model="searchString.subAccount" class="el-input">
+                                    </div>
+                                  </div>
+                                  <div class="filter-item button">
+                                    <button type="button" class="el-button el-button--default" @click.stop="onTableBtnClick(tableEnum.subAccount, searchString.subAccount)">
+                                      <span>
+                                        <div class="black">
+                                          <svg-icon icon-class="search" style="height: 1.5rem; width: 1.5rem;" />
+                                        </div>
+                                      </span>
+                                    </button>
+                                  </div>
+                                </template>
                               </div>
                             </form>
                             <!-- <div /> 彈跳飾窗 -->
@@ -251,17 +285,43 @@ export default {
       agentInfo: {},
       curTableIndex: 0,
       curDialogIndex: 0,
-      searchString: '',
+      searchString: {
+        agent: '',
+        mamber: '',
+        subAccount: ''
+      },
+      tempSearchString: {
+        agent: '',
+        mamber: '',
+        subAccount: ''
+      },
       account: ''
     }
   },
   computed: {
     ...mapGetters([
       'accountStatusType',
-      'isAgentSubAccount'
+      'isAgentSubAccount',
+      'agentSearchKey',
+      'agentSearchValue',
+      'agent_id'
     ]),
     agentInfoBalance() {
-      return this.agentInfo.id === 1 ? 'oo' : this.numberFormatStr(this.agentInfo.balance)
+      return this.agentInfo.id === 1 ? 'oo' : numberFormat(this.agentInfo.balance)
+    }
+  },
+  watch: {
+    agentSearchKey: {
+      handler() {
+        this.searchData()
+      },
+      immediate: true
+    },
+    agentSearchValue: {
+      handler() {
+        this.searchData()
+      },
+      immediate: true
     }
   },
   mounted() {
@@ -270,15 +330,53 @@ export default {
       this.agentInfo.id = parseInt(this.tempRoute.params.id)
       this.$router.name = this.$stringFormat(this.tempRoute.name, [`${this.agentId}`])
     }
-    this.$nextTick(() => {
-      this.onTableBtnClick(this.tableEnum.agent)
-    })
     this.setHeaderStyle()
+    if (this.agentInfo.id === this.agent_id) {
+      this.searchString.agent = this.tempSearchString.agent
+      this.searchString.member = this.tempSearchString.member
+      this.searchString.subAccount = this.tempSearchString.subAccount
+    }
+    switch (this.curTableIndex) {
+      case this.tableEnum.agent:
+      default: {
+        this.$nextTick(() => {
+          this.onTableBtnClick(this.tableEnum.agent, this.searchString.agent)
+        })
+        break
+      }
+      case this.tableEnum.mamber: {
+        this.$nextTick(() => {
+          this.onTableBtnClick(this.tableEnum.mamber, this.searchString.mamber)
+        })
+        break
+      }
+    }
   },
   activated() {
     this.setHeaderStyle()
   },
   methods: {
+    searchData() {
+      if (this.agentSearchKey === 'member') {
+        this.curTableIndex = this.tableEnum.member
+        this.tempSearchString.member = this.agentSearchValue
+        if (this.agentInfo.id === this.agent_id) {
+          this.searchString.member = this.tempSearchString.member
+          this.$nextTick(() => {
+            this.onTableBtnClick(this.tableEnum.member, this.searchString.member)
+          })
+        }
+      } else {
+        this.curTableIndex = this.tableEnum.agent
+        this.tempSearchString.agent = this.agentSearchValue
+        if (this.agentInfo.id === this.agent_id) {
+          this.searchString.agent = this.tempSearchString.agent
+          this.$nextTick(() => {
+            this.onTableBtnClick(this.tableEnum.agent, this.searchString.agent)
+          })
+        }
+      }
+    },
     setHeaderStyle() {
       let viewTitle = ''
       switch (this.curTableIndex) {
@@ -307,9 +405,6 @@ export default {
       const title = this.$t(this.tempRoute.meta.title)
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.agentInfo.fullName}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
-    },
-    numberFormatStr(number) {
-      return numberFormat(number)
     },
     setDataLoading(dataLoading) {
       this.dataLoading = dataLoading
@@ -350,35 +445,20 @@ export default {
         this.dataLoading = false
       })
     },
-    onTableBtnClick(tableEnum) {
-      this.curTableIndex = tableEnum
+    onTableBtnClick(tableIndex, searchValue) {
+      console.log("tableIndex: " + tableIndex)
+      this.curTableIndex = tableIndex
       switch (this.curTableIndex) {
         case this.tableEnum.agent: {
-          this.$refs.agent.onSearch(this.agentInfo.id)
+          this.$refs.agent.onSearch(this.agentInfo.id, searchValue)
           break
         }
         case this.tableEnum.member: {
-          this.$refs.member.onSearch(this.agentInfo.id)
+          this.$refs.member.onSearch(this.agentInfo.id, searchValue)
           break
         }
         case this.tableEnum.subAccount: {
-          this.$refs.subAccount.onSearch(this.agentInfo.id)
-          break
-        }
-      }
-    },
-    onTableSearchByString() {
-      switch (this.curTableIndex) {
-        case this.tableEnum.agent: {
-          this.$refs.agent.onSearchByString(this.searchString)
-          break
-        }
-        case this.tableEnum.member: {
-          this.$refs.member.onSearchByString(this.searchString)
-          break
-        }
-        case this.tableEnum.subAccount: {
-          this.$refs.subAccount.onSearchByString(this.searchString)
+          this.$refs.subAccount.onSearch(this.agentInfo.id, searchValue)
           break
         }
       }

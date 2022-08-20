@@ -276,6 +276,7 @@
                           type="number"
                           autocomplete="off"
                           min="0"
+                          :disabled="agentInfo.live_rolling_rate === 0"
                           class="el-input__inner"
                           @focus="inputFocus(step2.live_rolling_rate)"
                           @blur="specialInputChange('live_rolling_rate')"
@@ -592,6 +593,7 @@
                           autocomplete="off"
                           class="el-input__inner"
                           min="0"
+                          :disabled="balanceDisable"
                           @focus="inputFocus(step4.balance)"
                           @blur="specialInputChange('balance')"
                           @change="specialInputChange('balance')"
@@ -932,6 +934,12 @@ export default {
     },
     existHandicaps() {
       return this.handicaps.filter(item => item.exist)
+    },
+    balanceDisable() {
+      if (this.agentInfo.id === 1) {
+        return false
+      }
+      return Number(this.agentInfo.balance) === 0
     }
   },
   watch: {

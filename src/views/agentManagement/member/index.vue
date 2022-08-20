@@ -608,15 +608,12 @@ export default {
       }])
     },
     // 父物件呼叫
-    onSearch(agentId) {
-      this.agentInfo.id = agentId
-      this.onSubmit('')
+    onSearch(agentId, searchStr) {
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__memberManagement'), false, () => { }])
-    },
-    onSearchByString(str) {
+      this.agentInfo.id = agentId
       this.pageSizeCount = 1
       this.currentPage = 1
-      this.onSubmit(str)
+      this.onSubmit(searchStr)
     },
     onSubmit(accountKeyWord) {
       this.setDataLoading(true)

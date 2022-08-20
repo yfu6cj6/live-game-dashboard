@@ -2,6 +2,75 @@
   <div>
     <template v-if="device === 'mobile'">
       <div class="mobile sidebar-container" :class="{'open': isOpened}">
+        <div class="search-bar-box">
+          <div class="select-type">
+            <button
+              class="el-button el-button--default"
+              :class="{
+                'bg-yellow': curSearchIndex === searchEnum.agent,
+                'bg-black': curSearchIndex !== searchEnum.agent}"
+              @click.stop="setSearchEnum(searchEnum.agent)"
+            >
+              {{ $t('__agent') }}
+            </button>
+            <button
+              class="el-button el-button--default"
+              :class="{
+                'bg-yellow': curSearchIndex === searchEnum.member,
+                'bg-black': curSearchIndex !== searchEnum.member}"
+              @click.stop="setSearchEnum(searchEnum.member)"
+            >
+              {{ $t('__member') }}
+            </button>
+          </div>
+          <form>
+            <div class="agentSearchBar nav-search-bar">
+              <div class="flex-wrap filter-wrap el-row el-row--flex">
+                <div class="filter-item search">
+                  <form>
+                    <div class="comp d-flex search-filter">
+                      <input v-model="searchContent" class="el-input">
+                    </div>
+                  </form>
+                </div>
+                <div class="filter-item button">
+                  <button
+                    type="button"
+                    class="el-button el-button--default"
+                    style="padding: 0px 8px !important; font-size: 10px;"
+                    @click.stop="searchData"
+                  >
+                    <span>
+                      <div class="black">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 63 63"
+                        >
+                          <title>search</title>
+                          <path d="M40.76,47.93c-10.66,6.6-22.62,5.25-31-1.27A26.27,26.27,0,0,1,.65,19.49,26.58,26.58,0,0,1,22.55.23,26.27,26.27,0,0,1,52.11,22.74a24.08,24.08,0,0,1-3,15.91c-1,1.62-.72,2.47.58,3.71,4,3.83,8,7.8,11.86,11.78,3,3.07,1.85,7.45-2.23,8.66-2.15.64-3.81-.31-5.28-1.77l-12.3-12.2C41.43,48.54,41.13,48.28,40.76,47.93Zm1.35-21.79A16.17,16.17,0,0,0,26,10.11,16.33,16.33,0,0,0,9.93,26.18a16.33,16.33,0,0,0,16.14,16A16.16,16.16,0,0,0,42.11,26.14Z" />
+                        </svg>
+                      </div>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div style="display: none;">
+                <div class="fadeOutUp pp notice animated">
+                  <div class="scroll-wrap float">
+                    <div id="scroll-inner" class="scroll-inner off">
+                      <div class="scroll-view" style="display: block; position: static; max-height: 50vh;" />
+                    </div>
+                  </div>
+                  <div class="d-flex w-100 justify-content-center p-buttons" style="margin-top: 1.5rem;">
+                    <button type="button" class="el-button bg-gray common-button w-50 el-button--primary">
+                      <span>{{ $t('__close') }}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
         <el-menu
           class="mainMenu"
           :default-active="activeMenu"
@@ -88,8 +157,14 @@ export default {
   components: { SidebarItem, Logout, ModPassword, Announcement, Language, Hamburger },
   data() {
     return {
+      searchEnum: Object.freeze({
+        'agent': 0,
+        'member': 1
+      }),
       browserName: '',
-      clientInfo_IP: ''
+      clientInfo_IP: '',
+      curSearchIndex: 0,
+      searchContent: ''
     }
   },
   computed: {
@@ -97,7 +172,8 @@ export default {
       'permission_routes',
       'sidebar',
       'device',
-      'modPwd'
+      'modPwd',
+      'agent_id'
     ]),
     activeMenu() {
       const route = this.$route
@@ -124,6 +200,23 @@ export default {
     this.browserName = this.$stringFormat('{0} - {1}', nameSplit)
   },
   methods: {
+    searchData() {
+      switch (this.curSearchIndex) {
+        case this.searchEnum.agent: {
+          this.$store.dispatch('agentManagement/setAgentSearch', ['agent', this.searchContent])
+          break
+        }
+        case this.searchEnum.member: {
+          this.$store.dispatch('agentManagement/setAgentSearch', ['member', this.searchContent])
+          break
+        }
+      }
+      this.$router.push({ path: `/agentManagement/agentManagement/${this.agent_id}` })
+      this.$store.dispatch('app/toggleSideBar')
+    },
+    setSearchEnum(index) {
+      this.curSearchIndex = index
+    },
     async getClientIP() {
       this.clientInfo_IP = await clientIP()
     },
@@ -155,7 +248,7 @@ export default {
 <style lang="scss">
 @import "~@/styles/variables.scss";
 
-.mobile.sidebar-container {
+#app .mobile.sidebar-container {
   display: flex;
   flex-direction: column;
   width: $sideBarWidth;
@@ -165,8 +258,103 @@ export default {
   border-right: 1px solid $yellow;
   overflow-x: hidden;
   overflow-y: auto;
+  .search-bar-box {
+    padding-top: 2.5rem;
+    padding-bottom: 0.83333rem;
+    position: relative;
+    &:after {
+      height: 0px;
+      border-bottom: 1px solid #444;
+      content: '';
+      position: absolute;
+      width: calc(100% - 20px);
+      left: 0.83333rem;
+      bottom: 1px;
+    }
+    .select-type {
+      width: 100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      padding-left: 5px;
+      margin-bottom: -4px;
+      .el-button {
+        padding: 0;
+        width: 6.4rem;
+        line-height: 1;
+        height: 2.4rem;
+        border-radius: 0.3rem 0.3rem 0 0;
+        margin-left: 0;
+        font-size: 1.16667rem;
+        &.bg-black {
+          color: #fff;
+          background: #000;
+          border: 0.08333rem solid #000;
+        }
+      }
+    }
+    .agentSearchBar {
+      padding: 0.83333rem;
+      background-color: #000;
+      width: calc(100% - 10px);
+      padding: 5px;
+      padding-top: 0;
+      .filter-wrap {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding: 0;
+        .filter-item {
+          height: 2.8rem;
+          width: auto;
+          &.search {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            .search-filter {
+              height: 2.8rem;
+              background: #fff;
+              border: 0.16667rem solid #f9c901;
+              border-radius: 0.20833rem 0 0 0.20833rem;
+              input {
+                font-size: 1.16667rem;
+                height: 2.83333rem;
+                line-height: 1;
+                padding: 0.41667rem 0.83333rem;
+                border: 0 solid #f9c901;
+                border-radius: 0;
+              }
+              .el-input {
+                font-size: 10px;
+                line-height: 1;
+                padding: 5px;
+                border: 0 solid #f9c901;
+                border-radius: 0;
+                -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+                height: 100% !important;
+              }
+            }
+          }
+          &.button {
+            .el-button {
+              height: 100% !important;
+              color: #000;
+              background: #f9c901;
+              border: 0.16667rem solid #f9c901;
+              border-radius: 0 0.20833rem 0.20833rem 0;
+              padding: 0 0.83333rem;
+              svg {
+                width: 1.2rem !important;
+                height: 1.2rem !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   .mainMenu {
-    padding-top: 0.83333rem;
     border-right: 0px;
     .el-menu-item {
       font-size: 1.4rem;
