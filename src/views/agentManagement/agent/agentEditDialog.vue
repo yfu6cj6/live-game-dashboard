@@ -290,7 +290,10 @@
                           {{ `${$t('__range')} : 0 % - ${agentInfo.live_commission_rate} %` }}
                         </small>
                       </div>
-                      <div class="text-field share el-input el-input--small">
+                      <div
+                        class="text-field share el-input el-input--small"
+                        :class="{'is-disabled': agentInfo.live_commission_rate === 0 || operationType === operationEnum.edit}"
+                      >
                         <input
                           v-model.number="form.live_commission_rate"
                           type="number"
@@ -332,7 +335,10 @@
                           {{ `${$t('__range')} : 0 % - ${agentInfo.live_rolling_rate} %` }}
                         </small>
                       </div>
-                      <div class="text-field share el-input el-input--small">
+                      <div
+                        class="text-field share el-input el-input--small"
+                        :class="{'is-disabled': agentInfo.live_rolling_rate === 0 || operationType === operationEnum.edit}"
+                      >
                         <input
                           v-model.number="form.live_rolling_rate"
                           type="number"
@@ -566,7 +572,10 @@
                           {{ `${$t('__range')} : 0 - ${(agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.agentBalanceLabel)}` }}
                         </small>
                       </div>
-                      <div class="text-field share el-input el-input--small">
+                      <div
+                        class="text-field share el-input el-input--small"
+                        :class="{'is-disabled': balanceDisable}"
+                      >
                         <input
                           v-model.number="form.balance"
                           type="number"
