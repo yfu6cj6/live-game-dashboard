@@ -173,8 +173,8 @@ table {
 
   //整個滾動條
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 13px;
+    height: 13px;
     background-color: #000;
     //滾動條軌道
     &-track {
@@ -182,8 +182,13 @@ table {
     }
     //滾動條上的滾動滑塊
     &-thumb {
-      border-radius: 15px;
+      border-radius: 10px;
       background-color: $yellow;
+      border-top: 2px solid rgba(0, 0, 0, 0);
+      border-right: 1px solid rgba(0, 0, 0, 0);
+      border-bottom: 2px solid rgba(0, 0, 0, 0);
+      border-left: 3px solid rgba(0, 0, 0, 0);
+      background-clip: padding-box;
     }
     //當同時有垂直滾動條和水平滾動條時交彙的部分。通常是瀏覽器窗口
     &-corner {

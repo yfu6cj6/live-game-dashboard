@@ -1,5 +1,5 @@
 <template>
-  <div class="language" @click.stop="onClick">
+  <div class="language-container" @click.stop="onClick">
     <div class="language-switch" :class="{'dropdown': dropdown}">
       <div class="current-language">
         <div
@@ -85,11 +85,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
 
-.language {
-  position: absolute;
-  top: 0.16667rem;
-  right: 0.41667rem;
-  z-index: 2;
+.language-container {
   .language-switch {
     position: relative;
     padding: 0.66667rem;
@@ -101,12 +97,19 @@ export default {
     }
     .language-item {
       .fas {
-        fill: #fff !important;
+        height: 2.16667rem;
+        width: 2.16667rem;
+        position: relative;
         img {
           vertical-align: middle;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
           overflow: hidden;
-          height: 2.16667rem;
-          width: 2.16667rem;
+          width: 100%;
+          height: 2.6rem;
+          width: 2.6rem;
         }
       }
     }
@@ -128,6 +131,31 @@ export default {
   }
   .display_none {
     display: none;
+  }
+}
+
+@media (min-width: 992px) {
+  .language-container {
+    .language-switch {
+      .language-item {
+        .fas {
+          height: 1.83333rem;
+          width: 1.83333rem;
+          position: relative;
+          img {
+            vertical-align: middle;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            overflow: hidden;
+            width: 100%;
+            height: 2.2rem;
+            width: 2.2rem;
+          }
+        }
+      }
+    }
   }
 }
 </style>

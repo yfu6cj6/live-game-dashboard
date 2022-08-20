@@ -297,6 +297,12 @@ export default {
       line-height: 1;
       color: #f9c901;
       cursor: pointer;
+      .language {
+        position: absolute;
+        top: 0.1rem;
+        right: 0.4rem;
+        z-index: 2;
+      }
     }
     .page-name {
       position: absolute;

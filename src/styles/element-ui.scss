@@ -150,7 +150,7 @@
   }
 }
 
-.el-button {
+#app .el-button {
   padding: 0.70833rem 0.95833rem;
   font-size: 1rem;
   &.is-disabled {
@@ -169,6 +169,12 @@
     color: #fff;
     background: #4e4e4e;
     border: 0.08333rem solid #4e4e4e;
+    border-radius: 0.25rem;
+  }
+  &.bg-black {
+    color: #fff;
+    background: #000;
+    border: 0.08333rem solid #000;
     border-radius: 0.25rem;
   }
 }
@@ -1226,4 +1232,11 @@
 
 #app .el-menu-item, #app .el-submenu__title {
   min-width: 0.08333rem;
+}
+
+.el-input {
+  position: relative;
+  font-size: 1.4rem;
+  display: inline-block;
+  width: 100%;
 }

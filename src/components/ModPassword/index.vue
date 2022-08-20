@@ -7,6 +7,7 @@
       width="64"
       height="64"
       enable-background="new 257.516 158.797 327.636 277.964"
+      style="height: 1.66667rem;width: 1.66667rem;"
     >
       <path
         d="M18.82,56H11.88V63H0L29.7,35.63l-2.32-2.18-27.2,25c0-2.46,0-4.63,0-6.79,

@@ -8,6 +8,7 @@
       width="64"
       height="64"
       enable-background="new 257.516 158.797 327.636 277.964"
+      style="height: 1.58333rem;width: 1.58333rem;"
     >
       <rect x="547.746" y="158.797" width="37.406" height="277.964" />
       <polygon

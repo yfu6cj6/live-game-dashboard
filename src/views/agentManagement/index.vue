@@ -287,12 +287,12 @@ export default {
       curDialogIndex: 0,
       searchString: {
         agent: '',
-        mamber: '',
+        member: '',
         subAccount: ''
       },
       tempSearchString: {
         agent: '',
-        mamber: '',
+        member: '',
         subAccount: ''
       },
       account: ''
@@ -337,16 +337,15 @@ export default {
       this.searchString.subAccount = this.tempSearchString.subAccount
     }
     switch (this.curTableIndex) {
-      case this.tableEnum.agent:
-      default: {
+      case this.tableEnum.agent: {
         this.$nextTick(() => {
           this.onTableBtnClick(this.tableEnum.agent, this.searchString.agent)
         })
         break
       }
-      case this.tableEnum.mamber: {
+      case this.tableEnum.member: {
         this.$nextTick(() => {
-          this.onTableBtnClick(this.tableEnum.mamber, this.searchString.mamber)
+          this.onTableBtnClick(this.tableEnum.member, this.searchString.member)
         })
         break
       }

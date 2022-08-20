@@ -2,8 +2,42 @@
   <div class="login">
     <div class="form-container el-row is-align-middle el-row--flex">
       <div class="w-100 loginContent">
-        <div class="language-container">
-          <language :lang="curLang" @changLang="language" />
+        <div class="language">
+          <div class="language-container" @click.stop="onClick">
+            <div class="language-switch" :class="{'dropdown': dropdown}">
+              <div class="current-language">
+                <div
+                  v-for="(item, index) in langList"
+                  :key="index"
+                  class="language-item"
+                  @click="changLang(item.key, index)"
+                >
+                  <div class="fas" :class="{'display_none': index !== curLangIndex}">
+                    <img
+                      :src="require(`@/assets/lang/${item.key}.png`)"
+                      :title="item.title"
+                    >
+                  </div>
+                </div>
+              </div>
+              <div v-if="dropdown" class="language-list">
+                <div
+                  v-for="(item, index) in langList"
+                  :key="index"
+                  class="language-item"
+                  :class="{'display_none': index === curLangIndex}"
+                  @click="changLang(item.key, index)"
+                >
+                  <div class="fas">
+                    <img
+                      :src="require(`@/assets/lang/${item.key}.png`)"
+                      :title="item.title"
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="content">
           <div class="logo">
@@ -100,12 +134,10 @@ import { login, generateCaptcha } from "@/api/user";
 import { mapGetters } from "vuex";
 import ResizeMixin from '@/mixin/ResizeHandler'
 import { browserVersion, clientIP } from '@/utils/clientInfo'
-import Language from '@/components/Language'
 import { getLanguage, setLanguage } from '@/lang/lang'
 
 export default {
   name: "Login",
-  components: { Language },
   mixins: [ResizeMixin],
   data() {
     const validateAccount = (rule, value, callback) => {
@@ -135,6 +167,22 @@ export default {
         callback();
       }
     };
+    const langList = [{
+      key: 'zh_cht',
+      title: this.$t('__traditionalChinese')
+    },
+    {
+      key: 'zh_chs',
+      title: this.$t('__simplifiedChinese')
+    }]
+    let langIndex = -1
+    const curLang = getLanguage()
+    for (let i = 0, max = langList.length; i < max; i++) {
+      if (langList[i].key === curLang) {
+        langIndex = i
+        break
+      }
+    }
     return {
       loginForm: {
         account: '',
@@ -165,7 +213,10 @@ export default {
       loading: false,
       captchaData: {},
       browserName: '',
-      clientInfo_IP: ''
+      clientInfo_IP: '',
+      langList: langList,
+      curLangIndex: langIndex,
+      dropdown: false
     };
   },
   computed: {
@@ -175,9 +226,6 @@ export default {
     ]),
     captchaImg() {
       return this.captchaData.img;
-    },
-    curLang() {
-      return getLanguage()
     }
   },
   created() {
@@ -187,8 +235,12 @@ export default {
     this.browserName = this.$stringFormat('{0} - {1}', nameSplit)
   },
   methods: {
-    language(lang) {
+    changLang(lang, index) {
+      this.curLangIndex = index
       setLanguage(lang)
+    },
+    onClick() {
+      this.dropdown = !this.dropdown
     },
     async getClientIP() {
       this.clientInfo_IP = await clientIP()
@@ -320,12 +372,58 @@ export default {
       background-repeat: no-repeat;
     }
   }
-  .language-container {
+  .language {
     position: absolute;
-    top: -0.41667rem;
-    right: -0.83333rem;
-    z-index: 2;
-    transform: scale(1.8);
+    top: 0.5rem;
+    right: 0.9rem;
+    .language-container {
+      .language-switch {
+        position: relative;
+        padding: 0.66667rem;
+        &.dropdown {
+          background: rgba(155,155,155,0.4);
+        }
+        .current-language {
+          cursor: pointer;
+        }
+        .language-item {
+          .fas {
+            height: 3.33333rem;
+            width: 3.33333rem;
+            position: relative;
+            img {
+              vertical-align: middle;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              overflow: hidden;
+              width: 100%;
+              height: 4rem;
+              width: 4rem;
+            }
+          }
+        }
+        .language-list {
+          display: block;
+          -webkit-animation-name: fadeIn;
+          animation-name: fadeIn;
+          -webkit-animation-duration: 0.5s;
+          animation-duration: 0.5s;
+          -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+          .language-item {
+            border-top: 0.08333rem solid #f9c901;
+            margin-top: 0.41667rem;
+            padding-top: 0.5rem;
+            cursor: pointer;
+          }
+        }
+      }
+      .display_none {
+        display: none;
+      }
+    }
   }
   .login-form {
     max-width: 26.66667rem;
