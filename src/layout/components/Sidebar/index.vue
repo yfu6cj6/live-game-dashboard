@@ -115,6 +115,75 @@
             </div>
           </div>
         </div>
+        <div class="search-bar-box">
+          <div class="select-type">
+            <button
+              class="el-button el-button--default"
+              :class="{
+                'bg-yellow': curSearchIndex === searchEnum.agent,
+                'bg-black': curSearchIndex !== searchEnum.agent}"
+              @click.stop="setSearchEnum(searchEnum.agent)"
+            >
+              {{ $t('__agent') }}
+            </button>
+            <button
+              class="el-button el-button--default"
+              :class="{
+                'bg-yellow': curSearchIndex === searchEnum.member,
+                'bg-black': curSearchIndex !== searchEnum.member}"
+              @click.stop="setSearchEnum(searchEnum.member)"
+            >
+              {{ $t('__member') }}
+            </button>
+          </div>
+          <form>
+            <div class="agentSearchBar nav-search-bar">
+              <div class="flex-wrap filter-wrap el-row el-row--flex">
+                <div class="filter-item search">
+                  <form>
+                    <div class="comp d-flex search-filter">
+                      <input v-model="searchContent" class="el-input">
+                    </div>
+                  </form>
+                </div>
+                <div class="filter-item button">
+                  <button
+                    type="button"
+                    class="el-button el-button--default"
+                    style="padding: 0px 8px !important; font-size: 10px;"
+                    @click.stop="searchData"
+                  >
+                    <span>
+                      <div class="black">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 63 63"
+                        >
+                          <title>search</title>
+                          <path d="M40.76,47.93c-10.66,6.6-22.62,5.25-31-1.27A26.27,26.27,0,0,1,.65,19.49,26.58,26.58,0,0,1,22.55.23,26.27,26.27,0,0,1,52.11,22.74a24.08,24.08,0,0,1-3,15.91c-1,1.62-.72,2.47.58,3.71,4,3.83,8,7.8,11.86,11.78,3,3.07,1.85,7.45-2.23,8.66-2.15.64-3.81-.31-5.28-1.77l-12.3-12.2C41.43,48.54,41.13,48.28,40.76,47.93Zm1.35-21.79A16.17,16.17,0,0,0,26,10.11,16.33,16.33,0,0,0,9.93,26.18a16.33,16.33,0,0,0,16.14,16A16.16,16.16,0,0,0,42.11,26.14Z" />
+                        </svg>
+                      </div>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div style="display: none;">
+                <div class="fadeOutUp pp notice animated">
+                  <div class="scroll-wrap float">
+                    <div id="scroll-inner" class="scroll-inner off">
+                      <div class="scroll-view" style="display: block; position: static; max-height: 50vh;" />
+                    </div>
+                  </div>
+                  <div class="d-flex w-100 justify-content-center p-buttons" style="margin-top: 1.5rem;">
+                    <button type="button" class="el-button bg-gray common-button w-50 el-button--primary">
+                      <span>{{ $t('__close') }}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
         <el-menu
           class="mainMenu"
           :default-active="activeMenu"
@@ -251,10 +320,10 @@ export default {
 #app .mobile.sidebar-container {
   display: flex;
   flex-direction: column;
-  width: $sideBarWidth;
+  width: $mobileSideBarWidth;
   height: 100%;
   background-color: #000;
-  transform: translateX(-(20.83333rem + 1));
+  transform: translateX(-($mobileSideBarWidth + 1));
   border-right: 1px solid $yellow;
   overflow-x: hidden;
   overflow-y: auto;
@@ -442,152 +511,43 @@ export default {
 .pc.sidebar-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 45px);
+  width: $pcHideSidebarWidth;
+  height: 100%;
   background-color: #000;
-  transform: translateX(0);
-  width: $hideSidebarWidth;
-  transition: width .3s;
   border-right: 1px solid $yellow;
-  .option {
-    padding: 5px 10px;
-    z-index: 2;
-    position: relative;
-    .small-option {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      border-bottom: 1px solid #444;
-      padding: 2px 0;
-      margin: 0 -6px;
-      width: calc(100% + 12px);
-      .small-item {
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-        width: auto;
-        display: none;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        position: relative;
-        height: 38px;
-        .language {
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 2;
-          background-color: rgba(0,0,0,0.8);
-        }
-      }
-      .small-item.hamburger {
+  overflow-x: hidden;
+  overflow-y: auto;
+  transition: width .5s;
+  &.open {
+    width: $pcSideBarWidth;
+    .options {
+      padding: 5px 10px;
+      z-index: 2;
+      position: relative;
+      .small-option {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
-        transform: rotate(180deg);
-      }
-    }
-  }
-  .mainMenu {
-    list-style: none;
-    position: relative;
-    margin: 0;
-    padding-left: 0;
-    background-color: transparent;
-    border-right: 0;
-    text-align: left;
-    overflow: auto;
-    width: 100%;
-    height: auto;
-    max-height: calc(100% - 42px);
-    overflow: auto;
-    .el-menu-item {
-      height: 3.5rem;
-      position: relative;
-      padding-left: 10px !important;
-      padding-right: 10px !important;
-      margin-right: 1px;
-      line-height: 3.5rem;
-      border-bottom: 1px solid #444;
-      .el-tooltip {
-        padding: 0 17px !important;
-      }
-    }
-    .el-submenu {
-      overflow: hidden;
-      .el-submenu__title {
-        height: 3.5rem;
-        position: relative;
-        padding: 0 14px !important;
-        margin-right: 1px;
-        line-height: 3.5rem;
         border-bottom: 1px solid #444;
-        & > span {
-          display: none;
-        }
-        .el-submenu__icon-arrow {
-          display: none;
-        }
-      }
-      .el-menu {
-        .nest-menu {
-          padding-left: 2rem;
-        }
-      }
-    }
-    .sub-el-icon {
-      color: $yellow;
-      width: 1em;
-      height: 1em;
-      margin-right: .2em;
-    }
-  }
-  .footer {
-    color: #ccc;
-    font-size: 14px;
-    display: none;
-    width: 130px;
-    margin: 1em auto;
-    .version {
-      display: flex;
-      & :first-child {
-        margin-right: 15px;
-      }
-    }
-  }
-  &.open {
-    width: $sideBarWidth;
-    .option {
-      .small-option {
+        padding: 2px 0;
+        margin: 0 -6px;
+        width: calc(100% + 12px);
         .small-item {
+          border-right: 1px solid #444;
+          -webkit-box-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          width: auto;
           display: -webkit-box;
           display: -ms-flexbox;
           display: flex;
-          &.hamburger {
-            transform: rotate(0);
-          }
-        }
-        .small-item + .small-item {
-          border-left: 1px solid #444;
-        }
-      }
-    }
-    .mainMenu {
-      .el-menu-item {
-        height: auto;
-      }
-      .el-submenu__title {
-        & > span {
-          display: inline-block;
-        }
-        .el-submenu__icon-arrow {
-          display: flex;
-          color: #fff;
-          font-size: 1.4rem;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          position: relative;
+          height: 38px;
         }
       }
-    }
-    .footer {
-      display: block;
     }
   }
 }

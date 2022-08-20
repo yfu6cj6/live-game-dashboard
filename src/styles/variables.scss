@@ -12,8 +12,9 @@ $subMenuHover:#444;
 $navBarHeight: 3.75rem;
 $tagsViewHeight: 35px;
 
-$sideBarWidth: 20.83333rem;
-$hideSidebarWidth: 4rem;
+$mobileSideBarWidth: 20.83333rem;
+$pcSideBarWidth: 200px;
+$pcHideSidebarWidth: 50px;
 
 $black:#262626;
 $yellow:#fc0;
@@ -35,5 +36,5 @@ $green: #090;
   menuHover: $menuHover;
   subMenuBg: $subMenuBg;
   subMenuHover: $subMenuHover;
-  sideBarWidth: $sideBarWidth;
+  sideBarWidth: $mobileSideBarWidth;
 }

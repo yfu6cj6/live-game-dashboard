@@ -120,12 +120,12 @@ export default {
 @media screen and (min-width: 992px) {
   .app-container {
     .tagsView {
-      padding-left: $hideSidebarWidth;
+      padding-left: $pcHideSidebarWidth;
       transition: padding-left .3s;
     }
 
     .tagsView.opened {
-      padding-left: $sideBarWidth;
+      padding-left: $mobileSideBarWidth;
     }
 
     .sidebar {
@@ -139,13 +139,13 @@ export default {
     }
 
     .appMain {
-      padding-left: $hideSidebarWidth;
+      padding-left: $pcHideSidebarWidth;
       transition: padding-left .3s;
       max-width: 100%;
     }
 
     .appMain.opened {
-      padding-left: $sideBarWidth;
+      padding-left: $mobileSideBarWidth;
     }
   }
 }

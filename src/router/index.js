@@ -71,101 +71,101 @@ export const constantRoutes = [
 ]
 
 export const asyncRoutes = [
-  {
-    // 後台管理
-    path: '/backstageManagement',
-    component: Layout,
-    redirect: '/',
-    name: 'backstageManagement',
-    meta: { title: '__backstageManagement', icon: 'el-icon-s-operation', permission: 'BackStageManage' },
-    displayChildren: true,
-    children: [
-      {
-        // 荷官管理
-        path: 'dealerManagement',
-        name: 'DealerManagement',
-        component: () => import('@/views/backstageManagement/dealerManagement/index'),
-        meta: { title: '__dealerManagement', permission: 'BackStageManage.DealerManage' }
-      },
-      {
-        // 贈禮管理
-        path: 'giftManagement',
-        name: 'GiftManagement',
-        component: () => import('@/views/backstageManagement/giftManagement/index'),
-        meta: { title: '__giftManagement', permission: 'BackStageManage.GiftManage' }
-      },
-      {
-        // 真人玩法管理
-        path: 'liveBetAreaManagement',
-        name: 'LiveBetAreaManagement',
-        component: () => import('@/views/backstageManagement/liveBetAreaManagement/index'),
-        meta: { title: '__liveBetAreaManagement', permission: 'BackStageManage.LiveBetAreaManage' }
-      },
-      {
-        // 遊戲桌管理
-        path: 'gameTableManagement',
-        name: 'GameTableManagement',
-        component: () => import('@/views/backstageManagement/gameTableManagement/index'),
-        meta: { title: '__gameTableManagement', permission: 'BackStageManage.GameTableManage' }
-      },
-      {
-        // 遊戲區管理
-        path: 'gameAreaManagement',
-        name: 'GameAreaManagement',
-        component: () => import('@/views/backstageManagement/gameAreaManagement/index'),
-        meta: { title: '__gameAreaManagement', permission: 'BackStageManage.GameAreaManage' }
-      },
-      {
-        // 帳號管理
-        path: 'accountManagement',
-        name: 'AccountManagement',
-        component: () => import('@/views/backstageManagement/accountManagement/index'),
-        meta: { title: '__accountManagement', permission: 'BackStageManage.AccountManage' }
-      },
-      {
-        // 角色管理
-        path: 'roleManagement',
-        name: 'RoleManagement',
-        component: () => import('@/views/backstageManagement/roleManagement/index'),
-        meta: { title: '__roleManagement', permission: 'BackStageManage.RoleManage' }
-      },
-      {
-        // 權限管理
-        path: 'permissionManagement',
-        name: 'PermissionManagement',
-        component: () => import('@/views/backstageManagement/permissionManagement/index'),
-        meta: { title: '__permissionManagement', permission: 'BackStageManage.PermissionManage' }
-      },
-      {
-        // 時區管理
-        path: 'timeZoneManagement',
-        name: 'TimeZoneManagement',
-        component: () => import('@/views/backstageManagement/timeZoneManagement/index'),
-        meta: { title: '__timeZoneManagement', permission: 'BackStageManage.TimeZoneManage' }
-      },
-      {
-        // 幣別管理
-        path: 'currencyManagement',
-        name: 'CurrencyManagement',
-        component: () => import('@/views/backstageManagement/currencyManagement/index'),
-        meta: { title: '__currencyManagement', permission: 'BackStageManage.CurrencyManage' }
-      },
-      {
-        // 公告管理
-        path: 'announcementManagement',
-        name: 'AnnouncementManagement',
-        component: () => import('@/views/backstageManagement/announcementManagement/index'),
-        meta: { title: '__announcementManagement', permission: 'BackStageManage.AnnouncementManage' }
-      },
-      {
-        // 系統管理
-        path: 'systemManagement',
-        name: 'SystemManagement',
-        component: () => import('@/views/backstageManagement/systemManagement/index'),
-        meta: { title: '__systemManagement', permission: 'BackStageManage.SystemParameterManage' }
-      }
-    ]
-  },
+  // {
+  //   // 後台管理
+  //   path: '/backstageManagement',
+  //   component: Layout,
+  //   redirect: '/',
+  //   name: 'backstageManagement',
+  //   meta: { title: '__backstageManagement', icon: 'el-icon-s-operation', permission: 'BackStageManage' },
+  //   displayChildren: true,
+  //   children: [
+  //     {
+  //       // 荷官管理
+  //       path: 'dealerManagement',
+  //       name: 'DealerManagement',
+  //       component: () => import('@/views/backstageManagement/dealerManagement/index'),
+  //       meta: { title: '__dealerManagement', permission: 'BackStageManage.DealerManage' }
+  //     },
+  //     {
+  //       // 贈禮管理
+  //       path: 'giftManagement',
+  //       name: 'GiftManagement',
+  //       component: () => import('@/views/backstageManagement/giftManagement/index'),
+  //       meta: { title: '__giftManagement', permission: 'BackStageManage.GiftManage' }
+  //     },
+  //     {
+  //       // 真人玩法管理
+  //       path: 'liveBetAreaManagement',
+  //       name: 'LiveBetAreaManagement',
+  //       component: () => import('@/views/backstageManagement/liveBetAreaManagement/index'),
+  //       meta: { title: '__liveBetAreaManagement', permission: 'BackStageManage.LiveBetAreaManage' }
+  //     },
+  //     {
+  //       // 遊戲桌管理
+  //       path: 'gameTableManagement',
+  //       name: 'GameTableManagement',
+  //       component: () => import('@/views/backstageManagement/gameTableManagement/index'),
+  //       meta: { title: '__gameTableManagement', permission: 'BackStageManage.GameTableManage' }
+  //     },
+  //     {
+  //       // 遊戲區管理
+  //       path: 'gameAreaManagement',
+  //       name: 'GameAreaManagement',
+  //       component: () => import('@/views/backstageManagement/gameAreaManagement/index'),
+  //       meta: { title: '__gameAreaManagement', permission: 'BackStageManage.GameAreaManage' }
+  //     },
+  //     {
+  //       // 帳號管理
+  //       path: 'accountManagement',
+  //       name: 'AccountManagement',
+  //       component: () => import('@/views/backstageManagement/accountManagement/index'),
+  //       meta: { title: '__accountManagement', permission: 'BackStageManage.AccountManage' }
+  //     },
+  //     {
+  //       // 角色管理
+  //       path: 'roleManagement',
+  //       name: 'RoleManagement',
+  //       component: () => import('@/views/backstageManagement/roleManagement/index'),
+  //       meta: { title: '__roleManagement', permission: 'BackStageManage.RoleManage' }
+  //     },
+  //     {
+  //       // 權限管理
+  //       path: 'permissionManagement',
+  //       name: 'PermissionManagement',
+  //       component: () => import('@/views/backstageManagement/permissionManagement/index'),
+  //       meta: { title: '__permissionManagement', permission: 'BackStageManage.PermissionManage' }
+  //     },
+  //     {
+  //       // 時區管理
+  //       path: 'timeZoneManagement',
+  //       name: 'TimeZoneManagement',
+  //       component: () => import('@/views/backstageManagement/timeZoneManagement/index'),
+  //       meta: { title: '__timeZoneManagement', permission: 'BackStageManage.TimeZoneManage' }
+  //     },
+  //     {
+  //       // 幣別管理
+  //       path: 'currencyManagement',
+  //       name: 'CurrencyManagement',
+  //       component: () => import('@/views/backstageManagement/currencyManagement/index'),
+  //       meta: { title: '__currencyManagement', permission: 'BackStageManage.CurrencyManage' }
+  //     },
+  //     {
+  //       // 公告管理
+  //       path: 'announcementManagement',
+  //       name: 'AnnouncementManagement',
+  //       component: () => import('@/views/backstageManagement/announcementManagement/index'),
+  //       meta: { title: '__announcementManagement', permission: 'BackStageManage.AnnouncementManage' }
+  //     },
+  //     {
+  //       // 系統管理
+  //       path: 'systemManagement',
+  //       name: 'SystemManagement',
+  //       component: () => import('@/views/backstageManagement/systemManagement/index'),
+  //       meta: { title: '__systemManagement', permission: 'BackStageManage.SystemParameterManage' }
+  //     }
+  //   ]
+  // },
 
   {
     // 代理管理
@@ -230,19 +230,19 @@ export const asyncRoutes = [
     }]
   },
 
-  {
-    // 遊戲結果
-    path: '/gameResult',
-    component: Layout,
-    redirect: '/gameResult',
-    meta: { title: '__gameResult', icon: 'poker', permission: 'GameResult' },
-    children: [{
-      path: 'gameResult',
-      name: 'GameResult',
-      component: () => import('@/views/gameResult/index'),
-      meta: { title: '__gameResult' }
-    }]
-  },
+  // {
+  //   // 遊戲結果
+  //   path: '/gameResult',
+  //   component: Layout,
+  //   redirect: '/gameResult',
+  //   meta: { title: '__gameResult', icon: 'poker', permission: 'GameResult' },
+  //   children: [{
+  //     path: 'gameResult',
+  //     name: 'GameResult',
+  //     component: () => import('@/views/gameResult/index'),
+  //     meta: { title: '__gameResult' }
+  //   }]
+  // },
 
   {
     // 代理額度記錄
@@ -293,47 +293,47 @@ export const asyncRoutes = [
     }]
   },
 
-  {
-    // 禮物記錄
-    path: '/giftRecord',
-    component: Layout,
-    redirect: '/giftRecord',
-    meta: { title: '__giftRecord', icon: 'el-icon-data-analysis', permission: 'GiftManage.Record' },
-    children: [{
-      path: 'giftRecord',
-      name: 'GiftRecord',
-      component: () => import('@/views/giftRecord/index'),
-      meta: { title: '__giftRecord' }
-    },
-    {
-      path: 'giftRecord/:id(\\d+)',
-      name: 'GiftRecord{0}',
-      component: () => import('@/views/giftRecord/index'),
-      meta: { title: '__giftRecord', activeMenu: '/giftRecord/giftRecord' },
-      hidden: true
-    }]
-  },
+  // {
+  //   // 禮物記錄
+  //   path: '/giftRecord',
+  //   component: Layout,
+  //   redirect: '/giftRecord',
+  //   meta: { title: '__giftRecord', icon: 'el-icon-data-analysis', permission: 'GiftManage.Record' },
+  //   children: [{
+  //     path: 'giftRecord',
+  //     name: 'GiftRecord',
+  //     component: () => import('@/views/giftRecord/index'),
+  //     meta: { title: '__giftRecord' }
+  //   },
+  //   {
+  //     path: 'giftRecord/:id(\\d+)',
+  //     name: 'GiftRecord{0}',
+  //     component: () => import('@/views/giftRecord/index'),
+  //     meta: { title: '__giftRecord', activeMenu: '/giftRecord/giftRecord' },
+  //     hidden: true
+  //   }]
+  // },
 
-  {
-    // 贈禮報表
-    path: '/giftReport',
-    component: Layout,
-    redirect: '/giftReport',
-    meta: { title: '__giftReport', icon: 'el-icon-data-line', permission: 'GiftManage.Report' },
-    children: [{
-      path: 'giftReport',
-      name: 'GiftReport',
-      component: () => import('@/views/giftReport/index'),
-      meta: { title: '__giftReport' }
-    },
-    {
-      path: 'giftReport/:id(\\d+)',
-      name: 'GiftReport{0}',
-      component: () => import('@/views/giftReport/index'),
-      meta: { title: '__giftReport', activeMenu: '/giftReport/giftReport' },
-      hidden: true
-    }]
-  },
+  // {
+  //   // 贈禮報表
+  //   path: '/giftReport',
+  //   component: Layout,
+  //   redirect: '/giftReport',
+  //   meta: { title: '__giftReport', icon: 'el-icon-data-line', permission: 'GiftManage.Report' },
+  //   children: [{
+  //     path: 'giftReport',
+  //     name: 'GiftReport',
+  //     component: () => import('@/views/giftReport/index'),
+  //     meta: { title: '__giftReport' }
+  //   },
+  //   {
+  //     path: 'giftReport/:id(\\d+)',
+  //     name: 'GiftReport{0}',
+  //     component: () => import('@/views/giftReport/index'),
+  //     meta: { title: '__giftReport', activeMenu: '/giftReport/giftReport' },
+  //     hidden: true
+  //   }]
+  // },
 
   {
     // IP白名單

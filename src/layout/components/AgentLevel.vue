@@ -86,10 +86,10 @@ export default {
 .agentLevel-container {
   display: flex;
   flex-direction: column;
-  width: $sideBarWidth;
+  width: $mobileSideBarWidth;
   height: calc(100vh - 3.75rem);
   background-color: #000;
-  transform: translateX(-($sideBarWidth + 1));
+  transform: translateX(-($mobileSideBarWidth + 1));
   color: #fff;
   .agentLevel-header {
     cursor: pointer;
