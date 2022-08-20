@@ -188,7 +188,7 @@
                   <div style="display: none;" />
                 </span>
               </div>
-              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
                 <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.totallyDisabled, item)">
                   <span class="el-checkbox red-tick">
                     <span class="el-checkbox__input" :class="{'is-disabled': agentInfoTotallyDisabled, 'is-checked': item.totallyDisabled}">
@@ -198,7 +198,7 @@
                   <span class="label">{{ $t('__totallyDisabled') }}</span>
                 </span>
               </div>
-              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
                 <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.debarBet, item)">
                   <span class="el-checkbox red-tick">
                     <span class="el-checkbox__input" :class="{'is-disabled': agentInfoBetStatusDisabled, 'is-checked': item.debarBet}">
@@ -208,7 +208,7 @@
                   <span class="label">{{ $t('__debarBet') }}</span>
                 </span>
               </div>
-              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
                 <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
                   <span class="el-checkbox red-tick">
                     <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin}">
@@ -218,7 +218,7 @@
                   <span class="label">{{ $t('__lockLogin') }}</span>
                 </span>
               </div>
-              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <div v-if="!isAgentSubAccount && agentInfo.weekly_loss_settlement === '1'" class="list-item" style="width: 50%; margin-top: 1rem;">
                 <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, item)">
                   <span class="el-checkbox red-tick">
                     <span class="el-checkbox__input" :class="{'is-checked': item.weeklyLossSettlement}">
@@ -228,7 +228,7 @@
                   <span class="label">{{ $t('__weeklyLossSettlement') }}</span>
                 </span>
               </div>
-              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <div v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'" class="list-item" style="width: 50%; margin-top: 1rem;">
                 <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.oneClickRecycling, item)">
                   <span class="el-checkbox red-tick">
                     <span class="el-checkbox__input" :class="{'is-checked': item.oneClickRecycling}">
@@ -238,7 +238,7 @@
                   <span class="label">{{ $t('__oneClickRecycling') }}</span>
                 </span>
               </div>
-              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <div v-if="!isAgentSubAccount && agentInfo.gift_status === '1'" class="list-item" style="width: 50%; margin-top: 1rem;">
                 <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.giftEffect, item)">
                   <span class="el-checkbox red-tick">
                     <span class="el-checkbox__input" :class="{'is-checked': item.giftEffect}">

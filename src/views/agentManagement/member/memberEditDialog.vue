@@ -1,7 +1,7 @@
 <template>
   <div v-if="visible">
     <template v-if="device==='mobile'">
-      <div class="popup-page">
+      <div v-loading="dialogLoading" class="popup-page">
         <div class="w-100 pt-3 pb-3">
           <el-steps
             v-if="visible"

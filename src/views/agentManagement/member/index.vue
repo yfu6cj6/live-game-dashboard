@@ -71,8 +71,8 @@
                     </div>
                   </span>
                 </span>
-              </div> -->
-              <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+              </div>
+              <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
                 <span class="value">
                   <span>
                     <span class="v-line d-block" />
@@ -152,7 +152,7 @@
                   <div style="display: none;" />
                 </span>
               </div>
-              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
                 <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
                   <span class="el-checkbox red-tick">
                     <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin}">
@@ -162,7 +162,7 @@
                   <span class="label">{{ $t('__lockLogin') }}</span>
                 </span>
               </div>
-              <div class="list-item" style="width: 50%; margin-top: 1rem;">
+              <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
                 <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.debarBet, item)">
                   <span class="el-checkbox red-tick">
                     <span class="el-checkbox__input" :class="{'is-disabled': agentInfoBetStatusDisabled, 'is-checked': item.debarBet}">
@@ -172,7 +172,7 @@
                   <span class="label">{{ $t('__debarBet') }}</span>
                 </span>
               </div>
-              <template v-if="agentInfo.weekly_loss_settlement === '1'">
+              <template v-if="!isAgentSubAccount && agentInfo.weekly_loss_settlement === '1'">
                 <div class="list-item" style="width: 50%; margin-top: 1rem;">
                   <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.weeklyLossSettlement, item)">
                     <span class="el-checkbox red-tick">
@@ -184,7 +184,7 @@
                   </span>
                 </div>
               </template>
-              <template v-if="agentInfo.gift_status === '1'">
+              <template v-if="!isAgentSubAccount && agentInfo.gift_status === '1'">
                 <div class="list-item" style="width: 50%; margin-top: 1rem;">
                   <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.giftEffect, item)">
                     <span class="el-checkbox red-tick">
@@ -207,11 +207,17 @@
               <div class="force-wrap" />
               <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
                 <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__maxWinAmountLimit') }}</span>
-                <span class="value">{{ item.max_win_amount_limit }}</span>
+                <span class="value">{{ checkInfo(item.max_win_amount_limit) }}</span>
+                <template v-if="item.max_win_amount_limit !== '0.00' && item.max_win_amount_limit < item.total_payout">
+                  <span class="exceeded">{{ `[${$t('__exceeded')}]` }}</span>
+                </template>
               </div>
               <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
                 <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__maxLoseAmountLimit') }}</span>
-                <span class="value">{{ item.max_lose_amount_limit }}</span>
+                <span class="value">{{ checkInfo(item.max_lose_amount_limit) }}</span>
+                <template v-if="item.max_lose_amount_limit !== '0.00' && maxLoseAmountLimitExceededCheck(item)">
+                  <span class="exceeded">{{ `[${$t('__exceeded')}]` }}</span>
+                </template>
               </div>
               <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
                 <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__timeZone') }}</span>
@@ -815,5 +821,11 @@ export default {
 .noInformation {
   margin-top: 1rem;
   text-align: center;
+}
+
+.exceeded {
+  color: red;
+  display: block;
+  line-height: 16px;
 }
 </style>

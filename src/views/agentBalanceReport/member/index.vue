@@ -109,15 +109,6 @@ export default {
     numberFormatStr(number) {
       return numberFormat(number)
     },
-    tableRowClassName({ row, rowIndex }) {
-      if (rowIndex >= this.tableData.length - 2) {
-        return 'settlement'
-      }
-      if (rowIndex % 2 === 1) {
-        return 'singleRow'
-      }
-      return ''
-    },
     // 父物件呼叫
     onSearch(agentId) {
       this.pageSizeCount = 1

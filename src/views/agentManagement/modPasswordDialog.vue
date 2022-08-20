@@ -2,7 +2,7 @@
   <div v-if="visible">
     <template v-if="device==='mobile'">
       <div class="notice-cover" @click.stop="onClose" />
-      <div class="fadeInUp pp notice animated">
+      <div v-loading="dialogLoading" class="fadeInUp pp notice animated">
         <div class="scroll-wrap float">
           <div id="scroll-inner" class="scroll-inner off">
             <div class="scroll-view" style="display: block; position: static; max-height: 50vh;">

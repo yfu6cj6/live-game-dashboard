@@ -21,7 +21,7 @@
           </div>
           <div class="agent-list-basic list-row">
             <div class="list-item d-flex align-items-center" style="width: 100%;">
-              <router-link v-if="index < tableData.length" :to="`/agentBalanceReport/agentBalanceReport/${item.agentId}`">
+              <router-link :to="`/agentBalanceReport/agentBalanceReport/${item.agentId}`">
                 <div class="d-flex align-items-center">
                   <span class="icon user">
                     <div class="fas gold">

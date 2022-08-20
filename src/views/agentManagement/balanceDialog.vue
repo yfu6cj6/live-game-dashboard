@@ -5,7 +5,7 @@
         <div data-v-e681123c="" class="notice-cover" @click.stop="onClose" />
         <div class="fadeInUp pp notice animated">
           <div id="scroll-inner" class="scroll-inner off">
-            <div class="scroll-view" style="display: block; position: static; max-height: 70vh;">
+            <div v-loading="dialogLoading" class="scroll-view" style="display: block; position: static; max-height: 70vh;">
               <div class="w-100" belongto="subAgent">
                 <div class="detail-credit-form border-0 animated fadeInUp">
                   <div class="credit-item-group">
