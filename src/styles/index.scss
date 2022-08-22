@@ -284,6 +284,12 @@ table {
 }
 
 // margin
+.mt-0, .my-0 {
+  margin-top: 0!important;
+}
+.mt-3, .my-3 {
+  margin-top: 1rem!important;
+}
 .mr-0, .mx-0 {
   margin-right: 0!important;
 }
@@ -304,6 +310,9 @@ table {
 }
 .mb-2, .my-2 {
   margin-bottom: 0.5rem!important;
+}
+.ml-0, .mx-0 {
+  margin-left: 0!important;
 }
 .ml-1, .mx-1 {
   margin-left: 0.25rem!important;
@@ -327,6 +336,9 @@ table {
 }
 .p-3 {
   padding: 1rem!important;
+}
+.pt-0, .py-0 {
+  padding-top: 0!important;
 }
 .pt-3, .py-3 {
   padding-top: 1rem!important;

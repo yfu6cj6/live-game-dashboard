@@ -1,324 +1,436 @@
 <template>
-  <Dialog
-    v-if="visible"
-    :loading="dialogLoading"
-    :on-close-even="onClose"
-    :close-on-click-modal="device === 'mobile'"
-  >
-    <div class="dialogheader">
-      <div class="dialogheader-row">
-        <div class="dialogheader-row-item">
-          <span class="dialogheader-row-item-header">
-            {{ $t('__gameType') }}
-          </span>
-          <span class="dialogheader-row-item-content">
-            {{ roundInfo.gameType }}
-          </span>
-        </div>
-        <div class="dialogheader-row-item">
-          <span class="dialogheader-row-item-header">
-            {{ $t('__roundId') }}
-          </span>
-          <span class="dialogheader-row-item-content">
-            {{ roundInfo.roundId }}
-          </span>
-        </div>
-      </div>
-      <div class="dialogheader-row">
-        <div class="dialogheader-row-item">
-          <span class="dialogheader-row-item-header">
-            {{ $t('__gameStartTime') }}
-          </span>
-          <span class="dialogheader-row-item-content">
-            {{ roundInfo.startTime }}
-          </span>
-        </div>
-        <div class="dialogheader-row-item">
-          <span class="dialogheader-row-item-header">
-            {{ $t('__gameEndTime') }}
-          </span>
-          <span class="dialogheader-row-item-content">
-            {{ roundInfo.endTime }}
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="roundData">
-      <div v-if="roundInfo.result" class="pokerData">
-        <div class="pokerArea">
-          <div class="player">{{ $t('__player') }}</div>
-          <div class="pokerInfo">
-            <div class="poker3">
-              <img class="poker rotate" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[2]}.png`)" :alt="`${$t('__player')}3`">
+  <div v-if="visible">
+    <template v-if="device==='mobile'">
+      <div class="game-result-detail flex-column flex-fill">
+        <div class="comp">
+          <div class="result-detail-container ">
+            <div class="result-detail p-3">
+              <div>
+                <div class="d-flex align-item-center game-detail-info">
+                  <span class="mr-3 label">{{ $t('__game') }}</span>
+                  <span class="mr-3 value">{{ roundInfo.gameType }}</span>
+                  <span class="mr-3 label ml-auto">{{ $t('__roundId') }}</span>
+                  <span class="mr-3 value">{{ roundInfo.roundId }}</span>
+                </div>
+                <div class="d-flex flex-wrap align-item-center game-detail-info pt-0 mt-0">
+                  <span class="mr-3 label">{{ $t('__gameStartTime') }}</span>
+                  <span class="mr-3 value">{{ roundInfo.startTime }}</span>
+                  <div class="pt-2 w-100" />
+                  <span class="mr-3 label">{{ $t('__gameEndTime') }}</span>
+                  <span class="mr-3 value">{{ roundInfo.endTime }}</span>
+                </div>
+                <div class="yellow-border-bottom w-100" />
+                <div class="d-flex cards">
+                  <div class="player w-50">
+                    <div class="w-100 mt-3" />
+                    <div class="road-title">{{ $t('__playerCard') }}</div>
+                    <div class="w-100 mt-3" />
+                    <div class="d-flex">
+                      <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[0]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
+                      <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[1]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
+                    </div>
+                    <div class="d-flex mt-3">
+                      <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[2]}.png`)" class="poker back" style="height: 7.5rem; width: 5rem;">
+                    </div>
+                  </div>
+                  <div class="yellow-border-right line" />
+                  <div class="banker w-50">
+                    <div shadow="never">
+                      <div class="w-100 mt-3" />
+                      <div class="road-title">{{ $t('__bankerCard') }}</div>
+                      <div class="w-100 mt-3" />
+                      <div class="d-flex">
+                        <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[0]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
+                        <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[1]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
+                      </div>
+                    </div>
+                    <div class="d-flex mt-3">
+                      <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[2]}.png`)" class="poker back" style="height: 7.5rem; width: 5rem;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="yellow-border-bottom w-100" />
+              <div class="w-100 mt-3" />
+              <div class="road-title">{{ $t('__cardRoad') }}</div>
+              <div class="w-100 mt-3" />
+              <div class="road-card ml-0">
+                <div class="road d-block w-100">
+                  <div class="d-block w-100">
+                    <div class="pan-container w-100" style="padding-top: 17.6471%;">
+                      <div class="pan-body">
+                        <table class="bigRoad">
+                          <tr
+                            v-for="(road, i) in bigRoad.roadData"
+                            :key="i"
+                          >
+                            <td
+                              v-for="(item, j) in road"
+                              :key="j"
+                            >
+                              <div
+                                :class="{
+                                  'bigRoad-current': item.split('_')[3] === '1'
+                                }"
+                              />
+                              <div
+                                :class="{
+                                  'bigRoad-winner-banker': item.split('_')[0] === '1',
+                                  'bigRoad-winner-player': item.split('_')[0] === '2'
+                                }"
+                              />
+                              <div
+                                v-if="item.split('_')[0] === '3' && item.split('_')[2] >= 1"
+                                class="bigRoad-tieCount"
+                              >
+                                {{ (Number(item.split('_')[2]) + 1) }}
+                              </div>
+                              <div
+                                v-else-if="item.split('_')[0] === '3' || item.split('_')[2] === '1'"
+                                class="bigRoad-winner-tie"
+                              />
+                              <div
+                                v-else-if="item.split('_')[2] > 1"
+                                class="bigRoad-tieCount"
+                              >
+                                {{ item.split('_')[2] }}
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[0]}.png`)" :alt="`${$t('__player')}1`">
-            <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[1]}.png`)" :alt="`${$t('__player')}2`">
           </div>
         </div>
-        <div class="pokerArea">
-          <div class="banker">{{ $t('__banker') }}</div>
-          <div class="pokerInfo">
-            <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[0]}.png`)" :alt="`${$t('__banker')}1`">
-            <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[1]}.png`)" :alt="`${$t('__banker')}2`">
-            <div class="poker3">
-              <img class="poker rotate" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[2]}.png`)" :alt="`${$t('__banker')}3`">
+      </div>
+    </template>
+    <template v-else>
+      <Dialog
+        v-if="visible"
+        :loading="dialogLoading"
+        :on-close-even="onClose"
+        :close-on-click-modal="device === 'mobile'"
+      >
+        <div class="dialogheader">
+          <div class="dialogheader-row">
+            <div class="dialogheader-row-item">
+              <span class="dialogheader-row-item-header">
+                {{ $t('__gameType') }}
+              </span>
+              <span class="dialogheader-row-item-content">
+                {{ roundInfo.gameType }}
+              </span>
+            </div>
+            <div class="dialogheader-row-item">
+              <span class="dialogheader-row-item-header">
+                {{ $t('__roundId') }}
+              </span>
+              <span class="dialogheader-row-item-content">
+                {{ roundInfo.roundId }}
+              </span>
+            </div>
+          </div>
+          <div class="dialogheader-row">
+            <div class="dialogheader-row-item">
+              <span class="dialogheader-row-item-header">
+                {{ $t('__gameStartTime') }}
+              </span>
+              <span class="dialogheader-row-item-content">
+                {{ roundInfo.startTime }}
+              </span>
+            </div>
+            <div class="dialogheader-row-item">
+              <span class="dialogheader-row-item-header">
+                {{ $t('__gameEndTime') }}
+              </span>
+              <span class="dialogheader-row-item-content">
+                {{ roundInfo.endTime }}
+              </span>
             </div>
           </div>
         </div>
-      </div>
-      <table class="roundInfo">
-        <tr>
-          <td class="text-yellow">
-            {{ `${$t('__totalLength')}: ` }}
-          </td>
-          <td class="floatRight">
-            {{ countInfo.total }}
-          </td>
-          <td>
-            {{ $t('__round') }}
-          </td>
-          <td class="text-green">
-            {{ `${$t('__tie')}: ` }}
-          </td>
-          <td class="floatRight">
-            {{ countInfo.tie }}
-          </td>
-          <td>
-            {{ $t('__round') }}
-          </td>
-        </tr>
-        <tr>
-          <td class="text-red">
-            {{ `${$t('__banker')}: ` }}
-          </td>
-          <td class="floatRight">
-            {{ countInfo.banker }}
-          </td>
-          <td>
-            {{ $t('__round') }}
-          </td>
-          <td class="text-blue">
-            {{ `${$t('__player')}: ` }}
-          </td>
-          <td class="floatRight">
-            {{ countInfo.player }}
-          </td>
-          <td>
-            {{ $t('__round') }}
-          </td>
-        </tr>
-        <tr>
-          <td class="text-red">
-            {{ `${$t('__bankerPair')}: ` }}
-          </td>
-          <td class="floatRight">
-            {{ countInfo.bankerPair }}
-          </td>
-          <td>
-            {{ $t('__round') }}
-          </td>
-          <td class="text-blue">
-            {{ `${$t('__playerPair')}: ` }}
-          </td>
-          <td class="floatRight">
-            {{ countInfo.playerPair }}
-          </td>
-          <td>
-            {{ $t('__round') }}
-          </td>
-        </tr>
-        <tr>
-          <td class="text-red">
-            {{ `${$t('__bankerContinuousWin')}: ` }}
-          </td>
-          <td class="floatRight">
-            {{ countInfo.bankerInstantWin }}
-          </td>
-          <td>
-            {{ $t('__round') }}
-          </td>
-          <td class="text-blue">
-            {{ `${$t('__playerContinuousWin')}: ` }}
-          </td>
-          <td class="floatRight">
-            {{ countInfo.playerInstantWin }}
-          </td>
-          <td>
-            {{ $t('__round') }}
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div class="bigRoadData">
-      <table>
-        <tr
-          v-for="(road, i) in bigRoad.roadData"
-          :key="i"
-        >
-          <td
-            v-for="(item, j) in road"
-            :key="j"
-            class="item"
-          >
-            <div
-              :class="{
-                'bigRoad-current': item.split('_')[3] === '1'
-              }"
-            />
-            <div
-              :class="{
-                'bigRoad-winner-banker': item.split('_')[0] === '1',
-                'bigRoad-winner-player': item.split('_')[0] === '2'
-              }"
-            />
-            <div
-              :class="{
-                'bigRoad-pair-banker': item.split('_')[1] === '1' || item.split('_')[1] === '3',
-              }"
-            />
-            <div
-              :class="{
-                'bigRoad-pair-player': item.split('_')[1] === '2' || item.split('_')[1] === '3',
-              }"
-            />
-            <div
-              v-if="item.split('_')[0] === '3' && item.split('_')[2] >= 1"
-              class="bigRoad-tieCount"
-            >
-              {{ (Number(item.split('_')[2]) + 1) }}
+        <div class="roundData">
+          <div v-if="roundInfo.result" class="pokerData">
+            <div class="pokerArea">
+              <div class="player">{{ $t('__player') }}</div>
+              <div class="pokerInfo">
+                <div class="poker3">
+                  <img class="poker rotate" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[2]}.png`)" :alt="`${$t('__player')}3`">
+                </div>
+                <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[0]}.png`)" :alt="`${$t('__player')}1`">
+                <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[1]}.png`)" :alt="`${$t('__player')}2`">
+              </div>
             </div>
-            <div
-              v-else-if="item.split('_')[0] === '3' || item.split('_')[2] === '1'"
-              class="bigRoad-winner-tie"
-            />
-            <div
-              v-else-if="item.split('_')[2] > 1"
-              class="bigRoad-tieCount"
-            >
-              {{ item.split('_')[2] }}
+            <div class="pokerArea">
+              <div class="banker">{{ $t('__banker') }}</div>
+              <div class="pokerInfo">
+                <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[0]}.png`)" :alt="`${$t('__banker')}1`">
+                <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[1]}.png`)" :alt="`${$t('__banker')}2`">
+                <div class="poker3">
+                  <img class="poker rotate" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[2]}.png`)" :alt="`${$t('__banker')}3`">
+                </div>
+              </div>
             </div>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div class="bigEyeRoadData">
-      <table>
-        <tr
-          v-for="(road, i) in bigEyeRoad.roadData"
-          :key="i"
-        >
-          <td
-            v-for="(item, j) in road"
-            :key="j"
-            class="item"
-          >
-            <div
-              :class="{
-                'bigEyeRoad-current': item.split('_')[1] === '1'
-              }"
-            />
-            <div
-              :class="{
-                'bigEyeRoad-winner-banker': item.split('_')[0] === '1',
-                'bigEyeRoad-winner-player': item.split('_')[0] === '2'
-              }"
-            />
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div class="smallEyeRoadData_cockroachRoadData">
-      <div class="smallEyeRoadData">
-        <table>
-          <tr
-            v-for="(road, i) in smallEyeRoad.roadData"
-            :key="i"
-          >
-            <td
-              v-for="(item, j) in road"
-              :key="j"
-              class="item"
+          </div>
+          <table class="roundInfo">
+            <tr>
+              <td class="text-yellow">
+                {{ `${$t('__totalLength')}: ` }}
+              </td>
+              <td class="floatRight">
+                {{ countInfo.total }}
+              </td>
+              <td>
+                {{ $t('__round') }}
+              </td>
+              <td class="text-green">
+                {{ `${$t('__tie')}: ` }}
+              </td>
+              <td class="floatRight">
+                {{ countInfo.tie }}
+              </td>
+              <td>
+                {{ $t('__round') }}
+              </td>
+            </tr>
+            <tr>
+              <td class="text-red">
+                {{ `${$t('__banker')}: ` }}
+              </td>
+              <td class="floatRight">
+                {{ countInfo.banker }}
+              </td>
+              <td>
+                {{ $t('__round') }}
+              </td>
+              <td class="text-blue">
+                {{ `${$t('__player')}: ` }}
+              </td>
+              <td class="floatRight">
+                {{ countInfo.player }}
+              </td>
+              <td>
+                {{ $t('__round') }}
+              </td>
+            </tr>
+            <tr>
+              <td class="text-red">
+                {{ `${$t('__bankerPair')}: ` }}
+              </td>
+              <td class="floatRight">
+                {{ countInfo.bankerPair }}
+              </td>
+              <td>
+                {{ $t('__round') }}
+              </td>
+              <td class="text-blue">
+                {{ `${$t('__playerPair')}: ` }}
+              </td>
+              <td class="floatRight">
+                {{ countInfo.playerPair }}
+              </td>
+              <td>
+                {{ $t('__round') }}
+              </td>
+            </tr>
+            <tr>
+              <td class="text-red">
+                {{ `${$t('__bankerContinuousWin')}: ` }}
+              </td>
+              <td class="floatRight">
+                {{ countInfo.bankerInstantWin }}
+              </td>
+              <td>
+                {{ $t('__round') }}
+              </td>
+              <td class="text-blue">
+                {{ `${$t('__playerContinuousWin')}: ` }}
+              </td>
+              <td class="floatRight">
+                {{ countInfo.playerInstantWin }}
+              </td>
+              <td>
+                {{ $t('__round') }}
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="bigRoadData">
+          <table>
+            <tr
+              v-for="(road, i) in bigRoad.roadData"
+              :key="i"
             >
-              <div
-                :class="{
-                  'smallEyeRoad-current': item.split('_')[1] === '1'
-                }"
-              />
-              <div
-                :class="{
-                  'smallEyeRoad-winner-banker': item.split('_')[0] === '1',
-                  'smallEyeRoad-winner-player': item.split('_')[0] === '2'
-                }"
-              />
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="cockroachRoadData">
-        <table>
-          <tr
-            v-for="(road, i) in cockroachRoad.roadData"
-            :key="i"
-          >
-            <td
-              v-for="(item, j) in road"
-              :key="j"
-              class="item"
+              <td
+                v-for="(item, j) in road"
+                :key="j"
+                class="item"
+              >
+                <div
+                  :class="{
+                    'bigRoad-current': item.split('_')[3] === '1'
+                  }"
+                />
+                <div
+                  :class="{
+                    'bigRoad-winner-banker': item.split('_')[0] === '1',
+                    'bigRoad-winner-player': item.split('_')[0] === '2'
+                  }"
+                />
+                <div
+                  :class="{
+                    'bigRoad-pair-banker': item.split('_')[1] === '1' || item.split('_')[1] === '3',
+                  }"
+                />
+                <div
+                  :class="{
+                    'bigRoad-pair-player': item.split('_')[1] === '2' || item.split('_')[1] === '3',
+                  }"
+                />
+                <div
+                  v-if="item.split('_')[0] === '3' && item.split('_')[2] >= 1"
+                  class="bigRoad-tieCount"
+                >
+                  {{ (Number(item.split('_')[2]) + 1) }}
+                </div>
+                <div
+                  v-else-if="item.split('_')[0] === '3' || item.split('_')[2] === '1'"
+                  class="bigRoad-winner-tie"
+                />
+                <div
+                  v-else-if="item.split('_')[2] > 1"
+                  class="bigRoad-tieCount"
+                >
+                  {{ item.split('_')[2] }}
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="bigEyeRoadData">
+          <table>
+            <tr
+              v-for="(road, i) in bigEyeRoad.roadData"
+              :key="i"
             >
-              <div
-                :class="{
-                  'cockroachRoad-current': item.split('_')[1] === '1'
-                }"
-              />
-              <div
-                :class="{
-                  'cockroachRoad-winner-banker': item.split('_')[0] === '1',
-                  'cockroachRoad-winner-player': item.split('_')[0] === '2'
-                }"
-              />
-            </td>
-          </tr>
-        </table>
-      </div>
-    </div>
-    <div class="beadRoadData">
-      <table>
-        <tr
-          v-for="(road, i) in beadRoad.roadData"
-          :key="i"
-        >
-          <td
-            v-for="(item, j) in road"
-            :key="j"
-            class="item"
-          >
-            <div
-              :class="{
-                'beadRoad-current': item.split('_')[2] === '1'
-              }"
-            />
-            <div
-              :class="{
-                'beadRoad-winner-banker': item.split('_')[0] === '1',
-                'beadRoad-winner-player': item.split('_')[0] === '2',
-                'beadRoad-winner-tie': item.split('_')[0] === '3'
-              }"
-            />
-            <div
-              :class="{
-                'beadRoad-pair-banker': item.split('_')[1] === '1' || item.split('_')[1] === '3',
-              }"
-            />
-            <div
-              :class="{
-                'beadRoad-pair-player': item.split('_')[1] === '2' || item.split('_')[1] === '3',
-              }"
-            />
-          </td>
-        </tr>
-      </table>
-    </div>
-  </Dialog>
+              <td
+                v-for="(item, j) in road"
+                :key="j"
+                class="item"
+              >
+                <div
+                  :class="{
+                    'bigEyeRoad-current': item.split('_')[1] === '1'
+                  }"
+                />
+                <div
+                  :class="{
+                    'bigEyeRoad-winner-banker': item.split('_')[0] === '1',
+                    'bigEyeRoad-winner-player': item.split('_')[0] === '2'
+                  }"
+                />
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="smallEyeRoadData_cockroachRoadData">
+          <div class="smallEyeRoadData">
+            <table>
+              <tr
+                v-for="(road, i) in smallEyeRoad.roadData"
+                :key="i"
+              >
+                <td
+                  v-for="(item, j) in road"
+                  :key="j"
+                  class="item"
+                >
+                  <div
+                    :class="{
+                      'smallEyeRoad-current': item.split('_')[1] === '1'
+                    }"
+                  />
+                  <div
+                    :class="{
+                      'smallEyeRoad-winner-banker': item.split('_')[0] === '1',
+                      'smallEyeRoad-winner-player': item.split('_')[0] === '2'
+                    }"
+                  />
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="cockroachRoadData">
+            <table>
+              <tr
+                v-for="(road, i) in cockroachRoad.roadData"
+                :key="i"
+              >
+                <td
+                  v-for="(item, j) in road"
+                  :key="j"
+                  class="item"
+                >
+                  <div
+                    :class="{
+                      'cockroachRoad-current': item.split('_')[1] === '1'
+                    }"
+                  />
+                  <div
+                    :class="{
+                      'cockroachRoad-winner-banker': item.split('_')[0] === '1',
+                      'cockroachRoad-winner-player': item.split('_')[0] === '2'
+                    }"
+                  />
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="beadRoadData">
+          <table>
+            <tr
+              v-for="(road, i) in beadRoad.roadData"
+              :key="i"
+            >
+              <td
+                v-for="(item, j) in road"
+                :key="j"
+                class="item"
+              >
+                <div
+                  :class="{
+                    'beadRoad-current': item.split('_')[2] === '1'
+                  }"
+                />
+                <div
+                  :class="{
+                    'beadRoad-winner-banker': item.split('_')[0] === '1',
+                    'beadRoad-winner-player': item.split('_')[0] === '2',
+                    'beadRoad-winner-tie': item.split('_')[0] === '3'
+                  }"
+                />
+                <div
+                  :class="{
+                    'beadRoad-pair-banker': item.split('_')[1] === '1' || item.split('_')[1] === '3',
+                  }"
+                />
+                <div
+                  :class="{
+                    'beadRoad-pair-player': item.split('_')[1] === '2' || item.split('_')[1] === '3',
+                  }"
+                />
+              </td>
+            </tr>
+          </table>
+        </div>
+      </Dialog>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -501,6 +613,140 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
+
+.game-result-detail {
+  height: 100vh;
+  background: #000;
+  .result-detail {
+    width: 31.25rem;
+    margin: 0 auto;
+    .game-detail-info {
+      margin-top: 0.83333rem;
+      padding: 0.83333rem;
+      .label {
+        color: #a3a3a3;
+      }
+      .value {
+        color: #fff;
+      }
+    }
+    .road-title {
+      background-color: #f9c901;
+      padding: 0.41667rem;
+      font-weight: bolder;
+      color: #000;
+      display: inline-block;
+    }
+    .cards {
+      .line {
+        height: 16.66667rem;
+        margin: auto 1.66667rem;
+      }
+    }
+  }
+  .yellow-border-bottom {
+    border-bottom: 0.08333rem solid #ce9600;
+  }
+  .yellow-border-right {
+    border-right: 0.08333rem solid #ce9600;
+  }
+  .road-card {
+    width: 100%;
+    max-width: 30.83333rem;
+    .road {
+      display: inline-block;
+      width: 100%;
+      .pan-container {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        overflow: overlay;
+        width: 100%;
+        position: relative;
+        .pan-body{
+          position: absolute;
+          top: 0;
+          left: 0;
+          table {
+            background-color: #fff;
+            border-spacing: 0;
+            border-collapse: collapse;
+            td {
+              width: 0.85rem;
+              min-width: 0.85rem;
+              height: 0.85rem;
+              min-height: 0.85rem;
+              max-height: 0.85rem;
+              border: 0.001rem solid #aaa;
+              position: relative;
+              .bigRoad {
+                &-current {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 100%;
+                  background-color: #ffff7c;
+                }
+                &-winner {
+                  &-banker,
+                  &-player {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 90%;
+                    height: 90%;
+                    border-radius: 50%;
+                  }
+                }
+                &-winner {
+                  &-banker {
+                    border: 0.001rem solid #ff4949;
+                  }
+                  &-player {
+                    border: 0.001rem solid #0090ff;
+                  }
+                  &-tie {
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    width: 0.05rem;
+                    height: 90%;
+                    transform: rotate(45deg);
+                    background-color: #13ce66;
+                  }
+                }
+                &-tieCount {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  font-weight: 600;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 80%;
+                  height: 80%;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.poker {
+  margin: auto;
+  &.back {
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+    -webkit-transform-origin: center;
+    transform-origin: center;
+  }
+}
 
 .dialogheader {
   color: #fff;

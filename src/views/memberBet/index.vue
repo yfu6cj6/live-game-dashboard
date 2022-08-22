@@ -574,7 +574,7 @@ import handlePageChange from '@/mixin/handlePageChange';
 import { getFullDate, getFullDateString, getDayDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
-import PlaybackDialog from './playbackDialog';
+import PlaybackDialog from '@/components/GameResult/playbackDialog';
 import GameResultDialog from '@/components/GameResult/gameResultDialog';
 
 const defaultSearchTimeType = 'betTime'
