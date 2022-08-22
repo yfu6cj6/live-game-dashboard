@@ -4,7 +4,10 @@
       <div class="bg-black">
         <div class="d-flex searchFrame">
           <div class="d-flex pad_frame wrap">
-            <div class="pad_frame">
+            <div v-if="isAdminister" class="addCtrl">
+              <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
+            </div>
+            <div class="pad_frame_2">
               <div class="d-flex searchItemBox">
                 <div class="searchItem pad_frame">
                   <div class="input_filter">
@@ -21,9 +24,6 @@
             <div class="d-flex ctrlBtn searchBtn">
               <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(searchForm, 1)" />
             </div>
-            <div v-if="isAdminister" class="d-flex pad_frame">
-              <el-button class="bg-yellow addBtn" size="mini" @click="onCreateBtnClick()">{{ $t("__create") }}</el-button>
-            </div>
           </div>
         </div>
       </div>
@@ -33,6 +33,9 @@
         <div class="d-flex searchFrame">
           <div class="d-flex pad_frame wrap">
             <div class="d-flex searchItemBox">
+              <div v-if="isAdminister">
+                <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
+              </div>
               <div class="searchItem pad_frame">
                 <div class="input_filter">
                   <el-input v-model="searchForm.account" class="input_size" :placeholder="$t('__agentOrSubAccount')" />
@@ -46,9 +49,9 @@
               <div class="d-flex pad_frame">
                 <el-button class="bg-yellow addBtn" size="mini" @click="onSearchBtnClick(searchForm, 1)">{{ $t("__search") }}</el-button>
               </div>
-              <div v-if="isAdminister" class="d-flex pad_frame">
+              <!-- <div v-if="isAdminister" class="d-flex pad_frame">
                 <el-button class="bg-yellow addBtn" size="mini" @click="onCreateBtnClick()">{{ $t("__create") }}</el-button>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -255,8 +258,16 @@ export default {
   padding-top: 1.5rem;
   border-bottom: 0.25rem solid #f9c901;
   flex-flow: wrap;
+  .addCtrl {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .pad_frame {
     padding: 0 0.83333rem 0.41667rem 0.83333rem;
+  }
+  .pad_frame_2 {
+    padding: 0 0.83333rem 0 0.83333rem;
   }
   .searchItemBox {
     width: 22.16667rem;
