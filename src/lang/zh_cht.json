@@ -345,5 +345,5 @@
     "__memberManagement": "玩家管理",
     "__subAccountManagement": "子帳號管理",
     "__noEnoughBalance": "餘額不足",
-    "__checkIpFormat": "請確認IP格式是否正確"
+    "__formatInvalid": "格式不正確"
 }

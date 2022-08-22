@@ -11,7 +11,11 @@
                     <label for="userName" class="el-form-item__label">{{ $t('__agentOrSubAccount') }}</label>
                     <div class="el-form-item__content">
                       <div class="el-input">
-                        <input v-model="editForm.account" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkInput(inputData.account)" @blur="checkInput(inputData.account)">
+                        <input v-model="editForm.account" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkInput()" @blur="checkInput()">
+                        <span class="el-input__suffix">
+                          <span class="el-input__suffix-inner" />
+                          <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.account.state === inputState.error, 'el-icon-success': inputData.account.state === inputState.success}" />
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -19,7 +23,11 @@
                     <label for="domain" class="el-form-item__label">IP</label>
                     <div class="el-form-item__content">
                       <div class="el-input">
-                        <input v-model="editForm.ip" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.ip)" @change="checkInput(inputData.ip)" @blur="checkInput(inputData.ip)">
+                        <input v-model="editForm.ip" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.ip)" @change="checkInput()" @blur="checkInput()">
+                        <span class="el-input__suffix">
+                          <span class="el-input__suffix-inner" />
+                          <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.ip.state === inputState.error, 'el-icon-success': inputData.ip.state === inputState.success}" />
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -156,39 +164,36 @@ export default {
     inputFocus(input) {
       input.state = this.inputState.none
     },
-    checkInput(input) {
+    checkInput() {
       this.errorTips = ''
-      switch (input.type) {
-        case 0: // account
-          if (!this.editForm.account || this.editForm.account.length <= 0) {
-            input.state = this.inputState.error
-            this.errorTips = this.$t('__pleaseCheckFormContent')
-          } else {
-            input.state = this.inputState.success
-          }
-          break;
-        case 1: // ip
-          if (!this.editForm.ip || this.editForm.ip.length <= 0) {
-            input.state = this.inputState.error
-            this.errorTips = this.$t('__pleaseCheckFormContent')
-          } else if (!this.checkIpValid()) {
-            input.state = this.inputState.error
-            this.errorTips = this.$t('__checkIpFormat')
-          } else {
-            input.state = this.inputState.success
-          }
-          break;
+      if (!this.editForm.account || this.editForm.account.length <= 0) {
+        this.inputData.account.state = this.inputState.error
+        this.errorTips = this.editForm.account.length > 0 ? `${this.$t('__agentOrSubAccount')}${this.$t('__formatInvalid')}` : ''
+      } else {
+        this.inputData.account.state = this.inputState.success
+      }
+      if (!this.checkIpValid()) {
+        this.inputData.ip.state = this.inputState.error
+        if (this.errorTips === '' && this.editForm.ip.length > 0) {
+          this.errorTips = `IP${this.$t('__formatInvalid')}`
+        }
+      } else {
+        this.inputData.ip.state = this.inputState.success
       }
     },
     checkIpValid() {
+      if (!this.editForm.ip || this.editForm.ip.length <= 0) {
+        return false
+      }
+
       var strs = this.editForm.ip.split('.')
-      if (strs.length < 4) {
+      if (strs.length !== 4) {
         return false
       }
 
       var valid = true
       for (let i = 0; i < strs.length; i++) {
-        if(strs[i].length <= 0) {
+        if (strs[i].length <= 0) {
           valid = false;
           break;
         }
