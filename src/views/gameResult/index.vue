@@ -37,7 +37,7 @@
                       <div class="date-time-picker-box">
                         <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
                           <el-date-picker
-                            v-model="searchForm.searchTime"
+                            v-model="searchTime"
                             type="datetimerange"
                             popper-class="ams-timeslot-popper"
                             align="right"
@@ -301,42 +301,41 @@
           </div>
         </div>
       </div>
+      <operateDialog
+        ref="invalidRoundDialog"
+        :visible="curDialogIndex === dialogEnum.billingStatus"
+        :content="$stringFormat($t('__gameRoundInvalidMsg'), operateDialogMsgParameter)"
+        :form="editForm"
+        @close="closeDialogEven"
+        @onSubmit="operateSubmit"
+      />
+
+      <playbackDialog
+        v-if="curPlaybackIndex === playbackEnum.pic"
+        :title="playbackTitle"
+        :visible="curPlaybackIndex === playbackEnum.pic"
+        :playback-type="playbackEnum.pic"
+        :url="imagePlaybackpic"
+        @close="closePlaybackDialogEven"
+      />
+
+      <playbackDialog
+        v-if="curPlaybackIndex === playbackEnum.video"
+        :title="playbackTitle"
+        :visible="curPlaybackIndex === playbackEnum.video"
+        :playback-type="playbackEnum.video"
+        :url="videoPlaybackUrl"
+        @close="closePlaybackDialogEven"
+      />
+
+      <gameResultDialog
+        :visible="curDialogIndex === dialogEnum.resultdialog"
+        :round-info="roundInfo"
+        :count-info="countInfo"
+        :score-cards="scoreCards"
+        @close="closeDialogEven"
+      />
     </div>
-
-    <operateDialog
-      ref="invalidRoundDialog"
-      :visible="curDialogIndex === dialogEnum.billingStatus"
-      :content="$stringFormat($t('__gameRoundInvalidMsg'), operateDialogMsgParameter)"
-      :form="editForm"
-      @close="closeDialogEven"
-      @onSubmit="operateSubmit"
-    />
-
-    <playbackDialog
-      v-if="curPlaybackIndex === playbackEnum.pic"
-      :title="playbackTitle"
-      :visible="curPlaybackIndex === playbackEnum.pic"
-      :playback-type="playbackEnum.pic"
-      :url="imagePlaybackpic"
-      @close="closePlaybackDialogEven"
-    />
-
-    <playbackDialog
-      v-if="curPlaybackIndex === playbackEnum.video"
-      :title="playbackTitle"
-      :visible="curPlaybackIndex === playbackEnum.video"
-      :playback-type="playbackEnum.video"
-      :url="videoPlaybackUrl"
-      @close="closePlaybackDialogEven"
-    />
-
-    <gameResultDialog
-      :visible="curDialogIndex === dialogEnum.resultdialog"
-      :round-info="roundInfo"
-      :count-info="countInfo"
-      :score-cards="scoreCards"
-      @close="closeDialogEven"
-    />
   </div>
 </template>
 
@@ -371,7 +370,6 @@ export default {
         'video': 2
       }),
       searchTimeType: defaultSearchTimeType,
-      searchTime: defaultSearchTime,
       searchForm: {},
       searchItems: {},
       selectOption: {},
@@ -413,21 +411,15 @@ export default {
     }
   },
   watch: {
-    'searchTime': function() {
-      this.$nextTick(() => {
-        this.handleCurrentChange(1)
-      })
-    }
   },
   created() {
-    this.pageSizeCount = 1
+    this.searchTime = defaultSearchTime
     this.$store.dispatch('gameResult/setGameResultTimeType')
-    this.searchForm.searchTime = defaultSearchTime
     this.$nextTick(() => {
       this.handleCurrentChange(this.currentPage)
       this.addSelectFilter()
-      this.setHeaderStyle()
     })
+    this.setHeaderStyle()
   },
   activated() {
     this.setHeaderStyle()
@@ -467,7 +459,6 @@ export default {
       this.handleCurrentChange(1)
     },
     onOperateCheckboxClick(operateType, rowData) {
-      console.log("onOperateCheckboxClick");
       this.editForm = { round_id: rowData.round_id }
       switch (operateType) {
         case this.dialogEnum.billingStatus: {
@@ -509,8 +500,11 @@ export default {
         this.roundInfo = res.roundInfo
         this.countInfo = res.countInfo
         this.scoreCards = res.scoreCards
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameResult'), true, () => {
+          this.closeDialogEven()
+          this.setHeaderStyle()
+        }])
         this.curDialogIndex = this.dialogEnum.resultdialog
-        console.log(res);
         this.dataLoading = false
       }).catch(() => {
         this.dataLoading = false

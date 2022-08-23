@@ -105,6 +105,7 @@ export default {
     -ms-flex-pack: center;
     justify-content: center;
     background-color: rgba(0,0,0,0.5);
+    z-index: 10;
     .video-cover {
       -webkit-box-flex: 1;
       -ms-flex: 1;
