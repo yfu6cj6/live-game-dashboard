@@ -130,18 +130,6 @@
                         <div class="halls-row d-flex align-items-end">
                           <div class="halls-col">
                             <div class="halls-label">
-                              <div class="d-flex align-items-center justify-content-end" />
-                            </div>
-                            <div class="halls-value">
-                              <div class="d-flex align-items-center justify-content-end">
-                                <span>
-                                  <span>{{ item.commissionRate }}</span>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="halls-col">
-                            <div class="halls-label">
                               <div class="d-flex align-items-center justify-content-end">
                                 <span>{{ $t('__totalAmount') }}</span>
                               </div>
@@ -149,6 +137,18 @@
                             <div class="halls-value">
                               <div class="d-flex align-items-center justify-content-end">
                                 <span :class="{'text-red': Number(item.netPL) > 0, 'text-blue': Number(item.netPL) < 0}">{{ item.netPLLabel }}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="halls-col">
+                            <div class="halls-label">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__giftValue') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span :class="{'text-red': Number(item.giftValue) > 0, 'text-blue': Number(item.giftValue) < 0}">{{ item.giftValueLabel }}</span>
                               </div>
                             </div>
                           </div>
@@ -209,6 +209,14 @@
                         </div>
                       </div>
                     </div>
+                    <div class="list-sub-item d-flex align-items-end">
+                      <div class="gift-value list-sub-item-col text-right">
+                        <span class="label">{{ $t('__giftValue') }}</span>
+                        <span class="value">
+                          <span :class="{'text-red': Number(item.giftValue) > 0, 'text-blue': Number(item.giftValue) < 0}">{{ item.giftValueLabel }}</span>
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -256,11 +264,16 @@
                 </span>
               </span>
             </div>
-            <div class="page-item mb-2 is-amount" />
             <div class="page-item mb-2 is-amount">
               <span class="label">{{ $t('__totalAmount') }}</span>
               <span class="value">
                 <span :class="{'text-red': Number(subtotalCountData.netPL) > 0, 'text-blue': Number(subtotalCountData.netPL) < 0}">{{ subtotalCountData.netPLLabel }}</span>
+              </span>
+            </div>
+            <div class="page-item mb-2 is-amount">
+              <span class="label">{{ $t('__giftValue') }}</span>
+              <span class="value">
+                <span :class="{'text-red': Number(subtotalCountData.giftValue) > 0, 'text-blue': Number(subtotalCountData.giftValue) < 0}">{{ subtotalCountData.giftValueLabel }}</span>
               </span>
             </div>
           </div>
@@ -293,11 +306,16 @@
                 </span>
               </span>
             </div>
-            <div class="page-item mb-2 is-amount" />
             <div class="page-item mb-2 is-amount">
               <span class="label">{{ $t('__totalAmount') }}</span>
               <span class="value">
                 <span :class="{'text-red': Number(totalCountData.netPL) > 0, 'text-blue': Number(totalCountData.netPL) < 0}">{{ totalCountData.netPLLabel }}</span>
+              </span>
+            </div>
+            <div class="page-item mb-2 is-amount">
+              <span class="label">{{ $t('__giftValue') }}</span>
+              <span class="value">
+                <span :class="{'text-red': Number(totalCountData.giftValue) > 0, 'text-blue': Number(totalCountData.giftValue) < 0}">{{ totalCountData.giftValueLabel }}</span>
               </span>
             </div>
           </div>
@@ -376,6 +394,7 @@ export default {
           element.rollingCommissionLabel = numberFormat(element.rollingCommission)
           element.netPLLabel = numberFormat(element.netPL)
           element.open = open.includes(element.member_id)
+          element.giftValueLabel = numberFormat(element.giftValue)
         })
         this.tableData = res.rows.slice(0, res.rows.length - 2)
         this.subtotalCountData = res.rows[res.rows.length - 2]

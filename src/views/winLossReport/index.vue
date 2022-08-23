@@ -247,6 +247,22 @@
                                       </div>
                                     </div>
                                   </div>
+                                  <div class="halls-row d-flex">
+                                    <div class="halls-col align-items-end">
+                                      <div class="halls-label text-right">
+                                        <div class="d-flex align-items-center justify-content-end">
+                                          <span>{{ $t('__giftValue') }}</span>
+                                        </div>
+                                      </div>
+                                      <div class="halls-value text-right">
+                                        <div class="d-flex align-items-center justify-content-end">
+                                          <span>
+                                            <span :class="{'text-red': Number(agentInfo.giftValue) > 0, 'text-blue': Number(agentInfo.giftValue) < 0}">{{ agentInfo.giftValueLabel }}</span>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                                 <div v-if="agentInfo.open" class="bottom-line" />
                                 <div class="list-sub-item d-flex align-items-center">
@@ -314,6 +330,16 @@
                                       <span class="label">{{ $t('__toSuperior') }}</span>
                                       <span class="value">
                                         <span :class="{'text-red': Number(agentInfo.toSuperior) > 0, 'text-blue': Number(agentInfo.toSuperior) < 0}">{{ agentInfo.toSuperiorLabel }}</span>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="list-sub-item d-flex align-items-center">
+                                  <div class="list-item text-right">
+                                    <div class="gift-value">
+                                      <span class="label">{{ $t('__giftValue') }}</span>
+                                      <span class="value">
+                                        <span :class="{'text-red': Number(agentInfo.giftValue) > 0, 'text-blue': Number(agentInfo.giftValue) < 0}">{{ agentInfo.giftValueLabel }}</span>
                                       </span>
                                     </div>
                                   </div>
@@ -402,6 +428,18 @@
                                   <div class="details-value">
                                     <div class="d-flex align-items-center justify-content-end text-right" style="position: relative;">
                                       <span :class="{'text-red': Number(agentInfo.toSuperior) > 0, 'text-blue': Number(agentInfo.toSuperior) < 0}">{{ agentInfo.toSuperiorLabel }}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="details-col">
+                                  <div class="details-label">
+                                    <div class="d-flex align-items-center justify-content-end text-right">
+                                      <span>{{ $t('__giftValue') }}</span>
+                                    </div>
+                                  </div>
+                                  <div class="details-value">
+                                    <div class="d-flex align-items-center justify-content-end text-right" style="position: relative;">
+                                      <span :class="{'text-red': Number(agentInfo.giftValue) > 0, 'text-blue': Number(agentInfo.giftValue) < 0}">{{ agentInfo.giftValueLabel }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -738,6 +776,7 @@ export default {
       this.agentInfo.netPLLabel = numberFormat(this.agentInfo.netPL)
       this.agentInfo.toSuperiorLabel = numberFormat(this.agentInfo.toSuperior)
       this.agentInfo.commitSuperiorsValidBetAmount = numberFormat(this.agentInfo.commitSuperiorsValidBetAmount)
+      this.agentInfo.giftValueLabel = numberFormat(this.agentInfo.giftValue)
       this.setTagsViewTitle()
       this.setDataLoading(false)
       this.setHeaderStyle()

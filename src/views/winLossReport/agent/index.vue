@@ -188,6 +188,22 @@
                             </div>
                           </div>
                         </div>
+                        <div class="halls-row d-flex">
+                          <div class="halls-col align-items-end">
+                            <div class="halls-label text-right">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>{{ $t('__giftValue') }}</span>
+                              </div>
+                            </div>
+                            <div class="halls-value text-right">
+                              <div class="d-flex align-items-center justify-content-end">
+                                <span>
+                                  <span :class="{'text-red': Number(item.giftValue) > 0, 'text-blue': Number(item.giftValue) < 0}">{{ item.giftValueLabel }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                       <div v-if="item.open" class="bottom-line" />
                     </div>
@@ -260,6 +276,14 @@
                         </div>
                       </div>
                     </div>
+                    <div class="list-sub-item d-flex align-items-end">
+                      <div class="gift-value list-sub-item-col text-right">
+                        <span class="label">{{ $t('__giftValue') }}</span>
+                        <span class="value">
+                          <span :class="{'text-red': Number(item.giftValue) > 0, 'text-blue': Number(item.giftValue) < 0}">{{ item.giftValueLabel }}</span>
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -310,6 +334,12 @@
                 <span :class="{'text-red': Number(subtotalCountData.toSuperior) > 0, 'text-blue': Number(subtotalCountData.toSuperior) < 0}">{{ subtotalCountData.toSuperiorLabel }}</span>
               </span>
             </div>
+            <div class="page-item mb-2 is-amount">
+              <span class="label">{{ $t('__giftValue') }}</span>
+              <span class="value">
+                <span :class="{'text-red': Number(subtotalCountData.giftValue) > 0, 'text-blue': Number(subtotalCountData.giftValue) < 0}">{{ subtotalCountData.giftValueLabel }}</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -341,6 +371,12 @@
               <span class="label">{{ $t('__toSuperior') }}</span>
               <span class="value">
                 <span :class="{'text-red': Number(totalCountData.toSuperior) > 0, 'text-blue': Number(totalCountData.toSuperior) < 0}">{{ totalCountData.toSuperiorLabel }}</span>
+              </span>
+            </div>
+            <div class="page-item mb-2 is-amount">
+              <span class="label">{{ $t('__giftValue') }}</span>
+              <span class="value">
+                <span :class="{'text-red': Number(totalCountData.giftValue) > 0, 'text-blue': Number(totalCountData.giftValue) < 0}">{{ totalCountData.giftValueLabel }}</span>
               </span>
             </div>
           </div>
@@ -421,6 +457,7 @@ export default {
           element.toSuperiorLabel = numberFormat(element.toSuperior)
           element.commitSuperiorsValidBetAmount = numberFormat(element.commitSuperiorsValidBetAmount)
           element.open = open.includes(element.agentId)
+          element.giftValueLabel = numberFormat(element.giftValue)
         })
         this.tableData = res.rows.slice(0, res.rows.length - 2)
         this.subtotalCountData = res.rows[res.rows.length - 2]
