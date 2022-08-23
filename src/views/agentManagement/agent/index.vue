@@ -77,22 +77,22 @@
             </div>
             <div class="force-wrap" />
             <div v-if="item.open" class="agent-list-detail">
-              <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+              <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
                 <span class="value">
                   <span class="solid-circle">
                     <div class="fas black">
-                      <svg-icon icon-class="top" style="height: 1.5rem; width: 1.5rem;" />
+                      <svg-icon icon-class="top" style="height: 1.5rem; width: 1.5rem;" @click.stop="agentInfoClick(item)" />
                     </div>
                   </span>
                 </span>
-              </div> -->
-              <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+              </div>
+              <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
                 <span class="value">
                   <span>
                     <span class="v-line d-block" />
                   </span>
                 </span>
-              </div> -->
+              </div>
               <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
                 <span class="value">
                   <button class="el-button bg-yellow el-button--default" @click.stop="onDepositBtnClick(item)">
@@ -436,6 +436,14 @@
       @close="closeDialogEven"
       @onSubmit="operateSubmit"
     />
+
+    <agentInfoDialog
+      ref="agentInfoDialog"
+      :visible="curDialogIndex === dialogEnum.agentInfo"
+      :form="editForm"
+      @close="closeDialogEven"
+      @searchAgent="searchAgent"
+    />
   </div>
 </template>
 
@@ -455,6 +463,7 @@ import LimitDialog from '@/views/agentManagement/limitDialog'
 import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import AgentRateLogDialog from './agentRateLogDialog'
 import AgentEditDialog from './agentEditDialog'
+import AgentInfoDialog from '@/views/agentManagement/agentInfoDialog'
 
 const defaultForm = {
   parent: 0,
@@ -481,7 +490,7 @@ const editFormStepEnum = Object.freeze({ 'agentInfo': 0, 'rate': 1, 'limit': 2, 
 
 export default {
   name: 'Agent',
-  components: { BalanceDialog, OperateDialog, LimitDialog, ModPasswordDialog, AgentRateLogDialog, AgentEditDialog },
+  components: { BalanceDialog, OperateDialog, LimitDialog, ModPasswordDialog, AgentRateLogDialog, AgentEditDialog, AgentInfoDialog },
   mixins: [handlePageChange],
   data() {
     return {
@@ -503,7 +512,8 @@ export default {
         'balanceOneClickRecycling': 14,
         'weeklyLossSettlement': 15,
         'oneClickRecycling': 16,
-        'giftEffect': 17
+        'giftEffect': 17,
+        'agentInfo': 18
       }),
       agentInfo: {},
       editForm: {},
@@ -835,6 +845,14 @@ export default {
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+    },
+    agentInfoClick(rowData) {
+      this.editForm = JSON.parse(JSON.stringify(rowData))
+      this.curDialogIndex = this.dialogEnum.agentInfo
+      console.log('agentInfoClick');
+    },
+    searchAgent() {
+
     }
   }
 }
