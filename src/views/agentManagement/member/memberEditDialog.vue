@@ -271,14 +271,15 @@
                         </small>
                       </div>
                       <div
-                        class="text-field share el-input el-input--small is-disabled"
+                        class="text-field share el-input el-input--small"
+                        :class="{'is-disabled': operationType === operationEnum.edit}"
                       >
                         <input
                           v-model.number="form.live_rolling_rate"
                           type="number"
                           autocomplete="off"
                           min="0"
-                          disabled
+                          :disabled="operationType===operationEnum.edit"
                           class="el-input__inner"
                           @focus="inputFocus(step2.live_rolling_rate)"
                           @blur="specialInputChange('live_rolling_rate')"
