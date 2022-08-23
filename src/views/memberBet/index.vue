@@ -755,6 +755,10 @@ export default {
         this.roundInfo = res.roundInfo
         this.countInfo = res.countInfo
         this.scoreCards = res.scoreCards
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameResult'), true, () => {
+          this.closeDialogEven()
+          this.setHeaderStyle()
+        }])
         this.curDialogIndex = this.dialogEnum.resultdialog
         this.dataLoading = false
       }).catch(() => {

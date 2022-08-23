@@ -58,48 +58,45 @@
                 <div class="road d-block w-100">
                   <div class="d-block w-100">
                     <div class="pan-container w-100" style="padding-top: 17.6471%;">
-                      <div class="pan-body">
-                        <table class="bigRoad">
-                          <tr
-                            v-for="(road, i) in bigRoad.roadData"
-                            :key="i"
-                          >
-                            <td
-                              v-for="(item, j) in road"
-                              :key="j"
-                            >
-                              <div
-                                :class="{
-                                  'bigRoad-current': item.split('_')[3] === '1'
-                                }"
-                              />
-                              <div
-                                :class="{
-                                  'bigRoad-winner-banker': item.split('_')[0] === '1',
-                                  'bigRoad-winner-player': item.split('_')[0] === '2'
-                                }"
-                              />
-                              <div
-                                v-if="item.split('_')[0] === '3' && item.split('_')[2] >= 1"
-                                class="bigRoad-tieCount"
-                              >
-                                {{ (Number(item.split('_')[2]) + 1) }}
-                              </div>
-                              <div
-                                v-else-if="item.split('_')[0] === '3' || item.split('_')[2] === '1'"
-                                class="bigRoad-winner-tie"
-                              />
-                              <div
-                                v-else-if="item.split('_')[2] > 1"
-                                class="bigRoad-tieCount"
-                              >
-                                {{ item.split('_')[2] }}
-                              </div>
-                            </td>
-                          </tr>
-                        </table>
+                      <div class="pan-body" style="width: 164.706%;">
+                        <svg viewBox="0 0 560 60" class="bigRoad" />
                       </div>
                     </div>
+                    <svg viewBox="0 0 340 30" class="bigEyeRoad" />
+                    <div class="db-road w-100">
+                      <svg viewBox="0 0 340 30" class="smallRoad cockroachRoad w-100" />
+                    </div>
+                  </div>
+                  <div class="d-block w-100">
+                    <div class="pan-container" style="display: block;">
+                      <div class="pan-body" style="position: static;">
+                        <svg viewBox="0 0 180 60" class="beadRoad w-100" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="yellow-border-bottom w-100" />
+              <div>
+                <div class="w-100 mt-3" />
+                <div class="road-title">{{ $t('__totalCount') }}</div>
+                <div class="w-100 mt-3" />
+                <div class="desc">
+                  <div class="d-flex mr-3">
+                    <span class="info">{{ `${$t('__banker')}：${countInfo.banker} ${$t('__round')}` }}</span>
+                    <span class="info">{{ `${$t('__player')}：${countInfo.player} ${$t('__round')}` }}</span>
+                  </div>
+                  <div class="d-flex mr-3">
+                    <span class="info">{{ `${$t('__tie')}：${countInfo.tie} ${$t('__round')}` }}</span>
+                    <span class="info">{{ `${$t('__bankerPair')}：${countInfo.bankerPair} ${$t('__round')}` }}</span>
+                  </div>
+                  <div class="d-flex mr-3">
+                    <span class="info">{{ `${$t('__playerPair')}：${countInfo.playerPair} ${$t('__round')}` }}</span>
+                    <span class="info">{{ `${$t('__bankerContinuousWin')}：${countInfo.bankerInstantWin} ${$t('__round')}` }}</span>
+                  </div>
+                  <div class="d-flex mr-3">
+                    <span class="info">{{ `${$t('__playerContinuousWin')}：${countInfo.playerInstantWin} ${$t('__round')}` }}</span>
+                    <span>{{ `${$t('__totalLength')}：${countInfo.total} ${$t('__round')}` }}</span>
                   </div>
                 </div>
               </div>
@@ -108,334 +105,11 @@
         </div>
       </div>
     </template>
-    <template v-else>
-      <Dialog
-        v-if="visible"
-        :loading="dialogLoading"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <div class="dialogheader">
-          <div class="dialogheader-row">
-            <div class="dialogheader-row-item">
-              <span class="dialogheader-row-item-header">
-                {{ $t('__gameType') }}
-              </span>
-              <span class="dialogheader-row-item-content">
-                {{ roundInfo.gameType }}
-              </span>
-            </div>
-            <div class="dialogheader-row-item">
-              <span class="dialogheader-row-item-header">
-                {{ $t('__roundId') }}
-              </span>
-              <span class="dialogheader-row-item-content">
-                {{ roundInfo.roundId }}
-              </span>
-            </div>
-          </div>
-          <div class="dialogheader-row">
-            <div class="dialogheader-row-item">
-              <span class="dialogheader-row-item-header">
-                {{ $t('__gameStartTime') }}
-              </span>
-              <span class="dialogheader-row-item-content">
-                {{ roundInfo.startTime }}
-              </span>
-            </div>
-            <div class="dialogheader-row-item">
-              <span class="dialogheader-row-item-header">
-                {{ $t('__gameEndTime') }}
-              </span>
-              <span class="dialogheader-row-item-content">
-                {{ roundInfo.endTime }}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="roundData">
-          <div v-if="roundInfo.result" class="pokerData">
-            <div class="pokerArea">
-              <div class="player">{{ $t('__player') }}</div>
-              <div class="pokerInfo">
-                <div class="poker3">
-                  <img class="poker rotate" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[2]}.png`)" :alt="`${$t('__player')}3`">
-                </div>
-                <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[0]}.png`)" :alt="`${$t('__player')}1`">
-                <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[1]}.png`)" :alt="`${$t('__player')}2`">
-              </div>
-            </div>
-            <div class="pokerArea">
-              <div class="banker">{{ $t('__banker') }}</div>
-              <div class="pokerInfo">
-                <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[0]}.png`)" :alt="`${$t('__banker')}1`">
-                <img class="poker" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[1]}.png`)" :alt="`${$t('__banker')}2`">
-                <div class="poker3">
-                  <img class="poker rotate" :src="require(`@/assets/poker/${roundInfo.result.BankerCard[2]}.png`)" :alt="`${$t('__banker')}3`">
-                </div>
-              </div>
-            </div>
-          </div>
-          <table class="roundInfo">
-            <tr>
-              <td class="text-yellow">
-                {{ `${$t('__totalLength')}: ` }}
-              </td>
-              <td class="floatRight">
-                {{ countInfo.total }}
-              </td>
-              <td>
-                {{ $t('__round') }}
-              </td>
-              <td class="text-green">
-                {{ `${$t('__tie')}: ` }}
-              </td>
-              <td class="floatRight">
-                {{ countInfo.tie }}
-              </td>
-              <td>
-                {{ $t('__round') }}
-              </td>
-            </tr>
-            <tr>
-              <td class="text-red">
-                {{ `${$t('__banker')}: ` }}
-              </td>
-              <td class="floatRight">
-                {{ countInfo.banker }}
-              </td>
-              <td>
-                {{ $t('__round') }}
-              </td>
-              <td class="text-blue">
-                {{ `${$t('__player')}: ` }}
-              </td>
-              <td class="floatRight">
-                {{ countInfo.player }}
-              </td>
-              <td>
-                {{ $t('__round') }}
-              </td>
-            </tr>
-            <tr>
-              <td class="text-red">
-                {{ `${$t('__bankerPair')}: ` }}
-              </td>
-              <td class="floatRight">
-                {{ countInfo.bankerPair }}
-              </td>
-              <td>
-                {{ $t('__round') }}
-              </td>
-              <td class="text-blue">
-                {{ `${$t('__playerPair')}: ` }}
-              </td>
-              <td class="floatRight">
-                {{ countInfo.playerPair }}
-              </td>
-              <td>
-                {{ $t('__round') }}
-              </td>
-            </tr>
-            <tr>
-              <td class="text-red">
-                {{ `${$t('__bankerContinuousWin')}: ` }}
-              </td>
-              <td class="floatRight">
-                {{ countInfo.bankerInstantWin }}
-              </td>
-              <td>
-                {{ $t('__round') }}
-              </td>
-              <td class="text-blue">
-                {{ `${$t('__playerContinuousWin')}: ` }}
-              </td>
-              <td class="floatRight">
-                {{ countInfo.playerInstantWin }}
-              </td>
-              <td>
-                {{ $t('__round') }}
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="bigRoadData">
-          <table>
-            <tr
-              v-for="(road, i) in bigRoad.roadData"
-              :key="i"
-            >
-              <td
-                v-for="(item, j) in road"
-                :key="j"
-                class="item"
-              >
-                <div
-                  :class="{
-                    'bigRoad-current': item.split('_')[3] === '1'
-                  }"
-                />
-                <div
-                  :class="{
-                    'bigRoad-winner-banker': item.split('_')[0] === '1',
-                    'bigRoad-winner-player': item.split('_')[0] === '2'
-                  }"
-                />
-                <div
-                  :class="{
-                    'bigRoad-pair-banker': item.split('_')[1] === '1' || item.split('_')[1] === '3',
-                  }"
-                />
-                <div
-                  :class="{
-                    'bigRoad-pair-player': item.split('_')[1] === '2' || item.split('_')[1] === '3',
-                  }"
-                />
-                <div
-                  v-if="item.split('_')[0] === '3' && item.split('_')[2] >= 1"
-                  class="bigRoad-tieCount"
-                >
-                  {{ (Number(item.split('_')[2]) + 1) }}
-                </div>
-                <div
-                  v-else-if="item.split('_')[0] === '3' || item.split('_')[2] === '1'"
-                  class="bigRoad-winner-tie"
-                />
-                <div
-                  v-else-if="item.split('_')[2] > 1"
-                  class="bigRoad-tieCount"
-                >
-                  {{ item.split('_')[2] }}
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="bigEyeRoadData">
-          <table>
-            <tr
-              v-for="(road, i) in bigEyeRoad.roadData"
-              :key="i"
-            >
-              <td
-                v-for="(item, j) in road"
-                :key="j"
-                class="item"
-              >
-                <div
-                  :class="{
-                    'bigEyeRoad-current': item.split('_')[1] === '1'
-                  }"
-                />
-                <div
-                  :class="{
-                    'bigEyeRoad-winner-banker': item.split('_')[0] === '1',
-                    'bigEyeRoad-winner-player': item.split('_')[0] === '2'
-                  }"
-                />
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="smallEyeRoadData_cockroachRoadData">
-          <div class="smallEyeRoadData">
-            <table>
-              <tr
-                v-for="(road, i) in smallEyeRoad.roadData"
-                :key="i"
-              >
-                <td
-                  v-for="(item, j) in road"
-                  :key="j"
-                  class="item"
-                >
-                  <div
-                    :class="{
-                      'smallEyeRoad-current': item.split('_')[1] === '1'
-                    }"
-                  />
-                  <div
-                    :class="{
-                      'smallEyeRoad-winner-banker': item.split('_')[0] === '1',
-                      'smallEyeRoad-winner-player': item.split('_')[0] === '2'
-                    }"
-                  />
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="cockroachRoadData">
-            <table>
-              <tr
-                v-for="(road, i) in cockroachRoad.roadData"
-                :key="i"
-              >
-                <td
-                  v-for="(item, j) in road"
-                  :key="j"
-                  class="item"
-                >
-                  <div
-                    :class="{
-                      'cockroachRoad-current': item.split('_')[1] === '1'
-                    }"
-                  />
-                  <div
-                    :class="{
-                      'cockroachRoad-winner-banker': item.split('_')[0] === '1',
-                      'cockroachRoad-winner-player': item.split('_')[0] === '2'
-                    }"
-                  />
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="beadRoadData">
-          <table>
-            <tr
-              v-for="(road, i) in beadRoad.roadData"
-              :key="i"
-            >
-              <td
-                v-for="(item, j) in road"
-                :key="j"
-                class="item"
-              >
-                <div
-                  :class="{
-                    'beadRoad-current': item.split('_')[2] === '1'
-                  }"
-                />
-                <div
-                  :class="{
-                    'beadRoad-winner-banker': item.split('_')[0] === '1',
-                    'beadRoad-winner-player': item.split('_')[0] === '2',
-                    'beadRoad-winner-tie': item.split('_')[0] === '3'
-                  }"
-                />
-                <div
-                  :class="{
-                    'beadRoad-pair-banker': item.split('_')[1] === '1' || item.split('_')[1] === '3',
-                  }"
-                />
-                <div
-                  :class="{
-                    'beadRoad-pair-player': item.split('_')[1] === '2' || item.split('_')[1] === '3',
-                  }"
-                />
-              </td>
-            </tr>
-          </table>
-        </div>
-      </Dialog>
-    </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
-import Dialog from '@/components/Dialog'
 import { getRoadArray } from '@/utils/roadLogic'
 
 const road = {
@@ -446,7 +120,6 @@ const road = {
 
 export default {
   name: 'GameResultDialog',
-  components: { Dialog },
   mixins: [dialogCommon],
   props: {
     'visible': {
@@ -542,8 +215,7 @@ export default {
             this.beadRoad.lastIndex = last
           }
         })
-        this.resizeHandler();
-
+        this.drawing();
         this.dialogLoading = false
       } else {
         this.bigRoad = JSON.parse(JSON.stringify(road));
@@ -554,69 +226,512 @@ export default {
       }
     }
   },
-  beforeMount() {
-    window.addEventListener('resize', this.resizeHandler);
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.resizeHandler);
-  },
   methods: {
-    resizeHandler() {
+    drawing() {
       var bigRoadLastIndex = this.bigRoad.lastIndex;
-      while (bigRoadLastIndex * 20 < (window.innerWidth - 50)) {
-        bigRoadLastIndex++;
+      if (bigRoadLastIndex < 38) {
+        bigRoadLastIndex = 38
       }
       for (let i = 0, max = this.bigRoad.allData.length; i < max; i++) {
-        this.bigRoad.roadData[i] = this.bigRoad.allData[i].slice(0, bigRoadLastIndex);
+        this.bigRoad.roadData[i] = this.bigRoad.allData[i].slice(0, bigRoadLastIndex + 1);
       }
       this.bigRoad.roadData = JSON.parse(JSON.stringify(this.bigRoad.roadData));
+      this.$nextTick(() => {
+        const bigRoadEl = document.getElementsByClassName('bigRoad')[0]
+        const width = 560
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+        rect.setAttribute('x', 0)
+        rect.setAttribute('y', 0)
+        rect.setAttribute('width', width)
+        rect.setAttribute('height', 60)
+        rect.setAttribute('class', 'frame')
+        rect.setAttribute('style', 'fill: rgb(255, 255, 255);')
+        bigRoadEl.appendChild(rect)
+        const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
+        let points = ''
+        for (let i = 0; i < 57; i++) {
+          const x = i * 10
+          points += i % 2 === 0 ? `${x},60 ${x},0 ` : `${x},0 ${x},60 `
+        }
+        for (let i = 0, max = this.bigRoad.roadData.length; i < max; i++) {
+          const y = i * 10
+          points += i % 2 === 0 ? `${width},${y} 0,${y} ` : `0,${y} ${width},${y} `
+        }
+        polyline.setAttribute('points', points)
+        polyline.setAttribute('fill', 'none')
+        polyline.setAttribute('class', 'grid-line')
+        polyline.setAttribute('style', 'stroke: rgb(170, 170, 170); stroke-width: 0.3;')
+        bigRoadEl.appendChild(polyline)
+        for (let i = 0, max = this.bigRoad.roadData.length; i < max; i++) {
+          for (let j = 0, jMax = this.bigRoad.roadData[i].length; j < jMax; j++) {
+            const item = this.bigRoad.roadData[i][j]
+            const cell = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            cell.setAttribute('class', 'cell')
+            const ball = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            ball.setAttribute('class', 'ball')
+            if (item.split('_')[3] === '1') {
+              const currentRect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+              currentRect.setAttribute('class', 'frame current')
+              currentRect.setAttribute('x', `${j * 10}`)
+              currentRect.setAttribute('y', `${i * 10}`)
+              currentRect.setAttribute('width', 10)
+              currentRect.setAttribute('height', 10)
+              ball.appendChild(currentRect)
+            }
+            const winnerCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
+            let winnerCircleClassName = ''
+            if (item.split('_')[0] === '1') {
+              winnerCircleClassName += 'banker-hollow'
+            } else if (item.split('_')[0] === '2') {
+              winnerCircleClassName += 'player-hollow'
+            }
+            winnerCircle.setAttribute('class', winnerCircleClassName)
+            winnerCircle.setAttribute('cx', `${5 + (j * 10)}`)
+            winnerCircle.setAttribute('cy', `${5 + (i * 10)}`)
+            winnerCircle.setAttribute('r', '3.5')
+            ball.appendChild(winnerCircle)
+            if (item.split('_')[1] === '1' || item.split('_')[1] === '3') {
+              const bankerPairCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
+              bankerPairCircle.setAttribute('class', 'banker-solid')
+              bankerPairCircle.setAttribute('cx', `${2.5 + (j * 10)}`)
+              bankerPairCircle.setAttribute('cy', `${2.5 + (i * 10)}`)
+              bankerPairCircle.setAttribute('r', '1')
+              ball.appendChild(bankerPairCircle)
+            }
+            if (item.split('_')[1] === '2' || item.split('_')[1] === '3') {
+              const playerPairCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
+              playerPairCircle.setAttribute('class', 'player-solid')
+              playerPairCircle.setAttribute('cx', `${7.5 + (j * 10)}`)
+              playerPairCircle.setAttribute('cy', `${7.5 + (i * 10)}`)
+              playerPairCircle.setAttribute('r', '1')
+              ball.appendChild(playerPairCircle)
+            }
+            if (item.split('_')[0] === '3' || item.split('_')[2] === '1') {
+              const winnerTieLine = document.createElementNS("http://www.w3.org/2000/svg", "line")
+              winnerTieLine.setAttribute('class', 'tie-hollow')
+              winnerTieLine.setAttribute('x1', `${7 + (j * 10)}`)
+              winnerTieLine.setAttribute('y1', `${3 + (i * 10)}`)
+              winnerTieLine.setAttribute('x2', `${3 + (j * 10)}`)
+              winnerTieLine.setAttribute('y2', `${7 + (i * 10)}`)
+              ball.appendChild(winnerTieLine)
+            }
+            if (item.split('_')[0] === '3' && Number(item.split('_')[2]) >= 1) {
+              const tieCount = document.createElementNS("http://www.w3.org/2000/svg", "text")
+              tieCount.setAttribute('class', 'tieCount')
+              tieCount.setAttribute('x', `${2.5 + (j * 10)}`)
+              tieCount.setAttribute('y', `${8 + (i * 10)}`)
+              tieCount.setAttribute('font-size', 8)
+              tieCount.innerHTML = `${Number(item.split('_')[2]) + 1}`
+              ball.appendChild(tieCount)
+            } else if (Number(item.split('_')[2]) > 1) {
+              const tieCount = document.createElementNS("http://www.w3.org/2000/svg", "text")
+              tieCount.setAttribute('class', 'tieCount')
+              tieCount.setAttribute('x', `${2.5 + (j * 10)}`)
+              tieCount.setAttribute('y', `${8 + (i * 10)}`)
+              tieCount.setAttribute('font-size', 8)
+              tieCount.innerHTML = `${Number(item.split('_')[2])}`
+              ball.appendChild(tieCount)
+            }
+            cell.appendChild(ball)
+            bigRoadEl.appendChild(cell)
+          }
+        }
+        const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line1.setAttribute('x1', 0)
+        line1.setAttribute('y1', 0)
+        line1.setAttribute('x2', width)
+        line1.setAttribute('y2', 0)
+        line1.setAttribute('stroke', '#333')
+        line1.setAttribute('stroke-width', '0.6')
+        bigRoadEl.appendChild(line1)
+        const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line2.setAttribute('x1', 0)
+        line2.setAttribute('y1', 59.7)
+        line2.setAttribute('x2', width)
+        line2.setAttribute('y2', 59.7)
+        line2.setAttribute('stroke', '#333')
+        line2.setAttribute('stroke-width', '0.6')
+        bigRoadEl.appendChild(line2)
+      })
 
       var bigEyeRoadLastIndex = this.bigEyeRoad.lastIndex;
-      while (bigEyeRoadLastIndex * 10 < (window.innerWidth - 50)) {
-        bigEyeRoadLastIndex++;
+      if (bigEyeRoadLastIndex < 76) {
+        bigEyeRoadLastIndex = 76
       }
       for (let i = 0, max = this.bigEyeRoad.allData.length; i < max; i++) {
         this.bigEyeRoad.roadData[i] = this.bigEyeRoad.allData[i].slice(0, bigEyeRoadLastIndex);
       }
       this.bigEyeRoad.roadData = JSON.parse(JSON.stringify(this.bigEyeRoad.roadData));
+      this.$nextTick(() => {
+        const bigEyeRoadEl = document.getElementsByClassName('bigEyeRoad')[0]
+        const width = 340
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+        rect.setAttribute('x', 0)
+        rect.setAttribute('y', 0)
+        rect.setAttribute('width', width)
+        rect.setAttribute('height', 30)
+        rect.setAttribute('class', 'frame')
+        rect.setAttribute('style', 'fill: rgb(255, 255, 255);')
+        bigEyeRoadEl.appendChild(rect)
+        const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
+        let points = ''
+        for (let i = 0; i < 35; i++) {
+          const x = i * 10
+          points += i % 2 === 0 ? `${x},30 ${x},0 ` : `${x},0 ${x},30 `
+        }
+        for (let i = 0, max = this.bigEyeRoad.roadData.length; i < max; i++) {
+          const y = i * 10
+          points += i % 2 === 0 ? `${width},${y} 0,${y} ` : `0,${y} ${width},${y} `
+        }
+        polyline.setAttribute('points', points)
+        polyline.setAttribute('fill', 'none')
+        polyline.setAttribute('class', 'grid-line')
+        polyline.setAttribute('style', 'stroke: rgb(170, 170, 170); stroke-width: 0.3;')
+        bigEyeRoadEl.appendChild(polyline)
+        for (let i = 0, max = this.bigEyeRoad.roadData.length; i < max; i++) {
+          for (let j = 0, jMax = this.bigEyeRoad.roadData[i].length; j < jMax; j++) {
+            const item = this.bigEyeRoad.roadData[i][j]
+            const cell = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            cell.setAttribute('class', 'cell')
+            const ball = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            ball.setAttribute('class', 'threeSmallRoadBall')
+            ball.setAttribute('style', 'stroke-width: 0.7;')
+            if (item.split('_')[1] === '1') {
+              const currentRect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+              currentRect.setAttribute('class', 'frame current')
+              currentRect.setAttribute('x', `${j * 5}`)
+              currentRect.setAttribute('y', `${i * 5}`)
+              currentRect.setAttribute('width', 5)
+              currentRect.setAttribute('height', 5)
+              ball.appendChild(currentRect)
+            }
+            const winnerCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
+            let winnerCircleClassName = ''
+            if (item.split('_')[0] === '1') {
+              winnerCircleClassName += 'banker-hollow'
+            } else if (item.split('_')[0] === '2') {
+              winnerCircleClassName += 'player-hollow'
+            }
+            winnerCircle.setAttribute('class', winnerCircleClassName)
+            winnerCircle.setAttribute('cx', `${2.5 + (j * 5)}`)
+            winnerCircle.setAttribute('cy', `${2.5 + (i * 5)}`)
+            winnerCircle.setAttribute('r', '1.7')
+            ball.appendChild(winnerCircle)
+            cell.appendChild(ball)
+            bigEyeRoadEl.appendChild(cell)
+          }
+        }
+        const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line1.setAttribute('x1', 0)
+        line1.setAttribute('y1', 0)
+        line1.setAttribute('x2', width)
+        line1.setAttribute('y2', 0)
+        line1.setAttribute('stroke', '#333')
+        line1.setAttribute('stroke-width', '0.6')
+        bigEyeRoadEl.appendChild(line1)
+        const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line2.setAttribute('x1', 0)
+        line2.setAttribute('y1', 29.7)
+        line2.setAttribute('x2', width)
+        line2.setAttribute('y2', 29.7)
+        line2.setAttribute('stroke', '#333')
+        line2.setAttribute('stroke-width', '0.6')
+        bigEyeRoadEl.appendChild(line2)
+      })
 
       var smallEyeRoadLastIndex = this.smallEyeRoad.lastIndex;
-      while (smallEyeRoadLastIndex * 20 < (window.innerWidth - 50)) {
-        smallEyeRoadLastIndex++;
+      if (smallEyeRoadLastIndex < 38) {
+        smallEyeRoadLastIndex = 38
       }
       for (let i = 0, max = this.smallEyeRoad.allData.length; i < max; i++) {
         this.smallEyeRoad.roadData[i] = this.smallEyeRoad.allData[i].slice(0, smallEyeRoadLastIndex);
       }
       this.smallEyeRoad.roadData = JSON.parse(JSON.stringify(this.smallEyeRoad.roadData));
+      this.$nextTick(() => {
+        const smallRoadEl = document.getElementsByClassName('smallRoad')[0]
+        const width = 170
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+        rect.setAttribute('x', 0)
+        rect.setAttribute('y', 0)
+        rect.setAttribute('width', width)
+        rect.setAttribute('height', 30)
+        rect.setAttribute('class', 'frame')
+        rect.setAttribute('style', 'fill: rgb(255, 255, 255);')
+        smallRoadEl.appendChild(rect)
+        const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
+        let points = ''
+        for (let i = 0; i < 18; i++) {
+          const x = i * 10
+          points += i % 2 === 0 ? `${x},30 ${x},0 ` : `${x},0 ${x},30 `
+        }
+        for (let i = 0, max = this.smallEyeRoad.roadData.length; i < max; i++) {
+          const y = i * 10
+          points += i % 2 === 0 ? `${width},${y} 0,${y} ` : `0,${y} ${width},${y} `
+        }
+        polyline.setAttribute('points', points)
+        polyline.setAttribute('fill', 'none')
+        polyline.setAttribute('class', 'grid-line')
+        polyline.setAttribute('style', 'stroke: rgb(170, 170, 170); stroke-width: 0.3;')
+        smallRoadEl.appendChild(polyline)
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g")
+        g.setAttribute('transform', 'translate(0,0)')
+        for (let i = 0, max = this.smallEyeRoad.roadData.length; i < max; i++) {
+          for (let j = 0, jMax = this.smallEyeRoad.roadData[i].length; j < jMax; j++) {
+            const item = this.smallEyeRoad.roadData[i][j]
+            const cell = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            cell.setAttribute('class', 'cell')
+            const ball = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            ball.setAttribute('class', 'threeSmallRoadBall')
+            if (item.split('_')[1] === '1') {
+              const currentRect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+              currentRect.setAttribute('class', 'frame current')
+              currentRect.setAttribute('x', `${j * 5}`)
+              currentRect.setAttribute('y', `${i * 5}`)
+              currentRect.setAttribute('width', 5)
+              currentRect.setAttribute('height', 5)
+              ball.appendChild(currentRect)
+            }
+            const winnerCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
+            let winnerCircleClassName = ''
+            if (item.split('_')[0] === '1') {
+              winnerCircleClassName += 'banker-solid'
+            } else if (item.split('_')[0] === '2') {
+              winnerCircleClassName += 'player-solid'
+            }
+            winnerCircle.setAttribute('class', winnerCircleClassName)
+            winnerCircle.setAttribute('cx', `${2.5 + (j * 5)}`)
+            winnerCircle.setAttribute('cy', `${2.5 + (i * 5)}`)
+            winnerCircle.setAttribute('r', '1.7')
+            ball.appendChild(winnerCircle)
+            cell.appendChild(ball)
+            g.appendChild(cell)
+            smallRoadEl.appendChild(g)
+          }
+        }
+      })
 
       var cockroachRoadLastIndex = this.cockroachRoad.lastIndex
-      while (cockroachRoadLastIndex * 20 < (window.innerWidth - 50)) {
-        cockroachRoadLastIndex++;
+      if (cockroachRoadLastIndex < 38) {
+        cockroachRoadLastIndex = 38
       }
       for (let i = 0, max = this.cockroachRoad.allData.length; i < max; i++) {
         this.cockroachRoad.roadData[i] = this.cockroachRoad.allData[i].slice(0, cockroachRoadLastIndex);
       }
       this.cockroachRoad.roadData = JSON.parse(JSON.stringify(this.cockroachRoad.roadData));
+      this.$nextTick(() => {
+        const cockroachRoadEl = document.getElementsByClassName('cockroachRoad')[0]
+        const width = 170
+        const g = document.createElementNS("http://www.w3.org/2000/svg", "g")
+        g.setAttribute('transform', 'translate(170,0)')
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+        rect.setAttribute('x', 0)
+        rect.setAttribute('y', 0)
+        rect.setAttribute('width', width)
+        rect.setAttribute('height', 30)
+        rect.setAttribute('class', 'frame')
+        rect.setAttribute('style', 'fill: rgb(255, 255, 255);')
+        g.appendChild(rect)
+        const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
+        let points = ''
+        for (let i = 0; i < 18; i++) {
+          const x = i * 10
+          points += i % 2 === 0 ? `${x},30 ${x},0 ` : `${x},0 ${x},30 `
+        }
+        for (let i = 0, max = this.cockroachRoad.roadData.length; i < max; i++) {
+          const y = i * 10
+          points += i % 2 === 0 ? `${width},${y} 0,${y} ` : `0,${y} ${width},${y} `
+        }
+        polyline.setAttribute('points', points)
+        polyline.setAttribute('fill', 'none')
+        polyline.setAttribute('class', 'grid-line')
+        polyline.setAttribute('style', 'stroke: rgb(170, 170, 170); stroke-width: 0.3;')
+        g.appendChild(polyline)
+        for (let i = 0, max = this.cockroachRoad.roadData.length; i < max; i++) {
+          for (let j = 0, jMax = this.cockroachRoad.roadData[i].length; j < jMax; j++) {
+            const item = this.cockroachRoad.roadData[i][j]
+            const cell = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            cell.setAttribute('class', 'cell')
+            const ball = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            ball.setAttribute('class', 'threeSmallRoadBall')
+            if (item.split('_')[1] === '1') {
+              const currentRect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+              currentRect.setAttribute('class', 'frame current')
+              currentRect.setAttribute('x', `${j * 5}`)
+              currentRect.setAttribute('y', `${i * 5}`)
+              currentRect.setAttribute('width', 5)
+              currentRect.setAttribute('height', 5)
+              ball.appendChild(currentRect)
+            }
+            const winnerLine = document.createElementNS("http://www.w3.org/2000/svg", "line")
+            let winnerLineClassName = ''
+            if (item.split('_')[0] === '1') {
+              winnerLineClassName += 'banker-hollow'
+            } else if (item.split('_')[0] === '2') {
+              winnerLineClassName += 'player-hollow'
+            }
+            winnerLine.setAttribute('class', winnerLineClassName)
+            winnerLine.setAttribute('x1', `${4 + (j * 5)}`)
+            winnerLine.setAttribute('y1', `${1 + (i * 5)}`)
+            winnerLine.setAttribute('x2', `${1 + (j * 5)}`)
+            winnerLine.setAttribute('y2', `${4 + (i * 5)}`)
+            ball.appendChild(winnerLine)
+            cell.appendChild(ball)
+            g.appendChild(cell)
+            cockroachRoadEl.appendChild(g)
+          }
+        }
+        const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line1.setAttribute('x1', 169.7)
+        line1.setAttribute('y1', 0)
+        line1.setAttribute('x2', 169.7)
+        line1.setAttribute('y2', 30)
+        line1.setAttribute('stroke', '#333')
+        line1.setAttribute('stroke-width', '0.6')
+        cockroachRoadEl.appendChild(line1)
+        const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line2.setAttribute('x1', 0)
+        line2.setAttribute('y1', 0)
+        line2.setAttribute('x2', 340)
+        line2.setAttribute('y2', 0)
+        line2.setAttribute('stroke', '#333')
+        line2.setAttribute('stroke-width', '0.6')
+        cockroachRoadEl.appendChild(line2)
+        const line3 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line3.setAttribute('x1', 0)
+        line3.setAttribute('y1', 29.7)
+        line3.setAttribute('x2', 340)
+        line3.setAttribute('y2', 29.7)
+        line3.setAttribute('stroke', '#333')
+        line3.setAttribute('stroke-width', '0.6')
+        cockroachRoadEl.appendChild(line3)
+      })
 
       var beadRoadLastIndex = this.beadRoad.lastIndex
-      while (beadRoadLastIndex * 20 < (window.innerWidth - 50)) {
-        beadRoadLastIndex++;
+      if (beadRoadLastIndex < 18) {
+        beadRoadLastIndex = 18
       }
       for (let i = 0, max = this.beadRoad.allData.length; i < max; i++) {
         this.beadRoad.roadData[i] = this.beadRoad.allData[i].slice(0, beadRoadLastIndex);
       }
       this.beadRoad.roadData = JSON.parse(JSON.stringify(this.beadRoad.roadData));
+      this.$nextTick(() => {
+        const beadRoadEl = document.getElementsByClassName('beadRoad')[0]
+        const width = 180
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+        rect.setAttribute('x', 0)
+        rect.setAttribute('y', 0)
+        rect.setAttribute('width', width)
+        rect.setAttribute('height', 60)
+        rect.setAttribute('class', 'frame')
+        rect.setAttribute('style', 'fill: rgb(255, 255, 255);')
+        beadRoadEl.appendChild(rect)
+        const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
+        let points = ''
+        for (let i = 0; i < 19; i++) {
+          const x = i * 10
+          points += i % 2 === 0 ? `${x},60 ${x},0 ` : `${x},0 ${x},60 `
+        }
+        for (let i = 0, max = this.beadRoad.roadData.length; i < max; i++) {
+          const y = i * 10
+          points += i % 2 === 0 ? `${width},${y} 0,${y} ` : `0,${y} ${width},${y} `
+        }
+        polyline.setAttribute('points', points)
+        polyline.setAttribute('fill', 'none')
+        polyline.setAttribute('class', 'grid-line')
+        polyline.setAttribute('style', 'stroke: rgb(170, 170, 170); stroke-width: 0.3;')
+        beadRoadEl.appendChild(polyline)
+        for (let i = 0, max = this.beadRoad.roadData.length; i < max; i++) {
+          for (let j = 0, jMax = this.beadRoad.roadData[i].length; j < jMax; j++) {
+            const item = this.beadRoad.roadData[i][j]
+            const cell = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            cell.setAttribute('class', 'cell')
+            const ball = document.createElementNS("http://www.w3.org/2000/svg", "g")
+            ball.setAttribute('class', 'ball')
+            if (item.split('_')[2] === '1') {
+              const currentRect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+              currentRect.setAttribute('class', 'frame current')
+              currentRect.setAttribute('x', `${j * 10}`)
+              currentRect.setAttribute('y', `${i * 10}`)
+              currentRect.setAttribute('width', 10)
+              currentRect.setAttribute('height', 10)
+              ball.appendChild(currentRect)
+            }
+            const winnerCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
+            let winnerCircleClassName = ''
+            let winnerText = ''
+            if (item.split('_')[0] === '1') {
+              winnerCircleClassName += 'banker-solid'
+              winnerText = this.$t('__banker')
+            } else if (item.split('_')[0] === '2') {
+              winnerCircleClassName += 'player-solid'
+              winnerText = this.$t('__player')
+            } else if (item.split('_')[0] === '3') {
+              winnerCircleClassName += 'tie-solid'
+              winnerText = this.$t('__tie')
+            }
+            winnerCircle.setAttribute('class', winnerCircleClassName)
+            winnerCircle.setAttribute('cx', `${5 + (j * 10)}`)
+            winnerCircle.setAttribute('cy', `${5 + (i * 10)}`)
+            winnerCircle.setAttribute('r', '3.5')
+            winnerCircle.setAttribute('style', 'stroke: none; stroke-width: 0.5;')
+            ball.appendChild(winnerCircle)
+            if (item.split('_')[1] === '1' || item.split('_')[1] === '3') {
+              const bankerPairCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
+              bankerPairCircle.setAttribute('cx', `${2.5 + (j * 10)}`)
+              bankerPairCircle.setAttribute('cy', `${2.5 + (i * 10)}`)
+              bankerPairCircle.setAttribute('r', '1')
+              bankerPairCircle.setAttribute('style', 'fill: rgb(255, 32, 23); stroke: rgb(255, 255, 255); stroke-width: 0.1;')
+              ball.appendChild(bankerPairCircle)
+            }
+            if (item.split('_')[1] === '2' || item.split('_')[1] === '3') {
+              const playerPairCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
+              playerPairCircle.setAttribute('cx', `${7.5 + (j * 10)}`)
+              playerPairCircle.setAttribute('cy', `${7.5 + (i * 10)}`)
+              playerPairCircle.setAttribute('r', '1')
+              playerPairCircle.setAttribute('style', 'fill: rgb(23, 32, 255); stroke: rgb(255, 255, 255); stroke-width: 0.1;')
+              ball.appendChild(playerPairCircle)
+            }
+            const winnerTextEl = document.createElementNS("http://www.w3.org/2000/svg", "text")
+            winnerTextEl.setAttribute('class', 'winnerText')
+            winnerTextEl.setAttribute('x', `${5 + (j * 10)}`)
+            winnerTextEl.setAttribute('y', `${7 + (i * 10)}`)
+            winnerTextEl.setAttribute('text-anchor', 'middle')
+            winnerTextEl.setAttribute('style', 'font-size: 5px; font-weight: bolder;')
+            winnerTextEl.innerHTML = winnerText
+            ball.appendChild(winnerTextEl)
+            cell.appendChild(ball)
+            beadRoadEl.appendChild(cell)
+          }
+        }
+        const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line1.setAttribute('x1', 0)
+        line1.setAttribute('y1', 0)
+        line1.setAttribute('x2', width)
+        line1.setAttribute('y2', 0)
+        line1.setAttribute('stroke', '#333')
+        line1.setAttribute('stroke-width', '0.6')
+        beadRoadEl.appendChild(line1)
+        const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line2.setAttribute('x1', 0)
+        line2.setAttribute('y1', 59.7)
+        line2.setAttribute('x2', width)
+        line2.setAttribute('y2', 59.7)
+        line2.setAttribute('stroke', '#333')
+        line2.setAttribute('stroke-width', '0.6')
+        beadRoadEl.appendChild(line2)
+      })
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@/styles/variables.scss";
 
 .game-result-detail {
-  height: 100vh;
+  height: calc(100vh - 3.75rem);
   background: #000;
+  overflow: auto;
   .result-detail {
     width: 31.25rem;
     margin: 0 auto;
@@ -642,6 +757,27 @@ export default {
         height: 16.66667rem;
         margin: auto 1.66667rem;
       }
+      .poker {
+        margin: auto;
+        &.back {
+          -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+          -webkit-transform-origin: center;
+          transform-origin: center;
+        }
+      }
+    }
+    .desc {
+      color: #fff;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      .info {
+        margin-right: 0.83333rem;
+        margin-bottom: 0.83333rem;
+      }
     }
   }
   .yellow-border-bottom {
@@ -663,542 +799,56 @@ export default {
         overflow: overlay;
         width: 100%;
         position: relative;
-        .pan-body{
+        .pan-body {
           position: absolute;
           top: 0;
           left: 0;
-          table {
-            background-color: #fff;
-            border-spacing: 0;
-            border-collapse: collapse;
-            td {
-              width: 0.85rem;
-              min-width: 0.85rem;
-              height: 0.85rem;
-              min-height: 0.85rem;
-              max-height: 0.85rem;
-              border: 0.001rem solid #aaa;
-              position: relative;
-              .bigRoad {
-                &-current {
-                  position: absolute;
-                  top: 0;
-                  left: 0;
-                  width: 100%;
-                  height: 100%;
-                  background-color: #ffff7c;
-                }
-                &-winner {
-                  &-banker,
-                  &-player {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    width: 90%;
-                    height: 90%;
-                    border-radius: 50%;
-                  }
-                }
-                &-winner {
-                  &-banker {
-                    border: 0.001rem solid #ff4949;
-                  }
-                  &-player {
-                    border: 0.001rem solid #0090ff;
-                  }
-                  &-tie {
-                    position: absolute;
-                    top: 0;
-                    left: 50%;
-                    width: 0.05rem;
-                    height: 90%;
-                    transform: rotate(45deg);
-                    background-color: #13ce66;
-                  }
-                }
-                &-tieCount {
-                  position: absolute;
-                  top: 50%;
-                  left: 50%;
-                  transform: translate(-50%, -50%);
-                  font-weight: 600;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  width: 80%;
-                  height: 80%;
-                }
-              }
-            }
-          }
         }
       }
-    }
-  }
-}
-
-.poker {
-  margin: auto;
-  &.back {
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
-    -webkit-transform-origin: center;
-    transform-origin: center;
-  }
-}
-
-.dialogheader {
-  color: #fff;
-  &-row {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    &-item {
-      width: 100%;
-      padding: 2px;
-      display: flex;
-      &-header {
-        color: $yellow;
-        font-weight: bold;
-        width: 100px;
-      }
-    }
-  }
-}
-
-.roundData {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 100%;
-  .pokerData {
-    display: flex;
-    margin-right: 50px;
-    margin-top: 10px;
-    .pokerArea {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      .banker {
-        text-align: right;
-      }
-      .pokerInfo {
-        display: flex;
-        justify-content: space-between;
-        width: 150px;
-        .poker {
-          width: 40px;
-          height: 60px;
-          &.rotate {
-            transform: translateY(10px) rotate(90deg);
+      .cell {
+        padding: 0;
+        .ball {
+          fill: transparent;
+          stroke: transparent;
+          .current {
+            fill: #ffff7c;
+            stroke: #f9c901;
           }
         }
-        .poker3 {
-          width: 60px;
-          height: 40px;
-          display: flex;
-          justify-content: center;
-        }
-      }
-    }
-    .pokerArea + .pokerArea {
-      margin-left: 20px;
-    }
-  }
-  .roundInfo {
-    font-weight: bold;
-    color: #fff;
-    margin-top: 10px;
-    tr {
-      .floatRight {
-        float: right;
-      }
-      td + td {
-        padding-left: 5px;
-      }
-    }
-    tr {
-      line-height: 20px;
-    }
-  }
-}
-
-@keyframes change {
-  from {
-    background-color: #fff;
-  }
-  to {
-    background-color: #fc0;
-  }
-}
-
-.bigRoadData {
-  margin-top: 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  table {
-    background-color: #fff;
-    border-spacing: 0;
-    border-collapse: collapse;
-    td {
-      width: 20px;
-      min-width: 20px;
-      height: 20px;
-      min-height: 20px;
-      max-height: 20px;
-      border: 1px solid #aaa;
-      position: relative;
-      .bigRoad {
-        &-current {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          animation: change 1s;
-          animation-iteration-count: infinite;
-          animation-direction: alternate;
-        }
-        &-winner {
-          &-banker,
-          &-player {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-50%);
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
+        .threeSmallRoadBall {
+          fill: transparent;
+          stroke: transparent;
+          .current {
+            fill: #fbfb6c;
+            stroke: #f98a01;
           }
         }
-        &-winner {
-          &-banker {
-            border: 2px solid $red;
-          }
-          &-player {
-            border: 2px solid $blue;
-          }
-          &-tie {
-            position: absolute;
-            top: 0;
-            left: 9px;
-            width: 2px;
-            height: 100%;
-            transform: rotate(45deg);
-            background-color: $green;
-          }
+        .banker-hollow {
+          stroke: #ff4949;
         }
-        &-pair {
-          &-banker,
-          &-player {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-          }
+        .player-hollow {
+          stroke: #0090ff;
         }
-        &-pair {
-          &-banker {
-            background-color: $darkRed;
-            top: 2px;
-            left: 2px;
-          }
-          &-player {
-            background-color: $darkBlue;
-            bottom: 2px;
-            right: 2px;
-          }
+        .tie-hollow {
+          stroke: #13ce66;
         }
-        &-tieCount {
-          position: absolute;
-          top: 0;
-          left: 0;
-          font-weight: bold;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          height: 100%;
+        .banker-solid {
+          fill: #ff4949;
+          stroke: #ff4949;
         }
-      }
-    }
-  }
-}
-.bigEyeRoadData {
-  overflow-x: auto;
-  overflow-y: hidden;
-  table {
-    background-color: #fff;
-    border-spacing: 0;
-    border-collapse: collapse;
-    &:first-child {
-      border-top: 1px solid #aaa;
-    }
-    tr {
-      border-left: 1px solid #aaa;
-      border-right: 1px solid #aaa;
-      &:nth-child(even) {
-        border-bottom: 1px solid #aaa;
-      }
-      td {
-        &:nth-child(even) {
-          border-right: 1px solid #aaa;
+        .player-solid {
+          fill: #0090ff;
+          stroke: #0090ff;
         }
-        width: 10px;
-        min-width: 10px;
-        height: 10px;
-        min-height: 10px;
-        max-height: 10px;
-        position: relative;
-        .bigEyeRoad {
-          &-current {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            animation: change 1s;
-            animation-iteration-count: infinite;
-            animation-direction: alternate;
-          }
-          &-winner {
-            &-banker,
-            &-player {
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translateX(-50%) translateY(-50%);
-              width: calc(100% - 3px);
-              height: calc(100% - 3px);
-              border-radius: 50%;
-            }
-          }
-          &-winner {
-            &-banker {
-              border: 2px solid $red;
-            }
-            &-player {
-              border: 2px solid $blue;
-            }
-          }
+        .tie-solid {
+          fill: #13ce66;
+          stroke: #13ce66;
         }
-      }
-    }
-  }
-}
-.smallEyeRoadData_cockroachRoadData {
-  display: flex;
-}
-.smallEyeRoadData {
-  max-width: 50%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  table {
-    background-color: #fff;
-    border-spacing: 0;
-    border-collapse: collapse;
-    &:first-child {
-      border-top: 1px solid #aaa;
-    }
-    tr {
-      &:nth-child(even) {
-        border-bottom: 1px solid #aaa;
-      }
-      td {
-        &:nth-child(even) {
-          border-right: 1px solid #aaa;
+        .tieCount {
+          fill: #000;
         }
-        width: 10px;
-        min-width: 10px;
-        height: 10px;
-        min-height: 10px;
-        max-height: 10px;
-        position: relative;
-        .smallEyeRoad {
-          &-current {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            animation: change 1s;
-            animation-iteration-count: infinite;
-            animation-direction: alternate;
-          }
-          &-winner {
-            &-banker,
-            &-player {
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translateX(-50%) translateY(-50%);
-              width: calc(100% - 3px);
-              height: calc(100% - 3px);
-              border-radius: 50%;
-            }
-          }
-          &-winner {
-            &-banker {
-              background-color: $red;
-            }
-            &-player {
-              background-color: $blue;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-.cockroachRoadData {
-  max-width: 50%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  table {
-    background-color: #fff;
-    border-spacing: 0;
-    border-collapse: collapse;
-    padding-left: 1px;
-    border-left: 1px solid #aaa;
-    &:first-child {
-      border-top: 1px solid #aaa;
-    }
-    tr {
-      border-right: 1px solid #aaa;
-      &:nth-child(even) {
-        border-bottom: 1px solid #aaa;
-      }
-      td {
-        &:nth-child(even) {
-          border-right: 1px solid #aaa;
-        }
-        width: 10px;
-        min-width: 10px;
-        height: 10px;
-        min-height: 10px;
-        max-height: 10px;
-        position: relative;
-        .cockroachRoad {
-          &-current {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            animation: change 1s;
-            animation-iteration-count: infinite;
-            animation-direction: alternate;
-          }
-          &-winner {
-            &-banker,
-            &-player {
-              position: absolute;
-              top: 50%;
-              left: 50%;
-              transform: translateX(-25%) translateY(-25%) rotate(45deg);
-              width: calc(100% - 1px);
-              height: calc(100% - 1px);
-            }
-          }
-          &-winner {
-            &-banker {
-              border-left: 2px solid $red;
-            }
-            &-player {
-              border-left: 2px solid $blue;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-.beadRoadData {
-  overflow-x: auto;
-  overflow-y: hidden;
-  table {
-    background-color: #fff;
-    border-spacing: 0;
-    border-collapse: collapse;
-    td {
-      width: 20px;
-      min-width: 20px;
-      height: 20px;
-      min-height: 20px;
-      max-height: 20px;
-      border: 1px solid #aaa;
-      position: relative;
-      .beadRoad {
-        &-current {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          animation: change 1s;
-          animation-iteration-count: infinite;
-          animation-direction: alternate;
-        }
-        &-winner {
-          &-banker,
-          &-player,
-          &-tie {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-50%);
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            &:after {
-              position: absolute;
-              color: #fff;
-              top: 50%;
-              left: 50%;
-              transform: translateX(-50%) translateY(-50%) scale(0.8);
-            }
-          }
-        }
-        &-winner {
-          &-banker {
-            background-color: $red;
-            &:after {
-              content: "莊";
-            }
-          }
-          &-player {
-            background-color: $blue;
-            &:after {
-              content: "閒";
-            }
-          }
-          &-tie {
-            background-color: $green;
-            &:after {
-              content: "和";
-            }
-          }
-        }
-        &-pair {
-          &-banker,
-          &-player {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-          }
-        }
-        &-pair {
-          &-banker {
-            background-color: $darkRed;
-            top: 1px;
-            left: 1px;
-          }
-          &-player {
-            background-color: $darkBlue;
-            bottom: 1px;
-            right: 1px;
-          }
+        .winnerText {
+          fill: #fff;
         }
       }
     }
