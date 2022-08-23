@@ -631,7 +631,6 @@ export default {
     },
     handleRespone(res) {
       this.agentInfo = res.agentInfo
-      this.agentInfo.fullName = `${this.agentInfo.nickname}(${this.agentInfo.account})`
       this.agentInfo.handicaps.forEach(element => {
         element.betMinLabel = numberFormat(element.bet_min)
         element.betMaxLabel = numberFormat(element.bet_max)
@@ -641,7 +640,6 @@ export default {
       const open = this.allDataByClient.filter(item => item.open).map(item => item.id)
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
-        element.fullName = `${element.nick_name}(${element.name})`
         element.currency = element.currency.code
         element.time_zone = element.timeZone.id
         element.cityNameLabel = element.timeZone.city_name

@@ -412,7 +412,6 @@ export default {
       this.$store.dispatch('agentManagement/setAgentLevel', res.agentLevel)
       this.agentInfo = res.agentInfo
       this.agentInfo.currency = this.agentInfo.currency.code
-      this.agentInfo.fullName = this.agentInfo.nickname + '(' + this.agentInfo.account + ')'
       this.agentInfo.accountStatus = this.accountStatusType.find(element => element.key === this.agentInfo.status).nickname
       this.agentInfo.betStatus = this.accountStatusType.find(element => element.key === this.agentInfo.bet_status).nickname
       this.agentInfo.weeklyLossSettlement = this.accountStatusType.find(element => element.key === this.agentInfo.weekly_loss_settlement).nickname

@@ -664,12 +664,10 @@ export default {
         element.betMinLabel = numberFormat(element.bet_min)
         element.betMaxLabel = numberFormat(element.bet_max)
       });
-      this.agentInfo.fullName = `${this.agentInfo.nickname}(${this.agentInfo.account})`
       // 設定已經擴展的item
       const open = this.allDataByClient.filter(item => item.open).map(item => item.id)
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
-        element.fullName = `${element.nickname}(${element.account})`
         element.currency = element.currency.code
         element.time_zone = element.timeZone.id
         element.cityNameLabel = element.timeZone.city_name

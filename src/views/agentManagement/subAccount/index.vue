@@ -426,12 +426,10 @@ export default {
     },
     handleRespone(res) {
       this.agentInfo = res.agentInfo
-      this.agentInfo.fullName = `${this.agentInfo.nickname}(${this.agentInfo.account})`
 
       const open = this.tableData.filter(item => item.open).map(item => item.id)
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
-        element.fullName = `${element.nickname}(${element.account})`
         const statusNickname = this.accountStatusType.find(type => type.key === element.status).nickname
         element.statusLabel = this.$t(statusNickname)
         element.agentNickname = element.agent.nickname
