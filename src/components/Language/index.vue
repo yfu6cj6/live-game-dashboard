@@ -134,28 +134,28 @@ export default {
   }
 }
 
-@media (min-width: 992px) {
-  .language-container {
-    .language-switch {
-      .language-item {
-        .fas {
-          height: 1.83333rem;
-          width: 1.83333rem;
-          position: relative;
-          img {
-            vertical-align: middle;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            overflow: hidden;
-            width: 100%;
-            height: 2.2rem;
-            width: 2.2rem;
-          }
-        }
-      }
-    }
-  }
-}
+// @media screen and (min-width: 992px) {
+//   .language-container {
+//     .language-switch {
+//       .language-item {
+//         .fas {
+//           height: 1.83333rem;
+//           width: 1.83333rem;
+//           position: relative;
+//           img {
+//             vertical-align: middle;
+//             position: absolute;
+//             top: 50%;
+//             left: 50%;
+//             transform: translate(-50%, -50%);
+//             overflow: hidden;
+//             width: 100%;
+//             height: 2.2rem;
+//             width: 2.2rem;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 </style>

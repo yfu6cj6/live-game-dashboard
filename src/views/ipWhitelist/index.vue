@@ -419,27 +419,27 @@ export default {
   }
 }
 
-@media (min-width: 992px) {
-  .tableStyle {
-    overflow: auto;
-    max-height: 100%;
-  }
-  .searchFrame {
-    .searchItemBox {
-      width: auto;
-      justify-content: space-between;
-      .d-flex.pad_frame {
-        padding-left: 0;
-      }
-    }
-    .searchItem {
-      width: 11rem;
-      margin-right: 1.25rem;
-    }
-    .addBtn {
-      width: 7.5rem;
-      height: 2.8rem;
-    }
-  }
-}
+// @media (min-width: 992px) {
+//   .tableStyle {
+//     overflow: auto;
+//     max-height: 100%;
+//   }
+//   .searchFrame {
+//     .searchItemBox {
+//       width: auto;
+//       justify-content: space-between;
+//       .d-flex.pad_frame {
+//         padding-left: 0;
+//       }
+//     }
+//     .searchItem {
+//       width: 11rem;
+//       margin-right: 1.25rem;
+//     }
+//     .addBtn {
+//       width: 7.5rem;
+//       height: 2.8rem;
+//     }
+//   }
+// }
 </style>

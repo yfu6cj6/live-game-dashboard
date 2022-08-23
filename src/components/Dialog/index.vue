@@ -141,28 +141,28 @@ export default {
   left: 0;
 }
 
-@media screen and (min-width: 768px) and (max-width: 991px) {
+@media screen and (min-width: 768px) /*and (max-width: 991px)*/ {
   .dialog {
     max-height: calc(100% - 100px);
   }
 }
 
-@media screen and (min-width: 992px) {
-  .dialog {
-    max-width: 50%;
-    .dialog-body {
-      padding: 0 3rem;
-      .dialog-body-footer {
-        .el-button {
-          width: 18rem;
-        }
-      }
-    }
-    .dialog-footer {
-      .el-button {
-        width: 18rem;
-      }
-    }
-  }
-}
+// @media screen and (min-width: 992px) {
+//   .dialog {
+//     max-width: 50%;
+//     .dialog-body {
+//       padding: 0 3rem;
+//       .dialog-body-footer {
+//         .el-button {
+//           width: 18rem;
+//         }
+//       }
+//     }
+//     .dialog-footer {
+//       .el-button {
+//         width: 18rem;
+//       }
+//     }
+//   }
+// }
 </style>

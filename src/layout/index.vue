@@ -117,36 +117,36 @@ export default {
   }
 }
 
-@media screen and (min-width: 992px) {
-  .app-container {
-    .tagsView {
-      padding-left: $pcHideSidebarWidth;
-      transition: padding-left .3s;
-    }
+// @media screen and (min-width: 992px) {
+//   .app-container {
+//     .tagsView {
+//       padding-left: $pcHideSidebarWidth;
+//       transition: padding-left .3s;
+//     }
 
-    .tagsView.opened {
-      padding-left: $mobileSideBarWidth;
-    }
+//     .tagsView.opened {
+//       padding-left: $mobileSideBarWidth;
+//     }
 
-    .sidebar {
-      height: 100%;
-      margin-left: 0;
-      position: fixed;
-      top: 45px;
-      left: 0;
-      z-index: 12;
-      visibility: visible;
-    }
+//     .sidebar {
+//       height: 100%;
+//       margin-left: 0;
+//       position: fixed;
+//       top: 45px;
+//       left: 0;
+//       z-index: 12;
+//       visibility: visible;
+//     }
 
-    .appMain {
-      padding-left: $pcHideSidebarWidth;
-      transition: padding-left .3s;
-      max-width: 100%;
-    }
+//     .appMain {
+//       padding-left: $pcHideSidebarWidth;
+//       transition: padding-left .3s;
+//       max-width: 100%;
+//     }
 
-    .appMain.opened {
-      padding-left: $mobileSideBarWidth;
-    }
-  }
-}
+//     .appMain.opened {
+//       padding-left: $mobileSideBarWidth;
+//     }
+//   }
+// }
 </style>

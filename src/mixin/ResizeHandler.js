@@ -1,7 +1,7 @@
 import store from '@/store'
 
-const { body } = document
-const WIDTH = 992 // refer to Bootstrap's responsive design
+// const { body } = document
+// const WIDTH = 992 // refer to Bootstrap's responsive design
 
 export default {
   watch: {
@@ -28,8 +28,9 @@ export default {
     // use $_ for mixins properties
     // https://vuejs.org/v2/style-guide/index.html#Private-property-names-essential
     $_isMobile() {
-      const rect = body.getBoundingClientRect()
-      return rect.width < WIDTH
+      // const rect = body.getBoundingClientRect()
+      // return rect.width < WIDTH
+      return true
     },
     $_resizeHandler() {
       if (!document.hidden) {

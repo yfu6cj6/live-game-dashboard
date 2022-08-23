@@ -403,12 +403,12 @@ export default {
   }
 }
 
-@media (min-width: 992px) {
-  .logManagement {
-    .search_frame {
-      display: flex;
-      flex-direction: row;
-    }
-  }
-}
+// @media (min-width: 992px) {
+//   .logManagement {
+//     .search_frame {
+//       display: flex;
+//       flex-direction: row;
+//     }
+//   }
+// }
 </style>

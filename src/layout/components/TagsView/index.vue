@@ -238,30 +238,30 @@ export default {
   }
 }
 
-@media screen and (min-width: 992px) {
-  .tags-view-container {
-    position: relative;
-    .contextmenu {
-      background-color: #000;
-      color: $yellow;
-      position: absolute;
-      display: block;
-      box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
-      border-radius: 4px;
-      list-style-type: none;
+// @media screen and (min-width: 992px) {
+//   .tags-view-container {
+//     position: relative;
+//     .contextmenu {
+//       background-color: #000;
+//       color: $yellow;
+//       position: absolute;
+//       display: block;
+//       box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+//       border-radius: 4px;
+//       list-style-type: none;
 
-      li {
-        padding: 5px;
-        cursor: pointer;
-        &:hover {
-          background: #444;
-        }
-      }
+//       li {
+//         padding: 5px;
+//         cursor: pointer;
+//         &:hover {
+//           background: #444;
+//         }
+//       }
 
-      li + li {
-        border-top: 1px solid #fff;
-      }
-    }
-  }
-}
+//       li + li {
+//         border-top: 1px solid #fff;
+//       }
+//     }
+//   }
+// }
 </style>

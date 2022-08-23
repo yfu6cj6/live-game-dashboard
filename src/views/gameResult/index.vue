@@ -33,7 +33,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="day-range">
+                    <div class="day-range pl-2 pr-2">
                       <div class="date-time-picker-box">
                         <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
                           <el-date-picker
@@ -63,7 +63,7 @@
                         </span>
                       </div>
                     </div>
-                    <div class="filters flex-wrap">
+                    <div class="filters flex-wrap pl-2 pr-2">
                       <div class="d-flex w-100">
                         <div>
                           <div class="filter-options">
