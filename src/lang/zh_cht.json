@@ -349,5 +349,6 @@
     "__game": "遊戲",
     "__playerCard": "閒牌",
     "__bankerCard": "莊牌",
-    "__cardRoad": "牌路"
+    "__cardRoad": "牌路",
+    "__superior": "上線"
 }
