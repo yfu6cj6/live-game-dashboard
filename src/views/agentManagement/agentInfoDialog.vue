@@ -39,122 +39,122 @@
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          <div>
-                            <div class="d-flex">
-                              <div class="d-flex flex-column game-hall mt-4 basis-50">
-                                <div class="d-flex" style="width: 155px;">
-                                  <div class="d-flex flex-column">
-                                    <div>
-                                      <div class="game-hall-item" />
-                                      <span class="title-item">{{ $t('__liveGame') }}</span>
-                                    </div>
-                                    <div class="d-flex flex-column game-hall-item">
-                                      <div class="d-flex flex-column mt-2" style="width: 155px;">
-                                        <span class="game-hall-item gary" />
-                                        <span class="sub-title-item gray" style="flex: 1 1 0%;">{{ `${$t('__rate')}%` }}</span>
-                                        <span data-v-2125f3d6="" class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ `${form.live_commission_rate}%` }}</span>
-                                        <span class="game-hall-item" />
+                            <div>
+                              <div class="d-flex">
+                                <div class="d-flex flex-column game-hall mt-4 basis-50">
+                                  <div class="d-flex" style="width: 155px;">
+                                    <div class="d-flex flex-column">
+                                      <div>
+                                        <div class="game-hall-item" />
+                                        <span class="title-item">{{ $t('__liveGame') }}</span>
                                       </div>
-                                      <div class="d-flex flex-column mt-2" style="width: 155px;">
-                                        <span class="game-hall-item" />
-                                        <span class="sub-title-item gray" style="flex: 1 1 0%;">{{ `${$t('__rollingRate')}%` }}</span>
-                                        <span data-v-2125f3d6="" class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ `${form.live_rolling_rate}%` }}</span>
-                                        <span class="game-hall-item" />
+                                      <div class="d-flex flex-column game-hall-item">
+                                        <div class="d-flex flex-column mt-2" style="width: 155px;">
+                                          <span class="game-hall-item gary" />
+                                          <span class="sub-title-item gray" style="flex: 1 1 0%;">{{ `${$t('__rate')}%` }}</span>
+                                          <span data-v-2125f3d6="" class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ `${form.live_commission_rate}%` }}</span>
+                                          <span class="game-hall-item" />
+                                        </div>
+                                        <div class="d-flex flex-column mt-2" style="width: 155px;">
+                                          <span class="game-hall-item" />
+                                          <span class="sub-title-item gray" style="flex: 1 1 0%;">{{ `${$t('__rollingRate')}%` }}</span>
+                                          <span data-v-2125f3d6="" class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ `${form.live_rolling_rate}%` }}</span>
+                                          <span class="game-hall-item" />
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
+                              <div class="mt-4" />
+                              <div class="mt-4" />
                             </div>
-                            <div class="mt-4" />
-                            <div class="mt-4" />
-                          </div>
-                          <div class="d-flex flex-column">
-                            <span class="title-item" style="width: 50%; flex: 0 0 auto;">{{ $t('__status') }}</span>
-                            <div class="d-flex flex-wrap flex-wrap overflow-hidden">
-                              <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
-                                <span class="white" style="margin-right: 5px;">
-                                  <div class="cell checkbox text-left">
-                                    <span class="el-checkbox red-tick">
-                                      <span class="el-checkbox__input" :class="{'unchecked': form.totally_disabled === 0, 'is-checked': form.totally_disabled === 1}" style="cursor: default !important;">
-                                        <span class="el-checkbox__inner" />
+                            <div class="d-flex flex-column">
+                              <span class="title-item" style="width: 50%; flex: 0 0 auto;">{{ $t('__status') }}</span>
+                              <div class="d-flex flex-wrap flex-wrap overflow-hidden">
+                                <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
+                                  <span class="white" style="margin-right: 5px;">
+                                    <div class="cell checkbox text-left">
+                                      <span class="el-checkbox red-tick">
+                                        <span class="el-checkbox__input" :class="{'unchecked': form.totally_disabled === 0, 'is-checked': form.totally_disabled === 1}" style="cursor: default !important;">
+                                          <span class="el-checkbox__inner" />
+                                        </span>
                                       </span>
-                                    </span>
-                                  </div>
-                                </span>
-                                <span class="content-item" style="line-height: 1.5rem;">{{ $t('__totallyDisabled') }}</span>
-                              </div>
-                              <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
-                                <span class="white" style="margin-right: 5px;">
-                                  <div class="cell checkbox text-left">
-                                    <span class="el-checkbox red-tick">
-                                      <span class="unchecked el-checkbox__input" :class="{'unchecked': form.status === 1, 'is-checked': form.status === 0}" style="cursor: default !important;">
-                                        <span class="el-checkbox__inner" />
+                                    </div>
+                                  </span>
+                                  <span class="content-item" style="line-height: 1.5rem;">{{ $t('__totallyDisabled') }}</span>
+                                </div>
+                                <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
+                                  <span class="white" style="margin-right: 5px;">
+                                    <div class="cell checkbox text-left">
+                                      <span class="el-checkbox red-tick">
+                                        <span class="unchecked el-checkbox__input" :class="{'unchecked': form.status === 1, 'is-checked': form.status === 0}" style="cursor: default !important;">
+                                          <span class="el-checkbox__inner" />
+                                        </span>
                                       </span>
-                                    </span>
-                                  </div>
-                                </span>
-                                <span class="content-item" style="line-height: 1.5rem;">{{ $t('__lockLogin') }}</span>
-                              </div>
-                              <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
-                                <span class="white" style="margin-right: 5px;">
-                                  <div class="cell checkbox text-left">
-                                    <span class="el-checkbox red-tick">
-                                      <span class="unchecked el-checkbox__input" :class="{'unchecked': form.bet_status === 1, 'is-checked': form.bet_status === 0}" style="cursor: default !important;">
-                                        <span class="el-checkbox__inner" />
+                                    </div>
+                                  </span>
+                                  <span class="content-item" style="line-height: 1.5rem;">{{ $t('__lockLogin') }}</span>
+                                </div>
+                                <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
+                                  <span class="white" style="margin-right: 5px;">
+                                    <div class="cell checkbox text-left">
+                                      <span class="el-checkbox red-tick">
+                                        <span class="unchecked el-checkbox__input" :class="{'unchecked': form.bet_status === 1, 'is-checked': form.bet_status === 0}" style="cursor: default !important;">
+                                          <span class="el-checkbox__inner" />
+                                        </span>
                                       </span>
-                                    </span>
-                                  </div>
-                                </span>
-                                <span class="content-item" style="line-height: 1.5rem;">{{ $t('__debarBet') }}</span>
-                              </div>
-                              <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
-                                <span class="white" style="margin-right: 5px;">
-                                  <div class="cell checkbox text-left">
-                                    <span class="el-checkbox red-tick">
-                                      <span class="unchecked el-checkbox__input" :class="{'unchecked': form.weekly_loss_settlement === 0, 'is-checked': form.weekly_loss_settlement === 1}" style="cursor: default !important;">
-                                        <span class="el-checkbox__inner" />
+                                    </div>
+                                  </span>
+                                  <span class="content-item" style="line-height: 1.5rem;">{{ $t('__debarBet') }}</span>
+                                </div>
+                                <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
+                                  <span class="white" style="margin-right: 5px;">
+                                    <div class="cell checkbox text-left">
+                                      <span class="el-checkbox red-tick">
+                                        <span class="unchecked el-checkbox__input" :class="{'unchecked': form.weekly_loss_settlement === 0, 'is-checked': form.weekly_loss_settlement === 1}" style="cursor: default !important;">
+                                          <span class="el-checkbox__inner" />
+                                        </span>
                                       </span>
-                                    </span>
-                                  </div>
-                                </span>
-                                <span class="content-item" style="line-height: 1.5rem;">{{ $t('__weeklyLossSettlement') }}</span>
-                              </div>
-                              <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
-                                <span class="white" style="margin-right: 5px;">
-                                  <div class="cell checkbox text-left">
-                                    <span class="el-checkbox red-tick">
-                                      <span class="unchecked el-checkbox__input" :class="{'unchecked': form.one_click_recycling === 0, 'is-checked': form.one_click_recycling === 1}" style="cursor: default !important;">
-                                        <span class="el-checkbox__inner" />
+                                    </div>
+                                  </span>
+                                  <span class="content-item" style="line-height: 1.5rem;">{{ $t('__weeklyLossSettlement') }}</span>
+                                </div>
+                                <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
+                                  <span class="white" style="margin-right: 5px;">
+                                    <div class="cell checkbox text-left">
+                                      <span class="el-checkbox red-tick">
+                                        <span class="unchecked el-checkbox__input" :class="{'unchecked': form.one_click_recycling === 0, 'is-checked': form.one_click_recycling === 1}" style="cursor: default !important;">
+                                          <span class="el-checkbox__inner" />
+                                        </span>
                                       </span>
-                                    </span>
-                                  </div>
-                                </span>
-                                <span class="content-item" style="line-height: 1.5rem;">{{ $t('__oneClickRecycling') }}</span>
-                              </div>
-                              <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
-                                <span class="white" style="margin-right: 5px;">
-                                  <div class="cell checkbox text-left">
-                                    <span class="el-checkbox red-tick">
-                                      <span class="unchecked el-checkbox__input" :class="{'unchecked': form.gift_status === 0, 'is-checked': form.gift_status === 1}" style="cursor: default !important;">
-                                        <span class="el-checkbox__inner" />
+                                    </div>
+                                  </span>
+                                  <span class="content-item" style="line-height: 1.5rem;">{{ $t('__oneClickRecycling') }}</span>
+                                </div>
+                                <div class="mt-2 d-flex basis-100 flex-wrap" style="width: 50%; flex: 0 0 auto;">
+                                  <span class="white" style="margin-right: 5px;">
+                                    <div class="cell checkbox text-left">
+                                      <span class="el-checkbox red-tick">
+                                        <span class="unchecked el-checkbox__input" :class="{'unchecked': form.gift_status === 0, 'is-checked': form.gift_status === 1}" style="cursor: default !important;">
+                                          <span class="el-checkbox__inner" />
+                                        </span>
                                       </span>
-                                    </span>
-                                  </div>
-                                </span>
-                                <span class="content-item" style="line-height: 1.5rem;">{{ $t('__giftEffect') }}</span>
+                                    </div>
+                                  </span>
+                                  <span class="content-item" style="line-height: 1.5rem;">{{ $t('__giftEffect') }}</span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div class="d-flex">
-                            <div class="d-flex flex-column basis-50" style="width: 125px; flex: 1 1 0%;">
-                              <span class="title-item mt-4">{{ $t('__createdAt') }}</span>
-                              <span class="content-item mt-2">{{ form.created_at }}</span>
-                            </div>
-                            <div class="d-flex flex-column basis-50" style="width: 125px; flex: 1 1 0%;">
-                              <span class="title-item mt-4">{{ $t('__lastLoginAt') }}</span>
-                              <span class="content-item mt-2">{{ form.lastLoginAt }}</span>
+                            <div class="d-flex">
+                              <div class="d-flex flex-column basis-50" style="width: 125px; flex: 1 1 0%;">
+                                <span class="title-item mt-4">{{ $t('__createdAt') }}</span>
+                                <span class="content-item mt-2">{{ form.created_at }}</span>
+                              </div>
+                              <div class="d-flex flex-column basis-50" style="width: 125px; flex: 1 1 0%;">
+                                <span class="title-item mt-4">{{ $t('__lastLoginAt') }}</span>
+                                <span class="content-item mt-2">{{ form.lastLoginAt }}</span>
+                              </div>
                             </div>
                           </div>
                           <div class="el-loading-mask" style="display: none;">
