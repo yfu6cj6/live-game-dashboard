@@ -24,7 +24,7 @@
                               <span class="breadcrumb-separator">/</span>
                             </div>
                             <div class="swiper-slide" style="margin-right: 10px;">
-                              <span class="active">{{ agentInfo.account }}</span>
+                              <span class="active">{{ agentInfo.fullName }}</span>
                             </div>
                           </div>
                           <span class="swiper-notification" aria-live="assertive" aria-atomic="true" />
@@ -41,7 +41,7 @@
                       </div>
                       <div class="info-item">
                         <label>{{ `${$t('__balance')}:` }}</label>
-                        <span>{{ agentInfo.balance }}</span>
+                        <span>{{ agentInfoBalance }}</span>
                       </div>
                       <div class="info-item">
                         <label>{{ `${$t('__currency')}:` }}</label>

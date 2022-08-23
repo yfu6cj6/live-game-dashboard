@@ -281,8 +281,8 @@ const defaultForm = {
   confirmPassword: '',
   status: '1',
   timeZone: 1,
-  effectAgentLine: false,
-  isAdmin: false,
+  effectAgentLine: true,
+  isAdmin: true,
   remark: '',
   userPassword: ''
 }

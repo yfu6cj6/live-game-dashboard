@@ -4,7 +4,7 @@
       <div class="bg-black">
         <div class="d-flex searchFrame">
           <div class="d-flex pad_frame wrap">
-            <div v-if="isAdminister" class="addCtrl">
+            <div v-if="!isAgentSubAccount" class="addCtrl">
               <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
             </div>
             <div class="pad_frame_2">
@@ -33,7 +33,7 @@
         <div class="d-flex searchFrame">
           <div class="d-flex pad_frame wrap">
             <div class="d-flex searchItemBox">
-              <div v-if="isAdminister">
+              <div v-if="!isAgentSubAccount">
                 <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
               </div>
               <div class="searchItem pad_frame">
@@ -93,7 +93,7 @@
                   <span class="news">{{ item.updated_at }}</span>
                 </div>
               </div>
-              <div v-if="isAdminister" class="right">
+              <div v-if="!isAgentSubAccount" class="right">
                 <div class="adminCtrl">
                   <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                 </div>
@@ -161,7 +161,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'isAdminister'
+      'isAgentSubAccount'
     ])
   },
   created() {

@@ -47,7 +47,7 @@
                   <svg-icon icon-class="coin" class="gray-deep" style="height: 1.08333rem; width: 1.08333rem;" />
                 </div>
                 <span>
-                  <span class="font-weight-bold ml-1">{{ item.balance }}</span>
+                  <span class="font-weight-bold ml-1">{{ numberFormatStr(item.balance) }}</span>
                 </span>
               </span>
             </div>
