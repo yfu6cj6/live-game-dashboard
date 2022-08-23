@@ -4,7 +4,7 @@
       <div class="flex-column flex-fill" style="background: rgb(0, 0, 0);">
         <div class="flex-column flex-fill">
           <div class="flex-column flex-fill">
-            <div v-loading="dialogLoading" class="agent-form subAccount-form popup-page flex-column flex-fill h-100">
+            <div v-loading="dialogLoading" class="agent-form subAccount-form popup-page flex-column flex-fill">
               <div class="form-alert">
                 <div v-show="errorTips === ''" class="parent-info">{{ `${$t('__superiorAgent')}: ${agentInfo.account}` }}</div>
                 <div v-show="errorTips !== ''" role="alert" class="el-alert el-alert--warning is-light fade show">
