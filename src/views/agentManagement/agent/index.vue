@@ -441,8 +441,8 @@
       ref="agentInfoDialog"
       :visible="curDialogIndex === dialogEnum.agentInfo"
       :form="editForm"
+      :agent-level="agentLevel"
       @close="closeDialogEven"
-      @searchAgent="searchAgent"
     />
   </div>
 </template>
@@ -451,7 +451,7 @@
 import { agentSearch, agentCommissionRateLog, agentRollingRateLog, agentGiftRateLog, agentModPassword,
   agentGetSetBalanceInfo, agentDepositBalance, agentWithdrawBalance, agentModTotallyDisabled,
   agentModStatus, agentModBetStatus, agentBalanceOneClickRecycling, agentWeeklyLossSettlement,
-  agentModOneClickRecycling, agentModGiftStatus } from '@/api/agentManagement/agent'
+  agentModOneClickRecycling, agentModGiftStatus, agentTreeSearch } from '@/api/agentManagement/agent'
 import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
 import { currencySearch } from '@/api/backstageManagement/currencyManagement'
 import handlePageChange from '@/mixin/handlePageChange';
@@ -520,7 +520,8 @@ export default {
       editStepEnum: {},
       rateData: [],
       curDialogIndex: 0,
-      account: ''
+      account: '',
+      agentLevel: []
     }
   },
   computed: {
@@ -847,12 +848,15 @@ export default {
       this.curDialogIndex = this.dialogEnum.none
     },
     agentInfoClick(rowData) {
+      this.$refs.agentInfoDialog.setDialogLoading(true)
       this.editForm = JSON.parse(JSON.stringify(rowData))
-      this.curDialogIndex = this.dialogEnum.agentInfo
-      console.log('agentInfoClick');
-    },
-    searchAgent() {
-
+      agentTreeSearch({ agentId: this.editForm.id }).then((res) => {
+        this.agentLevel = [res.SubAgentLevelInfo]
+        // this.curDialogIndex = this.dialogEnum.agentInfo
+        this.$refs.agentInfoDialog.setDialogLoading(false)
+      }).catch(() => {
+        this.$refs.agentInfoDialog.setDialogLoading(false)
+      })
     }
   }
 }

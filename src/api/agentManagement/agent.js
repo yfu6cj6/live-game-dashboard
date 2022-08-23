@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+export function agentTreeSearch(data) {
+  return request({
+    url: '/agent/agentTree',
+    method: 'post',
+    data: data
+  })
+}
+
 export function agentSearch(data) {
   return request({
     url: '/agent/search',
