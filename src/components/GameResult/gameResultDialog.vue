@@ -58,19 +58,30 @@
                 <div class="road d-block w-100">
                   <div class="d-block w-100">
                     <div class="pan-container w-100" style="padding-top: 17.6471%;">
-                      <div class="pan-body" style="width: 164.706%;">
-                        <svg viewBox="0 0 560 60" class="bigRoad" />
+                      <div class="pan-body" :style="`width: ${bigRoad.roadData[0].length * 2.9}%;`">
+                        <svg :viewBox="`0 0 ${bigRoad.roadData[0].length * 10} 60`" class="bigRoad" />
                       </div>
                     </div>
-                    <svg viewBox="0 0 340 30" class="bigEyeRoad" />
-                    <div class="db-road w-100">
-                      <svg viewBox="0 0 340 30" class="smallRoad cockroachRoad w-100" />
+                    <div class="pan-container w-100" style="padding-top: 8.82355%;">
+                      <div class="pan-body" :style="`width: ${bigEyeRoad.roadData[0].length * 1.45}%;`">
+                        <svg :viewBox="`0 0 ${bigEyeRoad.roadData[0].length * 5} 30`" class="bigEyeRoad" />
+                      </div>
                     </div>
-                  </div>
-                  <div class="d-block w-100">
-                    <div class="pan-container" style="display: block;">
-                      <div class="pan-body" style="position: static;">
-                        <svg viewBox="0 0 180 60" class="beadRoad w-100" />
+                    <div class="d-flex">
+                      <div class="pan-container" style="padding-top: 8.82355%;">
+                        <div class="pan-body" :style="`width: ${smallEyeRoad.roadData[0].length * 2.9}%;`">
+                          <svg :viewBox="`0 0 ${smallEyeRoad.roadData[0].length * 5} 30`" class="smallRoad" />
+                        </div>
+                      </div>
+                      <div class="pan-container" style="padding-top: 8.82355%;">
+                        <div class="pan-body" :style="`width: ${cockroachRoad.roadData[0].length * 2.9}%;`">
+                          <svg :viewBox="`0 0 ${cockroachRoad.roadData[0].length * 5} 30`" class="cockroachRoad" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="pan-container w-100" style="padding-top: 35.2942%;">
+                      <div class="pan-body" :style="`width: ${beadRoad.roadData[0].length * 5.8}%;`">
+                        <svg :viewBox="`0 0 ${beadRoad.roadData[0].length * 20} 120`" class="beadRoad" />
                       </div>
                     </div>
                   </div>
@@ -229,8 +240,8 @@ export default {
   methods: {
     drawing() {
       var bigRoadLastIndex = this.bigRoad.lastIndex;
-      if (bigRoadLastIndex < 38) {
-        bigRoadLastIndex = 38
+      if (bigRoadLastIndex < 34) {
+        bigRoadLastIndex = 34
       }
       for (let i = 0, max = this.bigRoad.allData.length; i < max; i++) {
         this.bigRoad.roadData[i] = this.bigRoad.allData[i].slice(0, bigRoadLastIndex + 1);
@@ -238,7 +249,7 @@ export default {
       this.bigRoad.roadData = JSON.parse(JSON.stringify(this.bigRoad.roadData));
       this.$nextTick(() => {
         const bigRoadEl = document.getElementsByClassName('bigRoad')[0]
-        const width = 560
+        const width = this.bigRoad.roadData[0].length * 10
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
         rect.setAttribute('x', 0)
         rect.setAttribute('y', 0)
@@ -249,7 +260,7 @@ export default {
         bigRoadEl.appendChild(rect)
         const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
         let points = ''
-        for (let i = 0; i < 57; i++) {
+        for (let i = 0, max = this.bigRoad.roadData[0].length + 1; i < max; i++) {
           const x = i * 10
           points += i % 2 === 0 ? `${x},60 ${x},0 ` : `${x},0 ${x},60 `
         }
@@ -355,16 +366,16 @@ export default {
       })
 
       var bigEyeRoadLastIndex = this.bigEyeRoad.lastIndex;
-      if (bigEyeRoadLastIndex < 76) {
-        bigEyeRoadLastIndex = 76
+      if (bigEyeRoadLastIndex < 68) {
+        bigEyeRoadLastIndex = 68
       }
       for (let i = 0, max = this.bigEyeRoad.allData.length; i < max; i++) {
-        this.bigEyeRoad.roadData[i] = this.bigEyeRoad.allData[i].slice(0, bigEyeRoadLastIndex);
+        this.bigEyeRoad.roadData[i] = this.bigEyeRoad.allData[i].slice(0, bigEyeRoadLastIndex + 1);
       }
       this.bigEyeRoad.roadData = JSON.parse(JSON.stringify(this.bigEyeRoad.roadData));
       this.$nextTick(() => {
         const bigEyeRoadEl = document.getElementsByClassName('bigEyeRoad')[0]
-        const width = 340
+        const width = this.bigEyeRoad.roadData[0].length * 10
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
         rect.setAttribute('x', 0)
         rect.setAttribute('y', 0)
@@ -375,7 +386,7 @@ export default {
         bigEyeRoadEl.appendChild(rect)
         const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
         let points = ''
-        for (let i = 0; i < 35; i++) {
+        for (let i = 0, max = this.bigEyeRoad.roadData[0].length + 1; i < max; i++) {
           const x = i * 10
           points += i % 2 === 0 ? `${x},30 ${x},0 ` : `${x},0 ${x},30 `
         }
@@ -440,16 +451,16 @@ export default {
       })
 
       var smallEyeRoadLastIndex = this.smallEyeRoad.lastIndex;
-      if (smallEyeRoadLastIndex < 38) {
-        smallEyeRoadLastIndex = 38
+      if (smallEyeRoadLastIndex < 34) {
+        smallEyeRoadLastIndex = 34
       }
       for (let i = 0, max = this.smallEyeRoad.allData.length; i < max; i++) {
-        this.smallEyeRoad.roadData[i] = this.smallEyeRoad.allData[i].slice(0, smallEyeRoadLastIndex);
+        this.smallEyeRoad.roadData[i] = this.smallEyeRoad.allData[i].slice(0, smallEyeRoadLastIndex + 1);
       }
       this.smallEyeRoad.roadData = JSON.parse(JSON.stringify(this.smallEyeRoad.roadData));
       this.$nextTick(() => {
         const smallRoadEl = document.getElementsByClassName('smallRoad')[0]
-        const width = 170
+        const width = this.smallEyeRoad.roadData[0].length * 10
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
         rect.setAttribute('x', 0)
         rect.setAttribute('y', 0)
@@ -460,7 +471,7 @@ export default {
         smallRoadEl.appendChild(rect)
         const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
         let points = ''
-        for (let i = 0; i < 18; i++) {
+        for (let i = 0, max = this.smallEyeRoad.roadData[0].length + 1; i < max; i++) {
           const x = i * 10
           points += i % 2 === 0 ? `${x},30 ${x},0 ` : `${x},0 ${x},30 `
         }
@@ -473,8 +484,6 @@ export default {
         polyline.setAttribute('class', 'grid-line')
         polyline.setAttribute('style', 'stroke: rgb(170, 170, 170); stroke-width: 0.3;')
         smallRoadEl.appendChild(polyline)
-        const g = document.createElementNS("http://www.w3.org/2000/svg", "g")
-        g.setAttribute('transform', 'translate(0,0)')
         for (let i = 0, max = this.smallEyeRoad.roadData.length; i < max; i++) {
           for (let j = 0, jMax = this.smallEyeRoad.roadData[i].length; j < jMax; j++) {
             const item = this.smallEyeRoad.roadData[i][j]
@@ -504,25 +513,46 @@ export default {
             winnerCircle.setAttribute('r', '1.7')
             ball.appendChild(winnerCircle)
             cell.appendChild(ball)
-            g.appendChild(cell)
-            smallRoadEl.appendChild(g)
+            smallRoadEl.appendChild(cell)
           }
         }
+        const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line1.setAttribute('x1', 0)
+        line1.setAttribute('y1', 0)
+        line1.setAttribute('x2', width)
+        line1.setAttribute('y2', 0)
+        line1.setAttribute('stroke', '#333')
+        line1.setAttribute('stroke-width', '0.6')
+        smallRoadEl.appendChild(line1)
+        const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line2.setAttribute('x1', 0)
+        line2.setAttribute('y1', 29.7)
+        line2.setAttribute('x2', width)
+        line2.setAttribute('y2', 29.7)
+        line2.setAttribute('stroke', '#333')
+        line2.setAttribute('stroke-width', '0.6')
+        smallRoadEl.appendChild(line2)
+        const line3 = document.createElementNS("http://www.w3.org/2000/svg", "line")
+        line3.setAttribute('x1', (width / 2) - 0.3)
+        line3.setAttribute('y1', 0)
+        line3.setAttribute('x2', (width / 2) - 0.3)
+        line3.setAttribute('y2', 30)
+        line3.setAttribute('stroke', '#333')
+        line3.setAttribute('stroke-width', '0.6')
+        smallRoadEl.appendChild(line3)
       })
 
       var cockroachRoadLastIndex = this.cockroachRoad.lastIndex
-      if (cockroachRoadLastIndex < 38) {
-        cockroachRoadLastIndex = 38
+      if (cockroachRoadLastIndex < 34) {
+        cockroachRoadLastIndex = 34
       }
       for (let i = 0, max = this.cockroachRoad.allData.length; i < max; i++) {
-        this.cockroachRoad.roadData[i] = this.cockroachRoad.allData[i].slice(0, cockroachRoadLastIndex);
+        this.cockroachRoad.roadData[i] = this.cockroachRoad.allData[i].slice(0, cockroachRoadLastIndex + 1);
       }
       this.cockroachRoad.roadData = JSON.parse(JSON.stringify(this.cockroachRoad.roadData));
       this.$nextTick(() => {
         const cockroachRoadEl = document.getElementsByClassName('cockroachRoad')[0]
-        const width = 170
-        const g = document.createElementNS("http://www.w3.org/2000/svg", "g")
-        g.setAttribute('transform', 'translate(170,0)')
+        const width = this.cockroachRoad.roadData[0].length * 10
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
         rect.setAttribute('x', 0)
         rect.setAttribute('y', 0)
@@ -530,10 +560,10 @@ export default {
         rect.setAttribute('height', 30)
         rect.setAttribute('class', 'frame')
         rect.setAttribute('style', 'fill: rgb(255, 255, 255);')
-        g.appendChild(rect)
+        cockroachRoadEl.appendChild(rect)
         const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
         let points = ''
-        for (let i = 0; i < 18; i++) {
+        for (let i = 0, max = this.cockroachRoad.roadData[0].length + 1; i < max; i++) {
           const x = i * 10
           points += i % 2 === 0 ? `${x},30 ${x},0 ` : `${x},0 ${x},30 `
         }
@@ -545,7 +575,7 @@ export default {
         polyline.setAttribute('fill', 'none')
         polyline.setAttribute('class', 'grid-line')
         polyline.setAttribute('style', 'stroke: rgb(170, 170, 170); stroke-width: 0.3;')
-        g.appendChild(polyline)
+        cockroachRoadEl.appendChild(polyline)
         for (let i = 0, max = this.cockroachRoad.roadData.length; i < max; i++) {
           for (let j = 0, jMax = this.cockroachRoad.roadData[i].length; j < jMax; j++) {
             const item = this.cockroachRoad.roadData[i][j]
@@ -576,63 +606,54 @@ export default {
             winnerLine.setAttribute('y2', `${4 + (i * 5)}`)
             ball.appendChild(winnerLine)
             cell.appendChild(ball)
-            g.appendChild(cell)
-            cockroachRoadEl.appendChild(g)
+            cockroachRoadEl.appendChild(cell)
           }
         }
         const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line")
-        line1.setAttribute('x1', 169.7)
+        line1.setAttribute('x1', 0)
         line1.setAttribute('y1', 0)
-        line1.setAttribute('x2', 169.7)
-        line1.setAttribute('y2', 30)
+        line1.setAttribute('x2', width)
+        line1.setAttribute('y2', 0)
         line1.setAttribute('stroke', '#333')
         line1.setAttribute('stroke-width', '0.6')
         cockroachRoadEl.appendChild(line1)
         const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line")
         line2.setAttribute('x1', 0)
-        line2.setAttribute('y1', 0)
-        line2.setAttribute('x2', 340)
-        line2.setAttribute('y2', 0)
+        line2.setAttribute('y1', 29.7)
+        line2.setAttribute('x2', width)
+        line2.setAttribute('y2', 29.7)
         line2.setAttribute('stroke', '#333')
         line2.setAttribute('stroke-width', '0.6')
         cockroachRoadEl.appendChild(line2)
-        const line3 = document.createElementNS("http://www.w3.org/2000/svg", "line")
-        line3.setAttribute('x1', 0)
-        line3.setAttribute('y1', 29.7)
-        line3.setAttribute('x2', 340)
-        line3.setAttribute('y2', 29.7)
-        line3.setAttribute('stroke', '#333')
-        line3.setAttribute('stroke-width', '0.6')
-        cockroachRoadEl.appendChild(line3)
       })
 
       var beadRoadLastIndex = this.beadRoad.lastIndex
-      if (beadRoadLastIndex < 18) {
-        beadRoadLastIndex = 18
+      if (beadRoadLastIndex < 17) {
+        beadRoadLastIndex = 17
       }
       for (let i = 0, max = this.beadRoad.allData.length; i < max; i++) {
-        this.beadRoad.roadData[i] = this.beadRoad.allData[i].slice(0, beadRoadLastIndex);
+        this.beadRoad.roadData[i] = this.beadRoad.allData[i].slice(0, beadRoadLastIndex + 1);
       }
       this.beadRoad.roadData = JSON.parse(JSON.stringify(this.beadRoad.roadData));
       this.$nextTick(() => {
         const beadRoadEl = document.getElementsByClassName('beadRoad')[0]
-        const width = 180
+        const width = this.beadRoad.roadData[0].length * 20
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
         rect.setAttribute('x', 0)
         rect.setAttribute('y', 0)
         rect.setAttribute('width', width)
-        rect.setAttribute('height', 60)
+        rect.setAttribute('height', 120)
         rect.setAttribute('class', 'frame')
         rect.setAttribute('style', 'fill: rgb(255, 255, 255);')
         beadRoadEl.appendChild(rect)
         const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline")
         let points = ''
-        for (let i = 0; i < 19; i++) {
-          const x = i * 10
-          points += i % 2 === 0 ? `${x},60 ${x},0 ` : `${x},0 ${x},60 `
+        for (let i = 0, max = this.beadRoad.roadData[0].length + 1; i < max; i++) {
+          const x = i * 20
+          points += i % 2 === 0 ? `${x},120 ${x},0 ` : `${x},0 ${x},120 `
         }
         for (let i = 0, max = this.beadRoad.roadData.length; i < max; i++) {
-          const y = i * 10
+          const y = i * 20
           points += i % 2 === 0 ? `${width},${y} 0,${y} ` : `0,${y} ${width},${y} `
         }
         polyline.setAttribute('points', points)
@@ -650,10 +671,10 @@ export default {
             if (item.split('_')[2] === '1') {
               const currentRect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
               currentRect.setAttribute('class', 'frame current')
-              currentRect.setAttribute('x', `${j * 10}`)
-              currentRect.setAttribute('y', `${i * 10}`)
-              currentRect.setAttribute('width', 10)
-              currentRect.setAttribute('height', 10)
+              currentRect.setAttribute('x', `${j * 20}`)
+              currentRect.setAttribute('y', `${i * 20}`)
+              currentRect.setAttribute('width', 20)
+              currentRect.setAttribute('height', 20)
               ball.appendChild(currentRect)
             }
             const winnerCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
@@ -670,33 +691,33 @@ export default {
               winnerText = this.$t('__tie')
             }
             winnerCircle.setAttribute('class', winnerCircleClassName)
-            winnerCircle.setAttribute('cx', `${5 + (j * 10)}`)
-            winnerCircle.setAttribute('cy', `${5 + (i * 10)}`)
-            winnerCircle.setAttribute('r', '3.5')
+            winnerCircle.setAttribute('cx', `${10 + (j * 20)}`)
+            winnerCircle.setAttribute('cy', `${10 + (i * 20)}`)
+            winnerCircle.setAttribute('r', '7')
             winnerCircle.setAttribute('style', 'stroke: none; stroke-width: 0.5;')
             ball.appendChild(winnerCircle)
             if (item.split('_')[1] === '1' || item.split('_')[1] === '3') {
               const bankerPairCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
-              bankerPairCircle.setAttribute('cx', `${2.5 + (j * 10)}`)
-              bankerPairCircle.setAttribute('cy', `${2.5 + (i * 10)}`)
-              bankerPairCircle.setAttribute('r', '1')
+              bankerPairCircle.setAttribute('cx', `${5 + (j * 20)}`)
+              bankerPairCircle.setAttribute('cy', `${5 + (i * 20)}`)
+              bankerPairCircle.setAttribute('r', '2')
               bankerPairCircle.setAttribute('style', 'fill: rgb(255, 32, 23); stroke: rgb(255, 255, 255); stroke-width: 0.1;')
               ball.appendChild(bankerPairCircle)
             }
             if (item.split('_')[1] === '2' || item.split('_')[1] === '3') {
               const playerPairCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle")
-              playerPairCircle.setAttribute('cx', `${7.5 + (j * 10)}`)
-              playerPairCircle.setAttribute('cy', `${7.5 + (i * 10)}`)
-              playerPairCircle.setAttribute('r', '1')
-              playerPairCircle.setAttribute('style', 'fill: rgb(23, 32, 255); stroke: rgb(255, 255, 255); stroke-width: 0.1;')
+              playerPairCircle.setAttribute('cx', `${15 + (j * 20)}`)
+              playerPairCircle.setAttribute('cy', `${15 + (i * 20)}`)
+              playerPairCircle.setAttribute('r', '2')
+              playerPairCircle.setAttribute('style', 'fill: rgb(0, 144, 255); stroke: rgb(255, 255, 255); stroke-width: 0.1;')
               ball.appendChild(playerPairCircle)
             }
             const winnerTextEl = document.createElementNS("http://www.w3.org/2000/svg", "text")
             winnerTextEl.setAttribute('class', 'winnerText')
-            winnerTextEl.setAttribute('x', `${5 + (j * 10)}`)
-            winnerTextEl.setAttribute('y', `${7 + (i * 10)}`)
+            winnerTextEl.setAttribute('x', `${10 + (j * 20)}`)
+            winnerTextEl.setAttribute('y', `${14 + (i * 20)}`)
             winnerTextEl.setAttribute('text-anchor', 'middle')
-            winnerTextEl.setAttribute('style', 'font-size: 5px; font-weight: bolder;')
+            winnerTextEl.setAttribute('style', 'font-size: 10px; font-weight: bolder;')
             winnerTextEl.innerHTML = winnerText
             ball.appendChild(winnerTextEl)
             cell.appendChild(ball)
@@ -713,9 +734,9 @@ export default {
         beadRoadEl.appendChild(line1)
         const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line")
         line2.setAttribute('x1', 0)
-        line2.setAttribute('y1', 59.7)
+        line2.setAttribute('y1', 119.7)
         line2.setAttribute('x2', width)
-        line2.setAttribute('y2', 59.7)
+        line2.setAttribute('y2', 119.7)
         line2.setAttribute('stroke', '#333')
         line2.setAttribute('stroke-width', '0.6')
         beadRoadEl.appendChild(line2)
