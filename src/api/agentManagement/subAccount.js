@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+export function subAccountTreeSearch(data) {
+  return request({
+    url: '/agent/subAccount/agentTree',
+    method: 'post',
+    data: data
+  })
+}
+
 export function subAccountSearch(data) {
   return request({
     url: '/agent/subAccount/search',

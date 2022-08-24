@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+export function memberTreeSearch(data) {
+  return request({
+    url: '/member/agentTree',
+    method: 'post',
+    data: data
+  })
+}
+
 export function memberSearch(data) {
   return request({
     url: '/member/search',

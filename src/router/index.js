@@ -293,26 +293,26 @@ export const asyncRoutes = [
     }]
   },
 
-  // {
-  //   // 禮物記錄
-  //   path: '/giftRecord',
-  //   component: Layout,
-  //   redirect: '/giftRecord',
-  //   meta: { title: '__giftRecord', icon: 'el-icon-data-analysis', permission: 'GiftManage.Record' },
-  //   children: [{
-  //     path: 'giftRecord',
-  //     name: 'GiftRecord',
-  //     component: () => import('@/views/giftRecord/index'),
-  //     meta: { title: '__giftRecord' }
-  //   },
-  //   {
-  //     path: 'giftRecord/:id(\\d+)',
-  //     name: 'GiftRecord{0}',
-  //     component: () => import('@/views/giftRecord/index'),
-  //     meta: { title: '__giftRecord', activeMenu: '/giftRecord/giftRecord' },
-  //     hidden: true
-  //   }]
-  // },
+  {
+    // 禮物記錄
+    path: '/giftRecord',
+    component: Layout,
+    redirect: '/giftRecord',
+    meta: { title: '__giftRecord', icon: 'el-icon-data-analysis', permission: 'GiftManage.Record' },
+    children: [{
+      path: 'giftRecord',
+      name: 'GiftRecord',
+      component: () => import('@/views/giftRecord/index'),
+      meta: { title: '__giftRecord' }
+    },
+    {
+      path: 'giftRecord/:id(\\d+)',
+      name: 'GiftRecord{0}',
+      component: () => import('@/views/giftRecord/index'),
+      meta: { title: '__giftRecord', activeMenu: '/giftRecord/giftRecord' },
+      hidden: true
+    }]
+  },
 
   // {
   //   // 贈禮報表

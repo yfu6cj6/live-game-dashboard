@@ -19,13 +19,13 @@
                                 ref="tree"
                                 :data="agentLevel"
                                 :props="agentLevelProps"
-                                node-key="AgentId"
+                                node-key="selected"
                                 :render-content="renderContent"
                                 :indent="8"
                                 highlight-current
                                 :expand-on-click-node="false"
                                 default-expand-all
-                                :current-node-key="form.id"
+                                :current-node-key="1"
                                 @node-click="handleNodeClick"
                               />
                             </div>
@@ -265,7 +265,9 @@ export default {
     },
     handleNodeClick(data, node, com) {
       node.expanded = true
-      this.$emit('agent-click', JSON.parse(JSON.stringify(data.AgentId)))
+      if (data.AgentId !== null) {
+        this.$emit('agent-click', JSON.parse(JSON.stringify(data.AgentId)))
+      }
     }
   }
 }

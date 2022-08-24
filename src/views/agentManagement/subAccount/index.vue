@@ -274,8 +274,9 @@
 </template>
 
 <script>
-import { subAccountSearch, subAccountModPassword, subAccountModStatus, subAccountModEffectAgentLine, subAccountGetAgentLine, subAccountSetHasAgents } from '@/api/agentManagement/subAccount'
-import { agentTreeSearch } from '@/api/agentManagement/agent'
+import { subAccountSearch, subAccountModPassword, subAccountModStatus,
+  subAccountModEffectAgentLine, subAccountGetAgentLine,
+  subAccountSetHasAgents, subAccountTreeSearch } from '@/api/agentManagement/subAccount'
 import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
 import handlePageChange from '@/mixin/handlePageChange'
 import SubAccountEditDialog from './subAccountEditDialog'
@@ -509,7 +510,7 @@ export default {
     agentInfoClick(rowData) {
       this.$refs.agentInfoDialog.setDialogLoading(true)
       this.editForm = JSON.parse(JSON.stringify(rowData))
-      agentTreeSearch({ agentId: this.editForm.id }).then((res) => {
+      subAccountTreeSearch({ accountId: this.editForm.id }).then((res) => {
         this.agentLevel = res
         this.curDialogIndex = this.dialogEnum.agentInfo
         this.$refs.agentInfoDialog.setDialogLoading(false)

@@ -429,8 +429,8 @@
 import { memberSearch, memberModPassword, memberGetSetBalanceInfo,
   memberDepositBalance, memberWithdrawBalance, memberModStatus,
   memberModBetStatus, memberGetLastBetTime, memberOneClickRecycling,
-  memberWeeklyLossSettlement, memberModGiftStatus, memberModMuteStatus } from '@/api/agentManagement/member'
-import { agentTreeSearch } from '@/api/agentManagement/agent'
+  memberWeeklyLossSettlement, memberModGiftStatus, memberModMuteStatus,
+  memberTreeSearch } from '@/api/agentManagement/member'
 import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
 import handlePageChange from '@/mixin/handlePageChange'
 import MemberEditDialog from './memberEditDialog'
@@ -788,7 +788,7 @@ export default {
     agentInfoClick(rowData) {
       this.$refs.agentInfoDialog.setDialogLoading(true)
       this.editForm = JSON.parse(JSON.stringify(rowData))
-      agentTreeSearch({ agentId: this.editForm.id }).then((res) => {
+      memberTreeSearch({ memberId: this.editForm.id }).then((res) => {
         this.agentLevel = res
         this.curDialogIndex = this.dialogEnum.agentInfo
         this.$refs.agentInfoDialog.setDialogLoading(false)
