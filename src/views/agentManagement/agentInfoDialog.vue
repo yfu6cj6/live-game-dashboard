@@ -36,7 +36,7 @@
                             <div class="d-flex flex-wrap">
                               <div class="d-flex  flex-column basis-50">
                                 <span class="title-item" style="width: 125px; flex: 1 1 0%;">{{ $t('__balance') }}</span>
-                                <span class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ form.balance }}</span>
+                                <span class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ form.balanceLabel }}</span>
                               </div>
                               <div class="d-flex  flex-column basis-50">
                                 <span class="title-item" style="width: 120px; flex: 1 1 0%;">{{ $t('__currency') }}</span>
@@ -49,11 +49,11 @@
                               <div class="d-flex basis-100">
                                 <div class="d-flex flex-column basis-50">
                                   <span class="title-item gary mt-4">{{ $t('__directPlayerCount') }}</span>
-                                  <span class="content-item mt-2 ">{{ form.directPlayerCount }}</span>
+                                  <span class="content-item mt-2 ">{{ form.directAgentCountLabel }}</span>
                                 </div>
                                 <div class="d-flex flex-column basis-50">
                                   <span class="title-item gary mt-4">{{ $t('__totalPlayerCount') }}</span>
-                                  <span class="content-item mt-2">{{ form.totalPlayerCount }}</span>
+                                  <span class="content-item mt-2">{{ form.directPlayerCountLabel }}</span>
                                 </div>
                               </div>
                             </div>

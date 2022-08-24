@@ -692,6 +692,7 @@ export default {
         element.liveRollingRateLabel = numberFormat(element.live_rolling_rate)
         element.liveGiftRateLabel = numberFormat(element.live_gift_rate)
         element.open = open.includes(element.id)
+        element.lastLoginAt = element.lastLoginAt === '' ? '-' : element.lastLoginAt
 
         var limit = ''
         for (var i = 0; i < element.handicaps.length; i++) {
@@ -736,6 +737,10 @@ export default {
     },
     onLimitBtnClick(rowData) {
       this.editForm = JSON.parse(JSON.stringify(rowData))
+      this.editForm.handicaps.forEach(element => {
+        element.bet_maxLabel = numberFormat(element.bet_max)
+        element.bet_minLabel = numberFormat(element.bet_min)
+      });
       this.account = rowData.account
       this.curDialogIndex = this.dialogEnum.limit
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__agentManagement'), true, () => {
@@ -852,6 +857,9 @@ export default {
     agentInfoClick(rowData) {
       this.$refs.agentInfoDialog.setDialogLoading(true)
       this.editForm = JSON.parse(JSON.stringify(rowData))
+      this.editForm.balanceLabel = numberFormat(this.editForm.balance)
+      this.editForm.directAgentCountLabel = numberFormat(this.editForm.directAgentCount, 0)
+      this.editForm.directPlayerCountLabel = numberFormat(this.editForm.directPlayerCount, 0)
       agentTreeSearch({ agentId: this.editForm.id }).then((res) => {
         this.agentLevel = res
         this.curDialogIndex = this.dialogEnum.agentInfo

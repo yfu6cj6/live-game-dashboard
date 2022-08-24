@@ -665,6 +665,7 @@ export default {
         element.totalPayoutLabel = numberFormat(element.total_payout)
         element.totalValidBetAmountLabel = numberFormat(element.total_valid_bet_amount)
         element.liveRollingRateLabel = numberFormat(element.live_rolling_rate)
+        element.lastLoginAt = element.lastLoginAt === '' ? '-' : element.lastLoginAt
         element.open = open.includes(element.id)
         var limit = ''
         for (var i = 0; i < element.handicaps.length; i++) {
@@ -705,6 +706,10 @@ export default {
     },
     onLimitBtnClick(rowData) {
       this.editForm = JSON.parse(JSON.stringify(rowData))
+      this.editForm.handicaps.forEach(element => {
+        element.bet_maxLabel = numberFormat(element.bet_max)
+        element.bet_minLabel = numberFormat(element.bet_min)
+      });
       this.account = rowData.name
       this.curDialogIndex = this.dialogEnum.limit
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__memberManagement'), true, () => {

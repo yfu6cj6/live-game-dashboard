@@ -31,11 +31,11 @@
                     <span class="handicap-item ww-5">{{ item.id }}</span>
                     <span class="handicap-item ww-5">{{ item.nickname }}</span>
                     <span class="handicap-item ww-9  text-right">
-                      <span>{{ item.bet_min }}</span>
+                      <span>{{ item.bet_minLabel }}</span>
                     </span>
                     <span class="handicap-item ww-2 text-center">-</span>
                     <span class="handicap-item ww-10 text-right">
-                      <span>{{ item.bet_max }}</span>
+                      <span>{{ item.bet_maxLabel }}</span>
                     </span>
                     <span class="handicap-item ww-5 text-center">
                       <span>
@@ -71,8 +71,8 @@
             <tbody>
               <tr v-for="(item, index) in form.handicaps" :key="index">
                 <td align="center" class="nickname">{{ item.nickname }}</td>
-                <td align="center" class="bet_min">{{ item.bet_min }}</td>
-                <td align="center" class="bet_max">{{ item.bet_max }}</td>
+                <td align="center" class="bet_min">{{ item.bet_minLabel }}</td>
+                <td align="center" class="bet_max">{{ item.bet_maxLabel }}</td>
                 <td align="center" class="currency">{{ item.currency }}</td>
               </tr>
             </tbody>

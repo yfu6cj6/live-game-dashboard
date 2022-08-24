@@ -56,7 +56,7 @@
                         </div>
                         <div class="info-item">
                           <label>{{ `${$t('__rollingRate')}: ` }}</label>
-                          <span>{{ `${agentInfo.liveRollingRate}% ` }}</span>
+                          <span>{{ `${agentInfo.liveRollingRateLabel}% ` }}</span>
                         </div>
                         <div class="info-item">
                           <label>{{ `${$t('__accountStatus')}: ` }}</label>
@@ -236,7 +236,7 @@
                         <limitDialog
                           :title="$t('__handicapLimit')"
                           :visible="curDialogIndex === dialogEnum.limit"
-                          :form="agentInfo"
+                          :form="editForm"
                           :agent-name="account"
                           @close="closeDialogEven"
                         />
@@ -294,7 +294,8 @@ export default {
         member: '',
         subAccount: ''
       },
-      account: ''
+      account: '',
+      editForm: {}
     }
   },
   computed: {
@@ -412,7 +413,7 @@ export default {
       this.agentInfo = res.agentInfo
       this.agentInfo.balanceLabel = numberFormat(this.agentInfo.balance)
       this.agentInfo.liveCommissionRateLabel = numberFormat(this.agentInfo.live_commission_rate)
-      this.agentInfo.liveRollingRate = numberFormat(this.agentInfo.live_rolling_rate)
+      this.agentInfo.liveRollingRateLabel = numberFormat(this.agentInfo.live_rolling_rate)
       this.agentInfo.directAgentCountLabel = numberFormat(this.agentInfo.directAgentCount, 0)
       this.agentInfo.directPlayerCountLabel = numberFormat(this.agentInfo.directPlayerCount, 0)
       this.agentInfo.currency = this.agentInfo.currency.code
@@ -453,8 +454,22 @@ export default {
     },
     onLimitBtnClick() {
       this.editForm = JSON.parse(JSON.stringify(this.agentInfo))
+      this.editForm.handicaps.forEach(element => {
+        element.bet_maxLabel = numberFormat(element.bet_max)
+        element.bet_minLabel = numberFormat(element.bet_min)
+      });
       this.account = this.agentInfo.account
       this.curDialogIndex = this.dialogEnum.limit
+      var headerBackTitle = this.$t('__agentManagement')
+      if (this.curTableIndex === this.tableEnum.member) {
+        headerBackTitle = this.$t('__memberManagement')
+      } else if (this.curTableIndex === this.tableEnum.subAccount) {
+        headerBackTitle = this.$t('__subAccountManagement')
+      }
+      this.$store.dispatch('common/setHeaderStyle', [headerBackTitle, true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [headerBackTitle, false, () => { }])
+      }])
     },
     onTotalPlayerBtnClick() {
       this.dataLoading = true

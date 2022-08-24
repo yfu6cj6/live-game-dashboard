@@ -162,6 +162,7 @@
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
 import Dialog from '@/components/Dialog'
+import { numberFormat } from '@/utils/numberFormat'
 
 export default {
   name: 'BalanceDialog',
@@ -274,12 +275,12 @@ export default {
     },
     parentBalance() {
       if (this.operationType === this.operationEnum.depositBalance) {
-        return this.agentBalanceInfo.parentId === 1 ? 'oo' : this.agentBalanceInfo.parentBalance
+        return this.agentBalanceInfo.parentId === 1 ? 'oo' : numberFormat(this.agentBalanceInfo.parentBalance)
       } else {
         if (this.modeType === this.modeEnum.agent) {
-          return this.agentBalanceInfo.agentBalance
+          return numberFormat(this.agentBalanceInfo.agentBalance)
         } else {
-          return this.agentBalanceInfo.memberBalance
+          return numberFormat(this.agentBalanceInfo.memberBalance)
         }
       }
     },
@@ -292,19 +293,19 @@ export default {
     },
     balance() {
       if (this.modeType === this.modeEnum.agent) {
-        return this.agentBalanceInfo.agentBalance
+        return numberFormat(this.agentBalanceInfo.agentBalance)
       } else {
-        return this.agentBalanceInfo.memberBalance
+        return numberFormat(this.agentBalanceInfo.memberBalance)
       }
     },
     enoughBalance() {
       if (this.operationType === this.operationEnum.depositBalance) {
-        return this.agentBalanceInfo.parentBalance > 0
+        return Number(this.agentBalanceInfo.parentBalance) > 0
       } else {
         if (this.modeType === this.modeEnum.agent) {
-          return this.agentBalanceInfo.agentBalance > 0
+          return Number(this.agentBalanceInfo.agentBalance) > 0
         } else {
-          return this.agentBalanceInfo.memberBalance > 0
+          return Number(this.agentBalanceInfo.memberBalance) > 0
         }
       }
     },
