@@ -1,20 +1,42 @@
 <template>
-  <Dialog
-    v-if="visible"
-    :loading="dialogLoading"
-    :title="title"
-    :on-close-even="onClose"
-    :close-on-click-modal="device === 'mobile'"
-  >
-    <div class="loginBarcode">
-      <img :src="form.dns1d" :alt="$t('__loginBarcode')">
-    </div>
-    <span v-if="!dialogLoading" slot="bodyFooter">
-      <a :href="form.dns1d" :download="form.name">
-        <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
-      </a>
-    </span>
-  </Dialog>
+  <div v-if="visible">
+    <template v-if="device==='mobile'">
+      <div class="notice-cover" @click="onClose" />
+      <div v-loading="dialogLoading" class="fadeInUp pp notice animated">
+        <div class="scroll-wrap float">
+          <div class="scroll-inner off">
+            <div class="scroll-view loginBarcode" style="display: block; position: static; max-height: 50vh;">
+              <img :src="form.dns1d" :alt="$t('__loginBarcode')">
+            </div>
+          </div>
+        </div>
+        <div v-if="!dialogLoading" class="d-flex w-100 justify-content-center" style="margin-top: 1.5rem;">
+          <a :href="form.dns1d" :download="form.name">
+            <button type="button" class="el-button bg-yellow common-button el-button--primary" @click.stop="onSubmit">
+              <span>{{ $t('__loginBarcodeDownload') }}</span>
+            </button>
+          </a>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <Dialog
+        :loading="dialogLoading"
+        :title="title"
+        :on-close-even="onClose"
+        :close-on-click-modal="device === 'mobile'"
+      >
+        <div class="loginBarcode">
+          <img :src="form.dns1d" :alt="$t('__loginBarcode')">
+        </div>
+        <span v-if="!dialogLoading" slot="bodyFooter">
+          <a :href="form.dns1d" :download="form.name">
+            <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
+          </a>
+        </span>
+      </Dialog>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -69,5 +91,15 @@ export default {
   width: 150px;
   height: 40px;
   font-size: 20px;
+}
+.notice-cover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 3;
 }
 </style>

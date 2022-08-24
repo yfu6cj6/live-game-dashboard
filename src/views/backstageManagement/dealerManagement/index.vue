@@ -1,178 +1,110 @@
 <template>
   <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
+    <div class="view-container dealerManagement">
+      <div class="bg-black">
         <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.account" :placeholder="$t('__account')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.status" multiple :collapse-tags="statusCollapse" :placeholder="$t('__status')">
-                <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-          </div>
-          <div class="view-container-seachForm-operate">
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
-                {{ $t("__moreSearch") }}
-              </el-button>
-            </p>
+          <div class="yellow-border-bottom search-container">
+            <div class="options">
+              <div class="option">
+                <el-input v-model="searchForm.id" class="input_size" placeholder="ID" />
+              </div>
+              <div class="option">
+                <el-input v-model="searchForm.account" class="input_size" :placeholder="$t('__account')" />
+              </div>
+              <div v-if="!isAgentSubAccount" class="createBtn">
+                <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
+              </div>
+            </div>
+            <div class="options">
+              <div class="option">
+                <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
+              </div>
+              <div class="option options status">
+                <span class="prefix-label" />
+                <div class="comp selected-filter custom">
+                  <el-select
+                    v-model="searchForm.status"
+                    class="d-flex"
+                    multiple
+                    :popper-append-to-body="false"
+                    :collapse-tags="statusCollapse"
+                    :placeholder="$t('__status')"
+                    :popper-class="'custom-dropdown w-auto'"
+                  >
+                    <el-option
+                      v-for="item in selectOption.status"
+                      :key="item.key"
+                      :label="item.nickname"
+                      :value="item.key"
+                    />
+                  </el-select>
+                </div>
+                <span class="suffix-label" />
+              </div>
+              <div class="searchBtn">
+                <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(searchForm, 1)" />
+              </div>
+            </div>
           </div>
         </template>
         <template v-else>
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.account" :placeholder="$t('__account')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.status" multiple filterable :collapse-tags="statusCollapse" :placeholder="$t('__status')">
-                <el-option v-for="item in searchItems.status" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
-              </el-button>
-            </p>
-          </div>
+          -
         </template>
       </div>
-      <div ref="table" class="view-container-table">
+      <div class="table-container">
         <template v-if="tableData.length > 0">
-          <div
+          <dir
             v-for="(item, index) in tableData"
             :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
+            :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
           >
             <template v-if="device === 'mobile'">
-              <div class="left">
+              <span class="number">{{ item.id }}</span>
+              <div class="photo">
                 <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
                 <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
               </div>
-              <div class="right">
+              <div class="info">
                 <div class="item">
-                  <span class="header">ID</span>
-                  <span class="content">{{ item.id }}</span>
+                  <span class="title">{{ $t('__account') }}</span>
+                  <span class="value">{{ item.account }}</span>
                 </div>
                 <div class="item">
-                  <span class="header">{{ $t('__account') }}</span>
-                  <span class="content">{{ item.account }}</span>
+                  <span class="title">{{ $t('__name') }}</span>
+                  <span class="value">{{ item.name }}</span>
                 </div>
                 <div class="item">
-                  <span class="header">{{ $t('__name') }}</span>
-                  <span class="content">{{ item.name }}</span>
+                  <span class="title">{{ $t('__status') }}</span>
+                  <span class="value status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
                 </div>
                 <div class="item">
-                  <span class="header">{{ $t('__status') }}</span>
-                  <span class="content status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__creator') }}</span>
-                  <span class="content">{{ item.creator }}</span>
+                  <span class="title">{{ $t('__creator') }}</span>
+                  <span class="value">{{ item.creator }}</span>
                 </div>
                 <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
-                  <a :href="item.dns1d" :download="item.name">
-                    <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
-                  </a>
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-yellow button" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
+                  <el-button class="bg-yellow button" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                 </div>
               </div>
             </template>
             <template v-else>
-              <div class="item">
-                <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
-                <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
-              </div>
-              <div class="item">
-                <span class="header">ID</span>
-                <span class="content">{{ item.id }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__account') }}</span>
-                <span class="content">{{ item.account }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__name') }}</span>
-                <span class="content">{{ item.name }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__status') }}</span>
-                <span class="status content" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__creator') }}</span>
-                <span class="content">{{ item.creator }}</span>
-              </div>
-              <div class="operate">
-                <div class="loginBar">
-                  <el-button class="bg-yellow loginBar" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
-                </div>
-                <div class="download">
-                  <a :href="item.dns1d" :download="item.name">
-                    <el-button class="bg-yellow download" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
-                  </a>
-                </div>
-                <div class="edit">
-                  <el-button class="bg-yellow edit" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                </div>
-              </div>
+              -
             </template>
+          </dir>
+          <div v-if="totalCount > pageSize" class="more_btn_space">
+            <div v-if="tableData.length >= totalCount" class="search_more">
+              <span>{{ $t("__noMoreInformation") }}</span>
+            </div>
+            <div v-else class="search_more">
+              <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+            </div>
           </div>
         </template>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        <template v-else>
+          <div class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
       </div>
     </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
-    </div>
-
     <editDialog
       ref="createDialog"
       :title="`${$t('__create')}${$t('__dealer')}`"
@@ -211,6 +143,7 @@ import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
 import EditDialog from './editDialog';
 import LoginBarcodeDialog from './loginBarcodeDialog';
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'DealerManagement',
@@ -225,24 +158,52 @@ export default {
         'loginBarcode': 3
       }),
       curDialogIndex: 0,
-      imageList: []
+      imageList: [],
+      selectOption: {}
     }
   },
   computed: {
+    ...mapGetters([
+      'isAgentSubAccount'
+    ]),
     statusCollapse() {
       return this.searchForm.status && this.searchForm.status.length > this.selectCollapseCount;
     }
   },
   watch: {
-    'searchForm.status'() {
-      this.resizeHandler();
-    }
+    // 'searchForm.status'() {
+    //   this.resizeHandler();
+    // }
   },
   created() {
-    this.onSearchBtnClick({}, 1);
+    this.$nextTick(() => {
+      this.onSearchBtnClick({}, 1);
+      this.addSelectFilter()
+      this.setHeaderStyle()
+    })
+  },
+  activated() {
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__dealerManagement'), false, () => { }])
+    },
+    moreInfo() {
+      this.pageSizeCount++;
+      this.handleCurrentChange(1);
+    },
+    addSelectFilter() {
+      this.addSelectDropDownFilter('options status', () => {
+        this.searchForm.status = JSON.parse(JSON.stringify(this.searchItems.status)).map(item => item.key)
+      }, () => {
+        this.searchForm.status = []
+      }, () => {
+        this.selectOption.status = JSON.parse(JSON.stringify(this.searchItems.status)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+    },
     onSearchBtnClick(data, page) {
+      this.pageSizeCount = 1
       this.searchForm = data;
       this.handleCurrentChange(page);
     },
@@ -255,7 +216,8 @@ export default {
       });
     },
     handleRespone(res) {
-      this.searchItems = res.searchItems;
+      this.searchItems = JSON.parse(JSON.stringify(res.searchItems));
+      this.selectOption = JSON.parse(JSON.stringify(res.searchItems))
       this.totalCount = res.rows.length;
       this.allDataByClient = res.rows;
       this.allDataByClient.forEach(element => {
@@ -280,6 +242,10 @@ export default {
     onCreateBtnClick() {
       this.selectForm = { status: this.searchItems.status[0].key };
       this.imageList = [];
+      this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__create')}${this.$t('__dealer')}`, true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__dealerManagement'), false, () => { }])
+      }])
       this.curDialogIndex = this.dialogEnum.create;
     },
     createDialogConfirmEven(data) {
@@ -301,6 +267,10 @@ export default {
       } else {
         this.imageList = [];
       }
+      this.$store.dispatch('common/setHeaderStyle', [this.$stringFormat(`${this.$t('__edit')}${this.$t('__dealer')}`, [this.selectForm.id]), true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__dealerManagement'), false, () => { }])
+      }])
       this.curDialogIndex = this.dialogEnum.edit;
     },
     editDialogConfirmEven(data) {
@@ -317,39 +287,133 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.dealerManagement {
+  .el-button+.el-button {
+    margin-left: 0;
+  }
+}
+</style>
+
 <style lang="scss" scoped>
-.view {
-  &-container {
-    &-table {
-      &-row {
+.view-container {
+  overflow: auto;
+  max-height: calc(100vh - 3.75rem);
+  .search-container {
+    width: 100%;
+    padding-top: 1rem;
+    .createBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+    .searchBtn {
+      border-radius: 0.16667rem;
+      background-color: #f9c901;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 2.5rem;
+      width: 2.5rem;
+    }
+    .searchIcon {
+      fill: #000 !important;
+      height: 1.5rem;
+      width: 1.5rem
+    }
+    &.yellow-border-bottom {
+      border-bottom: 0.16667rem solid #f9c901;
+    }
+    .options {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      .option {
+        width: 12.84583rem;
+        padding-right: 0;
+        padding-left: 0;
+        padding-top: 0;
+      }
+    }
+  }
+  .table-container {
+    .even-row {
+      display: flex;
+      background-color: #fff;
+      padding: 0.625rem 1.16667rem 0.625rem 0;
+      margin: 0;
+    }
+    .odd-row {
+      display: flex;
+      background-color: #f4f4f4;
+      padding: 0.625rem 1.16667rem 0.625rem 0;
+      margin: 0;
+    }
+    .photo {
+      width: 9.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .dealerPhoto {
+        vertical-align: middle;
+        width: 9rem;
+        height: 10.2857rem;
+      }
+    }
+    .number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.33333rem;
+      font-weight: bolder;
+      padding: 0 0.5rem;
+    }
+    .info {
+      padding-left: 0.5rem;
+      .item {
         display: flex;
-        .dealerPhoto {
-          vertical-align: middle;
-          width: 105px;
+        flex-direction: column;
+        padding-bottom: 0.2rem;
+        .title {
+          width: 100%;
+          font-size: 1.16667rem;
+          color: #6e6e6e;
+          word-break: break-word;
+          margin-bottom: 0.1rem;
         }
-        .item {
-          .header {
-            width: 60px;
-            min-width: 60px;
-          }
-        }
-        .left {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-right: 10px;
-          width: 30%;
-        }
-        .right {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          width: 70%;
-        }
-        .operate {
-          width: 250px;
+        .value {
+          font-size: 1.16667rem;
+          font-weight: bold;
+          word-break: break-all;
         }
       }
+    }
+    .operate {
+      display: flex;
+      flex-wrap: wrap;
+      .button {
+        margin-right: 0.5rem;
+        margin-top: 0.5rem;
+      }
+    }
+    .more_btn_space {
+      padding: 1.5rem;
+      text-align: center;
+      background-color: #fff;
+    }
+    .search_more {
+      width: 100%;
+      height: 4.5rem;
+      .search_more_btn {
+        padding-bottom: 0.01667rem;
+        border-bottom: 1px solid #343a40;
+      }
+    }
+    .noInformation {
+      margin-top: 1rem;
+      text-align: center;
     }
   }
 }

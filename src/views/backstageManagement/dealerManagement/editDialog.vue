@@ -1,36 +1,105 @@
 <template>
-  <Dialog
-    v-if="visible"
-    :loading="dialogLoading"
-    :title="title"
-    :on-close-even="onClose"
-    :close-on-click-modal="device === 'mobile'"
-  >
-    <el-form ref="editForm" :model="editForm" :rules="rules">
-      <el-form-item :label="$t('__name')" prop="name">
-        <el-input v-model="editForm.name" />
-      </el-form-item>
-      <el-form-item :label="$t('__dealerPhoto')">
-        <el-upload
-          class="dealerUpload"
-          action=""
-          :http-request="uploadHttpRequest"
-          list-type="picture-card"
-          accept="image/jpeg,image/gif,image/png"
-          :file-list="fileList"
-          :on-change="handleChange"
-          drag
-        >
-          <i class="el-icon-plus" />
-          <div slot="tip" class="el-upload__tip">{{ uploadTip }}</div>
-        </el-upload>
-      </el-form-item>
-    </el-form>
-    <span v-if="!dialogLoading" slot="bodyFooter">
-      <el-button class="bg-gray" @click="onReset">{{ $t("__reset") }}</el-button>
-      <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-    </span>
-  </Dialog>
+  <div v-if="visible" class="dealerEditDialog">
+    <template v-if="device === 'mobile'">
+      <div class="black_bg">
+        <div class="data_content">
+          <div class="titleBar yellow">
+            <span class="titleTips">{{ title }}</span>
+          </div>
+          <div class="el-form-item__content item" :class="{'is-error': inputNameState === inputState.error, 'is-success': inputNameState === inputState.success}">
+            <div class="label-group">
+              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__name') }}</label>
+            </div>
+            <div class="d-flex">
+              <div class="el-input el-input--small">
+                <input v-model="editForm.name" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkName()" @blur="checkName()">
+                <span class="el-input__suffix">
+                  <span class="el-input__suffix-inner" />
+                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputNameState === inputState.error, 'el-icon-success': inputNameState === inputState.success}" />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="el-form-item__content item">
+            <div class="label-group">
+              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__dealerPhoto') }}</label>
+              <small class="tip text-white">{{ uploadTip }}</small>
+            </div>
+            <div class="d-flex">
+              <div class="el-input el-input--small">
+                <el-upload
+                  class="dealerUpload"
+                  action=""
+                  :http-request="uploadHttpRequest"
+                  list-type="picture-card"
+                  accept="image/jpeg,image/gif,image/png"
+                  :file-list="fileList"
+                  :on-change="handleChange"
+                  drag
+                >
+                  <i class="el-icon-plus" />
+                </el-upload>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="operate_content">
+          <div class="form-alert">
+            <div v-show="errorTips !== ''" role="alert" class="el-alert el-alert--warning is-light fade show">
+              <i class="el-alert__icon el-icon-warning" />
+              <div class="el-alert__content">
+                <span class="el-alert__title">{{ errorTips }}</span>
+                <i class="el-alert__closebtn el-icon-close" style="display: none;" />
+              </div>
+            </div>
+          </div>
+          <div class="form-ctrl">
+            <div class="el-row is-align-middle el-row--flex">
+              <button type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
+                <span>{{ confirm }}</span>
+              </button>
+              <button type="button" class="el-button bg-gray el-button--primary" @click="onReset">
+                <span>{{ $t('__reset') }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <Dialog
+        :loading="dialogLoading"
+        :title="title"
+        :on-close-even="onClose"
+        :close-on-click-modal="device === 'mobile'"
+      >
+        <el-form ref="editForm" :model="editForm" :rules="rules">
+          <el-form-item :label="$t('__name')" prop="name">
+            <el-input v-model="editForm.name" />
+          </el-form-item>
+          <el-form-item :label="$t('__dealerPhoto')">
+            <el-upload
+              class="dealerUpload"
+              action=""
+              :http-request="uploadHttpRequest"
+              list-type="picture-card"
+              accept="image/jpeg,image/gif,image/png"
+              :file-list="fileList"
+              :on-change="handleChange"
+              drag
+            >
+              <i class="el-icon-plus" />
+              <div slot="tip" class="el-upload__tip">{{ uploadTip }}</div>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+        <span v-if="!dialogLoading" slot="bodyFooter">
+          <el-button class="bg-gray" @click="onReset">{{ $t("__reset") }}</el-button>
+          <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
+        </span>
+      </Dialog>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -84,6 +153,11 @@ export default {
       }
     }
     return {
+      inputState: Object.freeze({
+        'none': 0,
+        'success': 1,
+        'error': 2
+      }),
       rules: {
         name: [{ required: true, trigger: 'blur', validator: validate }]
       },
@@ -91,7 +165,9 @@ export default {
       fromData: new FormData(),
       fileList: this.imageList,
       limitImageWidth: 420,
-      limitImageHeight: 480
+      limitImageHeight: 480,
+      inputNameState: 0,
+      errorTips: ''
     }
   },
   computed: {
@@ -107,6 +183,13 @@ export default {
     }
   },
   methods: {
+    inputFocus() {
+      this.inputNameState = this.inputState.none
+      this.errorTips = ''
+    },
+    checkName() {
+      this.inputNameState = (this.editForm.name && this.editForm.name.length > 0) ? this.inputState.success : this.inputState.error
+    },
     handleChange(file, fileList) {
       this.fileList = fileList.slice(-1)
     },
@@ -128,30 +211,31 @@ export default {
       })
     },
     onSubmit() {
-      this.$refs.editForm.validate((valid) => {
-        if (valid) {
-          const imageFile = this.fromData.get('imageFile')
-          if (imageFile) {
-            const isIMAGE = (imageFile.type === 'image/jpeg') || (imageFile.type === 'image/gif') || (imageFile.type === 'image/png')
-            if (!isIMAGE) {
-              this.fileList = []
-              this.$message.error(this.$t('__fileError'))
-              return
-            }
-            const limitSize = { width: this.limitImageWidth, height: this.limitImageHeight }
-            this.checkImageSize(imageFile, limitSize).then((validSize) => {
-              if (validSize) {
-                this.send()
-              } else {
-                this.fileList = []
-                this.$message.error(this.$stringFormat(this.$t('__imageSizeLimit'), [limitSize.width, limitSize.height]))
-              }
-            })
-          } else {
-            this.send()
-          }
+      this.checkName()
+      if (this.inputNameState !== this.inputState.success) {
+        this.errorTips = this.$t('__pleaseCheckFormContent')
+        return;
+      }
+      const imageFile = this.fromData.get('imageFile')
+      if (imageFile) {
+        const isIMAGE = (imageFile.type === 'image/jpeg') || (imageFile.type === 'image/gif') || (imageFile.type === 'image/png')
+        if (!isIMAGE) {
+          this.fileList = []
+          this.$message.error(this.$t('__fileError'))
+          return
         }
-      })
+        const limitSize = { width: this.limitImageWidth, height: this.limitImageHeight }
+        this.checkImageSize(imageFile, limitSize).then((validSize) => {
+          if (validSize) {
+            this.send()
+          } else {
+            this.fileList = []
+            this.$message.error(this.$stringFormat(this.$t('__imageSizeLimit'), [limitSize.width, limitSize.height]))
+          }
+        })
+      } else {
+        this.send()
+      }
     },
     send() {
       for (const data in this.editForm) {
@@ -163,8 +247,10 @@ export default {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.fromData = new FormData()
       this.fileList = JSON.parse(JSON.stringify(this.imageList))
+      this.inputNameState = 0
+      this.errorTips = ''
       this.$nextTick(() => {
-        this.$refs.editForm.clearValidate()
+        // this.$refs.editForm.clearValidate()
       })
     }
   }
@@ -172,12 +258,82 @@ export default {
 </script>
 
 <style lang="scss">
-.dealerUpload {
-  .el-upload-list--picture-card {
-    .el-upload-list__item {
-      width: 210px;
-      height: 240px;
+.black_bg {
+  left: 0;
+  width: 100%;
+  top: 3.75rem;
+  position: fixed;
+  background-color: #000;
+  height: calc(100vh - 3.75rem);
+  .ctrlBtn {
+    height: 2.5rem;
+  }
+  .data_content {
+    overflow: auto;
+    height: calc(100vh - 3.75rem - 1.5rem - 6.5rem);
+    .tip {
+      float: right;
+    }
+    .titleBar {
+      margin-top: 1.5rem;
+      font-size: 1.16667rem;
+      font-weight: bold;
+      padding: 1.25rem 1.66667rem;
+      color: #000;
+      background: #f9c901;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .item {
+      padding: 0 1rem;
+      &.is-error {
+        .el-input__inner {
+          border-color: #f56c6c;
+        }
+        .el-input__validateIcon {
+          color: #f56c6c;
+        }
+      }
+      &.is-success {
+        .el-input__inner {
+          border-color: #67c23a;
+        }
+        .el-input__validateIcon {
+          color: #67c23a;
+        }
+      }
+    }
+    .dealerUpload {
+      .el-upload {
+        .el-upload-dragger {
+          width: auto;
+          height: auto;
+        }
+      }
+      .el-upload-list__item-status-label {
+        display: none;
+      }
     }
   }
+  .operate_content {
+    height: 6.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    .form-ctrl {
+      padding-top: 0.41667rem;
+      padding-bottom: 0.41667rem;
+      width: calc(100vw - 3.33333rem);
+      height: 3.33333rem;
+      background: #000;
+      button {
+        width: 150px;
+        margin: auto;
+      }
+    }
+  }
+
 }
 </style>
