@@ -464,7 +464,7 @@
                                           <path d="M49,29.25H40.15a18.62,18.62,0,0,1-3.85,6.16,18.29,18.29,0,0,1-2.82,2.47A20.11,20.11,0,0,1,48.2,51.19H63V43.65A14.25,14.25,0,0,0,49,29.25Z" />
                                         </svg>
                                       </div>
-                                      <span v-if="!(!agentInfo.betMemberCount && agentInfo.betMemberCount !==0)" class="text-black font-weight-bold ml-2 mr-auto">{{ agentInfo.betMemberCount }}</span>
+                                      <span v-if="!(!agentInfo.betMemberCount && agentInfo.betMemberCount !==0)" class="text-black font-weight-bold ml-2 mr-auto">{{ agentInfo.betMemberCountLabel }}</span>
                                     </span>
                                   </div>
                                 </div>
@@ -692,6 +692,7 @@ export default {
       agentWinLossReportBetMemberCount(data).then((res) => {
         this.agentInfo.betMemberCount = res.count
         this.agentInfo = JSON.parse(JSON.stringify(this.agentInfo))
+        this.agentInfo.betMemberCountLabel = numberFormat(res.count, 0)
         this.setDataLoading(false)
       }).catch(() => {
         this.setDataLoading(false)

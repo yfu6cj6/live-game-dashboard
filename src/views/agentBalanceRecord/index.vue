@@ -149,7 +149,7 @@
                   </div>
                   <div class="d-flex flex-colum field">
                     <span class="title text_align_right">{{ $t('__beforeTradeBalance') }}</span>
-                    <span class="news text_align_right">{{ item.pre_trade_balance }}</span>
+                    <span class="news text_align_right">{{ item.pre_trade_balanceLabel }}</span>
                   </div>
                   <div class="d-flex flex-colum field">
                     <span class="title text_align_right">{{ $t('__income') }}</span>
@@ -161,7 +161,7 @@
                   </div>
                   <div class="d-flex flex-colum field">
                     <span class="title text_align_right">{{ $t('__afterTradeBalance') }}</span>
-                    <span class="news text_align_right">{{ item.balance_after_trade }}</span>
+                    <span class="news text_align_right">{{ item.balance_after_tradeLabel }}</span>
                   </div>
                 </div>
                 <div v-if="item.open" class="d-flex flex-wrap justify-content-between expand">
@@ -400,7 +400,8 @@ export default {
       })
       this.tableData = res.rows
       this.tableData.forEach(element => {
-        element.pre_trade_balance = numberFormat(element.pre_trade_balance)
+        element.pre_trade_balanceLabel = numberFormat(element.pre_trade_balance)
+        element.balance_after_tradeLabel = numberFormat(element.balance_after_trade)
         element.incomeLabel = numberFormat(element.income)
         element.payoutLabel = numberFormat(element.payout)
       });
