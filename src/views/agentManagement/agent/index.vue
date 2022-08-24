@@ -441,8 +441,10 @@
       ref="agentInfoDialog"
       :visible="curDialogIndex === dialogEnum.agentInfo"
       :form="editForm"
+      :agent-info="agentInfo"
       :agent-level="agentLevel"
       @close="closeDialogEven"
+      @agent-click="agentClick"
     />
   </div>
 </template>
@@ -851,12 +853,15 @@ export default {
       this.$refs.agentInfoDialog.setDialogLoading(true)
       this.editForm = JSON.parse(JSON.stringify(rowData))
       agentTreeSearch({ agentId: this.editForm.id }).then((res) => {
-        this.agentLevel = [res.SubAgentLevelInfo]
-        // this.curDialogIndex = this.dialogEnum.agentInfo
+        this.agentLevel = res
+        this.curDialogIndex = this.dialogEnum.agentInfo
         this.$refs.agentInfoDialog.setDialogLoading(false)
       }).catch(() => {
         this.$refs.agentInfoDialog.setDialogLoading(false)
       })
+    },
+    async agentClick(agentId) {
+      await this.$router.push({ path: `/agentManagement/agentManagement/${agentId}` })
     }
   }
 }

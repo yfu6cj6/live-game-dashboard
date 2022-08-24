@@ -1901,3 +1901,35 @@ table {
     }
   }
 }
+
+.agent-tree {
+  max-height: calc(50vh - 5rem);
+  height: auto;
+  padding-bottom: 20px;
+  .el-tree {
+    background-color: #000;
+    color: #fff;
+    display: inline-block;
+    .el-tree-node {
+      .el-tree-node__content {
+        height: 2.66667rem;
+        .el-tree-node__expand-icon {
+          color: #f9c901;
+          font-size: 1.5rem;
+          margin-left: 0.5rem;
+          padding: 0.33333rem !important;
+        }
+        &:hover {
+          background-color: #000;
+        }
+      }
+      &:focus>.el-tree-node__content {
+        background-color: #000;
+      }
+    }
+  }
+  .el-tree--highlight-current .el-tree-node.is-current>.el-tree-node__content {
+    background-color: #000;
+    color: #f9c901;
+  }
+}
