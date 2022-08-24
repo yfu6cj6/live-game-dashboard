@@ -80,22 +80,22 @@
           </div>
           <div class="force-wrap" />
           <div v-if="item.open" class="agent-list-detail">
-            <!-- <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+            <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
               <span class="value">
                 <span class="solid-circle">
                   <div class="fas">
-                    <svg-icon icon-class="top" class="text-black" style="height: 1.5rem;width: 1.5rem;" />
+                    <svg-icon icon-class="top" class="text-black" style="height: 1.5rem;width: 1.5rem;" @click.stop="agentInfoClick(item)" />
                   </div>
                 </span>
               </span>
-            </div> -->
-            <!-- <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+            </div>
+            <div class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
               <span class="value">
                 <span>
                   <span class="v-line d-block" />
                 </span>
               </span>
-            </div> -->
+            </div>
             <div v-if="!item.allPermission" class="list-item align-self-center" style="width: auto; flex-wrap: wrap; margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.5rem;" @click.stop="onSubAgentDistribute(item)">
               <span class="value">
                 <button class="el-button bg-yellow el-button--default">
@@ -260,11 +260,22 @@
       @editSuccess="handleRespone"
     />
 
+    <agentInfoDialog
+      ref="agentInfoDialog"
+      :visible="curDialogIndex === dialogEnum.agentInfo"
+      :form="editForm"
+      :agent-info="agentInfo"
+      :agent-level="agentLevel"
+      :show-form-data="false"
+      @close="closeDialogEven"
+      @agent-click="agentClick"
+    />
   </div>
 </template>
 
 <script>
 import { subAccountSearch, subAccountModPassword, subAccountModStatus, subAccountModEffectAgentLine, subAccountGetAgentLine, subAccountSetHasAgents } from '@/api/agentManagement/subAccount'
+import { agentTreeSearch } from '@/api/agentManagement/agent'
 import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
 import handlePageChange from '@/mixin/handlePageChange'
 import SubAccountEditDialog from './subAccountEditDialog'
@@ -273,6 +284,7 @@ import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import OperateDialog from '@/views/agentManagement/operateDialog'
 import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
+import AgentInfoDialog from '@/views/agentManagement/agentInfoDialog'
 
 const defaultForm = {
   account: '',
@@ -289,7 +301,7 @@ const defaultForm = {
 
 export default {
   name: 'Member',
-  components: { SubAccountEditDialog, OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog },
+  components: { SubAccountEditDialog, OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog, AgentInfoDialog },
   mixins: [handlePageChange],
   data() {
     return {
@@ -301,12 +313,14 @@ export default {
         'lockLogin': 7,
         'effectAgentLine': 8,
         'subAgentDistribute': 9,
-        'passwordTip': 10
+        'passwordTip': 10,
+        'agentInfo': 11
       }),
       agentInfo: {},
       editForm: {},
       curDialogIndex: 0,
-      subAgent: []
+      subAgent: [],
+      agentLevel: []
     }
   },
   computed: {
@@ -491,6 +505,20 @@ export default {
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+    },
+    agentInfoClick(rowData) {
+      this.$refs.agentInfoDialog.setDialogLoading(true)
+      this.editForm = JSON.parse(JSON.stringify(rowData))
+      agentTreeSearch({ agentId: this.editForm.id }).then((res) => {
+        this.agentLevel = res
+        this.curDialogIndex = this.dialogEnum.agentInfo
+        this.$refs.agentInfoDialog.setDialogLoading(false)
+      }).catch(() => {
+        this.$refs.agentInfoDialog.setDialogLoading(false)
+      })
+    },
+    async agentClick(agentId) {
+      await this.$router.push({ path: `/agentManagement/agentManagement/${agentId}` })
     }
   }
 }

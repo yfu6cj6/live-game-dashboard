@@ -443,6 +443,7 @@
       :form="editForm"
       :agent-info="agentInfo"
       :agent-level="agentLevel"
+      :show-form-data="true"
       @close="closeDialogEven"
       @agent-click="agentClick"
     />

@@ -63,11 +63,11 @@
             </div>
             <div class="force-wrap" />
             <div v-if="item.open" class="agent-list-detail">
-              <!-- <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
+              <div class="list-item" style="width: auto; flex-wrap: wrap; margin-bottom: 0.5rem;">
                 <span class="value">
                   <span class="solid-circle">
                     <div class="fas">
-                      <svg-icon class="black" icon-class="top" style="height: 1.5rem; width: 1.5rem;" />
+                      <svg-icon class="black" icon-class="top" style="height: 1.5rem; width: 1.5rem;" @click.stop="agentInfoClick(item)" />
                     </div>
                   </span>
                 </span>
@@ -78,7 +78,7 @@
                     <span class="v-line d-block" />
                   </span>
                 </span>
-              </div> -->
+              </div>
               <div v-if="!isAgentSubAccount" class="list-item" style="width: auto; flex-wrap: wrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
                 <span class="value">
                   <button class="el-button bg-yellow el-button--default" @click.stop="onDepositBtnClick(item)">
@@ -411,6 +411,17 @@
       :form="editForm"
       @close="closeDialogEven"
     />
+
+    <agentInfoDialog
+      ref="agentInfoDialog"
+      :visible="curDialogIndex === dialogEnum.agentInfo"
+      :form="editForm"
+      :agent-info="agentInfo"
+      :agent-level="agentLevel"
+      :show-form-data="false"
+      @close="closeDialogEven"
+      @agent-click="agentClick"
+    />
   </div>
 </template>
 
@@ -419,6 +430,7 @@ import { memberSearch, memberModPassword, memberGetSetBalanceInfo,
   memberDepositBalance, memberWithdrawBalance, memberModStatus,
   memberModBetStatus, memberGetLastBetTime, memberOneClickRecycling,
   memberWeeklyLossSettlement, memberModGiftStatus, memberModMuteStatus } from '@/api/agentManagement/member'
+import { agentTreeSearch } from '@/api/agentManagement/agent'
 import { timezoneSearch } from '@/api/backstageManagement/timeZoneManagement'
 import handlePageChange from '@/mixin/handlePageChange'
 import MemberEditDialog from './memberEditDialog'
@@ -429,6 +441,7 @@ import OperateDialog from '@/views/agentManagement/operateDialog'
 import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
+import AgentInfoDialog from '@/views/agentManagement/agentInfoDialog'
 
 const defaultForm = {
   name: '',
@@ -453,7 +466,7 @@ const editFormStepEnum = Object.freeze({ 'memberInfo': 0, 'rate': 1, 'limit': 2,
 
 export default {
   name: 'Member',
-  components: { MemberEditDialog, LimitDialog, ModPasswordDialog, BalanceDialog, OperateDialog, PasswordTipDialog },
+  components: { MemberEditDialog, LimitDialog, ModPasswordDialog, BalanceDialog, OperateDialog, PasswordTipDialog, AgentInfoDialog },
   mixins: [handlePageChange],
   data() {
     return {
@@ -471,13 +484,15 @@ export default {
         'oneClickRecycling': 10,
         'weeklyLossSettlement': 11,
         'giftEffect': 12,
-        'isMute': 13
+        'isMute': 13,
+        'agentInfo': 14
       }),
       agentInfo: {},
       editForm: {},
       editStepEnum: {},
       curDialogIndex: 0,
-      account: ''
+      account: '',
+      agentLevel: []
     }
   },
   computed: {
@@ -769,6 +784,20 @@ export default {
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+    },
+    agentInfoClick(rowData) {
+      this.$refs.agentInfoDialog.setDialogLoading(true)
+      this.editForm = JSON.parse(JSON.stringify(rowData))
+      agentTreeSearch({ agentId: this.editForm.id }).then((res) => {
+        this.agentLevel = res
+        this.curDialogIndex = this.dialogEnum.agentInfo
+        this.$refs.agentInfoDialog.setDialogLoading(false)
+      }).catch(() => {
+        this.$refs.agentInfoDialog.setDialogLoading(false)
+      })
+    },
+    async agentClick(agentId) {
+      await this.$router.push({ path: `/agentManagement/agentManagement/${agentId}` })
     }
   }
 }
