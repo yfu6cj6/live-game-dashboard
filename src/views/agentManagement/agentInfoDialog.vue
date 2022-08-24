@@ -1,7 +1,7 @@
 <template>
   <div v-if="visible">
     <template v-if="device==='mobile'">
-      <div data-v-e681123c="" class="notice-cover" />
+      <div class="notice-cover" />
       <div class="fadeInUp pp notice animated">
         <div class="scroll-wrap float">
           <div id="scroll-inner" class="scroll-inner off">
@@ -18,7 +18,7 @@
                             <div class="d-flex flex-wrap">
                               <div class="d-flex  flex-column basis-50">
                                 <span class="title-item" style="width: 125px; flex: 1 1 0%;">{{ $t('__balance') }}</span>
-                                <span data-v-2125f3d6="" class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ form.balance }}</span>
+                                <span class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ form.balance }}</span>
                               </div>
                               <div class="d-flex  flex-column basis-50">
                                 <span class="title-item" style="width: 120px; flex: 1 1 0%;">{{ $t('__currency') }}</span>
@@ -52,13 +52,13 @@
                                         <div class="d-flex flex-column mt-2" style="width: 155px;">
                                           <span class="game-hall-item gary" />
                                           <span class="sub-title-item gray" style="flex: 1 1 0%;">{{ `${$t('__rate')}%` }}</span>
-                                          <span data-v-2125f3d6="" class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ `${form.live_commission_rate}%` }}</span>
+                                          <span class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ `${form.live_commission_rate}%` }}</span>
                                           <span class="game-hall-item" />
                                         </div>
                                         <div class="d-flex flex-column mt-2" style="width: 155px;">
                                           <span class="game-hall-item" />
                                           <span class="sub-title-item gray" style="flex: 1 1 0%;">{{ `${$t('__rollingRate')}%` }}</span>
-                                          <span data-v-2125f3d6="" class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ `${form.live_rolling_rate}%` }}</span>
+                                          <span class="content-item mt-2" style="flex: 1 1 0%; text-align: start;">{{ `${form.live_rolling_rate}%` }}</span>
                                           <span class="game-hall-item" />
                                         </div>
                                       </div>
@@ -172,7 +172,7 @@
           </div>
         </div>
         <div class="d-flex w-100 justify-content-center p-buttons" style="margin-top: 1.5rem;">
-          <button data-v-e681123c="" type="button" class="el-button bg-gray common-button w-50 el-button--primary" @click="onClose">
+          <button type="button" class="el-button bg-gray common-button w-50 el-button--primary" @click="onClose">
             <span>{{ $t('__close') }}</span>
           </button>
         </div>

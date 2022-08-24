@@ -2,7 +2,7 @@
   <div v-if="visible">
     <template v-if="device === 'mobile'">
       <div>
-        <div data-v-e681123c="" class="notice-cover" @click.stop="onClose" />
+        <div class="notice-cover" @click.stop="onClose" />
         <div class="fadeInUp pp notice animated">
           <div id="scroll-inner" class="scroll-inner off">
             <div v-loading="dialogLoading" class="scroll-view" style="display: block; position: static; max-height: 70vh;">
@@ -16,7 +16,7 @@
                     <div class="credit-item mr-2">
                       <div class="label fixed-size">{{ `${$t('__liveGame')}${$t('__balance')}` }}</div>
                       <div class="value">
-                        <span data-v-2125f3d6="" class="">{{ parentBalance }}</span>
+                        <span class="">{{ parentBalance }}</span>
                       </div>
                     </div>
                   </div>
@@ -28,7 +28,7 @@
                     <div class="credit-item mr-2">
                       <div class="label fixed-size">{{ `${$t('__liveGame')}${$t('__balance')}` }}</div>
                       <div class="value">
-                        <span data-v-2125f3d6="" class="">{{ balance }}</span>
+                        <span class="">{{ balance }}</span>
                       </div>
                     </div>
                   </div>
