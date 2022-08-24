@@ -183,6 +183,7 @@ export default {
     })
   },
   activated() {
+    this.closeDialogEven()
     this.setHeaderStyle()
   },
   methods: {

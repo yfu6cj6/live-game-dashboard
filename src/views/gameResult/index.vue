@@ -422,6 +422,7 @@ export default {
     this.setHeaderStyle()
   },
   activated() {
+    this.closeDialogEven()
     this.setHeaderStyle()
   },
   methods: {

@@ -2,6 +2,7 @@
   <div v-if="visible">
     <template v-if="device === 'mobile'">
       <div id="add-edit-white-list" class="add-edit-white-list">
+        <div class="notice-cover" @click="onClose" />
         <div class="form-container">
           <div class="white-list-scroll scroll-wrap flex-column flex-fill">
             <div id="scroll-inner" class="scroll-inner flex-column flex-fill off">
@@ -236,6 +237,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.notice-cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: rgba(0,0,0,0.5);
+}
+
 .el-form {
   margin-bottom: 10px;
 }
