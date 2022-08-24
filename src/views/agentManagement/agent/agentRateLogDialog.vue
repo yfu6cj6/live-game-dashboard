@@ -35,7 +35,7 @@
             </div>
           </div>
           <div class="d-flex w-100 justify-content-center p-buttons" style="margin-top: 1.5rem;">
-            <button data-v-e681123c="" type="button" class="el-button bg-gray common-button w-50 el-button--primary" @click.stop="onClose">
+            <button type="button" class="el-button bg-gray common-button w-50 el-button--primary" @click.stop="onClose">
               <span>{{ $t('__close') }}</span>
             </button>
           </div>

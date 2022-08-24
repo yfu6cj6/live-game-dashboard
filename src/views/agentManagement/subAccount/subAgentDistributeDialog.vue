@@ -82,7 +82,7 @@
               </form>
             </div>
             <div class="d-flex w-100 justify-content-center p-buttons" style="margin-top: 1.5rem;">
-              <button data-v-e681123c="" type="button" class="el-button bg-yellow common-button w-50 el-button--primary" @click="onSubmit">
+              <button type="button" class="el-button bg-yellow common-button w-50 el-button--primary" @click="onSubmit">
                 <span>{{ $t('__submit') }}</span>
               </button>
             </div>
