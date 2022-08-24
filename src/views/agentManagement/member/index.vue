@@ -47,7 +47,7 @@
                   <svg-icon icon-class="coin" class="gray-deep" style="height: 1.08333rem; width: 1.08333rem;" />
                 </div>
                 <span>
-                  <span class="font-weight-bold ml-1">{{ numberFormatStr(item.balance) }}</span>
+                  <span class="font-weight-bold ml-1">{{ item.balanceLabel }}</span>
                 </span>
               </span>
             </div>
@@ -143,7 +143,7 @@
                         <div class="hall-item w-50">
                           <span class="label">{{ `${$t('__rollingRate')}%` }}</span>
                           <span class="value">
-                            <span>{{ item.live_rolling_rate }}%</span>
+                            <span>{{ item.liveRollingRateLabel }}%</span>
                           </span>
                         </div>
                       </div>
@@ -198,7 +198,7 @@
               </template>
               <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
                 <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__totalValidBetAmount') }}</span>
-                <span class="value">{{ item.total_valid_bet_amount }}</span>
+                <span class="value">{{ item.totalValidBetAmountLabel }}</span>
               </div>
               <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
                 <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__currency') }}</span>
@@ -225,15 +225,15 @@
               </div>
               <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
                 <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__totalPayout') }}</span>
-                <span class="value">{{ item.total_payout }}</span>
+                <span class="value" :class="{ 'text-red': item.total_payout > 0, 'text-blue': item.total_payout < 0 }">{{ item.totalPayoutLabel }}</span>
               </div>
               <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
                 <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__weekValidBetAmount') }}</span>
-                <span class="value">{{ item.week_valid_bet_amount }}</span>
+                <span class="value">{{ item.weekValidBetAmountLabel }}</span>
               </div>
               <div class="list-item d-flex flex-column align-items-end" style="width: 50%; margin-top: 1rem;">
                 <span class="label" style="padding-bottom: 0.5rem; margin-right: 0px;">{{ $t('__weekPayout') }}</span>
-                <span class="value">{{ item.week_payout }}</span>
+                <span class="value" :class="{ 'text-red': item.week_payout > 0, 'text-blue': item.week_payout < 0 }">{{ item.weekPayoutLabel }}</span>
               </div>
               <div class="list-item" style="width: 100%; margin-top: 1rem;">
                 <span class="label" style="width: 50%;">{{ $t('__createdAt') }}</span>
@@ -515,8 +515,7 @@ export default {
       })
     },
     checkInfo(info) {
-      return (info === 0 || info === '0.00')
-        ? this.$t('__noLimit') : this.numberFormatStr(info)
+      return (info === 0 || info === '0.00') ? this.$t('__noLimit') : numberFormat(info)
     },
     maxLoseAmountLimitExceededCheck(rowData) {
       return rowData.weekly_loss_settlement === '1'
@@ -629,28 +628,25 @@ export default {
       }])
     },
     // 父物件呼叫
+    setAgentInfo(agentInfo) {
+      this.agentInfo = agentInfo
+    },
+    // 父物件呼叫
     onSearch(agentId, searchStr) {
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__memberManagement'), false, () => { }])
-      this.agentInfo.id = agentId
       this.pageSizeCount = 1
       this.currentPage = 1
-      this.onSubmit(searchStr)
+      this.onSubmit(agentId, searchStr)
     },
-    onSubmit(accountKeyWord) {
+    onSubmit(agentId, accountKeyWord) {
       this.setDataLoading(true)
-      memberSearch({ agentId: this.agentInfo.id, accountKeyWord: accountKeyWord }).then((res) => {
+      memberSearch({ agentId: agentId, accountKeyWord: accountKeyWord }).then((res) => {
         this.handleRespone(res)
       }).catch(() => {
         this.setDataLoading(false)
       })
     },
     handleRespone(res) {
-      this.agentInfo = res.agentInfo
-      this.agentInfo.handicaps.forEach(element => {
-        element.betMinLabel = numberFormat(element.bet_min)
-        element.betMaxLabel = numberFormat(element.bet_max)
-      });
-
       // 設定已經擴展的item
       const open = this.allDataByClient.filter(item => item.open).map(item => item.id)
       this.allDataByClient = res.rows
@@ -663,6 +659,12 @@ export default {
         element.weeklyLossSettlement = element.weekly_loss_settlement === '1'
         element.giftEffect = element.gift_status === '1'
         element.isMute = element.mute === '1'
+        element.weekPayoutLabel = numberFormat(element.week_payout)
+        element.balanceLabel = numberFormat(element.balance)
+        element.weekValidBetAmountLabel = numberFormat(element.week_valid_bet_amount)
+        element.totalPayoutLabel = numberFormat(element.total_payout)
+        element.totalValidBetAmountLabel = numberFormat(element.total_valid_bet_amount)
+        element.liveRollingRateLabel = numberFormat(element.live_rolling_rate)
         element.open = open.includes(element.id)
         var limit = ''
         for (var i = 0; i < element.handicaps.length; i++) {
@@ -683,9 +685,6 @@ export default {
       this.handleRespone(res)
       this.editForm = { accountsInfo: res.accountsInfo, gameUrl: res.gameUrl, isCreate: true }
       this.curDialogIndex = this.dialogEnum.passwordTip
-    },
-    numberFormatStr(number) {
-      return numberFormat(number)
     },
     setDataLoading(dataLoading) {
       this.$emit('setDataLoading', dataLoading)
@@ -728,7 +727,7 @@ export default {
       this.curDialogIndex = this.dialogEnum.modPassword
     },
     onDepositBtnClick(rowData) {
-      this.editForm = { memberId: rowData.id, amount: this.numberFormatStr(0) }
+      this.editForm = { memberId: rowData.id, amount: numberFormat(0) }
       this.curDialogIndex = this.dialogEnum.depositBalance
       this.$refs.depositBalanceDialog.setDialogLoading(true)
       memberGetSetBalanceInfo({ memberId: rowData.id }).then((res) => {
@@ -739,7 +738,7 @@ export default {
       })
     },
     onWithdrawBtnClick(rowData) {
-      this.editForm = { memberId: rowData.id, amount: this.numberFormatStr(0) }
+      this.editForm = { memberId: rowData.id, amount: numberFormat(0) }
       this.curDialogIndex = this.dialogEnum.withdrawBalance
       this.$refs.withdrawBalanceDialog.setDialogLoading(true)
       memberGetSetBalanceInfo({ memberId: rowData.id }).then((res) => {

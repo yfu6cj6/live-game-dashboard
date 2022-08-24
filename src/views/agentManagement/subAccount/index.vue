@@ -424,24 +424,25 @@ export default {
       }])
     },
     // 父物件呼叫
+    setAgentInfo(agentInfo) {
+      this.agentInfo = agentInfo
+    },
+    // 父物件呼叫
     onSearch(agentId, searchStr) {
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__subAccountManagement'), false, () => { }])
-      this.agentInfo.id = agentId
       this.pageSizeCount = 1
       this.currentPage = 1
-      this.onSubmit(searchStr)
+      this.onSubmit(agentId, searchStr)
     },
-    onSubmit(accountKeyWord) {
+    onSubmit(agentId, accountKeyWord) {
       this.setDataLoading(true)
-      subAccountSearch({ agentId: this.agentInfo.id, accountKeyWord: accountKeyWord }).then((res) => {
+      subAccountSearch({ agentId: agentId, accountKeyWord: accountKeyWord }).then((res) => {
         this.handleRespone(res)
       }).catch(() => {
         this.setDataLoading(false)
       })
     },
     handleRespone(res) {
-      this.agentInfo = res.agentInfo
-
       const open = this.tableData.filter(item => item.open).map(item => item.id)
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {

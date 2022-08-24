@@ -612,13 +612,13 @@ export default {
     padding-bottom: 10px;
     position: relative;
     &:after {
-        height: 0px;
-        border-bottom: 1px solid #444;
-        content: '';
-        position: absolute;
-        width: calc(100% - 20px);
-        left: 10px;
-        bottom: 1px;
+      height: 0px;
+      border-bottom: 1px solid #444;
+      content: '';
+      position: absolute;
+      width: calc(100% - 20px);
+      left: 10px;
+      bottom: 1px;
     }
     .select-type {
       width: 100%;

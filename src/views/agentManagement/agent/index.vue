@@ -33,7 +33,7 @@
               <span class="value">
                 <span>
                   <div class="two-row-items">
-                    <div class="items-value mb-0">{{ `${ item.live_commission_rate }%` }}</div>
+                    <div class="items-value mb-0">{{ `${ item.liveCommissionRateLabel }%` }}</div>
                     <div class="items-label mt-2">{{ `${$t('__liveGame')}${$t('__rate')}` }}</div>
                   </div>
                 </span>
@@ -60,7 +60,7 @@
                     <div class="items-label-icon">
                       <svg-icon icon-class="coin" class="fas  gray-deep" style="height: 1.08333rem; width: 1.08333rem;" />
                     </div>
-                    {{ item.balance }}
+                    {{ item.balanceLabel }}
                   </span>
                 </div>
               </div>
@@ -170,14 +170,14 @@
                       <div class="d-flex">
                         <div class="hall-item w-50">
                           <span class="label">{{ `${$t('__rate')}% ` }}</span>
-                          <span class="value">{{ `${item.live_commission_rate}%` }}</span>
+                          <span class="value">{{ `${item.liveCommissionRateLabel}%` }}</span>
                           <div class="fas yellow" @click.stop="onCommissionRateLogBtnClick(item)">
                             <img src="@/assets/agentManagement/share.png" style="height: 1.5rem; width: 1.5rem;">
                           </div>
                         </div>
                         <div class="hall-item w-50">
                           <span class="label">{{ `${$t('__rollingRate')}% ` }}</span>
-                          <span class="value">{{ `${item.live_rolling_rate}%` }}</span>
+                          <span class="value">{{ `${item.liveRollingRateLabel}%` }}</span>
                           <div class="fas yellow" @click.stop="onRollingRateLogBtnClick(item)">
                             <img src="@/assets/agentManagement/rollCoin.png" style="height: 1.5rem; width: 1.5rem;">
                           </div>
@@ -673,11 +673,6 @@ export default {
       }])
     },
     handleRespone(res) {
-      this.agentInfo = res.agentInfo
-      this.agentInfo.handicaps.forEach(element => {
-        element.betMinLabel = numberFormat(element.bet_min)
-        element.betMaxLabel = numberFormat(element.bet_max)
-      });
       // 設定已經擴展的item
       const open = this.allDataByClient.filter(item => item.open).map(item => item.id)
       this.allDataByClient = res.rows
@@ -692,9 +687,10 @@ export default {
         element.weeklyLossSettlement = element.weekly_loss_settlement === '1'
         element.oneClickRecycling = element.one_click_recycling === '1'
         element.giftEffect = element.gift_status === '1'
-        element.live_commission_rate = numberFormat(element.live_commission_rate)
-        element.live_rolling_rate = numberFormat(element.live_rolling_rate)
-        element.live_gift_rate = numberFormat(element.live_gift_rate)
+        element.balanceLabel = numberFormat(element.balance)
+        element.liveCommissionRateLabel = numberFormat(element.live_commission_rate)
+        element.liveRollingRateLabel = numberFormat(element.live_rolling_rate)
+        element.liveGiftRateLabel = numberFormat(element.live_gift_rate)
         element.open = open.includes(element.id)
 
         var limit = ''
@@ -720,16 +716,19 @@ export default {
       this.$emit('setDataLoading', dataLoading)
     },
     // 父物件呼叫
+    setAgentInfo(agentInfo) {
+      this.agentInfo = agentInfo
+    },
+    // 父物件呼叫
     onSearch(agentId, searchStr) {
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__agentManagement'), false, () => { }])
-      this.agentInfo.id = agentId
       this.pageSizeCount = 1
       this.currentPage = 1
-      this.onSubmit(searchStr)
+      this.onSubmit(agentId, searchStr)
     },
-    onSubmit(accountKeyWord) {
+    onSubmit(agentId, accountKeyWord) {
       this.setDataLoading(true)
-      agentSearch({ agentId: this.agentInfo.id, accountKeyWord: accountKeyWord }).then((res) => {
+      agentSearch({ agentId: agentId, accountKeyWord: accountKeyWord }).then((res) => {
         this.handleRespone(res)
       }).catch(() => {
         this.setDataLoading(false)

@@ -52,11 +52,11 @@
                       <div v-if="agentInfo.open" class="d-flex flex-wrap">
                         <div class="info-item">
                           <label>{{ `${$t('__rate')}: ` }}</label>
-                          <span>{{ `${agentInfo.live_commission_rate}% ` }}</span>
+                          <span>{{ `${agentInfo.liveCommissionRateLabel}% ` }}</span>
                         </div>
                         <div class="info-item">
                           <label>{{ `${$t('__rollingRate')}: ` }}</label>
-                          <span>{{ `${agentInfo.live_rolling_rate}% ` }}</span>
+                          <span>{{ `${agentInfo.liveRollingRate}% ` }}</span>
                         </div>
                         <div class="info-item">
                           <label>{{ `${$t('__accountStatus')}: ` }}</label>
@@ -76,14 +76,14 @@
                         </div>
                         <div class="info-item">
                           <label>{{ `${$t('__directAgentCount')}: ` }}</label>
-                          <span>{{ agentInfo.directAgentCount }}</span>
+                          <span>{{ agentInfo.directAgentCountLabel }}</span>
                         </div>
                         <div class="info-item">
                           <label>{{ `${$t('__directPlayerCount')}: ` }}</label>
-                          <span>{{ agentInfo.directPlayerCount }}</span>
+                          <span>{{ agentInfo.directPlayerCountLabel }}</span>
                         </div>
                         <div class="info-item" style="height: 0px;">
-                          <button class="el-button bg-yellow el-button--default" style="margin-top: -1rem;" @click.stop="onTotalPlayerBtnClick()">{{ `${$t('__totalPlayerCount')}: ` }} {{ agentInfo.totalPlayerCount }}</button>
+                          <button class="el-button bg-yellow el-button--default" style="margin-top: -1rem;" @click.stop="onTotalPlayerBtnClick()">{{ `${$t('__totalPlayerCount')}: ` }} {{ agentInfo.totalPlayerCountLabel }}</button>
                         </div>
                         <div class="info-item info-item d-flex">
                           <label>{{ `${$t('__handicapLimit')}: ` }}</label>
@@ -257,7 +257,6 @@
 </template>
 
 <script>
-// import { agentTotalPlayerCount, agentSearch } from '@/api/agentManagement/agent'
 import { agentTotalPlayerCount } from '@/api/agentManagement/agent'
 import viewCommon from '@/mixin/viewCommon';
 import { mapGetters } from 'vuex'
@@ -307,7 +306,7 @@ export default {
       'agent_id'
     ]),
     agentInfoBalance() {
-      return this.agentInfo.id === 1 ? 'oo' : numberFormat(this.agentInfo.balance)
+      return this.agentInfo.id === 1 ? 'oo' : this.agentInfo.balanceLabel
     }
   },
   watch: {
@@ -411,20 +410,43 @@ export default {
     handleRespone(res) {
       this.$store.dispatch('agentManagement/setAgentLevel', res.agentLevel)
       this.agentInfo = res.agentInfo
+      this.agentInfo.balanceLabel = numberFormat(this.agentInfo.balance)
+      this.agentInfo.liveCommissionRateLabel = numberFormat(this.agentInfo.live_commission_rate)
+      this.agentInfo.liveRollingRate = numberFormat(this.agentInfo.live_rolling_rate)
+      this.agentInfo.directAgentCountLabel = numberFormat(this.agentInfo.directAgentCount, 0)
+      this.agentInfo.directPlayerCountLabel = numberFormat(this.agentInfo.directPlayerCount, 0)
       this.agentInfo.currency = this.agentInfo.currency.code
       this.agentInfo.accountStatus = this.accountStatusType.find(element => element.key === this.agentInfo.status).nickname
       this.agentInfo.betStatus = this.accountStatusType.find(element => element.key === this.agentInfo.bet_status).nickname
       this.agentInfo.weeklyLossSettlement = this.accountStatusType.find(element => element.key === this.agentInfo.weekly_loss_settlement).nickname
       this.agentInfo.giftStatus = this.accountStatusType.find(element => element.key === this.agentInfo.gift_status).nickname
+      this.agentInfo.handicaps.forEach(element => {
+        element.betMinLabel = numberFormat(element.bet_min)
+        element.betMaxLabel = numberFormat(element.bet_max)
+      });
 
       var limit = ''
-      for (var i = 0; i < this.agentInfo.handicaps.length; i++) {
+      for (var i = 0, max = this.agentInfo.handicaps.length; i < max; i++) {
         limit += this.agentInfo.handicaps[i].nickname
-        if (i < this.agentInfo.handicaps.length - 1) {
+        if (i < max - 1) {
           limit += ','
         }
       }
       this.agentInfo.handicaps_info = limit;
+      switch (this.curTableIndex) {
+        case this.tableEnum.agent: {
+          this.$refs.agent.setAgentInfo(this.agentInfo)
+          break
+        }
+        case this.tableEnum.member: {
+          this.$refs.member.setAgentInfo(this.agentInfo)
+          break
+        }
+        case this.tableEnum.subAccount: {
+          this.$refs.subAccount.setAgentInfo(this.agentInfo)
+          break
+        }
+      }
 
       this.setTagsViewTitle()
       this.dataLoading = false
@@ -437,7 +459,7 @@ export default {
     onTotalPlayerBtnClick() {
       this.dataLoading = true
       agentTotalPlayerCount({ agentId: this.agentInfo.id }).then((res) => {
-        this.agentInfo.totalPlayerCount = res.totalPlayerCount
+        this.agentInfo.totalPlayerCountLabel = numberFormat(res.totalPlayerCount, 0)
         this.dataLoading = false
       }).catch(() => {
         this.dataLoading = false

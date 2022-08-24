@@ -390,13 +390,9 @@
                                   </span>
                                 </span>
                               </div>
-                              <div class="list-item d-flex align-items-start item-shoeAndGameRoundNum">
-                                <span class="label d-none">{{ $t('__round') }}</span>
-                                <span class="value d-none">
-                                  <span>
-                                    <span class="text-underline">{{ $t('__round') }}</span>
-                                  </span>
-                                </span>
+                              <div class="list-item d-flex align-items-start item-none">
+                                <span class="label d-none">none</span>
+                                <span class="value d-none">none</span>
                               </div>
                               <div class="list-item d-flex align-items-start item-betLogId">
                                 <span class="label">{{ $t('__orderNumber') }}</span>
@@ -496,11 +492,9 @@
                                   <span>{{ item.device }}</span>
                                 </span>
                               </div>
-                              <div class="list-item d-flex align-items-start item-betMethod" style="width: 30%; flex-wrap: wrap;">
-                                <span class="label d-none">{{ $t('__device') }}</span>
-                                <span class="value d-none">
-                                  <span>{{ item.device }}</span>
-                                </span>
+                              <div class="list-item d-flex align-items-start item-none">
+                                <span class="label d-none">none</span>
+                                <span class="value d-none">none</span>
                               </div>
                               <div class="list-item d-flex align-items-start" style="justify-content: flex-end; text-align: right; width: 40%; flex-wrap: wrap; padding-right: 0.83333rem;">
                                 <span class="label" style="text-align: right; width: 100%; padding-bottom: 0.5rem;">IP</span>
