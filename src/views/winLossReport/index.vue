@@ -61,292 +61,582 @@
                     <div class="profit-content flex-fill bg-new-dark-white">
                       <div class="superior-summary">
                         <div class="report-summary w-100">
-                          <div class="w-100 summaryDate">
-                            <div class="agent-type">
-                              <span class="font-weight-bold">{{ $t('__timeRange') }}</span>
-                              <span class="font-weight-bold">{{ timeRange[0] }}</span>
-                              <span class="font-weight-bold">{{ $t('__to') }}</span>
-                              <span class="font-weight-bold">{{ timeRange[1] }}</span>
+                          <template v-if="Number(agentInfo.agent.betAmountLabel) !== 0 || Number(agentInfo.agent.giftValue) !== 0">
+                            <div class="w-100 summaryDate">
+                              <div class="agent-type">
+                                <span class="font-weight-bold">{{ $t('__timeRange') }}</span>
+                                <span class="font-weight-bold">{{ timeRange[0] }}</span>
+                                <span class="font-weight-bold">{{ $t('__to') }}</span>
+                                <span class="font-weight-bold">{{ timeRange[1] }}</span>
+                              </div>
                             </div>
-                          </div>
-                          <div class="w-100">
-                            <span class="agent-type">{{ $t('__agentWinLossTotal') }}</span>
-                          </div>
-                          <div class="groups">
-                            <div class="w-100 d-flex list-row in-group">
-                              <div class="list-item info">
-                                <div class="name list-sub-item d-flex align-items-center">
-                                  <span class="icon">
-                                    <div class="fas gold">
-                                      <svg-icon icon-class="user" />
-                                    </div>
-                                  </span>
-                                  <span>
-                                    <span class="text-link">{{ agentInfo.agent }}</span>
-                                    <span>
-                                      {{ `[${$t('__level')}:` }}
-                                      <span class="text-link">{{ `${$t('__agent')}` }}</span>
-                                      {{ ']' }}
+                            <div class="w-100">
+                              <span class="agent-type">{{ $t('__agentWinLossTotal') }}</span>
+                            </div>
+                            <div class="groups">
+                              <div class="w-100 d-flex list-row in-group">
+                                <div class="list-item info">
+                                  <div class="name list-sub-item d-flex align-items-center">
+                                    <span class="icon">
+                                      <div class="fas gold">
+                                        <svg-icon icon-class="user" />
+                                      </div>
                                     </span>
-                                  </span>
-                                </div>
-                                <div v-if="agentInfo.open" class="halls">
-                                  <div class="halls-row d-flex">
-                                    <div class="halls-col">
-                                      <div class="halls-label">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span class="hall-name">{{ $t('__liveGame') }}</span>
+                                    <span>
+                                      <span class="text-link">{{ agentInfo.agent.agent }}</span>
+                                      <span>
+                                        {{ `[${$t('__level')}:` }}
+                                        <span class="text-link">{{ `${$t('__agent')}` }}</span>
+                                        {{ ']' }}
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <div v-if="agentInfo.agent.open" class="halls">
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span class="hall-name">{{ $t('__liveGame') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end" />
                                         </div>
                                       </div>
-                                      <div class="halls-value">
-                                        <div class="d-flex align-items-center justify-content-end" />
+                                    </div>
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__betAmount') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ agentInfo.agent.betAmountLabel }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__validBetAmount') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ agentInfo.agent.validBetAmount }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span class="text-parent">none</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span style="word-break: keep-all; white-space: nowrap;">
+                                              <span
+                                                :class="{
+                                                  'text-red': (((agentInfo.agent.netPL === 0 || agentInfo.agent.netPL === '-') && Number(agentInfo.agent.winLossRate) > 0) || agentInfo.agent.netPL > 0),
+                                                  'text-blue': (((agentInfo.agent.netPL === 0 || agentInfo.agent.netPL === '-') && Number(agentInfo.agent.winLossRate) < 0) || agentInfo.agent.netPL < 0)}"
+                                              >
+                                                {{ agentInfo.agent.winLossRateLabel }}
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__result') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span :class="{'text-red': agentInfo.agent.winLoss > 0, 'text-blue': agentInfo.agent.winLoss < 0}">{{ agentInfo.agent.winLossLabel }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ `${$t('__rollingRate')}%` }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span style="word-break: keep-all; white-space: nowrap;">
+                                              <span>{{ agentInfo.agent.rollingCommissionLabel }}</span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__rollingCommission') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span :class="{'text-red': Number(agentInfo.agent.rollingCommission) > 0, 'text-blue': Number(agentInfo.agent.rollingCommission) < 0}">{{ agentInfo.agent.rollingCommissionLabel }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex align-items-end">
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ `${$t('__rate')}%` }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>
+                                              <span>{{ agentInfo.agent.commissionRate }}</span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__totalAmount') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span :class="{'text-red': Number(agentInfo.agent.netPL) > 0, 'text-blue': Number(agentInfo.agent.netPL) < 0}">{{ agentInfo.agent.netPLLabel }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col align-items-end">
+                                        <div class="halls-label text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__commitSuperiorsValidBetAmount') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>
+                                              <span>{{ agentInfo.agent.commitSuperiorsValidBetAmount }}</span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="halls-col align-items-end">
+                                        <div class="halls-label text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__toSuperior') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span :class="{'text-red': Number(agentInfo.agent.toSuperior) > 0, 'text-blue': Number(agentInfo.agent.toSuperior) < 0}">{{ agentInfo.agent.toSuperiorLabel }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col align-items-end">
+                                        <div class="halls-label text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__giftValue') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>
+                                              <span :class="{'text-red': Number(agentInfo.agent.giftValue) > 0, 'text-blue': Number(agentInfo.agent.giftValue) < 0}">{{ agentInfo.agent.giftValueLabel }}</span>
+                                            </span>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="halls-row d-flex">
-                                    <div class="halls-col">
-                                      <div class="halls-label">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ $t('__betAmount') }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ agentInfo.betAmount }}</span>
-                                        </div>
-                                      </div>
+                                  <div v-if="agentInfo.agent.open" class="bottom-line" />
+                                  <div class="list-sub-item d-flex align-items-center">
+                                    <div class="list-item text-right">
+                                      <span class="label">{{ $t('__validBetAmount') }}</span>
+                                      <span class="value">
+                                        <span>{{ agentInfo.agent.validBetAmount }}</span>
+                                      </span>
                                     </div>
-                                    <div class="halls-col">
-                                      <div class="halls-label">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ $t('__validBetAmount') }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ agentInfo.validBetAmount }}</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="halls-row d-flex">
-                                    <div class="halls-col">
-                                      <div class="halls-label">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span class="text-parent">none</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span style="word-break: keep-all; white-space: nowrap;">
+                                    <div class="list-item text-right">
+                                      <div class="to-superiors">
+                                        <span class="label">{{ $t('__result') }}</span>
+                                        <span class="value" style="position: relative;">
+                                          <span :class="{'text-red': agentInfo.agent.winLoss > 0, 'text-blue': agentInfo.agent.winLoss < 0}">{{ agentInfo.agent.winLossLabel }}</span>
+                                          <span class="w-rate">
                                             <span
                                               :class="{
-                                                'text-red': (((agentInfo.netPL === 0 || agentInfo.netPL === '-') && Number(agentInfo.winLossRate) > 0) || agentInfo.netPL > 0),
-                                                'text-blue': (((agentInfo.netPL === 0 || agentInfo.netPL === '-') && Number(agentInfo.winLossRate) < 0) || agentInfo.netPL < 0)}"
+                                                'text-red': (((agentInfo.agent.netPL === 0 || agentInfo.agent.netPL === '-') && Number(agentInfo.agent.winLossRate) > 0) || agentInfo.agent.netPL > 0),
+                                                'text-blue': (((agentInfo.agent.netPL === 0 || agentInfo.agent.netPL === '-') && Number(agentInfo.agent.winLossRate) < 0) || agentInfo.agent.netPL < 0)}"
                                             >
-                                              {{ agentInfo.winLossRateLabel }}
+                                              {{ agentInfo.agent.winLossRateLabel }}
                                             </span>
                                           </span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="halls-col">
-                                      <div class="halls-label">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ $t('__result') }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span :class="{'text-red': agentInfo.winLoss > 0, 'text-blue': agentInfo.winLoss < 0}">{{ agentInfo.winLossLabel }}</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="halls-row d-flex">
-                                    <div class="halls-col">
-                                      <div class="halls-label">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ `${$t('__rollingRate')}%` }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span style="word-break: keep-all; white-space: nowrap;">
-                                            <span>{{ agentInfo.rollingCommissionLabel }}</span>
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="halls-col">
-                                      <div class="halls-label">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ $t('__rollingCommission') }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span :class="{'text-red': Number(agentInfo.rollingCommission) > 0, 'text-blue': Number(agentInfo.rollingCommission) < 0}">{{ agentInfo.rollingCommissionLabel }}</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="halls-row d-flex align-items-end">
-                                    <div class="halls-col">
-                                      <div class="halls-label">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ `${$t('__rate')}%` }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>
-                                            <span>{{ agentInfo.commissionRate }}</span>
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="halls-col">
-                                      <div class="halls-label">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ $t('__totalAmount') }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span :class="{'text-red': Number(agentInfo.netPL) > 0, 'text-blue': Number(agentInfo.netPL) < 0}">{{ agentInfo.netPLLabel }}</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="halls-row d-flex">
-                                    <div class="halls-col align-items-end">
-                                      <div class="halls-label text-right">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ $t('__commitSuperiorsValidBetAmount') }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value text-right">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>
-                                            <span>{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div class="halls-col align-items-end">
-                                      <div class="halls-label text-right">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ $t('__toSuperior') }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value text-right">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span :class="{'text-red': Number(agentInfo.toSuperior) > 0, 'text-blue': Number(agentInfo.toSuperior) < 0}">{{ agentInfo.toSuperiorLabel }}</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="halls-row d-flex">
-                                    <div class="halls-col align-items-end">
-                                      <div class="halls-label text-right">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>{{ $t('__giftValue') }}</span>
-                                        </div>
-                                      </div>
-                                      <div class="halls-value text-right">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                          <span>
-                                            <span :class="{'text-red': Number(agentInfo.giftValue) > 0, 'text-blue': Number(agentInfo.giftValue) < 0}">{{ agentInfo.giftValueLabel }}</span>
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div v-if="agentInfo.open" class="bottom-line" />
-                                <div class="list-sub-item d-flex align-items-center">
-                                  <div class="list-item text-right">
-                                    <span class="label">{{ $t('__validBetAmount') }}</span>
-                                    <span class="value">
-                                      <span>{{ agentInfo.validBetAmount }}</span>
-                                    </span>
-                                  </div>
-                                  <div class="list-item text-right">
-                                    <div class="to-superiors">
-                                      <span class="label">{{ $t('__result') }}</span>
-                                      <span class="value" style="position: relative;">
-                                        <span :class="{'text-red': agentInfo.winLoss > 0, 'text-blue': agentInfo.winLoss < 0}">{{ agentInfo.winLossLabel }}</span>
-                                        <span class="w-rate">
-                                          <span
-                                            :class="{
-                                              'text-red': (((agentInfo.netPL === 0 || agentInfo.netPL === '-') && Number(agentInfo.winLossRate) > 0) || agentInfo.netPL > 0),
-                                              'text-blue': (((agentInfo.netPL === 0 || agentInfo.netPL === '-') && Number(agentInfo.winLossRate) < 0) || agentInfo.netPL < 0)}"
-                                          >
-                                            {{ agentInfo.winLossRateLabel }}
-                                          </span>
                                         </span>
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div class="ctrl" :class="{'exp': agentInfo.open}" @click.stop="remarkExpand">
-                                    <div class="item-inner">
-                                      <div :class="{'d-none': agentInfo.open}">
-                                        <svg-icon class="fas text-gray" icon-class="more" style="height: 2.16667rem;width: 2.16667rem;" />
-                                      </div>
-                                      <div :class="{'d-none': !agentInfo.open}">
-                                        <svg-icon class="fas text-gray" icon-class="up" style="height: 1.83333rem;width: 1.83333rem;" />
                                       </div>
                                     </div>
-                                  </div>
-                                </div>
-                                <div class="list-sub-item d-flex align-items-center">
-                                  <div class="list-item text-right">
-                                    <span class="label">{{ $t('__rollingCommission') }}</span>
-                                    <span class="value">
-                                      <span :class="{'text-red': Number(agentInfo.rollingCommission) > 0, 'text-blue': Number(agentInfo.rollingCommission) < 0}">{{ agentInfo.rollingCommissionLabel }}</span>
-                                    </span>
-                                  </div>
-                                  <div class="list-item text-right">
-                                    <div class="to-superiors">
-                                      <span class="label">{{ $t('__totalAmount') }}</span>
-                                      <span class="value">
-                                        <span :class="{'text-red': Number(agentInfo.netPL) > 0, 'text-blue': Number(agentInfo.netPL) < 0}">{{ agentInfo.netPLLabel }}</span>
-                                      </span>
+                                    <div class="ctrl" :class="{'exp': agentInfo.agent.open}" @click.stop="remarkExpand('agent')">
+                                      <div class="item-inner">
+                                        <div :class="{'d-none': agentInfo.agent.open}">
+                                          <svg-icon class="fas text-gray" icon-class="more" style="height: 2.16667rem;width: 2.16667rem;" />
+                                        </div>
+                                        <div :class="{'d-none': !agentInfo.agent.open}">
+                                          <svg-icon class="fas text-gray" icon-class="up" style="height: 1.83333rem;width: 1.83333rem;" />
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div class="list-sub-item d-flex align-items-center">
-                                  <div class="list-item text-right">
-                                    <div class="win-loss">
-                                      <span class="label">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
+                                  <div class="list-sub-item d-flex align-items-center">
+                                    <div class="list-item text-right">
+                                      <span class="label">{{ $t('__rollingCommission') }}</span>
                                       <span class="value">
-                                        <span>{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
+                                        <span :class="{'text-red': Number(agentInfo.agent.rollingCommission) > 0, 'text-blue': Number(agentInfo.agent.rollingCommission) < 0}">{{ agentInfo.agent.rollingCommissionLabel }}</span>
                                       </span>
                                     </div>
-                                  </div>
-                                  <div class="list-item text-right">
-                                    <div class="to-superiors">
-                                      <span class="label">{{ $t('__toSuperior') }}</span>
-                                      <span class="value">
-                                        <span :class="{'text-red': Number(agentInfo.toSuperior) > 0, 'text-blue': Number(agentInfo.toSuperior) < 0}">{{ agentInfo.toSuperiorLabel }}</span>
-                                      </span>
+                                    <div class="list-item text-right">
+                                      <div class="to-superiors">
+                                        <span class="label">{{ $t('__totalAmount') }}</span>
+                                        <span class="value">
+                                          <span :class="{'text-red': Number(agentInfo.agent.netPL) > 0, 'text-blue': Number(agentInfo.agent.netPL) < 0}">{{ agentInfo.agent.netPLLabel }}</span>
+                                        </span>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                                <div class="list-sub-item d-flex align-items-center">
-                                  <div class="list-item text-right">
-                                    <div class="gift-value">
-                                      <span class="label">{{ $t('__giftValue') }}</span>
-                                      <span class="value">
-                                        <span :class="{'text-red': Number(agentInfo.giftValue) > 0, 'text-blue': Number(agentInfo.giftValue) < 0}">{{ agentInfo.giftValueLabel }}</span>
-                                      </span>
+                                  <div class="list-sub-item d-flex align-items-center">
+                                    <div class="list-item text-right">
+                                      <div class="win-loss">
+                                        <span class="label">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
+                                        <span class="value">
+                                          <span>{{ agentInfo.agent.commitSuperiorsValidBetAmount }}</span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div class="list-item text-right">
+                                      <div class="to-superiors">
+                                        <span class="label">{{ $t('__toSuperior') }}</span>
+                                        <span class="value">
+                                          <span :class="{'text-red': Number(agentInfo.agent.toSuperior) > 0, 'text-blue': Number(agentInfo.agent.toSuperior) < 0}">{{ agentInfo.agent.toSuperiorLabel }}</span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="list-sub-item d-flex align-items-center">
+                                    <div class="list-item text-right">
+                                      <div class="gift-value">
+                                        <span class="label">{{ $t('__giftValue') }}</span>
+                                        <span class="value">
+                                          <span :class="{'text-red': Number(agentInfo.agent.giftValue) > 0, 'text-blue': Number(agentInfo.agent.giftValue) < 0}">{{ agentInfo.agent.giftValueLabel }}</span>
+                                        </span>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </template>
+                          <template v-if="Number(agentInfo.member.betAmountLabel) !== 0 || Number(agentInfo.member.giftValue) !== 0">
+                            <div class="w-100 summaryDate">
+                              <div class="agent-type">
+                                <span class="font-weight-bold">{{ $t('__timeRange') }}</span>
+                                <span class="font-weight-bold">{{ timeRange[0] }}</span>
+                                <span class="font-weight-bold">{{ $t('__to') }}</span>
+                                <span class="font-weight-bold">{{ timeRange[1] }}</span>
+                              </div>
+                            </div>
+                            <div class="w-100">
+                              <span class="agent-type">{{ $t('__memberWinLossTotal') }}</span>
+                            </div>
+                            <div class="groups">
+                              <div class="w-100 d-flex list-row in-group">
+                                <div class="list-item info">
+                                  <div class="name list-sub-item d-flex align-items-center">
+                                    <span class="icon">
+                                      <div class="fas gold">
+                                        <svg-icon icon-class="user" />
+                                      </div>
+                                    </span>
+                                    <span>
+                                      <span class="text-link">{{ agentInfo.member.agent }}</span>
+                                      <span>
+                                        {{ `[${$t('__level')}:` }}
+                                        <span class="text-link">{{ `${$t('__agent')}` }}</span>
+                                        {{ ']' }}
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <div v-if="agentInfo.member.open" class="halls">
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span class="hall-name">{{ $t('__liveGame') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__betAmount') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ agentInfo.member.betAmountLabel }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__validBetAmount') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ agentInfo.member.validBetAmount }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span class="text-parent">none</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span style="word-break: keep-all; white-space: nowrap;">
+                                              <span
+                                                :class="{
+                                                  'text-red': (((agentInfo.member.netPL === 0 || agentInfo.member.netPL === '-') && Number(agentInfo.member.winLossRate) > 0) || agentInfo.member.netPL > 0),
+                                                  'text-blue': (((agentInfo.member.netPL === 0 || agentInfo.member.netPL === '-') && Number(agentInfo.member.winLossRate) < 0) || agentInfo.member.netPL < 0)}"
+                                              >
+                                                {{ agentInfo.member.winLossRateLabel }}
+                                              </span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__result') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span :class="{'text-red': agentInfo.member.winLoss > 0, 'text-blue': agentInfo.member.winLoss < 0}">{{ agentInfo.member.winLossLabel }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ `${$t('__rollingRate')}%` }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span style="word-break: keep-all; white-space: nowrap;">
+                                              <span>{{ agentInfo.member.rollingCommissionLabel }}</span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__rollingCommission') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span :class="{'text-red': Number(agentInfo.member.rollingCommission) > 0, 'text-blue': Number(agentInfo.member.rollingCommission) < 0}">{{ agentInfo.member.rollingCommissionLabel }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex align-items-end">
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ `${$t('__rate')}%` }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>
+                                              <span>{{ agentInfo.member.commissionRate }}</span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="halls-col">
+                                        <div class="halls-label">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__totalAmount') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span :class="{'text-red': Number(agentInfo.member.netPL) > 0, 'text-blue': Number(agentInfo.member.netPL) < 0}">{{ agentInfo.member.netPLLabel }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col align-items-end">
+                                        <div class="halls-label text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__commitSuperiorsValidBetAmount') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>
+                                              <span>{{ agentInfo.member.commitSuperiorsValidBetAmount }}</span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="halls-col align-items-end">
+                                        <div class="halls-label text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__toSuperior') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span :class="{'text-red': Number(agentInfo.member.toSuperior) > 0, 'text-blue': Number(agentInfo.member.toSuperior) < 0}">{{ agentInfo.member.toSuperiorLabel }}</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="halls-row d-flex">
+                                      <div class="halls-col align-items-end">
+                                        <div class="halls-label text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>{{ $t('__giftValue') }}</span>
+                                          </div>
+                                        </div>
+                                        <div class="halls-value text-right">
+                                          <div class="d-flex align-items-center justify-content-end">
+                                            <span>
+                                              <span :class="{'text-red': Number(agentInfo.member.giftValue) > 0, 'text-blue': Number(agentInfo.member.giftValue) < 0}">{{ agentInfo.member.giftValueLabel }}</span>
+                                            </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div v-if="agentInfo.member.open" class="bottom-line" />
+                                  <div class="list-sub-item d-flex align-items-center">
+                                    <div class="list-item text-right">
+                                      <span class="label">{{ $t('__validBetAmount') }}</span>
+                                      <span class="value">
+                                        <span>{{ agentInfo.member.validBetAmount }}</span>
+                                      </span>
+                                    </div>
+                                    <div class="list-item text-right">
+                                      <div class="to-superiors">
+                                        <span class="label">{{ $t('__result') }}</span>
+                                        <span class="value" style="position: relative;">
+                                          <span :class="{'text-red': agentInfo.member.winLoss > 0, 'text-blue': agentInfo.member.winLoss < 0}">{{ agentInfo.member.winLossLabel }}</span>
+                                          <span class="w-rate">
+                                            <span
+                                              :class="{
+                                                'text-red': (((agentInfo.member.netPL === 0 || agentInfo.member.netPL === '-') && Number(agentInfo.member.winLossRate) > 0) || agentInfo.member.netPL > 0),
+                                                'text-blue': (((agentInfo.member.netPL === 0 || agentInfo.member.netPL === '-') && Number(agentInfo.member.winLossRate) < 0) || agentInfo.member.netPL < 0)}"
+                                            >
+                                              {{ agentInfo.member.winLossRateLabel }}
+                                            </span>
+                                          </span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div class="ctrl" :class="{'exp': agentInfo.member.open}" @click.stop="remarkExpand('member')">
+                                      <div class="item-inner">
+                                        <div :class="{'d-none': agentInfo.member.open}">
+                                          <svg-icon class="fas text-gray" icon-class="more" style="height: 2.16667rem;width: 2.16667rem;" />
+                                        </div>
+                                        <div :class="{'d-none': !agentInfo.member.open}">
+                                          <svg-icon class="fas text-gray" icon-class="up" style="height: 1.83333rem;width: 1.83333rem;" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="list-sub-item d-flex align-items-center">
+                                    <div class="list-item text-right">
+                                      <span class="label">{{ $t('__rollingCommission') }}</span>
+                                      <span class="value">
+                                        <span :class="{'text-red': Number(agentInfo.member.rollingCommission) > 0, 'text-blue': Number(agentInfo.member.rollingCommission) < 0}">{{ agentInfo.member.rollingCommissionLabel }}</span>
+                                      </span>
+                                    </div>
+                                    <div class="list-item text-right">
+                                      <div class="to-superiors">
+                                        <span class="label">{{ $t('__totalAmount') }}</span>
+                                        <span class="value">
+                                          <span :class="{'text-red': Number(agentInfo.member.netPL) > 0, 'text-blue': Number(agentInfo.member.netPL) < 0}">{{ agentInfo.member.netPLLabel }}</span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="list-sub-item d-flex align-items-center">
+                                    <div class="list-item text-right">
+                                      <div class="win-loss">
+                                        <span class="label">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
+                                        <span class="value">
+                                          <span>{{ agentInfo.member.commitSuperiorsValidBetAmount }}</span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                    <div class="list-item text-right">
+                                      <div class="to-superiors">
+                                        <span class="label">{{ $t('__toSuperior') }}</span>
+                                        <span class="value">
+                                          <span :class="{'text-red': Number(agentInfo.member.toSuperior) > 0, 'text-blue': Number(agentInfo.member.toSuperior) < 0}">{{ agentInfo.member.toSuperiorLabel }}</span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="list-sub-item d-flex align-items-center">
+                                    <div class="list-item text-right">
+                                      <div class="gift-value">
+                                        <span class="label">{{ $t('__giftValue') }}</span>
+                                        <span class="value">
+                                          <span :class="{'text-red': Number(agentInfo.member.giftValue) > 0, 'text-blue': Number(agentInfo.member.giftValue) < 0}">{{ agentInfo.member.giftValueLabel }}</span>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </template>
                           <div class="total">
                             <div class="total-details">
                               <div class="details-row d-flex flex-wrap">
@@ -358,7 +648,7 @@
                                   </div>
                                   <div class="details-value">
                                     <div class="d-flex align-items-center justify-content-end text-right">
-                                      <span>{{ agentInfo.validBetAmount }}</span>
+                                      <span>{{ agentInfo.total.validBetAmount }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -370,14 +660,14 @@
                                   </div>
                                   <div class="details-value">
                                     <div class="d-flex align-items-center justify-content-end text-right" style="position: relative;">
-                                      <span :class="{'text-red': agentInfo.winLoss > 0, 'text-blue': agentInfo.winLoss < 0}">{{ agentInfo.winLossLabel }}</span>
+                                      <span :class="{'text-red': agentInfo.total.winLoss > 0, 'text-blue': agentInfo.total.winLoss < 0}">{{ agentInfo.total.winLossLabel }}</span>
                                       <span class="w-rate">
                                         <span
                                           :class="{
-                                            'text-red': (((agentInfo.netPL === 0 || agentInfo.netPL === '-') && Number(agentInfo.winLossRate) > 0) || agentInfo.netPL > 0),
-                                            'text-blue': (((agentInfo.netPL === 0 || agentInfo.netPL === '-') && Number(agentInfo.winLossRate) < 0) || agentInfo.netPL < 0)}"
+                                            'text-red': (((agentInfo.total.netPL === 0 || agentInfo.total.netPL === '-') && Number(agentInfo.total.winLossRate) > 0) || agentInfo.total.netPL > 0),
+                                            'text-blue': (((agentInfo.total.netPL === 0 || agentInfo.total.netPL === '-') && Number(agentInfo.total.winLossRate) < 0) || agentInfo.total.netPL < 0)}"
                                         >
-                                          {{ agentInfo.winLossRateLabel }}
+                                          {{ agentInfo.total.winLossRateLabel }}
                                         </span>
                                       </span>
                                     </div>
@@ -391,7 +681,7 @@
                                   </div>
                                   <div class="details-value">
                                     <div class="d-flex align-items-center justify-content-end text-right" style="position: relative;">
-                                      <span :class="{'text-red': Number(agentInfo.rollingCommission) > 0, 'text-blue': Number(agentInfo.rollingCommission) < 0}">{{ agentInfo.rollingCommissionLabel }}</span>
+                                      <span :class="{'text-red': Number(agentInfo.total.rollingCommission) > 0, 'text-blue': Number(agentInfo.total.rollingCommission) < 0}">{{ agentInfo.total.rollingCommissionLabel }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -403,7 +693,7 @@
                                   </div>
                                   <div class="details-value">
                                     <div class="d-flex align-items-center justify-content-end text-right" style="position: relative;">
-                                      <span :class="{'text-red': Number(agentInfo.netPL) > 0, 'text-blue': Number(agentInfo.netPL) < 0}">{{ agentInfo.netPLLabel }}</span>
+                                      <span :class="{'text-red': Number(agentInfo.total.netPL) > 0, 'text-blue': Number(agentInfo.total.netPL) < 0}">{{ agentInfo.total.netPLLabel }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -415,7 +705,7 @@
                                   </div>
                                   <div class="details-value align-items-end">
                                     <div class="d-flex align-items-center justify-content-end text-right" style="position: relative;">
-                                      <span>{{ agentInfo.commitSuperiorsValidBetAmount }}</span>
+                                      <span>{{ agentInfo.total.commitSuperiorsValidBetAmount }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -427,7 +717,7 @@
                                   </div>
                                   <div class="details-value">
                                     <div class="d-flex align-items-center justify-content-end text-right" style="position: relative;">
-                                      <span :class="{'text-red': Number(agentInfo.toSuperior) > 0, 'text-blue': Number(agentInfo.toSuperior) < 0}">{{ agentInfo.toSuperiorLabel }}</span>
+                                      <span :class="{'text-red': Number(agentInfo.total.toSuperior) > 0, 'text-blue': Number(agentInfo.total.toSuperior) < 0}">{{ agentInfo.total.toSuperiorLabel }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -439,7 +729,7 @@
                                   </div>
                                   <div class="details-value">
                                     <div class="d-flex align-items-center justify-content-end text-right" style="position: relative;">
-                                      <span :class="{'text-red': Number(agentInfo.giftValue) > 0, 'text-blue': Number(agentInfo.giftValue) < 0}">{{ agentInfo.giftValueLabel }}</span>
+                                      <span :class="{'text-red': Number(agentInfo.total.giftValue) > 0, 'text-blue': Number(agentInfo.total.giftValue) < 0}">{{ agentInfo.total.giftValueLabel }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -464,7 +754,7 @@
                                           <path d="M49,29.25H40.15a18.62,18.62,0,0,1-3.85,6.16,18.29,18.29,0,0,1-2.82,2.47A20.11,20.11,0,0,1,48.2,51.19H63V43.65A14.25,14.25,0,0,0,49,29.25Z" />
                                         </svg>
                                       </div>
-                                      <span v-if="!(!agentInfo.betMemberCount && agentInfo.betMemberCount !==0)" class="text-black font-weight-bold ml-2 mr-auto">{{ agentInfo.betMemberCountLabel }}</span>
+                                      <span v-if="!(!agentInfo.total.betMemberCount && agentInfo.total.betMemberCount !==0)" class="text-black font-weight-bold ml-2 mr-auto">{{ agentInfo.total.betMemberCountLabel }}</span>
                                     </span>
                                   </div>
                                 </div>
@@ -476,7 +766,7 @@
                                   </div>
                                   <div class="details-value">
                                     <div class="d-flex align-items-center justify-content-end text-right" style="position: relative;">
-                                      <span :class="{'text-red': Number(agentInfo.myProfit) > 0, 'text-blue': Number(agentInfo.myProfit) < 0}">{{ agentInfo.myProfitLabel }}</span>
+                                      <span :class="{'text-red': Number(agentInfo.total.myProfit) > 0, 'text-blue': Number(agentInfo.total.myProfit) < 0}">{{ agentInfo.total.myProfitLabel }}</span>
                                     </div>
                                   </div>
                                 </div>
@@ -564,7 +854,11 @@ export default {
         'thisMonth': 6
       }),
       curDateEnumIndex: 0,
-      agentInfo: {},
+      agentInfo: {
+        agent: {},
+        member: {},
+        total: {}
+      },
       curTableIndex: 0,
       agentId: null
     }
@@ -653,7 +947,7 @@ export default {
   },
   methods: {
     setHeaderStyle() {
-      const viewTitle = (this.agentInfo && this.agentInfo.agent) ? `${this.agentInfo.agent}[${this.$t('__agent')}]` : ''
+      const viewTitle = (this.agentInfo.agent && this.agentInfo.agent.agent) ? `${this.agentInfo.agent.agent}[${this.$t('__agent')}]` : ''
       if (this.agentId || this.agentId === 0) {
         this.$store.dispatch('common/setHeaderStyle', [`${viewTitle}${this.$t('__winLossReport')}`, true, () => {
           this.$router.go(-1)
@@ -662,15 +956,15 @@ export default {
         this.$store.dispatch('common/setHeaderStyle', [`${viewTitle}${this.$t('__winLossReport')}`, false, () => { }])
       }
     },
-    remarkExpand() {
+    remarkExpand(key) {
       this.$nextTick(() => {
-        this.agentInfo.open = !this.agentInfo.open;
-        this.agentInfo = JSON.parse(JSON.stringify(this.agentInfo))
+        this.agentInfo[key].open = !this.agentInfo[key].open;
+        this.agentInfo[key] = JSON.parse(JSON.stringify(this.agentInfo[key]))
       })
     },
     setTagsViewTitle() {
       const title = this.$t(this.tempRoute.meta.title)
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.agentInfo.agent}` })
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.agentInfo.agent.agent}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     getData() {
@@ -690,9 +984,9 @@ export default {
       const data = this.getData()
       this.setDataLoading(true)
       agentWinLossReportBetMemberCount(data).then((res) => {
-        this.agentInfo.betMemberCount = res.count
-        this.agentInfo = JSON.parse(JSON.stringify(this.agentInfo))
-        this.agentInfo.betMemberCountLabel = numberFormat(res.count, 0)
+        this.agentInfo.total.betMemberCount = res.count
+        this.agentInfo.total = JSON.parse(JSON.stringify(this.agentInfo.total))
+        this.agentInfo.total.betMemberCountLabel = numberFormat(res.count, 0)
         this.setDataLoading(false)
       }).catch(() => {
         this.setDataLoading(false)
@@ -767,20 +1061,24 @@ export default {
     },
     handleAgentRespone(agentInfo) {
       this.agentInfo = agentInfo
-      this.agentInfo.index = 0
-      this.agentInfo.betAmount = numberFormat(this.agentInfo.betAmount)
-      this.agentInfo.myProfitLabel = numberFormat(this.agentInfo.myProfit)
-      this.agentInfo.winLossLabel = numberFormat(this.agentInfo.winLoss)
-      this.agentInfo.winLossRateLabel = `${numberFormat(this.agentInfo.winLossRate)}%`
-      this.agentInfo.validBetAmount = numberFormat(this.agentInfo.validBetAmount)
-      this.agentInfo.rollingCommissionLabel = numberFormat(this.agentInfo.rollingCommission)
-      this.agentInfo.netPLLabel = numberFormat(this.agentInfo.netPL)
-      this.agentInfo.toSuperiorLabel = numberFormat(this.agentInfo.toSuperior)
-      this.agentInfo.commitSuperiorsValidBetAmount = numberFormat(this.agentInfo.commitSuperiorsValidBetAmount)
-      this.agentInfo.giftValueLabel = numberFormat(this.agentInfo.giftValue)
+      this.setAgentInfo(this.agentInfo.agent)
+      this.setAgentInfo(this.agentInfo.member)
+      this.setAgentInfo(this.agentInfo.total)
       this.setTagsViewTitle()
       this.setDataLoading(false)
       this.setHeaderStyle()
+    },
+    setAgentInfo(data) {
+      data.betAmountLabel = numberFormat(data.betAmount)
+      data.myProfitLabel = numberFormat(data.myProfit)
+      data.winLossLabel = numberFormat(data.winLoss)
+      data.winLossRateLabel = `${numberFormat(data.winLossRate)}%`
+      data.validBetAmount = numberFormat(data.validBetAmount)
+      data.rollingCommissionLabel = numberFormat(data.rollingCommission)
+      data.netPLLabel = numberFormat(data.netPL)
+      data.toSuperiorLabel = numberFormat(data.toSuperior)
+      data.commitSuperiorsValidBetAmount = numberFormat(data.commitSuperiorsValidBetAmount)
+      data.giftValueLabel = numberFormat(data.giftValue)
     },
     handleMemberRespone() {
       this.setDataLoading(false)
