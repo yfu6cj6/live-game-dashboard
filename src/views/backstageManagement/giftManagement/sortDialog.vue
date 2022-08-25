@@ -1,83 +1,163 @@
 <template>
-  <Dialog
-    v-if="visible"
-    :loading="dialogLoading"
-    :title="title"
-    :on-close-even="onClose"
-    :close-on-click-modal="device === 'mobile'"
-  >
-    <el-form :model="searchForm">
-      <el-form-item :label="$t('__currency')" prop="currency">
-        <el-select v-model="searchForm.currency">
-          <el-option v-for="item in currency" :key="item.key" :label="item.nickname" :value="item.key" />
-        </el-select>
-        <el-button class="bg-yellow search" @click="onSearch()">{{ $t('__search') }}</el-button>
-      </el-form-item>
-    </el-form>
-    <div class="view-container-table">
-      <draggable v-if="allDataByClient.length > 0" :list="allDataByClient" v-bind="$attrs" :set-data="setData">
-        <div
-          v-for="(item, index) in allDataByClient"
-          :key="index"
-          class="view-container-table-row"
-          :class="{'single-row': index % 2 === 0}"
-        >
-          <div class="wrap">
-            <template v-if="device === 'mobile'">
-              <div class="left">
-                <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+  <div v-if="visible">
+    <template v-if="device === 'mobile'">
+      <div v-loading="dialogLoading" class="black_bg">
+        <div class="data_content">
+          <div class="titleBar yellow">
+            <span class="titleTips">{{ title }}</span>
+          </div>
+          <div class="selectBar">
+            <div class="el-form-item__content item w-100">
+              <div class="label-group">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__currency') }}</label>
               </div>
-              <div class="right">
-                <div class="item">
-                  <span class="header">ID</span>
-                  <span>{{ item.id }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__giftNickname') }}</span>
-                  <span>{{ item.nickname }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__value') }}</span>
-                  <span>{{ item.valueLabel }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__status') }}</span>
-                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+              <div class="option">
+                <div class="comp selected-filter">
+                  <select v-model="searchForm.currency" class="el-select">
+                    <option v-for="item in currency" :key="item.key" :value="item.key">
+                      {{ $t(item.nickname) }}
+                    </option>
+                  </select>
+                  <div class="fas gray-deep">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 63 63"
+                      style="height: 0.916667rem; width: 0.916667rem;"
+                    >
+                      <title>arrow_2</title>
+                      <g id="hGqiqI.tif">
+                        <path d="M63,10.44,31.74,52.56,0,10.44Z" />
+                      </g>
+                    </svg>
+                  </div>
                 </div>
               </div>
-            </template>
-            <template v-else>
-              <div class="left">
-                <div class="item">
-                  <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+            </div>
+            <div class="searchBtn">
+              <button type="button" class="el-button bg-yellow el-button--primary" @click="onSearch()">
+                <span>{{ $t('__search') }}</span>
+              </button>
+            </div>
+          </div>
+          <div class="table-container">
+            <draggable v-if="allDataByClient.length > 0" :list="allDataByClient" v-bind="$attrs" :set-data="setData">
+              <div
+                v-for="(item, index) in allDataByClient"
+                :key="index"
+                class="table_row_item"
+                :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+              >
+                <span class="number">{{ item.id }}</span>
+                <div class="photo">
+                  <img :src="item.img_address" class="img" :alt="$t('__giftImage')">
                 </div>
-                <div class="item">
-                  <span class="header">ID</span>
-                  <span>{{ item.id }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__giftNickname') }}</span>
-                  <span>{{ item.nickname }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__value') }}</span>
-                  <span>{{ item.valueLabel }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__status') }}</span>
-                  <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                <div class="info">
+                  <div class="item">
+                    <span class="title">{{ $t('__giftNickname') }}</span>
+                    <span class="value">{{ item.nickname }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">{{ $t('__value') }}</span>
+                    <span class="value">{{ item.valueLabel }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">{{ $t('__status') }}</span>
+                    <span class="value status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                  </div>
                 </div>
               </div>
-            </template>
+            </draggable>
+            <div v-else-if="searched && allDataByClient.length === 0" class="noInformation">{{ $t("__noInformation") }}</div>
           </div>
         </div>
-      </draggable>
-      <div v-else-if="searched && allDataByClient.length === 0" class="noInformation">{{ $t("__noInformation") }}</div>
-    </div>
-    <span v-if="allDataByClient.length > 0 && !dialogLoading" slot="bodyFooter">
-      <el-button class="bg-yellow confirm" @click="onSubmit()">{{ confirm }}</el-button>
-    </span>
-  </Dialog>
+        <div v-if="allDataByClient.length > 0 && !dialogLoading" class="operate_ctrl">
+          <button type="button" class="el-button bg-yellow el-button--primary confirm" @click="onSubmit()">
+            <span>{{ confirm }}</span>
+          </button>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <Dialog
+        :loading="dialogLoading"
+        :title="title"
+        :on-close-even="onClose"
+        :close-on-click-modal="device === 'mobile'"
+      >
+        <el-form :model="searchForm">
+          <el-form-item :label="$t('__currency')" prop="currency">
+            <el-select v-model="searchForm.currency">
+              <el-option v-for="item in currency" :key="item.key" :label="item.nickname" :value="item.key" />
+            </el-select>
+            <el-button class="bg-yellow search" @click="onSearch()">{{ $t('__search') }}</el-button>
+          </el-form-item>
+        </el-form>
+        <div class="view-container-table">
+          <draggable v-if="allDataByClient.length > 0" :list="allDataByClient" v-bind="$attrs" :set-data="setData">
+            <div
+              v-for="(item, index) in allDataByClient"
+              :key="index"
+              class="view-container-table-row"
+              :class="{'single-row': index % 2 === 0}"
+            >
+              <div class="wrap">
+                <template v-if="device === 'mobile'">
+                  <div class="left">
+                    <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+                  </div>
+                  <div class="right">
+                    <div class="item">
+                      <span class="header">ID</span>
+                      <span>{{ item.id }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__giftNickname') }}</span>
+                      <span>{{ item.nickname }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__value') }}</span>
+                      <span>{{ item.valueLabel }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__status') }}</span>
+                      <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                    </div>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="left">
+                    <div class="item">
+                      <img :src="item.img_address" class="giftPhoto" :alt="$t('__giftImage')">
+                    </div>
+                    <div class="item">
+                      <span class="header">ID</span>
+                      <span>{{ item.id }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__giftNickname') }}</span>
+                      <span>{{ item.nickname }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__value') }}</span>
+                      <span>{{ item.valueLabel }}</span>
+                    </div>
+                    <div class="item">
+                      <span class="header">{{ $t('__status') }}</span>
+                      <span class="status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </draggable>
+          <div v-else-if="searched && allDataByClient.length === 0" class="noInformation">{{ $t("__noInformation") }}</div>
+        </div>
+        <span v-if="allDataByClient.length > 0 && !dialogLoading" slot="bodyFooter">
+          <el-button class="bg-yellow confirm" @click="onSubmit()">{{ confirm }}</el-button>
+        </span>
+      </Dialog>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -195,84 +275,170 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-form {
-  .el-select {
-    max-width: calc(100% - 70px);
-    padding-right: 10px;
+.black_bg {
+  left: 0;
+  width: 100%;
+  top: 3.75rem;
+  position: fixed;
+  background-color: #000;
+  height: calc(100vh - 3.75rem);
+  .ctrlBtn {
+    height: 2.5rem;
   }
-  .search {
-    height: 30px;
-    line-height: 0;
-  }
-}
-
-.view {
-  &-container {
-    &-table {
-      &-row {
-        .wrap {
-          .left,
-          .right {
+  .data_content {
+    overflow: auto;
+    height: calc(100vh - 3.75rem - 1.5rem - 3.5rem);
+    .tip {
+      float: right;
+    }
+    .titleBar {
+      margin-top: 1.5rem;
+      font-size: 1.16667rem;
+      font-weight: bold;
+      padding: 1.25rem 1.66667rem;
+      color: #000;
+      background: #f9c901;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .item {
+      padding: 0 1rem;
+      &.is-error {
+        .el-input__inner {
+          border-color: #f56c6c;
+        }
+        .el-input__validateIcon {
+          color: #f56c6c;
+        }
+      }
+      &.is-success {
+        .el-input__inner {
+          border-color: #67c23a;
+        }
+        .el-input__validateIcon {
+          color: #67c23a;
+        }
+      }
+    }
+    .table-container {
+      .even-row {
+        display: flex;
+        background-color: #fff;
+        padding: 0.625rem 1.16667rem 0.625rem 0;
+        margin: 0;
+      }
+      .odd-row {
+        display: flex;
+        background-color: #f4f4f4;
+        padding: 0.625rem 1.16667rem 0.625rem 0;
+        margin: 0;
+      }
+      .table_row_item {
+        .photo {
+          width: 9.5rem;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .img {
+            vertical-align: middle;
+            width: 5.9rem;
+            height: 5.9rem;
+          }
+        }
+        .number {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.33333rem;
+          font-weight: bolder;
+          padding: 0 0.5rem;
+          width: 3rem;
+        }
+        .info {
+          padding-left: 0.5rem;
+          .item {
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            width: auto;
-          }
-          .left {
-            align-items: center;
-            margin-right: 10px;
-          }
-          .giftPhoto {
-            vertical-align: middle;
-            width: 73px;
-          }
-        }
-      }
-      .noInformation {
-        color: #fff;
-        font-size: 18px;
-        padding-bottom: 20px;
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .wrap {
-            .left,
-            .right {
-              width: 50%;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .wrap {
-            .left {
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-evenly;
+            padding-bottom: 0.2rem;
+            .title {
               width: 100%;
+              font-size: 1.16667rem;
+              color: #6e6e6e;
+              word-break: break-word;
+              margin-bottom: 0.1rem;
             }
-            .item {
-              width: 110px;
+            .value {
+              font-size: 1.16667rem;
+              font-weight: bold;
+              word-break: break-all;
             }
           }
         }
       }
     }
   }
+  .operate_content {
+    height: 6.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    .form-ctrl {
+      padding-top: 0.41667rem;
+      padding-bottom: 0.41667rem;
+      width: calc(100vw - 3.33333rem);
+      height: 3.33333rem;
+      background: #000;
+      button {
+        width: 150px;
+        margin: auto;
+      }
+    }
+  }
+
+  .el-select {
+    background: transparent;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    height: 2.66667rem;
+    width: 100%;
+    border: 0;
+  }
+  .label-group.required:after {
+    content: "*";
+    color: #f56c6c;
+    margin-left: 0.3rem;
+    font-size: 1.5rem;
+  }
+}
+
+.selectBar {
+  display: flex;
+  width: 100%;
+  .searchBtn {
+    display: flex;
+    width: 9rem;
+    align-items: flex-end;
+    padding-bottom: 0.4rem;
+    justify-content: center;
+  }
+}
+
+.operate_ctrl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  .confirm {
+    width: 10rem;
+  }
+}
+
+.noInformation {
+  margin-top: 1rem;
+  text-align: center;
+  color: #fff;
 }
 </style>

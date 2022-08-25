@@ -61,8 +61,8 @@
             <template v-if="device === 'mobile'">
               <span class="number">{{ item.id }}</span>
               <div class="photo">
-                <img v-if="item.photo_url === ''" class="dealerPhoto" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
-                <img v-else :src="item.photo_url" class="dealerPhoto" :alt="$t('__dealerPhoto')">
+                <img v-if="item.photo_url === ''" class="img" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
+                <img v-else :src="item.photo_url" class="img" :alt="$t('__dealerPhoto')">
               </div>
               <div class="info">
                 <div class="item">
@@ -302,7 +302,7 @@ export default {
   max-height: calc(100vh - 3.75rem);
   .search-container {
     width: 100%;
-    padding-top: 1rem;
+    padding: 1.5rem 0.5rem 0.3rem 0.5rem;
     .createBtn {
       display: flex;
       align-items: center;
@@ -330,9 +330,8 @@ export default {
     .options {
       display: flex;
       width: 100%;
-      justify-content: center;
       .option {
-        width: 12.84583rem;
+        width: 12.54583rem;
         padding-right: 0;
         padding-left: 0;
         padding-top: 0;
@@ -357,7 +356,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      .dealerPhoto {
+      .img {
         vertical-align: middle;
         width: 9rem;
         height: 10.2857rem;
@@ -370,6 +369,7 @@ export default {
       font-size: 1.33333rem;
       font-weight: bolder;
       padding: 0 0.5rem;
+      width: 3rem;
     }
     .info {
       padding-left: 0.5rem;
@@ -415,21 +415,6 @@ export default {
     .noInformation {
       margin-top: 1rem;
       text-align: center;
-    }
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .left,
-          .right {
-            width: 50%;
-          }
-        }
-      }
     }
   }
 }

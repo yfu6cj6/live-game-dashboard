@@ -1,7 +1,7 @@
 <template>
   <div v-if="visible" class="dealerEditDialog">
     <template v-if="device === 'mobile'">
-      <div class="black_bg">
+      <div v-loading="dialogLoading" class="black_bg">
         <div class="data_content">
           <div class="titleBar yellow">
             <span class="titleTips">{{ title }}</span>
@@ -259,6 +259,24 @@ export default {
 
 <style lang="scss">
 .black_bg {
+  .data_content {
+    .dealerUpload {
+      .el-upload {
+        .el-upload-dragger {
+          width: auto;
+          height: auto;
+        }
+      }
+      .el-upload-list__item-status-label {
+        display: none;
+      }
+    }
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+.black_bg {
   left: 0;
   width: 100%;
   top: 3.75rem;
@@ -334,6 +352,5 @@ export default {
       }
     }
   }
-
 }
 </style>
