@@ -16,6 +16,7 @@
           :render-content="renderContent"
           :indent="8"
           :filter-node-method="filterNode"
+          :current-node-key="agentLevelCurrentKey"
           highlight-current
           :expand-on-click-node="false"
           @node-click="handleNodeClick"
@@ -44,7 +45,8 @@ export default {
       'agentLevelSidebar',
       'agentLevel',
       'agentLevelLoading',
-      'agentLevelExpandedKeys'
+      'agentLevelExpandedKeys',
+      'agentLevelCurrentKey'
     ]),
     treeDefaultExpandedKeys() {
       return (!this.agentLevelExpandedKeys || this.agentLevelExpandedKeys.length === 0) ? [] : this.agentLevelExpandedKeys
@@ -53,6 +55,11 @@ export default {
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val)
+    },
+    agentLevelCurrentKey(key) {
+      this.$nextTick(() => {
+        this.$refs.tree.setCurrentKey(key)
+      })
     }
   },
   methods: {

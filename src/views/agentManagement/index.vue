@@ -8,8 +8,24 @@
               <div class="scroll-view flex-column flex-fill">
                 <div class="agent-summary">
                   <div class="floatNav">
-                    <div class="fas ml-auto gray-deep">
-                      <svg id="圖層_1" data-name="圖層 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 63 63" style="height: 1.83333rem; width: 1.83333rem;"><title>tree</title><rect y="2.49" width="31.87" height="15.94" /><rect x="37.1" y="23.65" width="25.9" height="8.96" /><rect x="34.11" y="9.71" width="1.99" height="36.85" transform="translate(6.97 63.25) rotate(-90)" /><rect x="37.1" y="37.6" width="25.9" height="8.96" /><rect x="34.11" y="23.65" width="1.99" height="36.85" transform="translate(-6.97 77.19) rotate(-90)" /><rect x="37.1" y="51.55" width="25.9" height="8.96" /><rect x="32.12" y="37.6" width="1.99" height="36.85" transform="translate(-22.91 89.15) rotate(-90)" /><rect x="14.69" y="18.42" width="2.49" height="36.85" transform="translate(31.87 73.7) rotate(180)" /></svg>
+                    <div class="fas ml-auto gray-deep" @click.stop="openAgentLevel">
+                      <svg
+                        id="圖層_1"
+                        data-name="圖層 1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 63 63"
+                        style="height: 1.83333rem; width: 1.83333rem;"
+                      >
+                        <title>tree</title>
+                        <rect y="2.49" width="31.87" height="15.94" />
+                        <rect x="37.1" y="23.65" width="25.9" height="8.96" />
+                        <rect x="34.11" y="9.71" width="1.99" height="36.85" transform="translate(6.97 63.25) rotate(-90)" />
+                        <rect x="37.1" y="37.6" width="25.9" height="8.96" />
+                        <rect x="34.11" y="23.65" width="1.99" height="36.85" transform="translate(-6.97 77.19) rotate(-90)" />
+                        <rect x="37.1" y="51.55" width="25.9" height="8.96" />
+                        <rect x="32.12" y="37.6" width="1.99" height="36.85" transform="translate(-22.91 89.15) rotate(-90)" />
+                        <rect x="14.69" y="18.42" width="2.49" height="36.85" transform="translate(31.87 73.7) rotate(180)" />
+                      </svg>
                     </div>
                   </div>
                   <div id="agentInfo">
@@ -355,6 +371,9 @@ export default {
     this.setHeaderStyle()
   },
   methods: {
+    openAgentLevel() {
+      this.$store.dispatch('agentManagement/agentSearch', this.agentInfo.id)
+    },
     searchData() {
       if (this.agentSearchKey === 'member') {
         this.curTableIndex = this.tableEnum.member
@@ -409,7 +428,7 @@ export default {
       this.dataLoading = dataLoading
     },
     handleRespone(res) {
-      this.$store.dispatch('agentManagement/setAgentLevel', res.agentLevel)
+      this.$store.dispatch('agentManagement/setAgentLevel', [res.agentLevel, this.agentInfo.id])
       this.agentInfo = res.agentInfo
       this.agentInfo.balanceLabel = numberFormat(this.agentInfo.balance)
       this.agentInfo.liveCommissionRateLabel = numberFormat(this.agentInfo.live_commission_rate)

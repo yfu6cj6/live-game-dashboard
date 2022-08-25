@@ -177,7 +177,7 @@ export const asyncRoutes = [
       path: 'agentManagement',
       name: 'AgentManagement',
       meta: { title: '__directAgentManagement', showSuffix: true },
-      click: () => { store.dispatch('agentManagement/agentSearch') }
+      click: () => { store.dispatch('agentManagement/agentSearch', (store.getters.agentLevelCurrentKey !== null ? store.getters.agentLevelCurrentKey : store.getters.agent_id)) }
     },
     {
       path: 'agentManagement/:id(\\d+)',
