@@ -174,7 +174,7 @@
                                         <div class="halls-value">
                                           <div class="d-flex align-items-center justify-content-end">
                                             <span style="word-break: keep-all; white-space: nowrap;">
-                                              <span>{{ agentInfo.agent.rollingCommissionLabel }}</span>
+                                              <span>{{ agentInfo.agent.rollingRateLabel }}</span>
                                             </span>
                                           </div>
                                         </div>
@@ -462,7 +462,7 @@
                                         <div class="halls-value">
                                           <div class="d-flex align-items-center justify-content-end">
                                             <span style="word-break: keep-all; white-space: nowrap;">
-                                              <span>{{ agentInfo.member.rollingCommissionLabel }}</span>
+                                              <span>{{ agentInfo.member.rollingRateLabel }}</span>
                                             </span>
                                           </div>
                                         </div>
@@ -1079,6 +1079,7 @@ export default {
       data.toSuperiorLabel = numberFormat(data.toSuperior)
       data.commitSuperiorsValidBetAmount = numberFormat(data.commitSuperiorsValidBetAmount)
       data.giftValueLabel = numberFormat(data.giftValue)
+      data.rollingRateLabel = numberFormat(data.rollingRate)
     },
     handleMemberRespone() {
       this.setDataLoading(false)

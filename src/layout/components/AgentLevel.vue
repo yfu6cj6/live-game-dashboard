@@ -108,6 +108,7 @@ export default {
   .agentLevel-item {
     max-height: 100%;
     overflow: auto;
+    padding-bottom: 4rem;
     cursor: pointer;
     .scroll-view {
       .el-tree {

@@ -114,7 +114,7 @@
                             <div class="halls-value">
                               <div class="d-flex align-items-center justify-content-end">
                                 <span style="word-break: keep-all; white-space: nowrap;">
-                                  <span>{{ item.rollingCommissionLabel }}</span>
+                                  <span>{{ item.rollingRateLabel }}</span>
                                 </span>
                               </div>
                             </div>
@@ -458,6 +458,7 @@ export default {
           element.commitSuperiorsValidBetAmount = numberFormat(element.commitSuperiorsValidBetAmount)
           element.open = open.includes(element.agentId)
           element.giftValueLabel = numberFormat(element.giftValue)
+          element.rollingRateLabel = numberFormat(element.rollingRate)
         })
         this.tableData = res.rows.slice(0, res.rows.length - 2)
         this.subtotalCountData = res.rows[res.rows.length - 2]
