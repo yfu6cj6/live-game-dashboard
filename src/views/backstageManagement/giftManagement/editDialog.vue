@@ -1,7 +1,7 @@
 <template>
   <div v-if="visible">
     <template v-if="device === 'mobile'">
-      <div class="black_bg">
+      <div class="black_bg giftEditDialog">
         <div v-loading="dialogLoading" class="data_content">
           <div class="titleBar yellow">
             <span class="titleTips">{{ title }}</span>
@@ -394,17 +394,19 @@ export default {
 </script>
 
 <style lang="scss">
-.black_bg {
-  .data_content {
-    .giftUpload {
-      .el-upload {
-        .el-upload-dragger {
-          width: auto;
-          height: auto;
+.giftEditDialog {
+  &.black_bg {
+    .data_content {
+      .giftUpload {
+        .el-upload {
+          .el-upload-dragger {
+            width: auto;
+            height: auto;
+          }
         }
-      }
-      .el-upload-list__item-status-label {
-        display: none;
+        .el-upload-list__item-status-label {
+          display: none;
+        }
       }
     }
   }

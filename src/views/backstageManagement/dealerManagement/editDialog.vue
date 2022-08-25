@@ -1,7 +1,7 @@
 <template>
   <div v-if="visible" class="dealerEditDialog">
     <template v-if="device === 'mobile'">
-      <div v-loading="dialogLoading" class="black_bg">
+      <div v-loading="dialogLoading" class="black_bg dealerEditDialog">
         <div class="data_content">
           <div class="titleBar yellow">
             <span class="titleTips">{{ title }}</span>
@@ -258,17 +258,19 @@ export default {
 </script>
 
 <style lang="scss">
-.black_bg {
-  .data_content {
-    .dealerUpload {
-      .el-upload {
-        .el-upload-dragger {
-          width: auto;
-          height: auto;
+.dealerEditDialog {
+  &.black_bg {
+    .data_content {
+      .dealerUpload {
+        .el-upload {
+          .el-upload-dragger {
+            width: auto;
+            height: auto;
+          }
         }
-      }
-      .el-upload-list__item-status-label {
-        display: none;
+        .el-upload-list__item-status-label {
+          display: none;
+        }
       }
     }
   }
