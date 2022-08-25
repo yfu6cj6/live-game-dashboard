@@ -36,7 +36,7 @@
                       :popper-class="'custom-dropdown w-auto'"
                     >
                       <el-option
-                        v-for="item in currency"
+                        v-for="item in selectOption.currency"
                         :key="item.key"
                         :label="item.nickname"
                         :value="item.key"
@@ -60,7 +60,7 @@
                       :popper-class="'custom-dropdown w-auto'"
                     >
                       <el-option
-                        v-for="item in activated"
+                        v-for="item in selectOption.activated"
                         :key="item.key"
                         :label="item.nickname"
                         :value="item.key"
@@ -246,11 +246,11 @@ export default {
         this.selectOption.currency = JSON.parse(JSON.stringify(this.searchItems.currency)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
       this.addSelectDropDownFilter('options status', () => {
-        this.searchForm.status = JSON.parse(JSON.stringify(this.searchItems.status)).map(item => item.key)
+        this.searchForm.activated = JSON.parse(JSON.stringify(this.searchItems.activated)).map(item => item.key)
       }, () => {
-        this.searchForm.status = []
+        this.searchForm.activated = []
       }, () => {
-        this.selectOption.status = JSON.parse(JSON.stringify(this.searchItems.status)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+        this.selectOption.activated = JSON.parse(JSON.stringify(this.searchItems.activated)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
     },
     onSearchBtnClick(data, page) {
@@ -267,10 +267,11 @@ export default {
       })
     },
     handleRespone(res) {
+      this.searchItems = JSON.parse(JSON.stringify(res.searchItems));
+      this.selectOption = JSON.parse(JSON.stringify(res.searchItems))
       this.currency = res.searchItems.currency
       this.activated = res.searchItems.activated
-      this.allDataByClient = JSON.parse(JSON.stringify(res.rows))
-      this.selectOption = JSON.parse(JSON.stringify(res.rows))
+      this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
         const activatedLabel = this.activated.find(active => active.key === element.activated)
         if (activatedLabel) {
