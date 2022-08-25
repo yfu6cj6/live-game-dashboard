@@ -40,25 +40,25 @@
                                 <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
                                   <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subordinateAgentsBalance") }}</span>
                                   <span class="value">
-                                    {{ agentInfo.subordinateAgentsBalance }}
+                                    {{ agentInfo.subordinateAgentsBalanceLabel }}
                                   </span>
                                 </div>
                                 <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
                                   <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subordinateMembersBalance") }}</span>
                                   <span class="value">
-                                    {{ agentInfo.subordinateMembersBalance }}
+                                    {{ agentInfo.subordinateMembersBalanceLabel }}
                                   </span>
                                 </div>
                                 <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
                                   <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__unassignedBalance") }}</span>
                                   <span class="value">
-                                    {{ agentInfo.balance }}
+                                    {{ agentInfo.balanceLabel }}
                                   </span>
                                 </div>
                                 <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
                                   <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__totalBalance") }}</span>
                                   <span class="value">
-                                    {{ agentInfo.totalBalance }}
+                                    {{ agentInfo.totalBalanceLabel }}
                                   </span>
                                 </div>
                               </div>
@@ -66,7 +66,7 @@
                                 <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
                                   <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__directlyMember") }}</span>
                                   <span class="value">
-                                    {{ agentInfo.memberCount }}
+                                    {{ agentInfo.memberCountLabel }}
                                   </span>
                                 </div>
                               </div>
@@ -224,6 +224,12 @@ export default {
     handleAgentRespone(agentInfo) {
       const open = this.agentInfo.open;
       this.agentInfo = agentInfo
+
+      this.agentInfo.balanceLabel = this.agentInfo.balance === '-' ? this.agentInfo.balance : numberFormat(this.agentInfo.balance)
+      this.agentInfo.memberCountLabel = numberFormat(this.agentInfo.memberCount, 0)
+      this.agentInfo.subordinateAgentsBalanceLabel = numberFormat(this.agentInfo.subordinateAgentsBalance)
+      this.agentInfo.subordinateMembersBalanceLabel = numberFormat(this.agentInfo.subordinateMembersBalance)
+      this.agentInfo.totalBalanceLabel = numberFormat(this.agentInfo.totalBalance)
       this.agentInfo.open = open;
       this.setTagsViewTitle()
       this.dataLoading = false

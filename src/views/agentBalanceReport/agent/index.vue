@@ -35,25 +35,25 @@
             <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
               <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subordinateAgentsBalance') }}</span>
               <span class="value">
-                <span>{{ item.subordinateAgentsBalance }}</span>
+                <span>{{ item.subordinateAgentsBalanceLabel }}</span>
               </span>
             </div>
             <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
               <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subordinateMembersBalance') }}</span>
               <span class="value">
-                <span>{{ item.subordinateMembersBalance }}</span>
+                <span>{{ item.subordinateMembersBalanceLabel }}</span>
               </span>
             </div>
             <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
               <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__unassignedBalance') }}</span>
               <span class="value">
-                <span>{{ item.balance }}</span>
+                <span>{{ item.balanceLabel }}</span>
               </span>
             </div>
             <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
               <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__totalBalance') }}</span>
               <span class="value">
-                <span>{{ item.totalBalance }}</span>
+                <span>{{ item.totalBalanceLabel }}</span>
               </span>
             </div>
           </div>
@@ -61,7 +61,7 @@
             <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
               <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__totalPlayerCount') }}</span>
               <span class="value">
-                <span>{{ item.memberCount }}</span>
+                <span>{{ item.memberCountLabel }}</span>
               </span>
             </div>
           </div>
@@ -86,30 +86,30 @@
               <div class="page-item mb-2 is-amount">
                 <span class="label">{{ $t("__totalBalance") }}</span>
                 <span class="value">
-                  <span>{{ subtotalInfo.totalBalance }}</span>
+                  <span>{{ subtotalInfo.totalBalanceLabel }}</span>
                 </span>
               </div>
               <div class="page-item mb-2 is-amount">
                 <span class="label">{{ $t("__subordinateAgentsBalance") }}</span>
                 <span class="value">
-                  <span>{{ subtotalInfo.subordinateAgentsBalance }}</span>
+                  <span>{{ subtotalInfo.subordinateAgentsBalanceLabel }}</span>
                 </span>
               </div>
               <div class="page-item mb-2 is-amount">
                 <span class="label">{{ $t("__subordinateMembersBalance") }}</span>
                 <span class="value">
-                  <span>{{ subtotalInfo.subordinateMembersBalance }}</span>
+                  <span>{{ subtotalInfo.subordinateMembersBalanceLabel }}</span>
                 </span>
               </div>
               <div class="page-item mb-2 is-amount">
                 <span class="label">{{ $t("__unassignedBalance") }}</span>
                 <span class="value">
-                  <span>{{ subtotalInfo.balance }}</span>
+                  <span>{{ subtotalInfo.balanceLabel }}</span>
                 </span>
               </div>
               <div class="page-item mb-2 is-amount text-left" style="margin-left: 10px;">
                 <span class="label">{{ $t("__totalPlayerCount") }}</span>
-                <span class="value">{{ subtotalInfo.memberCount }}</span>
+                <span class="value">{{ subtotalInfo.memberCountLabel }}</span>
               </div>
             </div>
           </div>
@@ -123,30 +123,30 @@
               <div class="page-item mb-2 is-amount">
                 <span class="label">{{ $t("__totalBalance") }}</span>
                 <span class="value">
-                  <span>{{ totalData.totalBalance }}</span>
+                  <span>{{ totalData.totalBalanceLabel }}</span>
                 </span>
               </div>
               <div class="page-item mb-2 is-amount">
                 <span class="label">{{ $t("__subordinateAgentsBalance") }}</span>
                 <span class="value">
-                  <span>{{ totalData.subordinateAgentsBalance }}</span>
+                  <span>{{ totalData.subordinateAgentsBalanceLabel }}</span>
                 </span>
               </div>
               <div class="page-item mb-2 is-amount">
                 <span class="label">{{ $t("__subordinateMembersBalance") }}</span>
                 <span class="value">
-                  <span>{{ totalData.subordinateMembersBalance }}</span>
+                  <span>{{ totalData.subordinateMembersBalanceLabel }}</span>
                 </span>
               </div>
               <div class="page-item mb-2 is-amount">
                 <span class="label">{{ $t("__unassignedBalance") }}</span>
                 <span class="value">
-                  <span>{{ totalData.balance }}</span>
+                  <span>{{ totalData.balanceLabel }}</span>
                 </span>
               </div>
               <div class="page-item mb-2 is-amount text-left" style="margin-left: 10px;">
                 <span class="label">{{ $t("__totalPlayerCount") }}</span>
-                <span class="value">{{ totalData.memberCount }}</span>
+                <span class="value">{{ totalData.memberCountLabel }}</span>
               </div>
             </div>
           </div>
@@ -194,9 +194,6 @@ export default {
         this.tableData = Object.assign([], this.tableData)
       })
     },
-    numberFormatStr(number) {
-      return numberFormat(number)
-    },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex >= this.tableData.length - 2) {
         return 'settlement'
@@ -222,11 +219,29 @@ export default {
       agentBalanceReportSearch(data).then((res) => {
         const open = this.tableData.filter(item => item.open).map(item => item.agentId)
         res.rows.forEach(element => {
+          element.balanceLabel = element.balance === '-' ? element.balance : numberFormat(element.balance)
+          element.memberCountLabel = numberFormat(element.memberCount, 0)
+          element.subordinateAgentsBalanceLabel = numberFormat(element.subordinateAgentsBalance)
+          element.subordinateMembersBalanceLabel = numberFormat(element.subordinateMembersBalance)
+          element.totalBalanceLabel = numberFormat(element.totalBalance)
+
           element.open = open.includes(element.agentId)
         });
         this.tableData = res.rows.slice(0, res.rows.length - 2)
         this.subtotalInfo = res.subtotalInfo
+        this.subtotalInfo.balanceLabel = this.subtotalInfo.balance === '-' ? this.subtotalInfo.balance : numberFormat(this.subtotalInfo.balance)
+        this.subtotalInfo.memberCountLabel = numberFormat(this.subtotalInfo.memberCount, 0)
+        this.subtotalInfo.subordinateAgentsBalanceLabel = numberFormat(this.subtotalInfo.subordinateAgentsBalance)
+        this.subtotalInfo.subordinateMembersBalanceLabel = numberFormat(this.subtotalInfo.subordinateMembersBalance)
+        this.subtotalInfo.totalBalanceLabel = numberFormat(this.subtotalInfo.totalBalance)
+
         this.totalData = res.totalData
+        this.totalData.balanceLabel = this.totalData.balance === '-' ? this.totalData.balance : numberFormat(this.totalData.balance)
+        this.totalData.memberCountLabel = numberFormat(this.totalData.memberCount, 0)
+        this.totalData.subordinateAgentsBalanceLabel = numberFormat(this.totalData.subordinateAgentsBalance)
+        this.totalData.subordinateMembersBalanceLabel = numberFormat(this.totalData.subordinateMembersBalance)
+        this.totalData.totalBalanceLabel = numberFormat(this.totalData.totalBalance)
+
         this.totalCount = res.totalCount
         this.$emit('handleRespone', JSON.parse(JSON.stringify(res.agentInfo)))
       }).catch(() => {

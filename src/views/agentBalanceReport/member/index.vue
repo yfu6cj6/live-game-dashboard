@@ -21,7 +21,7 @@
             <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
               <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__subordinateAgentsBalance') }}</span>
               <span class="value">
-                <span>{{ item.totalBalance }}</span>
+                <span>{{ item.totalBalanceLabel }}</span>
               </span>
             </div>
           </div>
@@ -47,7 +47,7 @@
                 <span class="label">{{ $t('__balance') }}</span>
                 <span class="value">
                   <span>
-                    <span>{{ subtotalInfo.totalBalance }}</span>
+                    <span>{{ subtotalInfo.totalBalanceLabel }}</span>
                   </span>
                 </span>
               </div>
@@ -63,7 +63,7 @@
               <div class="page-item mb-2 is-amount" style="width: 200px; margin-left: 175px;">
                 <span class="label">{{ $t('__balance') }}</span>
                 <span class="value">
-                  <span>{{ totalData.totalBalance }}</span>
+                  <span>{{ totalData.totalBalanceLabel }}</span>
                 </span>
               </div>
             </div>
@@ -106,9 +106,6 @@ export default {
       this.pageSizeCount++;
       this.handleCurrentChange(1);
     },
-    numberFormatStr(number) {
-      return numberFormat(number)
-    },
     // 父物件呼叫
     onSearch(agentId) {
       this.pageSizeCount = 1
@@ -124,8 +121,15 @@ export default {
       this.setDataLoading(true)
       memberBalanceReportSearch(data).then((res) => {
         this.tableData = res.rows.slice(0, res.rows.length - 2)
+        this.tableData.forEach(element => {
+          element.totalBalanceLabel = numberFormat(element.totalBalance);
+        });
+
         this.subtotalInfo = res.subtotalInfo
+        this.subtotalInfo.totalBalanceLabel = numberFormat(this.subtotalInfo.totalBalance);
         this.totalData = res.totalData
+        this.totalData.totalBalanceLabel = numberFormat(this.totalData.totalBalance);
+
         this.totalCount = res.totalCount
         this.$emit('handleRespone')
       }).catch(() => {
