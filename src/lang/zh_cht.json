@@ -356,5 +356,7 @@
     "__backToHome": "回首頁",
     "__oops": "糟糕",
     "__checkUrl": "請檢查您輸入的網址是否正確，或點擊下方按鈕返回首頁。",
-    "__gameTable": "遊戲桌"
+    "__gameTable": "遊戲桌",
+    "__mustBeGreaterOrEqual": "必須大於等於{0}",
+    "__gameArea": "遊戲區"
 }

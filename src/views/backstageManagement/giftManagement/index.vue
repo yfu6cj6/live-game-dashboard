@@ -80,7 +80,7 @@
               </div>
               <div class="d-flex option_ctrl_right">
                 <div class="searchBtn">
-                  <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(searchForm, 1)" />
+                  <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
                 </div>
               </div>
             </div>
@@ -219,7 +219,7 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      this.onSearchBtnClick({}, 1);
+      this.onSearchBtnClick(1);
       this.addSelectFilter()
       this.setHeaderStyle()
     })
@@ -251,8 +251,8 @@ export default {
         this.selectOption.status = JSON.parse(JSON.stringify(this.searchItems.status)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
     },
-    onSearchBtnClick(data, page) {
-      this.searchForm = data;
+    onSearchBtnClick(page) {
+      this.pageSizeCount = 1
       this.handleCurrentChange(page);
     },
     onSubmit() {

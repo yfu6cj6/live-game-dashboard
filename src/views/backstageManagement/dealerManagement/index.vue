@@ -19,7 +19,7 @@
               <div class="option">
                 <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
               </div>
-              <div class="option options status">
+              <div class="option status">
                 <span class="prefix-label" />
                 <div class="comp selected-filter custom">
                   <el-select
@@ -42,7 +42,7 @@
                 <span class="suffix-label" />
               </div>
               <div class="searchBtn">
-                <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(searchForm, 1)" />
+                <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
               </div>
             </div>
           </div>
@@ -177,9 +177,9 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      this.onSearchBtnClick({}, 1);
       this.addSelectFilter()
       this.setHeaderStyle()
+      this.onSearchBtnClick(1);
     })
   },
   activated() {
@@ -195,7 +195,7 @@ export default {
       this.handleCurrentChange(1);
     },
     addSelectFilter() {
-      this.addSelectDropDownFilter('options status', () => {
+      this.addSelectDropDownFilter('option status', () => {
         this.searchForm.status = JSON.parse(JSON.stringify(this.searchItems.status)).map(item => item.key)
       }, () => {
         this.searchForm.status = []
@@ -203,9 +203,8 @@ export default {
         this.selectOption.status = JSON.parse(JSON.stringify(this.searchItems.status)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
     },
-    onSearchBtnClick(data, page) {
+    onSearchBtnClick(page) {
       this.pageSizeCount = 1
-      this.searchForm = data;
       this.handleCurrentChange(page);
     },
     onSubmit() {

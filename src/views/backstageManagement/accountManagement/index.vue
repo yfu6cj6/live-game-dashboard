@@ -1,214 +1,186 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
+  <div v-loading="dataLoading" class="w-100 h-100">
+    <div class="view-container">
+      <div class="bg-black">
         <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-input v-model="searchForm.account" :placeholder="$t('__account')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.nickname" :placeholder="$t('__nickname')" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.roles" multiple :collapse-tags="rolesCollapse" :placeholder="$t('__role')">
-                <el-option v-for="item in roles" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.agent" multiple :collapse-tags="agentCollapse" :placeholder="$t('__agentName')">
-                <el-option v-for="item in agents" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.status" multiple :collapse-tags="statusCollapse" :placeholder="$t('__accountStatus')">
-                <el-option v-for="item in accountStatusType" :key="item.key" :label="$t(item.nickname)" :value="item.key" />
-              </el-select>
-            </p>
-          </div>
-          <div class="view-container-seachForm-operate">
-            <p class="operateItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
-                {{ $t("__moreSearch") }}
-              </el-button>
-            </p>
+          <div class="yellow-border-bottom search-container">
+            <div class="options">
+              <div class="option">
+                <el-input v-model="searchForm.account" type="text" class="input_size" :placeholder="$t('__account')" />
+              </div>
+              <div class="option">
+                <el-input v-model="searchForm.nickname" type="text" class="input_size" :placeholder="$t('__nickname')" />
+              </div>
+              <a class="more-opiton text-link text-underline text-yellow align-items-center" @click.stop="onSearchExpand()">
+                <div class="fas label icon d-flex align-items-center yellow">
+                  <svg-icon :icon-class="searchExpand ? 'less': 'add'" style="height: 1.08333rem;width: 1.08333rem;" />
+                </div>
+                {{ $t('__options') }}
+              </a>
+            </div>
+            <div v-show="searchExpand === true">
+              <div class="options">
+                <div class="option roles">
+                  <span class="prefix-label" />
+                  <div class="comp selected-filter custom">
+                    <el-select
+                      v-model="searchForm.roles"
+                      class="d-flex"
+                      multiple
+                      :popper-append-to-body="false"
+                      :collapse-tags="rolesCollapse"
+                      :placeholder="$t('__role')"
+                      :popper-class="'custom-dropdown w-auto'"
+                    >
+                      <el-option
+                        v-for="item in selectOption.roles"
+                        :key="item.key"
+                        :label="item.nickname"
+                        :value="item.key"
+                      />
+                    </el-select>
+                  </div>
+                  <span class="suffix-label" />
+                </div>
+                <div class="option agents">
+                  <span class="prefix-label" />
+                  <div class="comp selected-filter custom">
+                    <el-select
+                      v-model="searchForm.agent"
+                      class="d-flex"
+                      multiple
+                      :popper-append-to-body="false"
+                      :collapse-tags="agentCollapse"
+                      :placeholder="$t('__agentName')"
+                      :popper-class="'custom-dropdown w-auto'"
+                    >
+                      <el-option
+                        v-for="item in selectOption.agent"
+                        :key="item.key"
+                        :label="item.nickname"
+                        :value="item.key"
+                      />
+                    </el-select>
+                  </div>
+                  <span class="suffix-label" />
+                </div>
+              </div>
+              <div class="options">
+                <div class="option status">
+                  <span class="prefix-label" />
+                  <div class="comp selected-filter custom">
+                    <el-select
+                      v-model="searchForm.status"
+                      class="d-flex"
+                      multiple
+                      :popper-append-to-body="false"
+                      :collapse-tags="statusCollapse"
+                      :placeholder="$t('__accountStatus')"
+                      :popper-class="'custom-dropdown w-auto'"
+                    >
+                      <el-option
+                        v-for="item in selectOption.status"
+                        :key="item.key"
+                        :label="$t(item.nickname)"
+                        :value="item.key"
+                      />
+                    </el-select>
+                  </div>
+                  <span class="suffix-label" />
+                </div>
+              </div>
+            </div>
+            <div class="options d-flex mt-2">
+              <div class="d-flex">
+                <div class="createBtn">
+                  <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
+                </div>
+              </div>
+              <div class="d-flex option_ctrl_right">
+                <div class="searchBtn">
+                  <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                </div>
+              </div>
+            </div>
           </div>
         </template>
         <template v-else>
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.account" :placeholder="$t('__account')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.nickname" :placeholder="$t('__nickname')" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.roles" multiple filterable :collapse-tags="rolesCollapse" :placeholder="$t('__role')">
-                <el-option v-for="item in roles" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.agent" multiple filterable :collapse-tags="agentCollapse" :placeholder="$t('__agentName')">
-                <el-option v-for="item in agents" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.status" multiple filterable :collapse-tags="statusCollapse" :placeholder="$t('__accountStatus')">
-                <el-option v-for="item in accountStatusType" :key="item.key" :label="$t(item.nickname)" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
-              </el-button>
-            </p>
-          </div>
+          -
         </template>
       </div>
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
+      <div class="table-container">
+        <template v-if="tableData.length > 0">
+          <dir
             v-for="(item, index) in tableData"
             :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
+            class="flex-column"
+            :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
           >
             <template v-if="device === 'mobile'">
               <div class="base">
-                <div class="left" @click="remarkExpand(item)">
+                <div class="left">
                   <div class="item">
-                    <span class="header">{{ $t('__account') }}</span>
-                    <span class="content">{{ item.account }}</span>
+                    <span class="title">{{ $t('__account') }}</span>
+                    <span class="value">{{ item.account }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ $t('__nickname') }}</span>
-                    <span class="content">{{ item.nickname }}</span>
+                    <span class="title">{{ $t('__nickname') }}</span>
+                    <span class="value">{{ item.nickname }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ $t('__role') }}</span>
-                    <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex" class="content">{{ role }}</span>
+                    <span class="title">{{ $t('__role') }}</span>
+                    <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex" class="value">{{ role }}</span>
                   </div>
                 </div>
-                <div class="right" @click="remarkExpand(item)">
+                <div class="right">
                   <div class="item">
-                    <span class="header">{{ $t('__agentName') }}</span>
-                    <span class="content">{{ item.agentName }}</span>
+                    <span class="title">{{ $t('__agentName') }}</span>
+                    <span class="value">{{ item.agentName }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ $t('__cityName') }}</span>
-                    <span class="content">{{ item.cityNameLabel }}</span>
+                    <span class="title">{{ $t('__cityName') }}</span>
+                    <span class="value">{{ item.cityNameLabel }}</span>
                   </div>
                   <div class="item">
-                    <span class="header">{{ $t('__accountStatus') }}</span>
-                    <span class="status content" :class="{'statusOpen': item.status === '1' }">
-                      {{ item.statusLabel }}
-                    </span>
+                    <span class="title">{{ $t('__accountStatus') }}</span>
+                    <span class="value">{{ item.statusLabel }}</span>
                   </div>
                   <div class="operate">
-                    <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                    <el-button class="bg-red" size="mini" @click.stop="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__revise") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
                   </div>
                   <div class="item">
                     <div class="expand" @click.stop="remarkExpand(item)">
-                      <svg-icon v-if="item.open" icon-class="up" />
-                      <svg-icon v-else icon-class="more" />
+                      <svg-icon v-if="item.open" icon-class="up" style="height: 2rem; width: 2rem;" />
+                      <svg-icon v-else icon-class="more" style="height: 2rem; width: 2rem;" />
                     </div>
                   </div>
                 </div>
               </div>
-              <div v-if="item.open" @click="remarkExpand(item)">
-                <div class="item col">
-                  <span class="header">{{ $t('__remark') }}</span>
-                  <span>
-                    {{ item.remark }}
-                  </span>
+              <div v-if="item.open">
+                <div class="item remark">
+                  <span class="title">{{ $t('__remark') }}</span>
+                  <span class="value">{{ item.remark }}</span>
                 </div>
               </div>
             </template>
             <template v-else>
-              <div class="base">
-                <div class="item remark">
-                  <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                  <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__account') }}</span>
-                  <span>{{ item.account }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__nickname') }}</span>
-                  <span>{{ item.nickname }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__role') }}</span>
-                  <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex">{{ role }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__agentName') }}</span>
-                  <span>{{ item.agentName }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__cityName') }}</span>
-                  <span>{{ item.cityNameLabel }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__accountStatus') }}</span>
-                  <span class="status" :class="{'statusOpen': item.status === '1' }">
-                    {{ item.statusLabel }}
-                  </span>
-                </div>
-                <div class="operate">
-                  <el-button class="bg-yellow locate" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  <el-button class="bg-red locate" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
-                </div>
-              </div>
-              <div v-if="item.open">
-                <div class="item">
-                  <span class="header">{{ $t('__remark') }}</span>
-                  <span>
-                    {{ item.remark }}
-                  </span>
-                </div>
-              </div>
+              -
             </template>
+          </dir>
+          <div v-if="totalCount > pageSize" class="more_btn_space">
+            <div v-if="tableData.length >= totalCount" class="search_more">
+              <span>{{ $t("__noMoreInformation") }}</span>
+            </div>
+            <div v-else class="search_more">
+              <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+            </div>
           </div>
-        </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
+        <template v-else>
+          <div class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
       </div>
-    </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
     </div>
 
     <editDialog
@@ -263,7 +235,8 @@ import ResetPasswordDialog from './resetPasswordDialog'
 
 const defaultForm = {
   roles: [],
-  agent: []
+  agent: [],
+  status: []
 }
 
 export default {
@@ -281,7 +254,10 @@ export default {
       curDialogIndex: 0,
       roles: [],
       agents: [],
-      timeZones: []
+      agentstatus: [],
+      timeZones: [],
+      searchExpand: false,
+      selectOption: JSON.parse(JSON.stringify(defaultForm))
     }
   },
   computed: {
@@ -299,21 +275,27 @@ export default {
     }
   },
   watch: {
-    'searchForm.roles'() {
-      this.resizeHandler();
-    },
-    'searchForm.agent'() {
-      this.resizeHandler();
-    },
-    'searchForm.status'() {
-      this.resizeHandler();
-    }
   },
   created() {
-    this.searchForm = JSON.parse(JSON.stringify(defaultForm));
-    this.onSearchBtnClick({}, 1);
+    this.$nextTick(() => {
+      this.pageSizeCount = 1
+      this.searchForm = JSON.parse(JSON.stringify(defaultForm));
+      this.onSearchBtnClick(1);
+      this.addSelectFilter()
+      this.setHeaderStyle()
+    })
+  },
+  activated() {
+    this.closeDialogEven()
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__accountManagement'), false, () => { }])
+    },
+    onSearchExpand() {
+      this.searchExpand = !this.searchExpand
+    },
     remarkExpand(row) {
       const obj = this.tableData.find(item => item.id === row.id);
       this.$nextTick(() => {
@@ -321,10 +303,41 @@ export default {
         this.tableData = Object.assign([], this.tableData)
       })
     },
+    addSelectFilter() {
+      this.addSelectDropDownFilter('option roles', () => {
+        this.searchForm.roles = JSON.parse(JSON.stringify(this.roles)).map(item => item.key)
+      }, () => {
+        this.searchForm.roles = []
+      }, () => {
+        this.selectOption.roles = JSON.parse(JSON.stringify(this.roles)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+      this.addSelectDropDownFilter('option agents', () => {
+        this.searchForm.agent = JSON.parse(JSON.stringify(this.agents)).map(item => item.key)
+      }, () => {
+        this.searchForm.agent = []
+      }, () => {
+        this.selectOption.agent = JSON.parse(JSON.stringify(this.agents)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+      this.addSelectDropDownFilter('option status', () => {
+        this.searchForm.status = JSON.parse(JSON.stringify(this.accountStatusType)).map(item => item.key)
+      }, () => {
+        this.searchForm.status = []
+      }, () => {
+        this.selectOption.status = JSON.parse(JSON.stringify(this.accountStatusType)).filter(item => this.$t(item.nickname).match(new RegExp(`${event.target.value}`, 'i')))
+      })
+    },
     handleRespone(res) {
-      this.roles = res.roles
-      this.agents = res.agents
+      this.roles = JSON.parse(JSON.stringify(res.roles))
+      this.agents = JSON.parse(JSON.stringify(res.agents))
+      this.selectOption.roles = JSON.parse(JSON.stringify(res.roles))
+      this.selectOption.agent = JSON.parse(JSON.stringify(res.agents))
+      this.selectOption.status = JSON.parse(JSON.stringify(this.accountStatusType))
       this.timeZones = res.timeZones
+
+      const open = this.tableData.filter(item => item.open).map(item => item.id)
+      res.rows.forEach(element => {
+        element.open = open.includes(element.id)
+      })
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
         element.rolesNickname = []
@@ -358,8 +371,8 @@ export default {
         this.closeLoading()
       })
     },
-    onSearchBtnClick(data, page) {
-      this.searchForm = data
+    onSearchBtnClick(page) {
+      this.pageSizeCount = 1
       this.handleCurrentChange(page)
     },
     onCreateBtnClick() {
@@ -416,82 +429,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view {
-  &-container {
-    &-table {
-      &-row {
-        display: flex;
-        flex-direction: column;
+.option_ctrl_right {
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0 0.5rem;
+}
+.view-container {
+  .table-container {
+    .base {
+      width: 100%;
+      display: flex;
+      .right {
         position: relative;
-        .base {
-          display: flex;
-          flex-direction: row;
-          .left,
-          .right {
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            .header {
-              width: 50px;
-              min-width: 50px;
-            }
-          }
-          .right {
-            .header {
-              width: 80px;
-              min-width: 80px;
-            }
-          }
-          .operate {
-            justify-content: start;
-          }
-          .expand {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-          }
-        }
-        .item {
-          &.col {
-            display: flex;
-            flex-direction: column;
+        .expand {
+          position: absolute;
+          top: 0;
+          right: 0;
+          .svg-icon {
+            fill: #a3a3a3;
+            width: 2.5rem;
+            height: 2.5rem;
           }
         }
       }
+    }
+    .remark {
+      padding: 0 1rem;
     }
   }
 }
 
 @media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .base {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            .remark {
-              width: 40px;
-              min-width: 40px;
-              margin-right: 20px;
-            }
-          }
-          .item {
-            width: 150px;
-            min-width: 150px;
-            margin-right: 50px;
-          }
-          .operate {
-            width: auto;
-            .locate {
-              margin-right: 20px;
-            }
-          }
-        }
-      }
-    }
-  }
 }
 </style>
