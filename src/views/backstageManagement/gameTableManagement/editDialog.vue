@@ -6,99 +6,31 @@
           <div class="titleBar yellow">
             <span class="titleTips">{{ title }}</span>
           </div>
-          <div class="el-form-item__content item" :class="{'is-error': inputData.account === inputState.error, 'is-success': inputData.account === inputState.success}">
+          <div v-if="isEdit" class="el-form-item__content item" :class="{'is-error': inputData.id === inputState.error, 'is-success': inputData.id === inputState.success}">
+            <div class="label-group required">
+              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__tableId') }}</label>
+            </div>
+            <div class="d-flex">
+              <div class="el-input el-input--small">
+                <input v-model="editForm.id" type="number" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('id')" @blur="checkValidInput('id')">
+                <span class="el-input__suffix">
+                  <span class="el-input__suffix-inner" />
+                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.id === inputState.error, 'el-icon-success': inputData.id === inputState.success}" />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="el-form-item__content item" :class="{'is-error': inputData.name === inputState.error, 'is-success': inputData.name === inputState.success}">
             <div class="label-group required">
               <label class="form-item-label text-yellow font-weight-bold">{{ $t('__name') }}</label>
             </div>
             <div class="d-flex">
               <div class="el-input el-input--small">
-                <input v-model="editForm.area_name" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('account')" @blur="checkValidInput('account')">
+                <input v-model="editForm.name" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('name')" @blur="checkValidInput('name')">
                 <span class="el-input__suffix">
                   <span class="el-input__suffix-inner" />
-                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.account === inputState.error, 'el-icon-success': inputData.account === inputState.success}" />
+                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.name === inputState.error, 'el-icon-success': inputData.name === inputState.success}" />
                 </span>
-              </div>
-            </div>
-          </div>
-          <div class="el-form-item__content item" :class="{'is-error': inputData.code === inputState.error, 'is-success': inputData.code === inputState.success}">
-            <div class="label-group required">
-              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__code') }}</label>
-            </div>
-            <div class="d-flex">
-              <div class="el-input el-input--small">
-                <input v-model="editForm.area" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('code')" @blur="checkValidInput('code')">
-                <span class="el-input__suffix">
-                  <span class="el-input__suffix-inner" />
-                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.code === inputState.error, 'el-icon-success': inputData.code === inputState.success}" />
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="el-form-item__content item" :class="{'is-error': inputData.odds === inputState.error, 'is-success': inputData.odds === inputState.success}">
-            <div class="label-group required">
-              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__odds') }}</label>
-            </div>
-            <div class="d-flex">
-              <div class="el-input el-input--small">
-                <input v-model="editForm.odds" type="number" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('odds')" @blur="checkValidInput('odds')">
-                <span class="el-input__suffix">
-                  <span class="el-input__suffix-inner" />
-                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.odds === inputState.error, 'el-icon-success': inputData.odds === inputState.success}" />
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="el-form-item__content item" :class="{'is-error': inputData.min_bet === inputState.error, 'is-success': inputData.min_bet === inputState.success}">
-            <div class="label-group required">
-              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__betMin') }}</label>
-            </div>
-            <div class="d-flex">
-              <div class="el-input el-input--small">
-                <input v-model="editForm.bet_min" type="number" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('maxbet')" @blur="checkValidInput('maxbet')">
-                <span class="el-input__suffix">
-                  <span class="el-input__suffix-inner" />
-                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.min_bet === inputState.error, 'el-icon-success': inputData.min_bet === inputState.success}" />
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="el-form-item__content item" :class="{'is-error': inputData.max_bet === inputState.error, 'is-success': inputData.max_bet === inputState.success}">
-            <div class="label-group required">
-              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__betMax') }}</label>
-            </div>
-            <div class="d-flex">
-              <div class="el-input el-input--small">
-                <input v-model="editForm.bet_max" type="number" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('minbet')" @blur="checkValidInput('minbet')">
-                <span class="el-input__suffix">
-                  <span class="el-input__suffix-inner" />
-                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.max_bet === inputState.error, 'el-icon-success': inputData.max_bet === inputState.success}" />
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="el-form-item__content item">
-            <div class="label-group">
-              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__currency') }}</label>
-            </div>
-            <div class="option">
-              <div class="comp selected-filter">
-                <select v-model="editForm.currency" class="el-select">
-                  <option v-for="item in currency" :key="item.key" :value="item.key">
-                    {{ $t(item.nickname) }}
-                  </option>
-                </select>
-                <div class="fas gray-deep">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 63 63"
-                    style="height: 0.916667rem; width: 0.916667rem;"
-                  >
-                    <title>arrow_2</title>
-                    <g id="hGqiqI.tif">
-                      <path d="M63,10.44,31.74,52.56,0,10.44Z" />
-                    </g>
-                  </svg>
-                </div>
               </div>
             </div>
           </div>
@@ -108,8 +40,8 @@
             </div>
             <div class="option">
               <div class="comp selected-filter">
-                <select v-model="editForm.activated" class="el-select">
-                  <option v-for="item in activated" :key="item.key" :value="item.key">
+                <select v-model="editForm.status" class="el-select">
+                  <option v-for="item in status" :key="item.key" :value="item.key">
                     {{ $t(item.nickname) }}
                   </option>
                 </select>
@@ -125,6 +57,76 @@
                     </g>
                   </svg>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="el-form-item__content item" :class="{'is-error': inputData.app_name === inputState.error, 'is-success': inputData.app_name === inputState.success}">
+            <div class="label-group required">
+              <label class="form-item-label text-yellow font-weight-bold">app_name</label>
+            </div>
+            <div class="d-flex">
+              <div class="el-input el-input--small">
+                <input v-model="editForm.app_name" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('app_name')" @blur="checkValidInput('app_name')">
+                <span class="el-input__suffix">
+                  <span class="el-input__suffix-inner" />
+                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.app_name === inputState.error, 'el-icon-success': inputData.app_name === inputState.success}" />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="el-form-item__content item" :class="{'is-error': inputData.streaming_name === inputState.error, 'is-success': inputData.streaming_name === inputState.success}">
+            <div class="label-group required">
+              <label class="form-item-label text-yellow font-weight-bold">streaming_name</label>
+            </div>
+            <div class="d-flex">
+              <div class="el-input el-input--small">
+                <input v-model="editForm.streaming_name" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('streaming_name')" @blur="checkValidInput('streaming_name')">
+                <span class="el-input__suffix">
+                  <span class="el-input__suffix-inner" />
+                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.streaming_name === inputState.error, 'el-icon-success': inputData.streaming_name === inputState.success}" />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="el-form-item__content item" :class="{'is-error': inputData.idle_rounds === inputState.error, 'is-success': inputData.idle_rounds === inputState.success}">
+            <div class="label-group required">
+              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__idleRounds') }}</label>
+            </div>
+            <div class="d-flex">
+              <div class="el-input el-input--small">
+                <input v-model="editForm.idle_rounds" type="number" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('idle_rounds')" @blur="checkValidInput('idle_rounds')">
+                <span class="el-input__suffix">
+                  <span class="el-input__suffix-inner" />
+                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.idle_rounds === inputState.error, 'el-icon-success': inputData.idle_rounds === inputState.success}" />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="el-form-item__content item" :class="{'is-error': inputData.streaming_url === inputState.error, 'is-success': inputData.streaming_url === inputState.success}">
+            <div class="label-group required">
+              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__streamingUrl') }}</label>
+            </div>
+            <div class="d-flex">
+              <div class="el-input el-input--small">
+                <input v-model="editForm.streaming_url" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('streaming_url')" @blur="checkValidInput('streaming_url')">
+                <span class="el-input__suffix">
+                  <span class="el-input__suffix-inner" />
+                  <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.streaming_url === inputState.error, 'el-icon-success': inputData.streaming_url === inputState.success}" />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="el-form-item__content item mb-1_5">
+            <div class="label-group">
+              <label class="form-item-label text-yellow font-weight-bold">{{ $t('__description') }}</label>
+            </div>
+            <div class="d-flex">
+              <div class="el-input el-input--small">
+                <el-input v-model="editForm.description" type="textarea" :rows="2" />
+                <span class="el-input__suffix">
+                  <span class="el-input__suffix-inner" />
+                  <i class="el-input__icon el-input__validateIcon" />
+                </span>
               </div>
             </div>
           </div>
@@ -263,6 +265,11 @@ export default {
       }
     }
     return {
+      inputState: Object.freeze({
+        'none': 0,
+        'success': 1,
+        'error': 2
+      }),
       rules: {
         id: [{ required: true, trigger: 'blur', validator: validate }],
         name: [{ required: true, trigger: 'blur', validator: validate }],
@@ -271,7 +278,16 @@ export default {
         idle_rounds: [{ required: true, trigger: 'blur', validator: validateIdleRounds }],
         streaming_url: [{ required: true, trigger: 'blur', validator: validate }]
       },
-      editForm: {}
+      inputData: {
+        id: 0,
+        name: 0,
+        app_name: 0,
+        streaming_name: 0,
+        idle_rounds: 0,
+        streaming_url: 0
+      },
+      editForm: {},
+      errorTips: ''
     }
   },
   computed: {
@@ -284,17 +300,88 @@ export default {
     }
   },
   methods: {
+    inputFocus() {
+      this.inputData.id = this.inputData.id === this.inputState.error ? this.inputState.none : this.inputData.id
+      this.inputData.name = this.inputData.name === this.inputState.error ? this.inputState.none : this.inputData.name
+      this.inputData.app_name = this.inputData.app_name === this.inputState.error ? this.inputState.none : this.inputData.app_name
+      this.inputData.streaming_name = this.inputData.streaming_name === this.inputState.error ? this.inputState.none : this.inputData.streaming_name
+      this.inputData.idle_rounds = this.inputData.idle_rounds === this.inputState.error ? this.inputState.none : this.inputData.idle_rounds
+      this.inputData.streaming_url = this.inputData.streaming_url === this.inputState.error ? this.inputState.none : this.inputData.streaming_url
+      this.errorTips = ''
+    },
+    checkValidInput(type) {
+      if (type === '') {
+        this.inputData.id = !this.isEdit || this.validContent(this.editForm.id) ? this.inputState.success : this.inputState.error
+        this.inputData.name = this.validContent(this.editForm.name) ? this.inputState.success : this.inputState.error
+        this.inputData.app_name = this.validContent(this.editForm.app_name) ? this.inputState.success : this.inputState.error
+        this.inputData.streaming_name = this.validContent(this.editForm.streaming_name) ? this.inputState.success : this.inputState.error
+        this.inputData.idle_rounds = this.validContent(this.editForm.idle_rounds) ? this.inputState.success : this.inputState.error
+        this.inputData.streaming_url = this.validContent(this.editForm.streaming_url) ? this.inputState.success : this.inputState.error
+        return
+      }
+
+      switch (type) {
+        case 'id':
+          this.inputData.id = !this.isEdit || this.validContent(this.editForm.id) ? this.inputState.success : this.inputState.error
+          break;
+        case 'name':
+          this.inputData.name = this.validContent(this.editForm.name) ? this.inputState.success : this.inputState.error
+          break;
+        case 'app_name':
+          this.inputData.app_name = this.validContent(this.editForm.app_name) ? this.inputState.success : this.inputState.error
+          break;
+        case 'streaming_name':
+          this.inputData.streaming_name = this.validContent(this.editForm.streaming_name) ? this.inputState.success : this.inputState.error
+          break;
+        case 'idle_rounds':
+          this.inputData.idle_rounds = this.validRound(this.editForm.idle_rounds) ? this.inputState.success : this.inputState.error
+          break;
+        case 'streaming_url':
+          this.inputData.streaming_url = this.validContent(this.editForm.streaming_url) ? this.inputState.success : this.inputState.error
+          break;
+      }
+    },
+    validContent(content) {
+      const valid = !(!content || content.length <= 0)
+      valid ? '' : this.errorTips = this.$t('__pleaseCheckFormContent')
+      return valid
+    },
+    validRound(content) {
+      const valid = !(!content || content.length <= 0)
+      if (valid) {
+        const num = Number(content)
+        const validNum = num > 0
+        validNum ? '' : this.errorTips = `${this.$t('__idleRounds')}${this.$stringFormat(this.$t('__mustBeGreater'), [0])}`
+        return validNum
+      }
+
+      this.errorTips = this.$t('__pleaseCheckFormContent')
+      return valid
+    },
     onSubmit() {
-      this.$refs.editForm.validate((valid) => {
-        if (valid) {
-          this.$emit('confirm', JSON.parse(JSON.stringify(this.editForm)))
-        }
-      })
+      this.checkValidInput('')
+      if (this.errorTips !== '') {
+        return
+      }
+      this.$emit('confirm', JSON.parse(JSON.stringify(this.editForm)))
+
+      // this.$refs.editForm.validate((valid) => {
+      //   if (valid) {
+      //     this.$emit('confirm', JSON.parse(JSON.stringify(this.editForm)))
+      //   }
+      // })
     },
     onReset() {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.$nextTick(() => {
-        this.$refs.editForm.clearValidate()
+        // this.$refs.editForm.clearValidate()
+        this.inputData.id = this.inputState.none
+        this.inputData.name = this.inputState.none
+        this.inputData.app_name = this.inputState.none
+        this.inputData.streaming_name = this.inputState.none
+        this.inputData.idle_rounds = this.inputState.none
+        this.inputData.streaming_url = this.inputState.none
+        this.errorTips = ''
       })
     }
   }
@@ -302,4 +389,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mb-1_5 {
+  margin-bottom: 1.5rem;
+}
 </style>

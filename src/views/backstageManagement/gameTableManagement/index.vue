@@ -1,7 +1,7 @@
 <template>
-  <div v-loading="dataLoading">
+  <div>
     <div class="view-container">
-      <div class="bg-black">
+      <div v-loading="dataLoading" class="bg-black">
         <template v-if="device === 'mobile'">
           <div class="yellow-border-bottom search-container">
             <div class="options">
@@ -83,50 +83,59 @@
           <dir
             v-for="(item, index) in tableData"
             :key="index"
+            class="flex-column"
             :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
           >
             <template v-if="device === 'mobile'">
-              <div class="left">
-                <div class="item">
-                  <span class="title">{{ $t('__tableId') }}</span>
-                  <span class="value">{{ item.id }}</span>
+              <div class="d-flex">
+                <div class="left">
+                  <div class="item">
+                    <span class="title">{{ $t('__tableId') }}</span>
+                    <span class="value">{{ item.id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">{{ $t('__name') }}</span>
+                    <span class="value">{{ item.name }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">{{ $t('__status') }}</span>
+                    <span class="value" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}">{{ item.statusLabel }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">{{ $t('__idleRounds') }}</span>
+                    <span class="value">{{ item.idle_rounds }}</span>
+                  </div>
                 </div>
-                <div class="item">
-                  <span class="title">{{ $t('__name') }}</span>
-                  <span class="value">{{ item.name }}</span>
-                </div>
-                <div class="item">
-                  <span class="title">{{ $t('__status') }}</span>
-                  <span class="value" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}">{{ item.statusLabel }}</span>
-                </div>
-                <div class="item">
-                  <span class="title">{{ $t('__idleRounds') }}</span>
-                  <span class="value">{{ item.idle_rounds }}</span>
-                </div>
-                <div class="operate pos_abs_bottom">
-                  <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
+                <div class="right">
+                  <div class="item">
+                    <span class="title">{{ $t('__streamingUrl') }}</span>
+                    <span class="value">{{ item.streaming_url }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">app_name</span>
+                    <span class="value">{{ item.app_name }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">streaming_name</span>
+                    <span class="value">{{ item.streaming_name }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">{{ $t('__description') }}</span>
+                    <span class="value">{{ item.description }}</span>
+                  </div>
                 </div>
               </div>
-              <div class="right">
-                <div class="item">
-                  <span class="title">{{ $t('__streamingUrl') }}</span>
-                  <span class="value">{{ item.streaming_url }}</span>
+              <div class="d-flex">
+                <div class="left">
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
+                  </div>
                 </div>
-                <div class="item">
-                  <span class="title">app_name</span>
-                  <span class="value">{{ item.app_name }}</span>
-                </div>
-                <div class="item">
-                  <span class="title">streaming_name</span>
-                  <span class="value">{{ item.streaming_name }}</span>
-                </div>
-                <div class="item">
-                  <span class="title">{{ $t('__description') }}</span>
-                  <span class="value">{{ item.description }}</span>
-                </div>
-                <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                <div class="right">
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                  </div>
                 </div>
               </div>
             </template>
@@ -163,7 +172,7 @@
 
     <editDialog
       ref="editDialog"
-      :title="$stringFormat(`${$t('__edit')}${$t('__gameTable')} - ID:{0}`, [selectForm.id])"
+      :title="$stringFormat(`${$t('__revise')}${$t('__gameTable')} - ID:{0}`, [selectForm.id])"
       :visible="curDialogIndex === dialogEnum.edit"
       :confirm="$t('__revise')"
       :form="selectForm"
@@ -245,9 +254,9 @@ export default {
     }
   },
   watch: {
-    'searchForm.status'() {
-      this.resizeHandler();
-    }
+    // 'searchForm.status'() {
+    //   this.resizeHandler();
+    // }
   },
   created() {
     this.$nextTick(() => {
@@ -319,6 +328,10 @@ export default {
     onCreateBtnClick() {
       this.selectForm = { status: this.searchItems.status[0].key, idle_rounds: 3 }
       this.curDialogIndex = this.dialogEnum.create
+      this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__create')}${this.$t('__gameTable')}`, true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameTableManagement'), false, () => { }])
+      }])
     },
     createDialogConfirmEven(data) {
       this.$refs.createDialog.setDialogLoading(true)
@@ -331,6 +344,10 @@ export default {
     onEditBtnClick(item) {
       this.selectForm = JSON.parse(JSON.stringify(item))
       this.curDialogIndex = this.dialogEnum.edit
+      this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__revise')}${this.$t('__gameTable')}`, true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameTableManagement'), false, () => { }])
+      }])
     },
     editDialogConfirmEven(data) {
       this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
@@ -422,16 +439,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table-container {
-  .left {
-    position: relative;
-    .pos_abs_bottom {
-      position: absolute;
-      bottom: 0;
-    }
-  }
-}
-
 .view-container {
   .option_ctrl_right {
     justify-content: flex-end;

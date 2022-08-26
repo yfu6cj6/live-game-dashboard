@@ -352,5 +352,6 @@
     "__cardRoad": "牌路",
     "__superior": "上線",
     "__loginBarcodeDownload": "登入條碼下載",
-    "__memberWinLossTotal": "直屬玩家輸贏匯總"
+    "__memberWinLossTotal": "直屬玩家輸贏匯總",
+    "__gameTable": "遊戲桌"
 }
