@@ -214,13 +214,11 @@ export default {
       if (this.searchForm.table_id && this.searchForm.table_id.length > 0) {
         this.searchFormOpen = true;
       }
-      // this.resizeHandler();
     },
     'searchForm.live_bet_area_id'() {
       if (this.searchForm.live_bet_area_id && this.searchForm.live_bet_area_id.length > 0) {
         this.searchFormOpen = true;
       }
-      // this.resizeHandler();
     }
   },
   created() {
@@ -290,6 +288,7 @@ export default {
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameAreaManagement'), false, () => { }])
     },
     onCreateBtnClick() {
       this.selectForm = {}
@@ -298,7 +297,6 @@ export default {
       this.curDialogIndex = this.dialogEnum.create
       this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__create')}${this.$t('__gameArea')}`, true, () => {
         this.closeDialogEven()
-        this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameAreaManagement'), false, () => { }])
       }])
     },
     createDialogConfirmEven(data) {
@@ -314,7 +312,6 @@ export default {
       this.curDialogIndex = this.dialogEnum.edit
       this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__revise')}${this.$t('__gameArea')}`, true, () => {
         this.closeDialogEven()
-        this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameAreaManagement'), false, () => { }])
       }])
     },
     editDialogConfirmEven(data) {
