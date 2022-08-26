@@ -253,11 +253,6 @@ export default {
       }
     }
     return {
-      inputState: Object.freeze({
-        'none': 0,
-        'success': 1,
-        'error': 2
-      }),
       rules: {
         area_name: [{ required: true, trigger: 'blur', validator: validate }],
         area: [{ required: true, trigger: 'blur', validator: validate }],

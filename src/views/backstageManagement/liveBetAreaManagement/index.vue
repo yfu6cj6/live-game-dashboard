@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="dataLoading">
+  <div v-loading="dataLoading" class="w-100 h-100">
     <div class="view-container">
       <div class="bg-black">
         <template v-if="device === 'mobile'">
@@ -23,7 +23,7 @@
                 <div class="option">
                   <el-input v-model="searchForm.area" type="number" class="input_size" :placeholder="$t('__value')" />
                 </div>
-                <div class="option options">
+                <div class="option">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -47,7 +47,7 @@
                 </div>
               </div>
               <div class="options status">
-                <div class="option options">
+                <div class="option">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -71,7 +71,7 @@
                 </div>
               </div>
             </div>
-            <div class="options d-flex">
+            <div class="options d-flex mt-2">
               <div class="d-flex">
                 <div class="createBtn">
                   <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
@@ -132,7 +132,7 @@
                   <span class="title">{{ $t('__betMax') }}</span>
                   <span class="value">{{ item.bet_maxLabel }}</span>
                 </div>
-                <div class="operate locate_rb">
+                <div class="operate">
                   <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                   <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                 </div>

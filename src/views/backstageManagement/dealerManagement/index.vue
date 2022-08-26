@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="dataLoading">
+  <div v-loading="dataLoading" class="w-100 h-100">
     <div class="view-container dealerManagement">
       <div class="bg-black">
         <template v-if="device === 'mobile'">
@@ -15,7 +15,7 @@
                 <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
               </div>
             </div>
-            <div class="options">
+            <div class="options mt-2">
               <div class="option">
                 <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
               </div>

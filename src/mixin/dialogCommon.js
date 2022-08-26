@@ -3,6 +3,11 @@ import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
+      inputState: Object.freeze({
+        'none': 0,
+        'success': 1,
+        'error': 2
+      }),
       dialogLoading: false
     }
   },
