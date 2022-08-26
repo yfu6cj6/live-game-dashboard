@@ -327,7 +327,7 @@
     "__disabled": "禁用",
     "__enabled": "啟用",
     "__cancel": "取消",
-    "__Watch": "查看",
+    "__watch": "查看",
     "__pleaseCheckFormContent": "請檢查表單內容是否填寫正確",
     "__index": "序號",
     "__subAccountBaseInfo": "子帳號基本訊息",
@@ -352,5 +352,9 @@
     "__cardRoad": "牌路",
     "__superior": "上線",
     "__loginBarcodeDownload": "登入條碼下載",
-    "__memberWinLossTotal": "直屬玩家輸贏匯總"
+    "__memberWinLossTotal": "直屬玩家輸贏匯總",
+    "__backToHome": "回首頁",
+    "__oops": "糟糕",
+    "__checkUrl": "請檢查您輸入的網址是否正確，或點擊下方按鈕返回首頁。",
+    "__gameTable": "遊戲桌"
 }

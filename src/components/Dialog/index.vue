@@ -88,6 +88,7 @@ export default {
 .dialog {
   position: fixed;
   width: calc(100% - 20px);
+  max-width: 50%;
   max-height: calc(100% - 160px);
   border: 2px solid $yellow;
   display: flex;
@@ -114,7 +115,7 @@ export default {
     }
   }
   .dialog-body {
-    padding: 0 .7rem;
+    padding: 0 3rem;
     overflow-y: auto;
     word-break: break-all;
     .dialog-body-footer {
@@ -122,7 +123,7 @@ export default {
       padding: .7rem 1.4rem 1.4rem;
       word-break: break-all;
       .el-button {
-        width: 12rem;
+        width: 18rem;
       }
     }
   }
@@ -131,38 +132,8 @@ export default {
     padding: .7rem 1.4rem 1.4rem;
     word-break: break-all;
     .el-button {
-      width: 12rem;
+      width: 18rem;
     }
   }
 }
-
-.loading {
-  top: 0;
-  left: 0;
-}
-
-@media screen and (min-width: 768px) /*and (max-width: 991px)*/ {
-  .dialog {
-    max-height: calc(100% - 100px);
-  }
-}
-
-// @media screen and (min-width: 992px) {
-//   .dialog {
-//     max-width: 50%;
-//     .dialog-body {
-//       padding: 0 3rem;
-//       .dialog-body-footer {
-//         .el-button {
-//           width: 18rem;
-//         }
-//       }
-//     }
-//     .dialog-footer {
-//       .el-button {
-//         width: 18rem;
-//       }
-//     }
-//   }
-// }
 </style>

@@ -1240,3 +1240,15 @@
   display: inline-block;
   width: 100%;
 }
+
+.el-row {
+  position: relative;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.el-input--prefix {
+  .el-input__inner {
+    padding-left: 3rem;
+  }
+}

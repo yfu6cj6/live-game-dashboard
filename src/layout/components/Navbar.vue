@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="device === 'mobile'" class="mobile header-container">
+    <div v-if="device === 'mobile'" class="header-container">
       <div class="d-flex flex-wrap align-items-center header">
         <div class="display d-flex flex-wrap align-items-center">
           <div class="expand-icon-outer">
@@ -89,7 +89,7 @@
         </div>
       </div>
     </div>
-    <div v-else class="pc header-container">
+    <div v-else class="header-container">
       <div class="d-flex align-items-center header">
         <div class="app-name">{{ $t('__projectName') }}</div>
         <div class="user-info w-100 justify-content-between mr-auto ml-1">
@@ -196,10 +196,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "~@/styles/variables.scss";
 
-.mobile.header-container {
+.mobile .header-container {
   height: 4.66667rem;
   position: absolute;
   width: 100%;
@@ -400,9 +400,9 @@ export default {
   }
 }
 
-.pc.header-container {
+.pc .header-container {
   height: 50px;
-  position: fixed;
+  position: absolute;
   width: 100%;
   top: 0;
   left: 0;

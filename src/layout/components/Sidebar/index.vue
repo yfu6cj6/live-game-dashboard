@@ -641,7 +641,7 @@ export default {
       background-color: #000;
       margin-left: 0;
       width: calc(100% - 10px);
-      padding: 0 5px 5px 5px;
+      padding: 0 5px;
       .filter-wrap {
         -webkit-box-align: center;
         -ms-flex-align: center;

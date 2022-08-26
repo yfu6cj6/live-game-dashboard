@@ -2,7 +2,7 @@
   <div :class="classObj" class="app-container">
     <template v-if="device === 'mobile'">
       <navbar class="navbar" />
-      <tags-view v-show="false" class="tagsView" />
+      <page-tabs class="d-none" />
       <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
       <sidebar class="sidebar" :class="{'opened': sidebar.opened}" />
       <agent-level class="agentLevel" />
@@ -11,7 +11,7 @@
     </template>
     <template v-else>
       <navbar class="navbar" />
-      <tags-view class="tagsView" :class="{'opened': sidebar.opened}" />
+      <page-tabs class="page-tabs" :class="{'opened': sidebar.opened}" />
       <sidebar class="sidebar" />
       <agent-level class="agentLevel" />
       <app-main class="appMain" :class="{'opened': sidebar.opened}" />
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain, TagsView, AgentLevel, ModPwdDialog } from './components'
+import { Navbar, Sidebar, AppMain, PageTabs, AgentLevel, ModPwdDialog } from './components'
 import ResizeMixin from '@/mixin/ResizeHandler'
 import { mapGetters } from 'vuex'
 import defaultSettings from '@/settings'
@@ -32,7 +32,7 @@ export default {
     Navbar,
     Sidebar,
     AppMain,
-    TagsView,
+    PageTabs,
     AgentLevel,
     ModPwdDialog
   },
@@ -69,6 +69,7 @@ export default {
   @include clearfix;
   height: 100%;
   width: 100%;
+  position: relative;
   .navbar {
     z-index: 999;
   }
@@ -100,6 +101,7 @@ export default {
     z-index: 12;
     border-right: 2px solid $yellow;
     top: $navBarHeight;
+    padding-top: 0.91667rem;
   }
   .appMain {
     padding-top: $navBarHeight;
@@ -117,36 +119,45 @@ export default {
   }
 }
 
-// @media screen and (min-width: 992px) {
-//   .app-container {
-//     .tagsView {
-//       padding-left: $pcHideSidebarWidth;
-//       transition: padding-left .3s;
-//     }
+@media screen and (min-width: 992px) {
+  .app-container {
+    .page-tabs {
+      position: fixed;
+      top: 45px;
+      left: 50px;
+      margin-left: 0px;
+      background: #000;
+      width: calc(100vw - 50px);
+      transition: all .3s;
+      z-index: 11;
+    }
 
-//     .tagsView.opened {
-//       padding-left: $mobileSideBarWidth;
-//     }
+    .page-tabs.opened {
+      transition: all .5s;
+      left: 200px;
+      width: calc(100vw - 200px);
+    }
 
-//     .sidebar {
-//       height: 100%;
-//       margin-left: 0;
-//       position: fixed;
-//       top: 45px;
-//       left: 0;
-//       z-index: 12;
-//       visibility: visible;
-//     }
+    .sidebar {
+      height: 100%;
+      margin-left: 0;
+      position: fixed;
+      top: 45px;
+      left: 0;
+      z-index: 12;
+      visibility: visible;
+    }
 
-//     .appMain {
-//       padding-left: $pcHideSidebarWidth;
-//       transition: padding-left .3s;
-//       max-width: 100%;
-//     }
+    .appMain {
+      padding-top: calc(3.75rem + 30px);
+      padding-left: $pcHideSidebarWidth;
+      transition: padding-left .3s;
+      max-width: 100%;
+    }
 
-//     .appMain.opened {
-//       padding-left: $mobileSideBarWidth;
-//     }
-//   }
-// }
+    .appMain.opened {
+      padding-left: $pcSideBarWidth;
+    }
+  }
+}
 </style>

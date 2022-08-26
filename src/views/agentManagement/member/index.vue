@@ -248,7 +248,7 @@
                 <span class="value" style="width: 50%; height: 33px; position: relative;">
                   <span v-if="!item.lastBetTime">
                     <button class="el-button bg-yellow el-button--default lastBetTime lastBetTime-38755283" style="position: absolute; top: -6px; left: 0;" @click.stop="onLastBetTime(item)">
-                      <span>{{ $t('__Watch') }}</span>
+                      <span>{{ $t('__watch') }}</span>
                     </button>
                   </span>
                   <span v-else>

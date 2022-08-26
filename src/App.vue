@@ -1,12 +1,19 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{'mobile': device === 'mobile', 'pc': device === 'desktop'}">
     <router-view />
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  name: 'App'
+  name: 'App',
+  computed: {
+    ...mapGetters([
+      'device'
+    ])
+  }
 }
 </script>
 

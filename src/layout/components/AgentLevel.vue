@@ -103,7 +103,6 @@ export default {
     border-bottom: 0.08333rem solid $gray;
     height: 3.33333rem;
     line-height: 3.33333rem;
-    margin-top: 0.91667rem;
   }
   .agentLevel-item {
     max-height: 100%;
@@ -144,5 +143,15 @@ export default {
 .open.agentLevel-container {
   transform: translateX(0);
   transition: transform .5s;
+}
+
+@media screen and (min-width: 992px) {
+  .agentLevel-container {
+    width: $pcSideBarWidth;
+    transform: translateX(-($pcSideBarWidth + 1));
+    .agentLevel-item {
+      margin-top: 1.25rem;
+    }
+  }
 }
 </style>

@@ -5,9 +5,9 @@
         <img src="@/assets/404_images/404.png" alt="404">
       </div>
       <div class="content">
-        <div class="oops">OOPS!</div>
-        <div class="headline">Please check that the URL you entered is correct, or click the button below to return to the homepage.</div>
-        <a href="" class="return-home">Back to home</a>
+        <div class="oops">{{ `${$t('__oops')}!` }}</div>
+        <div class="headline">{{ $t('__checkUrl') }}</div>
+        <a href="" class="return-home">{{ $t('__backToHome') }}</a>
       </div>
     </div>
   </div>
@@ -32,6 +32,8 @@ export default {
   align-items: center;
   .wrap {
     margin: 0 auto;
+    overflow: auto;
+    max-height: 100%;
     .pic {
       display: flex;
       justify-content: center;
@@ -48,23 +50,29 @@ export default {
       text-align: center;
       .oops {
         font-weight: bold;
-        color: #1482f0;
-        font-size: 32px;
+        color: #f9c901;
+        font-size: 3rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
       }
       .headline {
         font-weight: bold;
-        line-height: 24px;
-        font-size: 20px;
+        line-height: 1.8rem;
+        font-size: 1.5rem;
+        color: #f9c901;
       }
       .return-home {
         display: inline-block;
-        background: #1482f0;
-        border-radius: 100px;
+        background: #f9c901;
+        border-radius: 10rem;
         text-align: center;
-        color: #ffffff;
-        width: 110px;
-        height: 36px;
-        line-height: 36px;
+        color: #000;
+        width: auto;
+        height: 3rem;
+        line-height: 3rem;
+        padding: 0 1.5rem;
+        margin-top: 1rem;
+        font-weight: bold;
       }
     }
   }

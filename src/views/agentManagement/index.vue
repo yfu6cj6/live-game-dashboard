@@ -444,6 +444,9 @@ export default {
         element.betMinLabel = numberFormat(element.bet_min)
         element.betMaxLabel = numberFormat(element.bet_max)
       });
+      if (this.agentInfo.id === this.agent_id && this.agentInfo.id > 1) {
+        this.$store.dispatch('user/setUserData', ['balance', this.agentInfo.balance])
+      }
 
       var limit = ''
       for (var i = 0, max = this.agentInfo.handicaps.length; i < max; i++) {
@@ -648,20 +651,6 @@ export default {
       padding: 0;
     }
   }
-}
-
-.swiper-slide {
-    -webkit-flex-shrink: 0;
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    -webkit-transition-property: -webkit-transform;
-    transition-property: -webkit-transform;
-    -o-transition-property: transform;
-    transition-property: transform;
-    transition-property: transform,-webkit-transform;
 }
 
 #app {

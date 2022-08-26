@@ -36,6 +36,9 @@ const mutations = {
     state.isAgentSubAccount = data.roles.some(role => role === 'AgentSubAccount')
     state.modPwd = data.modPwd
   },
+  SET_USER_DATA: (state, [key, value]) => {
+    state[key] = value
+  },
   SET_ROUTES: (state, permissions) => {
     let accessedRoutes
     if (permissions[0] === 'Administer') {
@@ -66,6 +69,10 @@ const actions = {
 
   setModPwdState({ commit }, modPwd) {
     commit("SETMODPWDSTATE", modPwd)
+  },
+
+  setUserData({ commit }, [key, value]) {
+    commit("SET_USER_DATA", [key, value])
   },
 
   // get user info
