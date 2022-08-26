@@ -92,14 +92,4 @@ export default {
   height: 40px;
   font-size: 20px;
 }
-.notice-cover {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 3;
-}
 </style>

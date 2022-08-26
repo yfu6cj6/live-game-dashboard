@@ -279,51 +279,7 @@ export default {
 
 <style lang="scss" scoped>
 .black_bg {
-  left: 0;
-  width: 100%;
-  top: 3.75rem;
-  position: fixed;
-  background-color: #000;
-  height: calc(100vh - 3.75rem);
-  .ctrlBtn {
-    height: 2.5rem;
-  }
   .data_content {
-    overflow: auto;
-    height: calc(100vh - 3.75rem - 1.5rem - 6.5rem);
-    .tip {
-      float: right;
-    }
-    .titleBar {
-      margin-top: 1.5rem;
-      font-size: 1.16667rem;
-      font-weight: bold;
-      padding: 1.25rem 1.66667rem;
-      color: #000;
-      background: #f9c901;
-      width: 100%;
-      display: flex;
-      align-items: center;
-    }
-    .item {
-      padding: 0 1rem;
-      &.is-error {
-        .el-input__inner {
-          border-color: #f56c6c;
-        }
-        .el-input__validateIcon {
-          color: #f56c6c;
-        }
-      }
-      &.is-success {
-        .el-input__inner {
-          border-color: #67c23a;
-        }
-        .el-input__validateIcon {
-          color: #67c23a;
-        }
-      }
-    }
     .dealerUpload {
       .el-upload {
         .el-upload-dragger {
@@ -333,24 +289,6 @@ export default {
       }
       .el-upload-list__item-status-label {
         display: none;
-      }
-    }
-  }
-  .operate_content {
-    height: 6.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    .form-ctrl {
-      padding-top: 0.41667rem;
-      padding-bottom: 0.41667rem;
-      width: calc(100vw - 3.33333rem);
-      height: 3.33333rem;
-      background: #000;
-      button {
-        width: 150px;
-        margin: auto;
       }
     }
   }
