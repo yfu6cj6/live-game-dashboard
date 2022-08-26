@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div v-loading="dataLoading" class="w-100 h-100">
     <div class="view-container">
-      <div v-loading="dataLoading" class="bg-black">
+      <div class="bg-black">
         <template v-if="device === 'mobile'">
           <div class="yellow-border-bottom search-container">
             <div class="options">
@@ -60,7 +60,7 @@
                 </div>
               </div>
             </div>
-            <div class="options d-flex">
+            <div class="options d-flex mt-2">
               <div class="d-flex">
                 <div class="createBtn mr-1">
                   <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />

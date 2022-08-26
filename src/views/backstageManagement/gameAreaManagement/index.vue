@@ -1,182 +1,153 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
+  <div v-loading="dataLoading" class="w-100 h-100">
+    <div class="view-container">
+      <div class="bg-black">
         <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-select v-model="searchForm.table_id" multiple :collapse-tags="tableIdCollapse" :placeholder="$t('__tableId')">
-                <el-option v-for="item in searchItems.tables" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.live_bet_area_id" multiple :collapse-tags="liveBetAreaIdCollapse" :placeholder="$t('__liveBetAreaId')">
-                <el-option v-for="item in searchItems.liveBetArea" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.bet_min" type="number" :placeholder="$t('__betMin')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.bet_max" type="number" :placeholder="$t('__betMax')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.total_bet_max" type="number" :placeholder="$t('__totalBetMax')" />
-              <span class="zeroMeansNoLimit">{{ `${$t('__totalBetMax')}${$t('__zeroMeansNoLimit')}` }}</span>
-            </p>
-          </div>
-          <div class="view-container-seachForm-operate">
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
-                {{ $t("__moreSearch") }}
-              </el-button>
-            </p>
+          <div class="yellow-border-bottom search-container">
+            <div class="options">
+              <div class="option table">
+                <span class="prefix-label" />
+                <div class="comp selected-filter custom">
+                  <el-select
+                    v-model="searchForm.table_id"
+                    class="d-flex"
+                    multiple
+                    :popper-append-to-body="false"
+                    :collapse-tags="tableIdCollapse"
+                    :placeholder="$t('__tableId')"
+                    :popper-class="'custom-dropdown w-auto'"
+                  >
+                    <el-option
+                      v-for="item in selectOption.tables"
+                      :key="item.key"
+                      :label="item.nickname"
+                      :value="item.key"
+                    />
+                  </el-select>
+                </div>
+                <span class="suffix-label" />
+              </div>
+              <div class="option betarea">
+                <span class="prefix-label" />
+                <div class="comp selected-filter custom">
+                  <el-select
+                    v-model="searchForm.live_bet_area_id"
+                    class="d-flex"
+                    multiple
+                    :popper-append-to-body="false"
+                    :collapse-tags="liveBetAreaIdCollapse"
+                    :placeholder="$t('__liveBetAreaId')"
+                    :popper-class="'custom-dropdown w-auto'"
+                  >
+                    <el-option
+                      v-for="item in selectOption.liveBetArea"
+                      :key="item.key"
+                      :label="item.nickname"
+                      :value="item.key"
+                    />
+                  </el-select>
+                </div>
+                <span class="suffix-label" />
+              </div>
+              <a class="more-opiton text-link text-underline text-yellow align-items-center" @click.stop="onSearchExpand()">
+                <div class="fas label icon d-flex align-items-center yellow">
+                  <svg-icon :icon-class="searchExpand ? 'less': 'add'" style="height: 1.08333rem;width: 1.08333rem;" />
+                </div>
+                {{ $t('__options') }}
+              </a>
+            </div>
+            <div v-show="searchExpand === true">
+              <div class="options">
+                <div class="option">
+                  <el-input v-model="searchForm.bet_min" type="number" class="input_size" :placeholder="$t('__betMin')" />
+                </div>
+                <div class="option">
+                  <el-input v-model="searchForm.bet_max" type="number" class="input_size" :placeholder="$t('__betMax')" />
+                </div>
+              </div>
+              <div class="options">
+                <div class="option">
+                  <el-input v-model="searchForm.total_bet_max" type="number" class="input_size" :placeholder="$t('__totalBetMax')" />
+                  <span class="zeroMeansNoLimit mt-2">{{ `${$t('__totalBetMax')}${$t('__zeroMeansNoLimit')}` }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="options d-flex mt-2">
+              <div class="d-flex">
+                <div class="createBtn">
+                  <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
+                </div>
+              </div>
+              <div class="d-flex option_ctrl_right">
+                <div class="searchBtn">
+                  <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(searchForm, 1)" />
+                </div>
+              </div>
+            </div>
           </div>
         </template>
         <template v-else>
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.table_id" multiple filterable :collapse-tags="tableIdCollapse" :placeholder="$t('__tableId')">
-                <el-option v-for="item in searchItems.tables" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.live_bet_area_id" multiple filterable :collapse-tags="liveBetAreaIdCollapse" :placeholder="$t('__liveBetAreaId')">
-                <el-option v-for="item in searchItems.liveBetArea" :key="item.key" :label="item.nickname" :value="item.key" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.bet_min" type="number" :placeholder="$t('__betMin')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.bet_max" type="number" :placeholder="$t('__betMax')" />
-            </p>
-            <p class="optionItem totalBetMax">
-              <el-input v-model="searchForm.total_bet_max" type="number" :placeholder="$t('__totalBetMax')" />
-              <span class="zeroMeansNoLimit">{{ `${$t('__totalBetMax')}${$t('__zeroMeansNoLimit')}` }}</span>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
-              </el-button>
-            </p>
-          </div>
+          -
         </template>
       </div>
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
+      <div class="table-container">
+        <template v-if="tableData.length > 0">
+          <dir
             v-for="(item, index) in tableData"
             :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
+            :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
           >
             <template v-if="device === 'mobile'">
               <div class="left">
                 <div class="item">
-                  <span class="header headerW">ID</span>
-                  <span class="content">{{ item.id }}</span>
+                  <span class="title">ID</span>
+                  <span class="value">{{ item.id }}</span>
                 </div>
                 <div class="item">
-                  <span class="header headerW">{{ $t('__tableId') }}</span>
-                  <span class="content">{{ item.table_id }}</span>
+                  <span class="title">{{ $t('__tableId') }}</span>
+                  <span class="value">{{ item.table_id }}</span>
                 </div>
                 <div class="item">
-                  <span class="header headerW">{{ $t('__liveBetAreaId') }}</span>
-                  <span class="content">{{ item.live_bet_area_id }}</span>
+                  <span class="title">{{ $t('__liveBetAreaId') }}</span>
+                  <span class="value">{{ item.live_bet_area_id }}</span>
                 </div>
-                <div class="item col">
-                  <span class="header">{{ $t('__totalBetMax') }}</span>
-                  <span :class="{'status': item.total_bet_max === '0.00' }">
-                    {{ item.totalBetMaxLabel }}
-                  </span>
+                <div class="item">
+                  <span class="title">{{ $t('__totalBetMax') }}</span>
+                  <span class="value" :class="{'text-red': item.total_bet_max === '0.00'}">{{ item.totalBetMaxLabel }}</span>
                 </div>
               </div>
               <div class="right">
-                <div class="item col">
-                  <span class="header headerW">{{ $t('__betMin') }}</span>
-                  <span class="content">{{ item.bet_min }}</span>
+                <div class="item">
+                  <span class="title">{{ $t('__betMin') }}</span>
+                  <span class="value">{{ item.bet_min }}</span>
                 </div>
-                <div class="item col">
-                  <span class="header headerW">{{ $t('__betMax') }}</span>
-                  <span class="content">{{ item.bet_max }}</span>
+                <div class="item">
+                  <span class="title">{{ $t('__betMax') }}</span>
+                  <span class="value">{{ item.bet_max }}</span>
                 </div>
                 <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__revise") }}</el-button>
                   <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                 </div>
               </div>
             </template>
             <template v-else>
-              <div class="item id">
-                <span class="header">ID</span>
-                <span>{{ item.id }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__tableId') }}</span>
-                <span>{{ item.table_id }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__liveBetAreaId') }}</span>
-                <span>{{ item.live_bet_area_id }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__betMin') }}</span>
-                <span>{{ item.bet_min }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__betMax') }}</span>
-                <span>{{ item.bet_max }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__totalBetMax') }}</span>
-                <span :class="{'status': item.total_bet_max === '0.00' }">
-                  {{ item.totalBetMaxLabel }}
-                </span>
-              </div>
-              <div class="operate">
-                <el-button class="bg-yellow locate" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                <el-button class="bg-red locate" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-              </div>
+              -
             </template>
+          </dir>
+          <div v-if="totalCount > pageSize" class="more_btn_space">
+            <div v-if="tableData.length >= totalCount" class="search_more">
+              <span>{{ $t("__noMoreInformation") }}</span>
+            </div>
+            <div v-else class="search_more">
+              <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+            </div>
           </div>
-        </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
+        <template v-else>
+          <div class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
       </div>
-    </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
     </div>
 
     <editDialog
@@ -194,7 +165,7 @@
 
     <editDialog
       ref="editDialog"
-      :title="$stringFormat(`${$t('__edit')}${$t('__gameArea')} - {0}`, [selectForm.table_id])"
+      :title="$stringFormat(`${$t('__revise')}${$t('__gameArea')} - {0}`, [selectForm.table_id])"
       :visible="curDialogIndex === dialogEnum.edit"
       :confirm="$t('__revise')"
       :form="selectForm"
@@ -225,7 +196,9 @@ export default {
         'create': 1,
         'edit': 2
       }),
-      curDialogIndex: 0
+      curDialogIndex: 0,
+      searchExpand: false,
+      selectOption: {}
     }
   },
   computed: {
@@ -241,20 +214,51 @@ export default {
       if (this.searchForm.table_id && this.searchForm.table_id.length > 0) {
         this.searchFormOpen = true;
       }
-      this.resizeHandler();
+      // this.resizeHandler();
     },
     'searchForm.live_bet_area_id'() {
       if (this.searchForm.live_bet_area_id && this.searchForm.live_bet_area_id.length > 0) {
         this.searchFormOpen = true;
       }
-      this.resizeHandler();
+      // this.resizeHandler();
     }
   },
   created() {
-    this.onSearchBtnClick({}, 1)
+    this.$nextTick(() => {
+      this.onSearchBtnClick({}, 1);
+      this.addSelectFilter()
+      this.setHeaderStyle()
+    })
+  },
+  activated() {
+    this.closeDialogEven()
+    this.setHeaderStyle()
   },
   methods: {
+    onSearchExpand() {
+      this.searchExpand = !this.searchExpand
+    },
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameAreaManagement'), false, () => { }])
+    },
+    addSelectFilter() {
+      this.addSelectDropDownFilter('option table', () => {
+        this.searchForm.table_id = JSON.parse(JSON.stringify(this.searchItems.tables)).map(item => item.key)
+      }, () => {
+        this.searchForm.table_id = []
+      }, () => {
+        this.selectOption.tables = JSON.parse(JSON.stringify(this.searchItems.tables)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+      this.addSelectDropDownFilter('option betarea', () => {
+        this.searchForm.live_bet_area_id = JSON.parse(JSON.stringify(this.searchItems.liveBetArea)).map(item => item.key)
+      }, () => {
+        this.searchForm.live_bet_area_id = []
+      }, () => {
+        this.selectOption.liveBetArea = JSON.parse(JSON.stringify(this.searchItems.liveBetArea)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+    },
     onSearchBtnClick(data, page) {
+      this.pageSizeCount = 1
       this.searchForm = data
       this.handleCurrentChange(page)
     },
@@ -267,7 +271,8 @@ export default {
       })
     },
     handleRespone(res) {
-      this.searchItems = res.searchItems
+      this.searchItems = JSON.parse(JSON.stringify(res.searchItems))
+      this.selectOption = JSON.parse(JSON.stringify(res.searchItems))
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
         element.totalBetMaxLabel = element.total_bet_max === '0.00' ? this.$t('__noLimit') : element.total_bet_max
@@ -291,6 +296,10 @@ export default {
       this.selectForm.table_id = this.searchItems.tables[0].key
       this.selectForm.live_bet_area_id = this.searchItems.liveBetArea[0].key
       this.curDialogIndex = this.dialogEnum.create
+      this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__create')}${this.$t('__gameArea')}`, true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameAreaManagement'), false, () => { }])
+      }])
     },
     createDialogConfirmEven(data) {
       this.$refs.createDialog.setDialogLoading(true)
@@ -303,6 +312,10 @@ export default {
     onEditBtnClick(item) {
       this.selectForm = JSON.parse(JSON.stringify(item))
       this.curDialogIndex = this.dialogEnum.edit
+      this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__revise')}${this.$t('__gameArea')}`, true, () => {
+        this.closeDialogEven()
+        this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameAreaManagement'), false, () => { }])
+      }])
     },
     editDialogConfirmEven(data) {
       this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
@@ -331,41 +344,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view {
-  &-container {
-    &-table {
-      &-row {
-        display: flex;
-        flex-direction: row;
-        .left,
-        .right {
-          width: 50%;
-          display: flex;
-          flex-direction: column;
-          .item {
-            .headerW {
-              width: 50px;
-              min-width: 50px;
-            }
-            &.col {
-              flex-direction: column;
-            }
-          }
-        }
-        .right {
-          .item {
-            .headerW {
-              width: 90px;
-              min-width: 90px;
-            }
-          }
-          .operate {
-            justify-content: flex-start;
-          }
-        }
-      }
-    }
-  }
+.option_ctrl_right {
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0 0.5rem;
 }
 
 .totalBetMax {

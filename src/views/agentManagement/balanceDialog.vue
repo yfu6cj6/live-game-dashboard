@@ -241,11 +241,6 @@ export default {
       }
     }
     return {
-      inputState: Object.freeze({
-        'none': 0,
-        'success': 1,
-        'error': 2
-      }),
       rules: {
         amount: [{ required: true, trigger: 'blur', validator: validateBlance }],
         userPassword: [{ required: true, trigger: 'blur', validator: validate }]

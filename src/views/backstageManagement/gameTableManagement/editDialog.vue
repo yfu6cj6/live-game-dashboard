@@ -265,11 +265,6 @@ export default {
       }
     }
     return {
-      inputState: Object.freeze({
-        'none': 0,
-        'success': 1,
-        'error': 2
-      }),
       rules: {
         id: [{ required: true, trigger: 'blur', validator: validate }],
         name: [{ required: true, trigger: 'blur', validator: validate }],

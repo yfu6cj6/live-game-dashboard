@@ -250,11 +250,6 @@ export default {
       }
     }
     return {
-      inputState: Object.freeze({
-        'none': 0,
-        'success': 1,
-        'error': 2
-      }),
       rules: {
         nickname: [{ required: true, trigger: 'blur', validator: validate }],
         value: [{ required: true, trigger: 'blur', validator: valueValidate }]
