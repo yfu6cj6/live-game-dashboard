@@ -1,124 +1,97 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
+  <div v-loading="dataLoading" class="w-100 h-100">
+    <div class="view-container">
+      <div class="bg-black">
         <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-input v-model="searchForm.parameter" :placeholder="$t('__parameter')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.remark" :placeholder="$t('__remark')" />
-            </p>
-          </div>
-          <div class="view-container-seachForm-operate">
-            <p class="operateItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">{{ $t("__search") }}</el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">{{ $t("__create") }}</el-button>
-            </p>
+          <div class="yellow-border-bottom search-container">
+            <div class="options">
+              <div class="option">
+                <el-input v-model="searchForm.parameter" class="input_size" :placeholder="$t('__parameter')" />
+              </div>
+              <div class="option">
+                <el-input v-model="searchForm.remark" class="input_size" :placeholder="$t('__remark')" />
+              </div>
+            </div>
+            <div class="options d-flex mt-2">
+              <div class="d-flex">
+                <div class="createBtn">
+                  <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
+                </div>
+              </div>
+              <div class="d-flex option_ctrl_right">
+                <div class="searchBtn">
+                  <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                </div>
+              </div>
+            </div>
           </div>
         </template>
         <template v-else>
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.parameter" :placeholder="$t('__parameter')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.remark" :placeholder="$t('__remark')" />
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">{{ $t("__search") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">{{ $t("__create") }}</el-button>
-            </p>
-          </div>
+          -
         </template>
       </div>
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
+      <div class="table-container">
+        <template v-if="tableData.length > 0">
+          <dir
             v-for="(item, index) in tableData"
             :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
+            class="flex-column"
+            :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
           >
             <template v-if="device === 'mobile'">
-              <div class="left">
-                <div class="item">
-                  <span class="header">ID</span>
-                  <span class="content">{{ item.id }}</span>
+              <div class="d-flex">
+                <div class="left">
+                  <div class="item">
+                    <span class="title">ID</span>
+                    <span class="value">{{ item.id }}</span>
+                  </div>
                 </div>
-                <div class="item">
-                  <span class="header">{{ $t('__parameter') }}</span>
-                  <span class="content">{{ item.parameter }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__parameterValue') }}</span>
-                  <span class="content">{{ item.value }}</span>
+                <div class="right">
+                  <div class="item">
+                    <span class="title">{{ $t('__parameter') }}</span>
+                    <span class="value">{{ item.parameter }}</span>
+                  </div>
                 </div>
               </div>
-              <div class="right">
-                <div class="item">
-                  <span class="header">{{ $t('__remark') }}</span>
-                  <span class="content">{{ item.remark }}</span>
+              <div class="d-flex">
+                <div class="item pl">
+                  <span class="title">{{ $t('__parameterValue') }}</span>
+                  <span class="value">{{ item.value }}</span>
                 </div>
-                <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(scope.row)">{{ $t("__edit") }}</el-button>
-                  <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(scope.row)">{{ $t("__delete") }}</el-button>
+              </div>
+              <div class="d-flex">
+                <div class="item pl">
+                  <span class="title">{{ $t('__remark') }}</span>
+                  <span class="value">{{ item.remark }}</span>
+                </div>
+              </div>
+              <div class="d-flex">
+                <div class="left" />
+                <div class="right">
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                  </div>
                 </div>
               </div>
             </template>
             <template v-else>
-              <div class="item">
-                <span class="header">ID</span>
-                <span class="content">{{ item.id }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__parameter') }}</span>
-                <span class="content">{{ item.parameter }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__parameterValue') }}</span>
-                <span class="content">{{ item.value }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__remark') }}</span>
-                <span class="content">{{ item.remark }}</span>
-              </div>
-              <div class="operate">
-                <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(scope.row)">{{ $t("__edit") }}</el-button>
-                <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(scope.row)">{{ $t("__delete") }}</el-button>
-              </div>
+              -
             </template>
+          </dir>
+          <div v-if="totalCount > pageSize" class="more_btn_space">
+            <div v-if="tableData.length >= totalCount" class="search_more">
+              <span>{{ $t("__noMoreInformation") }}</span>
+            </div>
+            <div v-else class="search_more">
+              <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+            </div>
           </div>
-        </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
+        <template v-else>
+          <div class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
       </div>
-    </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
     </div>
 
     <editDialog
@@ -172,7 +145,8 @@ export default {
     }
   },
   created() {
-    this.onSearchBtnClick({}, 1)
+    this.pageSizeCount = 1
+    this.onSearchBtnClick(1)
   },
   methods: {
     handleRespone(res) {
@@ -196,8 +170,8 @@ export default {
         this.closeLoading()
       })
     },
-    onSearchBtnClick(data, page) {
-      this.searchForm = data
+    onSearchBtnClick(page) {
+      this.pageSizeCount = 1
       this.handleCurrentChange(page)
     },
     onCreateBtnClick() {
@@ -244,4 +218,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.view-container {
+  .search-container {
+    .options {
+      .option {
+        width: 15rem;
+        padding-right: 0;
+        padding-left: 0;
+        padding-top: 0;
+      }
+    }
+  }
+  .pl {
+    padding-left: 1.16667rem;
+  }
+}
 </style>
