@@ -1,201 +1,153 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
+  <div v-loading="dataLoading" class="w-100 h-100">
+    <div class="view-container">
+      <div class="bg-black">
         <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.nickname" :placeholder="$t('__nickname')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.uri" placeholder="Uri" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.methodType" multiple :collapse-tags="methodTypeCollapse" :placeholder="$t('__method')">
-                <el-option v-for="item in searchMethodType" :key="item" :label="item" :value="item" />
-              </el-select>
-            </p>
-          </div>
-          <div class="view-container-seachForm-operate">
-            <p class="operateItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
-                {{ $t("__moreSearch") }}
-              </el-button>
-            </p>
+          <div class="yellow-border-bottom search-container">
+            <div class="options">
+              <div class="option">
+                <el-input v-model="searchForm.id" type="number" class="input_size" placeholder="ID" />
+              </div>
+              <div class="option">
+                <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
+              </div>
+              <a class="more-opiton text-link text-underline text-yellow align-items-center" @click.stop="onSearchExpand()">
+                <div class="fas label icon d-flex align-items-center yellow">
+                  <svg-icon :icon-class="searchExpand ? 'less': 'add'" style="height: 1.08333rem;width: 1.08333rem;" />
+                </div>
+                {{ $t('__options') }}
+              </a>
+            </div>
+            <div v-show="searchExpand === true">
+              <div class="options currency">
+                <div class="option">
+                  <el-input v-model="searchForm.nickname" class="input_size" :placeholder="$t('__nickname')" />
+                </div>
+                <div class="option">
+                  <el-input v-model="searchForm.uri" class="input_size" placeholder="Uri" />
+                </div>
+              </div>
+              <div class="options method">
+                <div class="option">
+                  <span class="prefix-label" />
+                  <div class="comp selected-filter custom">
+                    <el-select
+                      v-model="searchForm.methodType"
+                      class="d-flex"
+                      multiple
+                      :popper-append-to-body="false"
+                      :collapse-tags="methodTypeCollapse"
+                      :placeholder="$t('__method')"
+                      :popper-class="'custom-dropdown w-auto'"
+                    >
+                      <el-option
+                        v-for="item in selectOption.searchMethodType"
+                        :key="item"
+                        :label="item"
+                        :value="item"
+                      />
+                    </el-select>
+                  </div>
+                  <span class="suffix-label" />
+                </div>
+              </div>
+            </div>
+            <div class="options d-flex mt-2">
+              <div class="d-flex">
+                <div class="createBtn">
+                  <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
+                </div>
+              </div>
+              <div class="d-flex option_ctrl_right">
+                <div class="searchBtn">
+                  <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                </div>
+              </div>
+            </div>
           </div>
         </template>
         <template v-else>
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.name" :placeholder="$t('__name')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.nickname" :placeholder="$t('__nickname')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.uri" placeholder="Uri" />
-            </p>
-            <p class="optionItem">
-              <el-select v-model="searchForm.methodType" multiple filterable :collapse-tags="methodTypeCollapse" :placeholder="$t('__method')">
-                <el-option v-for="item in searchMethodType" :key="item" :label="item" :value="item" />
-              </el-select>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
-              </el-button>
-            </p>
-          </div>
+          -
         </template>
       </div>
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
+      <div class="table-container">
+        <template v-if="tableData.length > 0">
+          <dir
             v-for="(item, index) in tableData"
             :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
+            class="flex-column"
+            :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
           >
             <template v-if="device === 'mobile'">
-              <div class="left" @click="remarkExpand(item)">
-                <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+              <div class="base">
+                <div class="left">
+                  <div class="item">
+                    <span class="title">ID</span>
+                    <span class="value">{{ item.id }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">{{ $t('__name') }}</span>
+                    <span class="value">{{ item.name }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">{{ $t('__nickname') }}</span>
+                    <span class="value">{{ item.nickname }}</span>
+                  </div>
                 </div>
-                <div class="item">
-                  <span class="header">ID</span>
-                  <span class="content">{{ item.id }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__name') }}</span>
-                  <span class="content">{{ item.name }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__nickname') }}</span>
-                  <span class="content">{{ item.nickname }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">Uri</span>
-                  <span class="content">{{ item.uri }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__method') }}</span>
-                  <span class="content">{{ item.method }}</span>
-                </div>
-                <div class="expand" @click.stop="remarkExpand(item)">
-                  <svg-icon v-if="item.open" icon-class="up" />
-                  <svg-icon v-else icon-class="more" />
+                <div class="right">
+                  <div class="item">
+                    <span class="title">{{ $t('__method') }}</span>
+                    <span class="value">{{ item.method }}</span>
+                  </div>
+                  <div class="item">
+                    <span class="title">Uri</span>
+                    <span class="value">{{ item.uri }}</span>
+                  </div>
+                  <div class="operate">
+                    <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__revise") }}</el-button>
+                    <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                  </div>
+                  <div class="item">
+                    <div class="expand" @click.stop="remarkExpand(item)">
+                      <svg-icon v-if="item.open" icon-class="up" style="height: 2rem; width: 2rem;" />
+                      <svg-icon v-else icon-class="more" style="height: 2rem; width: 2rem;" />
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div v-if="item.open" class="expandContent" @click="remarkExpand(item)">
-                <div class="item col">
-                  <span class="header expandHeader">request_content</span>
-                  <span class="content">
-                    {{ item.request_content }}
-                  </span>
+              <div v-if="item.open" class="flex-column">
+                <div class="item remark">
+                  <span class="title">request_content</span>
+                  <span class="value">{{ item.request_content }}</span>
                 </div>
-                <div class="item col">
-                  <span class="header expandHeader">response_content</span>
-                  <span class="content">
-                    {{ item.response_content }}
-                  </span>
+                <div class="item remark">
+                  <span class="title">response_content</span>
+                  <span class="value">{{ item.response_content }}</span>
                 </div>
               </div>
             </template>
             <template v-else>
-              <div class="base">
-                <div class="item remark">
-                  <el-button v-if="item.open" class="bg-normal" size="mini" icon="el-icon-arrow-down" @click="remarkExpand(item)" />
-                  <el-button v-else class="bg-normal" size="mini" icon="el-icon-arrow-right" @click="remarkExpand(item)" />
-                </div>
-                <div class="item id">
-                  <span class="header">ID</span>
-                  <span>{{ item.id }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__name') }}</span>
-                  <span>{{ item.name }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__nickname') }}</span>
-                  <span>{{ item.nickname }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">Uri</span>
-                  <span>{{ item.uri }}</span>
-                </div>
-                <div class="item method">
-                  <span class="header">{{ $t('__method') }}</span>
-                  <span>{{ item.method }}</span>
-                </div>
-                <div class="operate">
-                  <el-button class="bg-yellow" size="mini" @click.stop="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                  <el-button class="bg-red" size="mini" @click.stop="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-                </div>
-              </div>
-              <div v-if="item.open">
-                <div class="item col">
-                  <span class="header expandHeader">request_content</span>
-                  <span>{{ item.request_content }}</span>
-                </div>
-                <div class="item col">
-                  <span class="header expandHeader">response_content</span>
-                  <span>{{ item.response_content }}</span>
-                </div>
-              </div>
+              -
             </template>
+          </dir>
+          <div v-if="totalCount > pageSize" class="more_btn_space">
+            <div v-if="tableData.length >= totalCount" class="search_more">
+              <span>{{ $t("__noMoreInformation") }}</span>
+            </div>
+            <div v-else class="search_more">
+              <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+            </div>
           </div>
-        </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
+        <template v-else>
+          <div class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
       </div>
-    </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
     </div>
 
     <editDialog
       ref="editDialog"
-      :title="$stringFormat(`${$t('__edit')}${$t('__permission')} - ID:{0}`, [selectForm.id])"
+      :title="$stringFormat(`${$t('__revise')}${$t('__permission')} - ID:{0}`, [selectForm.id])"
       :visible="curDialogIndex === dialogEnum.edit"
       :confirm="$t('__revise')"
       :form="selectForm"
@@ -240,7 +192,11 @@ export default {
       selectForm: {},
       searchMethodType: [],
       methodType: [],
-      curDialogIndex: 0
+      curDialogIndex: 0,
+      searchExpand: false,
+      selectOption: {
+        searchMethodType: []
+      }
     }
   },
   computed: {
@@ -249,14 +205,35 @@ export default {
     }
   },
   watch: {
-    'searchForm.methodType'() {
-      this.resizeHandler();
-    }
   },
   created() {
-    this.onSearchBtnClick({}, 1)
+    this.pageSizeCount = 1
+    this.onSearchBtnClick(1)
+    this.setHeaderStyle()
+    this.$nextTick(() => {
+      this.addSelectFilter();
+    })
+  },
+  activated() {
+    this.closeDialogEven()
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__permissionManagement'), false, () => { }])
+    },
+    addSelectFilter() {
+      this.addSelectDropDownFilter('options method', () => {
+        this.searchForm.methodType = JSON.parse(JSON.stringify(this.searchMethodType)).map(item => item)
+      }, () => {
+        this.searchForm.methodType = []
+      }, () => {
+        this.selectOption.searchMethodType = JSON.parse(JSON.stringify(this.searchMethodType)).filter(item => item.match(new RegExp(`${event.target.value}`, 'i')))
+      })
+    },
+    onSearchExpand() {
+      this.searchExpand = !this.searchExpand
+    },
     remarkExpand(row) {
       const obj = this.tableData.find(item => item.id === row.id);
       this.$nextTick(() => {
@@ -265,10 +242,16 @@ export default {
       })
     },
     handleRespone(res) {
+      const open = this.tableData.filter(item => item.open).map(item => item.id)
+      res.rows.forEach(element => {
+        element.open = open.includes(element.id)
+      })
+
       this.allDataByClient = res.rows
       this.totalCount = res.rows.length
       this.searchMethodType = res.methodType
       this.methodType = ['None'].concat(res.methodType)
+      this.selectOption.searchMethodType = JSON.parse(JSON.stringify(this.searchMethodType))
       this.handlePageChangeByClient(this.currentPage)
 
       this.closeDialogEven()
@@ -287,14 +270,17 @@ export default {
         this.closeLoading()
       })
     },
-    onSearchBtnClick(data, page) {
-      this.searchForm = data
+    onSearchBtnClick(page) {
+      this.pageSizeCount = 1
       this.handleCurrentChange(page)
     },
     onCreateBtnClick() {
       this.selectForm = {}
       this.selectForm.method = this.methodType[0]
       this.curDialogIndex = this.dialogEnum.create
+      this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__create')}${this.$t('__permission')}`, true, () => {
+        this.closeDialogEven()
+      }])
     },
     createDialogConfirmEven(data) {
       this.$refs.createDialog.setDialogLoading(true)
@@ -313,6 +299,9 @@ export default {
         this.selectForm.method = this.methodType[0]
       }
       this.curDialogIndex = this.dialogEnum.edit
+      this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__revise')}${this.$t('__permission')}`, true, () => {
+        this.closeDialogEven()
+      }])
     },
     editDialogConfirmEven(data) {
       this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
@@ -339,52 +328,39 @@ export default {
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__permissionManagement'), false, () => { }])
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.view {
-  &-container {
-    &-table {
-      &-row {
-        display: flex;
-        flex-direction: column;
+.option_ctrl_right {
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0 0.5rem;
+}
+.view-container {
+  .table-container {
+    .base {
+      width: 100%;
+      display: flex;
+      .right {
         position: relative;
-        .left {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          .operate {
-            justify-content: flex-start;
+        .expand {
+          position: absolute;
+          top: 0;
+          right: 0;
+          .svg-icon {
+            fill: #a3a3a3;
+            width: 2.5rem;
+            height: 2.5rem;
           }
-          .expand {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-          }
-          .item{
-            .header {
-              width: 50px;
-              min-width: 50px;
-            }
-            .expandHeader {
-              width: 150px;
-              min-width: 150px;
-            }
-            &.col {
-              flex-direction: column;
-            }
-          }
-        }
-        .left + .expandContent {
-          margin-top: 5px;
-        }
-        .operate + .item {
-          margin-top: 5px;
         }
       }
+    }
+    .remark {
+      padding: 0 1rem;
     }
   }
 }
