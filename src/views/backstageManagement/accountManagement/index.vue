@@ -185,7 +185,7 @@
 
     <editDialog
       ref="editDialog"
-      :title="$stringFormat(`${$t('__edit')}${$t('__account')} - {0}`, [selectForm.account])"
+      :title="$stringFormat(`${$t('__revise')}${$t('__account')} - {0}`, [selectForm.account])"
       :visible="curDialogIndex === dialogEnum.edit"
       :confirm="$t('__revise')"
       :form="selectForm"
@@ -381,6 +381,9 @@ export default {
       this.selectForm.status = this.accountStatusType[1].key
       this.selectForm.timeZone = this.timeZones[0].key
       this.curDialogIndex = this.dialogEnum.create
+      this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__create')}${this.$t('__account')}`, true, () => {
+        this.closeDialogEven()
+      }])
     },
     createDialogConfirmEven(data) {
       this.$refs.createDialog.setDialogLoading(true)
@@ -397,6 +400,9 @@ export default {
       this.selectForm.agentId = this.selectForm.agent_id
       this.selectForm.timeZone = this.selectForm.time_zone.key
       this.curDialogIndex = this.dialogEnum.edit
+      this.$store.dispatch('common/setHeaderStyle', [`${this.$t('__revise')}${this.$t('__account')}`, true, () => {
+        this.closeDialogEven()
+      }])
     },
     editDialogConfirmEven(data) {
       this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
@@ -423,6 +429,7 @@ export default {
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__accountManagement'), false, () => { }])
     }
   }
 }

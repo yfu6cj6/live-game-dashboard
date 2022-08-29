@@ -85,10 +85,11 @@ export default {
   left: 0;
   z-index: 10;
 }
+
 .dialog {
   position: fixed;
   width: calc(100% - 20px);
-  max-width: 50%;
+  max-width: 80%;
   max-height: calc(100% - 160px);
   border: 2px solid $yellow;
   display: flex;
@@ -134,6 +135,12 @@ export default {
     .el-button {
       width: 18rem;
     }
+  }
+}
+
+@media (min-width: 992px) {
+  .dialog {
+    max-width: 50%;
   }
 }
 </style>

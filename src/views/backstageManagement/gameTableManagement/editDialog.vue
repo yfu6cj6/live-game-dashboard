@@ -123,10 +123,6 @@
             <div class="d-flex">
               <div class="el-input el-input--small">
                 <el-input v-model="editForm.description" type="textarea" :rows="2" />
-                <span class="el-input__suffix">
-                  <span class="el-input__suffix-inner" />
-                  <i class="el-input__icon el-input__validateIcon" />
-                </span>
               </div>
             </div>
           </div>
