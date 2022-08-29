@@ -1,49 +1,111 @@
 <template>
-  <Dialog
-    v-if="visible"
-    :loading="dialogLoading"
-    :title="title"
-    :on-close-even="onClose"
-    :close-on-click-modal="device === 'mobile'"
-  >
-    <div class="table">
-      <template v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0">
-        <table>
-          <tr>
-            <th class="toggle">
-              <el-checkbox v-model="selectAll" class="red-tick" @change="selection" />
-            </th>
-            <th align="center" class="name header">{{ $t('__name') }}</th>
-            <th align="center" class="nickName header">{{ $t('__nickname') }}</th>
-          </tr>
-          <tr
-            v-for="(item, index) in serverData.allPermissions"
-            :key="index"
-          >
-            <td class="bg-color toggle">
-              <el-checkbox v-model="item.exist" class="red-tick" @change="handleCheckboxChange" />
-            </td>
-            <td align="center" class="bg-color name">{{ item.name }}</td>
-            <td align="center" class="bg-color nickName">{{ item.nickname }}</td>
-          </tr>
-        </table>
-      </template>
-      <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
-    </div>
-    <div v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0 && !dialogLoading" slot="footer">
-      <el-button class="bg-gray" @click="selection(false)">{{ $t('__cancelSelect') }}</el-button>
-      <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-    </div>
-  </Dialog>
+  <div v-if="visible">
+    <template v-if="device === 'mobile'">
+      <div class="black_bg">
+        <div v-loading="dialogLoading" class="data_content">
+          <div class="titleBar yellow">
+            <span class="titleTips">{{ title }}</span>
+          </div>
+
+          <div class="table">
+            <template v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0">
+              <div class="el-form-item small el-form-item--feedback el-form-item--small">
+                <div class="el-form-item__content">
+                  <div class="w-100 handicap-table" style="position: relative;">
+                    <table class="el-table">
+                      <tbody>
+                        <tr class="el-table__row head">
+                          <td class="ww-2_5">
+                            <div class="cell checkbox text-center h-100">
+                              <span
+                                class="el-checkbox green-tick pl-0"
+                                @click="selection(!selectAll)"
+                              >
+                                <span
+                                  :class="{
+                                    'unchecked': !selectAll,
+                                    'is-checked': selectAll}"
+                                >
+                                  <span class="el-checkbox__inner" />
+                                </span>
+                              </span>
+                            </div>
+                          </td>
+                          <td class="ww-12">
+                            <div class="cell d-flex align-items-center justify-content-center">{{ $t('__name') }}</div>
+                          </td>
+                          <td class="ww-4">
+                            <div class="cell d-flex align-items-center justify-content-center lower-limit">{{ $t('__nickname') }}</div>
+                          </td>
+                        </tr>
+                        <tr
+                          v-for="(item, index) in serverData.allPermissions"
+                          :key="index"
+                          class="el-table__row"
+                        >
+                          <td class="ww-2_5">
+                            <div class="cell checkbox text-center h-100">
+                              <span
+                                class="el-checkbox green-tick pl-0"
+                                @click="handleCheckboxChange(item)"
+                              >
+                                <span
+                                  class="el-checkbox__input"
+                                  :class="{
+                                    'unchecked': !item.exist,
+                                    'is-checked': item.exist}"
+                                >
+                                  <span class="el-checkbox__inner" />
+                                </span>
+                              </span>
+                            </div>
+                          </td>
+                          <td class="ww-12">
+                            <div class="cell">
+                              <span class="table-item-label">{{ item.name }}</span>
+                            </div>
+                          </td>
+                          <td class="ww-4">
+                            <div class="cell name">
+                              <span class="table-item-label yellow">{{ item.nickname }}</span>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+          </div>
+        </div>
+        <div v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0 && !dialogLoading" class="operate_content">
+          <div class="form-ctrl">
+            <div class="el-row is-align-middle el-row--flex">
+              <button type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
+                <span>{{ confirm }}</span>
+              </button>
+              <button type="button" class="el-button bg-gray el-button--primary" @click="selection(false)">
+                <span>{{ $t('__cancelSelect') }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      -
+    </template>
+  </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
-import Dialog from '@/components/Dialog'
 
 export default {
   name: 'RolePermissionDialog',
-  components: { Dialog },
+  components: { },
   mixins: [dialogCommon],
   props: {
     'title': {
@@ -98,10 +160,12 @@ export default {
       this.serverData.allPermissions.forEach(element => {
         element.exist = select;
       });
+      this.selectAll = select;
       this.serverData.allPermissions = JSON.parse(JSON.stringify(this.serverData.allPermissions));
     },
-    handleCheckboxChange(select) {
-      if (select) {
+    handleCheckboxChange(item) {
+      item.exist = !item.exist
+      if (item.exist) {
         this.selectAll = !this.serverData.allPermissions.some(permissions => permissions.exist === false);
       } else {
         this.selectAll = false;
@@ -122,35 +186,86 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.table {
-  color: #fff;
-  background-color: #000;
-  border-collapse: collapse;
-  border-spacing: 0;
-  font-size: 18px;
-  .toggle {
-    width: 40px;
-    min-width: 40px;
-    .red-tick {
-      display: flex;
-      justify-content: center;
+
+.black_bg {
+  .data_content {
+    overflow: auto;
+    height: calc(100vh - 3.75rem - 1.5rem - 3.5rem);
+  }
+  .operate_content {
+    height: 4.5rem;
+  }
+}
+
+.data_content {
+  .is-disabled {
+    .el-input__inner {
+      color: #6e6e6e;
     }
   }
-  .bg-color {
-    background-color: #000;
+  .el-table {
+    font-size: 1rem;
+    line-height: 1rem;
+    tbody {
+      tr {
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        &:nth-child(odd) {
+          background: #e9e9e9;
+        }
+        td {
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+          .lower-limit,
+          .upper-limit {
+            text-align: center !important;
+          }
+        }
+        .ww-2_5 {
+          width: 2.5rem;
+        }
+        .ww-4 {
+          width: 4rem;
+        }
+        .ww-12 {
+          width: 10rem;
+        }
+      }
+    }
+    td {
+      border: 0;
+    }
+    .cell {
+      word-break: break-word;
+      overflow: visible;
+      white-space: normal;
+      overflow-x: visible;
+      font-size: 1rem;
+      line-height: 1.66667rem;
+      height: 1.66667rem;
+      text-align: center;
+      color: #000;
+      padding: 0;
+      .el-checkbox {
+        padding-left: 0.41667rem;
+        padding-top: 0.41667rem;
+        .unchecked {
+          .el-checkbox__inner {
+            &:after {
+              border: 0.16667rem solid transparent;
+            }
+          }
+        }
+      }
+      .yellow {
+        color: #ce9600;
+      }
+    }
   }
-  .header {
-    color: rgb(255, 251, 0);
-  }
-  .name {
-    word-break: break-all;
-    width: 500px;
-    min-width: 500px;
-  }
-  .nickName {
-    word-break: break-all;
-    width: 250px;
-    min-width: 250px;
+  .noInformation {
+    margin-top: 1rem;
+    text-align: center;
+    color: #fff;
   }
 }
 

@@ -444,7 +444,6 @@ export default {
     validContent(content, lessLength) {
       const valid = content && content.length >= lessLength
       if (!valid) {
-        console.log('validContent: ' + lessLength);
         this.errorTips = this.$t('__pleaseCheckFormContent')
       }
       return valid
