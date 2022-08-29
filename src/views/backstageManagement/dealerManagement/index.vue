@@ -9,40 +9,54 @@
                 <el-input v-model="searchForm.id" class="input_size" placeholder="ID" />
               </div>
               <div class="option">
-                <el-input v-model="searchForm.account" class="input_size" :placeholder="$t('__account')" />
-              </div>
-              <div v-if="!isAgentSubAccount" class="createBtn">
-                <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
-              </div>
-            </div>
-            <div class="options mt-2">
-              <div class="option">
                 <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
               </div>
-              <div class="option status">
-                <span class="prefix-label" />
-                <div class="comp selected-filter custom">
-                  <el-select
-                    v-model="searchForm.status"
-                    class="d-flex"
-                    multiple
-                    :popper-append-to-body="false"
-                    :collapse-tags="statusCollapse"
-                    :placeholder="$t('__status')"
-                    :popper-class="'custom-dropdown w-auto'"
-                  >
-                    <el-option
-                      v-for="item in selectOption.status"
-                      :key="item.key"
-                      :label="item.nickname"
-                      :value="item.key"
-                    />
-                  </el-select>
+              <a class="more-opiton text-link text-underline text-yellow align-items-center" @click.stop="onSearchExpand()">
+                <div class="fas label icon d-flex align-items-center yellow">
+                  <svg-icon :icon-class="searchExpand ? 'less': 'add'" style="height: 1.08333rem;width: 1.08333rem;" />
                 </div>
-                <span class="suffix-label" />
+                {{ $t('__options') }}
+              </a>
+            </div>
+            <div v-show="searchExpand === true">
+              <div class="options">
+                <div class="option">
+                  <el-input v-model="searchForm.account" class="input_size" :placeholder="$t('__account')" />
+                </div>
+                <div class="option status">
+                  <span class="prefix-label" />
+                  <div class="comp selected-filter custom">
+                    <el-select
+                      v-model="searchForm.status"
+                      class="d-flex"
+                      multiple
+                      :popper-append-to-body="false"
+                      :collapse-tags="statusCollapse"
+                      :placeholder="$t('__status')"
+                      :popper-class="'custom-dropdown w-auto'"
+                    >
+                      <el-option
+                        v-for="item in selectOption.status"
+                        :key="item.key"
+                        :label="item.nickname"
+                        :value="item.key"
+                      />
+                    </el-select>
+                  </div>
+                  <span class="suffix-label" />
+                </div>
               </div>
-              <div class="searchBtn">
-                <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+            </div>
+            <div class="options d-flex mt-2">
+              <div class="d-flex">
+                <div v-if="!isAgentSubAccount" class="createBtn">
+                  <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
+                </div>
+              </div>
+              <div class="d-flex option_ctrl_right">
+                <div class="searchBtn">
+                  <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                </div>
               </div>
             </div>
           </div>
@@ -159,7 +173,8 @@ export default {
       }),
       curDialogIndex: 0,
       imageList: [],
-      selectOption: {}
+      selectOption: {},
+      searchExpand: false
     }
   },
   computed: {
@@ -189,6 +204,9 @@ export default {
   methods: {
     setHeaderStyle() {
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__dealerManagement'), false, () => { }])
+    },
+    onSearchExpand() {
+      this.searchExpand = !this.searchExpand
     },
     moreInfo() {
       this.pageSizeCount++;

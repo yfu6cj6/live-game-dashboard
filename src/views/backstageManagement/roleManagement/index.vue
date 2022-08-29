@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="dataLoading">
+  <div v-loading="dataLoading" class="w-100 h-100">
     <div class="view-container">
       <div class="bg-black">
         <template v-if="device === 'mobile'">
@@ -11,38 +11,52 @@
               <div class="option">
                 <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
               </div>
-              <div class="createBtn">
-                <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
+              <a class="more-opiton text-link text-underline text-yellow align-items-center" @click.stop="onSearchExpand()">
+                <div class="fas label icon d-flex align-items-center yellow">
+                  <svg-icon :icon-class="searchExpand ? 'less': 'add'" style="height: 1.08333rem;width: 1.08333rem;" />
+                </div>
+                {{ $t('__options') }}
+              </a>
+            </div>
+            <div v-show="searchExpand === true">
+              <div class="options">
+                <div class="option">
+                  <el-input v-model="searchForm.nickname" class="input_size" :placeholder="$t('__nickname')" />
+                </div>
+                <div class="option type">
+                  <span class="prefix-label" />
+                  <div class="comp selected-filter custom">
+                    <el-select
+                      v-model="searchForm.type"
+                      class="d-flex"
+                      multiple
+                      :popper-append-to-body="false"
+                      :collapse-tags="typeCollapse"
+                      :placeholder="$t('__type')"
+                      :popper-class="'custom-dropdown w-auto'"
+                    >
+                      <el-option
+                        v-for="item in selectOption.type"
+                        :key="item.key"
+                        :label="item.nickname"
+                        :value="item.key"
+                      />
+                    </el-select>
+                  </div>
+                  <span class="suffix-label" />
+                </div>
               </div>
             </div>
-            <div class="options mt-2">
-              <div class="option">
-                <el-input v-model="searchForm.nickname" class="input_size" :placeholder="$t('__nickname')" />
-              </div>
-              <div class="option status">
-                <span class="prefix-label" />
-                <div class="comp selected-filter custom">
-                  <el-select
-                    v-model="searchForm.type"
-                    class="d-flex"
-                    multiple
-                    :popper-append-to-body="false"
-                    :collapse-tags="typeCollapse"
-                    :placeholder="$t('__status')"
-                    :popper-class="'custom-dropdown w-auto'"
-                  >
-                    <el-option
-                      v-for="item in searchTypes"
-                      :key="item.key"
-                      :label="item.nickname"
-                      :value="item.key"
-                    />
-                  </el-select>
+            <div class="options d-flex mt-2">
+              <div class="d-flex">
+                <div class="createBtn">
+                  <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
                 </div>
-                <span class="suffix-label" />
               </div>
-              <div class="searchBtn">
-                <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+              <div class="d-flex option_ctrl_right">
+                <div class="searchBtn">
+                  <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                </div>
               </div>
             </div>
           </div>
@@ -170,7 +184,11 @@ export default {
         'permission': 3
       }),
       searchTypes: [],
-      curDialogIndex: 0
+      curDialogIndex: 0,
+      searchExpand: false,
+      selectOption: {
+        type: []
+      }
     }
   },
   computed: {
@@ -184,9 +202,12 @@ export default {
     // }
   },
   created() {
-    this.pageSizeCount = 1
-    this.onSearchBtnClick(1)
     this.setHeaderStyle()
+    this.$nextTick(() => {
+      this.pageSizeCount = 1
+      this.onSearchBtnClick(1)
+      this.addSelectFilter();
+    })
   },
   activated() {
     this.closeDialogEven()
@@ -195,6 +216,18 @@ export default {
   methods: {
     setHeaderStyle() {
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__roleManagement'), false, () => { }])
+    },
+    onSearchExpand() {
+      this.searchExpand = !this.searchExpand
+    },
+    addSelectFilter() {
+      this.addSelectDropDownFilter('option type', () => {
+        this.searchForm.type = JSON.parse(JSON.stringify(this.searchTypes)).map(item => item.key)
+      }, () => {
+        this.searchForm.type = []
+      }, () => {
+        this.selectOption.type = JSON.parse(JSON.stringify(this.searchTypes)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
+      })
     },
     onSearchBtnClick(page) {
       this.pageSizeCount = 1
@@ -211,6 +244,7 @@ export default {
     handleRespone(res) {
       this.totalCount = res.rows.length
       this.searchTypes = res.types
+      this.selectOption.type = JSON.parse(JSON.stringify(res.types))
       this.allDataByClient = res.rows
       this.allDataByClient.forEach(element => {
         const typeItem = this.searchTypes.find(type => type.key === element.type)

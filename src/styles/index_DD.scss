@@ -1059,6 +1059,11 @@
         flex-wrap: wrap;
         justify-content: center;
       }
+      .option_ctrl_right {
+        justify-content: flex-end;
+        width: 100%;
+        padding: 0 0.5rem;
+      }
     }
   }
   .table-container {
