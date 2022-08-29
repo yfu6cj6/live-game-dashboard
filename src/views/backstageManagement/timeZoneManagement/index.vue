@@ -1,91 +1,71 @@
 <template>
-  <div v-loading="dataLoading">
-    <div ref="container" class="view-container">
-      <div ref="seachForm" class="view-container-seachForm">
+  <div v-loading="dataLoading" class="w-100 h-100">
+    <div class="view-container">
+      <div class="bg-black">
         <template v-if="device === 'mobile'">
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.time_zone" :placeholder="$t('__timeZone')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.city_name" :placeholder="$t('__cityName')" />
-            </p>
-          </div>
-          <div class="view-container-seachForm-operate">
-            <p class="operateItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
-              </el-button>
-            </p>
-            <p class="operateItem">
-              <el-button class="bg-parent" size="mini" :icon="advancedSearchIcon" @click="searchFormOpen = !searchFormOpen">
-                {{ $t("__moreSearch") }}
-              </el-button>
-            </p>
+          <div class="yellow-border-bottom search-container">
+            <div class="options">
+              <div class="option">
+                <el-input v-model="searchForm.id" type="number" class="input_size" placeholder="ID" />
+              </div>
+              <div class="option">
+                <el-input v-model="searchForm.time_zone" class="input_size" :placeholder="$t('__timeZone')" />
+              </div>
+              <a class="more-opiton text-link text-underline text-yellow align-items-center" @click.stop="onSearchExpand()">
+                <div class="fas label icon d-flex align-items-center yellow">
+                  <svg-icon :icon-class="searchExpand ? 'less': 'add'" style="height: 1.08333rem;width: 1.08333rem;" />
+                </div>
+                {{ $t('__options') }}
+              </a>
+            </div>
+            <div v-show="searchExpand === true">
+              <div class="options">
+                <div class="option">
+                  <el-input v-model="searchForm.city_name" class="input_size" :placeholder="$t('__cityName')" />
+                </div>
+              </div>
+            </div>
+            <div class="options d-flex mt-2">
+              <div class="d-flex">
+                <div class="createBtn">
+                  <svg-icon class="icon fas yellow" icon-class="add" style="height: 2rem; width: 2rem;" @click="onCreateBtnClick()" />
+                </div>
+              </div>
+              <div class="d-flex option_ctrl_right">
+                <div class="searchBtn">
+                  <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                </div>
+              </div>
+            </div>
           </div>
         </template>
         <template v-else>
-          <div ref="seachFormExpand" class="view-container-seachForm-option">
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, currentPage)">{{ $t("__refresh") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.id" type="number" placeholder="ID" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.time_zone" :placeholder="$t('__timeZone')" />
-            </p>
-            <p class="optionItem">
-              <el-input v-model="searchForm.city_name" :placeholder="$t('__cityName')" />
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-gray" size="mini" @click="onSearchBtnClick({}, 1)">{{ $t("__reset") }}</el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onSearchBtnClick(searchForm, 1)">
-                {{ $t("__search") }}
-              </el-button>
-            </p>
-            <p class="optionItem">
-              <el-button class="bg-yellow" size="mini" @click="onCreateBtnClick()">
-                {{ $t("__create") }}
-              </el-button>
-            </p>
-          </div>
+          -
         </template>
       </div>
-      <div ref="table" class="view-container-table">
-        <div v-if="tableData.length > 0">
-          <div
+      <div class="table-container">
+        <template v-if="tableData.length > 0">
+          <dir
             v-for="(item, index) in tableData"
             :key="index"
-            class="view-container-table-row"
-            :class="{'single-row': index % 2 === 0}"
+            :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
           >
             <template v-if="device === 'mobile'">
               <div class="left">
                 <div class="item">
-                  <span class="header">ID</span>
-                  <span class="content">{{ item.id }}</span>
+                  <span class="title">ID</span>
+                  <span class="value">{{ item.id }}</span>
                 </div>
                 <div class="item">
-                  <span class="header">{{ $t('__timeZone') }}</span>
-                  <span class="content">{{ item.time_zone }}</span>
-                </div>
-                <div class="item">
-                  <span class="header">{{ $t('__cityName') }}</span>
-                  <span class="content">{{ item.city_name }}</span>
+                  <span class="title">{{ $t('__cityName') }}</span>
+                  <span class="value">{{ item.city_name }}</span>
                 </div>
               </div>
               <div class="right">
+                <div class="item">
+                  <span class="title">{{ $t('__timeZone') }}</span>
+                  <span class="value">{{ item.time_zone }}</span>
+                </div>
                 <div class="operate">
                   <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                   <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
@@ -93,41 +73,24 @@
               </div>
             </template>
             <template v-else>
-              <div class="item">
-                <span class="header">ID</span>
-                <span>{{ item.id }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__timeZone') }}</span>
-                <span>{{ item.time_zone }}</span>
-              </div>
-              <div class="item">
-                <span class="header">{{ $t('__cityName') }}</span>
-                <span>{{ item.city_name }}</span>
-              </div>
-              <div class="operate">
-                <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
-                <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
-              </div>
+              -
             </template>
+          </dir>
+          <div v-if="totalCount > pageSize" class="more_btn_space">
+            <div v-if="tableData.length >= totalCount" class="search_more">
+              <span>{{ $t("__noMoreInformation") }}</span>
+            </div>
+            <div v-else class="search_more">
+              <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+            </div>
           </div>
-        </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
+        <template v-else>
+          <div class="noInformation">{{ $t("__noInformation") }}</div>
+        </template>
       </div>
     </div>
-    <div class="view-footer">
-      <el-pagination
-        layout="prev, pager, next, jumper, sizes"
-        :total="totalCount"
-        background
-        :page-size="pageSize"
-        :page-sizes="pageSizes"
-        :pager-count="pagerCount"
-        :current-page.sync="currentPage"
-        @size-change="handleSizeChangeByClient"
-        @current-change="handlePageChangeByClient"
-      />
-    </div>
+
     <editDialog
       ref="createDialog"
       :title="`${$t('__create')}${$t('__timeZone')}`"
@@ -174,15 +137,28 @@ export default {
       }),
       curDialogIndex: 0,
       currency: [],
-      activated: []
+      activated: [],
+      searchExpand: false
     }
   },
   computed: {
   },
   created() {
-    this.onSearchBtnClick({}, 1)
+    this.pageSizeCount = 1
+    this.onSearchBtnClick(1)
+    this.setHeaderStyle()
+  },
+  activated() {
+    this.pageSizeCount = 1
+    this.setHeaderStyle()
   },
   methods: {
+    setHeaderStyle() {
+      this.$store.dispatch('common/setHeaderStyle', [this.$t('__timeZoneManagement'), false, () => { }])
+    },
+    onSearchExpand() {
+      this.searchExpand = !this.searchExpand
+    },
     handleRespone(res) {
       this.allDataByClient = res
       this.totalCount = res.length
@@ -204,8 +180,8 @@ export default {
         this.closeLoading()
       })
     },
-    onSearchBtnClick(data, page) {
-      this.searchForm = data
+    onSearchBtnClick(page) {
+      this.pageSizeCount = 1
       this.handleCurrentChange(page)
     },
     onCreateBtnClick() {
@@ -252,30 +228,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view {
-  &-container {
-    &-table {
-      &-row {
-        display: flex;
-        flex-direction: row;
-        .left {
-          width: 50%;
-          .item {
-            .header {
-              width: 100px;
-              min-width: 100px;
-            }
-          }
-        }
-        .right {
-          width: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-        }
-      }
-    }
-  }
+.option_ctrl_right {
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0 0.5rem;
 }
 
 @media screen and (min-width: 992px) {
