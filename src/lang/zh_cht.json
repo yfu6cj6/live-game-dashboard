@@ -143,7 +143,7 @@
     "__auto": "自動",
     "__manual": "手動",
     "__commissionRate": "輸贏佔成",
-    "__rollingRate": "洗碼佔成",
+    "__rollingRate": "洗碼比",
     "__giftRate": "贈禮佔成",
     "__range": "範圍",
     "__agentAccount": "代理帳號",
@@ -359,5 +359,6 @@
     "__gameTable": "遊戲桌",
     "__mustBeGreaterOrEqual": "必須大於等於{0}",
     "__gameArea": "遊戲區",
-    "__expand": "展開"
+    "__expand": "展開",
+    "__gross": "合計"
 }

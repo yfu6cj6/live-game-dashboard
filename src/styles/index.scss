@@ -256,6 +256,10 @@ table {
   -ms-flex-wrap: wrap!important;
   flex-wrap: wrap!important;
 }
+.flex-nowrap {
+  -ms-flex-wrap: nowrap!important;
+  flex-wrap: nowrap!important;
+}
 .align-items-center {
   -ms-flex-align: center!important;
   -webkit-box-align: center!important;
@@ -344,6 +348,12 @@ table {
 }
 
 //padding
+.p-0 {
+  padding: 0!important;
+}
+.p-1 {
+  padding: 0.25rem!important;
+}
 .p-2 {
   padding: 0.5rem!important;
 }
@@ -660,7 +670,7 @@ table {
   }
 }
 
-.report-summary {
+.mobile .report-summary {
   background-color: #fdf3c9;
   .agent-type {
     font-size: 1rem;
@@ -777,7 +787,7 @@ table {
   }
 }
 
-.profit-report {
+.mobile .profit-report {
   .el-button {
     margin: 0.41667rem;
     font-size: .91667rem;

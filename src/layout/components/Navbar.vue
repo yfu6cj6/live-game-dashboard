@@ -118,6 +118,37 @@
             </span>
           </div>
         </div>
+        <div v-if="$route.path !== '/home'" class="page-name ml-auto">
+          <div class="left">
+            <div class="inner clickable text-center">
+              <div class="fas help black">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 63 63"
+                  style="height: 1.16667rem; width: 1.16667rem;"
+                >
+                  <title>question</title>
+                  <g>
+                    <path d="M31.53,63A31.51,31.51,0,1,1,63,31.42,31.47,31.47,0,0,1,31.53,63Zm2.28-19c0-.42.09-.76.08-1.1a10.82,10.82,0,0,1,4.27-9,39.92,39.92,0,0,0,5.05-5,11.32,11.32,0,0,0-.75-15.49c-3.07-3.11-6.9-4.13-11.08-4.13C27,9.28,23,10.44,20,14a15,15,0,0,0-3.3,8.44l5.72.68.26-1.23c1-4.95,4-7.72,8.41-7.88,4.89-.19,9,3.55,9,8.12a6.43,6.43,0,0,1-2,4.62c-2,2-4.06,3.84-6,5.82-3.17,3.19-4,7.15-3.64,11.53Zm.61,11.09V48.89H28.18v6.25Z" />
+                  </g>
+                </svg>
+              </div>
+              <span class="strong text" :class="{'zh_ch': curLang === 'zh_cht' || curLang === 'zh_chs'}">
+                {{ viewTitle }}
+              </span>
+            </div>
+          </div>
+          <div class="left d-none">
+            <div class="inner">
+              <div class="fas help black text-center">
+                <span class="strong text" :class="{'zh_ch': curLang === 'zh_cht' || curLang === 'zh_chs'}">
+                  {{ viewTitle }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="p-1" />
+        </div>
         <marquee v-if="marqueeMsg.length > 0" class="marquee">
           <div v-for="item in marqueeMsg" :key="item" class="msg">
             {{ item }}
@@ -445,6 +476,57 @@ export default {
           line-height: 1;
           color: #fff;
         }
+      }
+    }
+    .page-name {
+      position: relative;
+      height: 3.75rem;
+      padding: 0;
+      color: #000;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      overflow: hidden;
+      &:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 95%;
+        height: 0;
+        border-left: 2.5rem solid transparent;
+        border-top: 4.16667rem solid #f9c903;
+        z-index: 1;
+      }
+      .left {
+        z-index: 2;
+        padding-left: 2.5rem;
+        .inner {
+          padding: 0.83333rem 0rem 0.83333rem 0.83333rem;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+        }
+      }
+      .fas {
+        z-index: 2;
+        &.help {
+          margin-right: 7px;
+        }
+      }
+      .strong {
+        font-size: 1.16667rem;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        z-index: 2;
       }
     }
     .marquee {

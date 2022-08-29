@@ -153,10 +153,15 @@ export default {
       padding-left: $pcHideSidebarWidth;
       transition: padding-left .3s;
       max-width: 100%;
+      background-color: #000 !important;
+      background-position: center !important;
+      background-size: cover !important;
+      background-image: url("/static/images/logo/loginBG.png");
     }
 
     .appMain.opened {
       padding-left: $pcSideBarWidth;
+      transition: padding-left .5s;
     }
   }
 }

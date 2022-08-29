@@ -135,7 +135,7 @@ export function getThisMonthDateTime() {
 }
 
 // month 負值為前X月 0為本月 正值為後X月
-export function getMonthDateTime(month = 0, overToday = false) {
+export function getMonthDateTime(month = 0, overToday = true) {
   var date = new Date();
   date.setMonth(date.getMonth() + month)
   let start = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -160,7 +160,7 @@ export function getMonthDateTime(month = 0, overToday = false) {
 }
 
 // day 負值為前X天 0為今天 正值為後X天
-export function getDayDateTime(day = 0, overToday = false) {
+export function getDayDateTime(day = 0, overToday = true) {
   let start = new Date()
   start.setDate(start.getDate() + day)
   if (!overToday) {
@@ -185,7 +185,7 @@ export function getDayDateTime(day = 0, overToday = false) {
 }
 
 // week 負值為前X週 0為本週 正值為後X週
-export function getWeekDateTime(week = 0, overToday = false) {
+export function getWeekDateTime(week = 0, overToday = true) {
   let start = new Date()
   start.setDate(start.getDate() + (week * 7) - start.getDay() + 1)
   if (!overToday) {
