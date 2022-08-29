@@ -6,53 +6,105 @@
           <div
             class="swiper-slide page-tab-item swiper-slide-active"
             :class="{
-              'inactive': !isActive('/home'),
-              'active': isActive('/home')}"
+              'inactive': !isActive({ path: '/home' }),
+              'active': isActive({ path: '/home' })}"
             @click.stop="toPage({ path: '/home' })"
           >
             <span class="tab-name">{{ $t('__announcement') }}</span>
             <span class="text-white separator">|</span>
           </div>
-          <div
+          <template
             v-for="(page, index) in visitedViews"
-            ref="page"
-            :key="page.path"
-            class="swiper-slide page-tab-item"
-            :class="{
-              'inactive': !isActive(page),
-              'active': isActive(page),
-              'swiper-slide-next': page.path !== '/home'}"
-            :style="`${(page.path === '/home' ? '' : `order: ${2000 + (index * 100)};`)}`"
-            @click.stop="toPage(page)"
           >
             <template v-if="page.path !== '/home'">
-              <span :title="$t(page.meta.title)" class="tab-name">{{ $t(page.meta.title) }}</span>
-              <div class="fas icon-close" style="height: 1.33333rem; width: 1.33333rem;" @click.prevent.stop="closeSelectedTag(page)">
-                <svg
-                  id="close"
-                  data-name="close"
-                  xmlns="http://www.w3.org/2000/svg"
-                  version="1.1"
-                  x="0px"
-                  y="0px"
-                  viewBox="0 0 47.971 47.971"
-                  style="height: 0.705882rem; width: 0.705882rem;"
-                  xml:space="preserve"
-                  @click.prevent.stop="closeSelectedTag(page)"
-                >
-                  <title>{{ $t('__close') }}</title>
-                  <g>
-                    <path
-                      d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88   c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,3.071,0,4.242   C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,0.879,2.121,0.879   s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z"
-                    />
-                  </g>
-                </svg>
+              <div
+                ref="page"
+                :key="page.path"
+                class="swiper-slide page-tab-item swiper-slide-next"
+                :class="{
+                  'inactive': !isActive(page),
+                  'active': isActive(page)}"
+                :style="`order: ${2000 + (index * 100)};`"
+                @click.stop="toPage(page)"
+              >
+                <span :title="$t(page.title)" class="tab-name">{{ $t(page.title) }}</span>
+                <div class="fas icon-close" style="height: 1.33333rem; width: 1.33333rem;" @click.prevent.stop="closeSelectedTag(page)">
+                  <svg
+                    id="close"
+                    data-name="close"
+                    xmlns="http://www.w3.org/2000/svg"
+                    version="1.1"
+                    x="0px"
+                    y="0px"
+                    viewBox="0 0 47.971 47.971"
+                    style="height: 0.705882rem; width: 0.705882rem;"
+                    xml:space="preserve"
+                    @click.prevent.stop="closeSelectedTag(page)"
+                  >
+                    <title>{{ $t('__close') }}</title>
+                    <g>
+                      <path
+                        d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,0.88   c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,3.071,0,4.242   C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,0.879,2.121,0.879   s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z"
+                      />
+                    </g>
+                  </svg>
+                </div>
+                <span class="text-white separator">|</span>
               </div>
-              <span class="text-white separator">|</span>
             </template>
-          </div>
+          </template>
         </div>
         <span class="swiper-notification" aria-live="assertive" aria-atomic="true" />
+      </div>
+    </div>
+    <div v-if="expand" class="more-list">
+      <div>
+        <div
+          class="list-item"
+          :class="{
+            'inactive': !isActive({ path: '/home' }),
+            'active': isActive({ path: '/home' })}"
+          @click.stop="toPage({ path: '/home' })"
+        >
+          <span class="tab-name">{{ $t('__announcement') }}</span>
+        </div>
+        <template
+          v-for="(page, index) in visitedViews"
+        >
+          <template v-if="page.path !== '/home'">
+            <div
+              :key="page.path"
+              class="list-item"
+              :class="{
+                'inactive': !isActive(page),
+                'active': isActive(page)}"
+              :style="`order: ${2000 + (index * 100)};`"
+              @click.stop="toPage(page)"
+            >
+              <span :title="$t(page.title)" class="tab-name">{{ $t(page.title) }}</span>
+            </div>
+          </template>
+        </template>
+      </div>
+    </div>
+    <div class="more-button clickable" @click.stop="toggleExpand">
+      <div class="fas white">
+        <svg
+          id="圖層_1"
+          data-name="圖層 1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 63 63"
+          style="height: 1rem; width: 1rem;"
+        >
+          <title>{{ $t('__expand') }}</title>
+          <path
+            d="M31.51,32.86C33,31.4,34.35,30,35.76,28.56,40.82,23.5,45.91,18.46,51,13.38c2-2.05,4.84-2.16,6.37-.91a29.08,
+            29.08,0,0,1,4.85,4.88c1.42,1.86.93,4.42-.81,6.2-2.08,2.13-4.2,4.22-6.31,6.33q-9.81,9.81-19.63,19.64A5.12,5.12,
+            0,0,1,29.75,51a6,6,0,0,1-2.14-1.38Q17.23,39.32,6.91,28.94C5.27,27.3,3.64,25.64,2,24A5.72,5.72,0,0,1,0,20.38a4.48,
+            4.48,0,0,1,1-3.52,47.11,47.11,0,0,1,4.12-4.12,4.87,4.87,0,0,1,6.31.19c1.85,1.73,3.61,3.55,5.41,5.33L31.12,
+            32.52C31.22,32.62,31.33,32.7,31.51,32.86Z"
+          />
+        </svg>
       </div>
     </div>
   </div>
@@ -69,7 +121,8 @@ export default {
       left: 0,
       selectedTag: {},
       affixTags: [],
-      translateX: 0
+      translateX: 0,
+      expand: false
     }
   },
   computed: {
@@ -92,10 +145,21 @@ export default {
     }
   },
   mounted() {
+    document.addEventListener('click', (e) => {
+      if (e.target.className !== 'more-button') {
+        this.expand = false
+      }
+    })
     this.initTags()
     this.addTags()
   },
+  beforeDestroy() {
+    window.removeEventListener('click', () => {}, true)
+  },
   methods: {
+    toggleExpand() {
+      this.expand = !this.expand
+    },
     toPage(page) {
       this.$router.push({ path: page.path, query: page.query, fullPath: page.fullPath })
     },
@@ -147,15 +211,13 @@ export default {
       const $container = document.getElementsByClassName('swiper-container')[0]
       const $wrapper = document.getElementsByClassName('swiper-wrapper')[0]
       this.$nextTick(() => {
-        let firstPage = null
         let lastPage = null
 
         // find first tag and last tag
         if (pages.length > 0) {
-          firstPage = pages[0].path
           lastPage = pages[pages.length - 1].path
         }
-        if (firstPage === this.$route.path) {
+        if (this.$route.path === '/home') {
           this.translateX = 0
         } else if (lastPage === this.$route.path) {
           this.translateX = $container.offsetWidth - $wrapper.scrollWidth
@@ -166,7 +228,7 @@ export default {
           const currentIndex = pages.findIndex(item => item.path === this.$route.path)
           if (curPos.left < containerPos.left) {
             this.translateX = -(currentIndex - 1) * curPos.width
-          } else if (curPos.left > containerPos.right || curPos.right > containerPos.right) {
+          } else if (curPos.right > containerPos.right) {
             this.translateX = containerPos.width - (curPos.width * (currentIndex + 2));
           }
         }
@@ -355,5 +417,39 @@ export default {
       margin-right: 1.66667rem;
     }
   }
+}
+
+.more-list {
+  width: 12.5rem;
+  position: absolute;
+  right: 1.66667rem;
+  top: 1.66667rem;
+  z-index: 2;
+  background: #fff;
+  border: 1px solid #666;
+  .list-item {
+    cursor: pointer;
+    width: 100%;
+    color: #000;
+    border-bottom: 1px solid #f0eff0;
+    .tab-name {
+      display: block;
+      padding: 0.41667rem;
+      width: 100%;
+      text-align: left;
+    }
+    &.active {
+      color: #ce9600;
+      font-weight: bold;
+    }
+  }
+}
+
+.more-button {
+  cursor: pointer;
+  position: absolute;
+  right: 2.08333rem;
+  top: 0.625rem;
+  z-index: 3;
 }
 </style>
