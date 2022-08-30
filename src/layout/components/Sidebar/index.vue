@@ -142,7 +142,7 @@
                 <div class="filter-item search">
                   <form>
                     <div class="comp d-flex search-filter">
-                      <input v-model="searchContent" class="el-input">
+                      <input v-model="searchContent" class="el-input" @keyup.enter="searchData">
                     </div>
                   </form>
                 </div>
@@ -289,7 +289,9 @@ export default {
         }
       }
       this.$router.push({ path: `/agentManagement/agentManagement/${this.agent_id}` })
-      this.$store.dispatch('app/toggleSideBar')
+      if (this.device === 'mobile') {
+        this.$store.dispatch('app/toggleSideBar')
+      }
     },
     setSearchEnum(index) {
       this.curSearchIndex = index

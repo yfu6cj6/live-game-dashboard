@@ -1,7 +1,7 @@
 <template>
-  <div class="winLossReport">
+  <div v-loading="dataLoading" class="winLossReport">
     <template v-if="device === 'mobile'">
-      <div v-loading="dataLoading" class="scroll-wrap flex-column flex-fill">
+      <div class="scroll-wrap flex-column flex-fill">
         <div class="scroll-inner flex-column flex-fill off">
           <div class="scroll-view flex-column flex-fill">
             <div class="flex-column flex-fill">
@@ -1004,6 +1004,13 @@
                                                     </div>
                                                   </div>
                                                 </div>
+                                                <div class="halls-col">
+                                                  <div class="halls-label text-right">
+                                                    <div class="d-flex align-items-center justify-content-end">
+                                                      <span>{{ $t('__giftValue') }}</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
@@ -1177,6 +1184,14 @@
                                                 <span class="label d-none">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
                                                 <span class="value">
                                                   <span>{{ agentInfo.agent.commitSuperiorsValidBetAmount }}</span>
+                                                </span>
+                                              </div>
+                                            </div>
+                                            <div class="list-item">
+                                              <div class="w-100 to-superiors text-right">
+                                                <span class="label d-none">{{ $t('__giftValue') }}</span>
+                                                <span class="value">
+                                                  <span>{{ agentInfo.agent.giftValueLabel }}</span>
                                                 </span>
                                               </div>
                                             </div>
@@ -1921,6 +1936,11 @@ export default {
       if (!hasSet) {
         this.curDateEnumIndex = this.dateEnum.none
       }
+    },
+    'device': function() {
+      this.$nextTick(() => {
+        this.onTableBtnClick(this.curTableIndex)
+      })
     }
   },
   created() {
@@ -2610,28 +2630,382 @@ export default {
       &.normal {
         .profit-content {
           background: #d6d6d6 !important;
-        }
-        .superior-summary {
-          background: #d6d6d6 !important;
+          .superior-summary {
+            background: #d6d6d6 !important;
+          }
         }
         .agent-group {
-          &.group-ui {
-            background-color: #fdf3c9;
-            -webkit-box-shadow: 0px 1px 3px 1px #a6a6a6;
-            box-shadow: 0px 1px 3px 1px #a6a6a6;
-            margin-bottom: 15px;
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+          background-color: #fdf3c9;
+          -webkit-box-shadow: 0px 1px 3px 1px #a6a6a6;
+          box-shadow: 0px 1px 3px 1px #a6a6a6;
+          margin-bottom: 15px;
+          .agent-group-title {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            .title {
+              background-color: transparent !important;
+              font-weight: normal !important;
+              font-size: 14px;
+              line-height: 1.4;
+              padding-top: 10px !important;
+              padding-bottom: 0px !important;
+              padding: 0.5rem 1.66667rem 0.5rem 0.83333rem;
+              position: relative;
+              overflow: hidden;
+            }
+          }
+          .groups {
+            padding: 10px 15px 0px 15px;
+            .in-group {
+              background: #fff;
+              margin-bottom: 15px;
+              -webkit-box-shadow: 0px 1px 3px 1px #a6a6a6;
+              box-shadow: 0px 1px 3px 1px #a6a6a6;
+              padding: 0;
+              .agent-list-detail {
+                border-left: 1px solid #ddd;
+                width: calc(100% - 140px);
+              }
+              .total {
+                border-left: 1px solid #ddd;
+                background-color: #f7f7f7;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                .title {
+                  margin-right: 140px;
+                  width: 80px !important;
+                  text-align: center;
+                  color: #000 !important;
+                  font-weight: bold;
+                }
+              }
+            }
+            .group-item {
+              margin-bottom: 5px;
+            }
           }
         }
       }
-      .agent-group {
-        transform: translateZ(0);
-        -webkit-transform: translateZ(0);
+      .list-row {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding: 0.41667rem 1.25rem;
+        .list-item {
+          position: relative;
+          &.info {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            .list-sub-item {
+              display: -webkit-box;
+              display: -ms-flexbox;
+              display: flex;
+              word-break: break-word;
+              margin-right: 0.83333rem;
+              .list-item {
+                width: 140px;
+                padding-right: 0.41667rem;
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+              }
+            }
+            .name {
+              display: -webkit-box;
+              display: -ms-flexbox;
+              display: flex;
+              word-break: break-all;
+              margin-bottom: 0.83333rem;
+              .icon,
+              .fas,
+              .text-link {
+                color: #ce9600;
+              }
+            }
+          }
+          .icon {
+            margin-right: 0.41667rem;
+          }
+        }
       }
-      .report-summary {
-        .agent-group-title {
+      .list-row {
+        .list-item {
+          margin-top: 0.41667rem;
+          .value {
+            font-weight: bold;
+          }
+        }
+      }
+      .list-sub-item {
+        width: 100%;
+        .list-sub-item-col {
+          padding-right: 0.41667rem;
+          width: 140px;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+        }
+      }
+    }
+    .halls {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      .halls-row {
+        width: 100%;
+        .halls-col {
+          padding-right: 0.41667rem;
+          padding-top: 0.41667rem;
+          padding-bottom: 0.41667rem;
+          -webkit-box-flex: 0;
+          -ms-flex: none;
+          flex: none;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          width: 140px;
+          .halls-label {
+            width: 100%;
+            padding-bottom: 0.5rem;
+            color: #6e6e6e;
+            word-break: break-word;
+          }
+          .halls-value {
+            font-weight: bold;
+            word-break: break-word;
+            width: 100%;
+          }
+        }
+      }
+      &.table-head {
+        background: #f7f7f7;
+        border-left: 1px solid #ddd;
+        .halls-label {
+          padding-bottom: 0px !important;
+        }
+      }
+      .left {
+        -webkit-box-flex: 0;
+        -ms-flex: none;
+        flex: none;
+      }
+      .left,
+      .right {
+        width: 100%;
+        padding-top: 0.41667rem;
+        padding-bottom: 0.41667rem;
+      }
+    }
+    .bottom-line {
+      display: block;
+      border-bottom: 0.08333rem solid #ddd;
+      width: 100%;
+      margin: 0.41667rem auto 0 auto;
+      padding: 0rem 0.41667rem;
+    }
+    .total {
+      background-color: #fdf3c9;
+      .group-row {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        position: relative;
+        width: 100%;
+        padding: 0 1.25rem;
+        .group-item {
+          width: 140px;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+          position: relative;
+          margin-bottom: 10px;
+          padding: 0.16667rem 0.41667rem 0.41667rem 0.83333rem;
+          .label {
+            width: 100%;
+            margin-right: 0.41667rem;
+            color: #6e6e6e;
+            width: 100%;
+            display: block;
+            padding-bottom: 0.5rem;
+          }
+          .value {
+            width: 100%;
+            font-weight: bold;
+            width: 100%;
+            display: block;
+          }
+          .label,
+          .value {
+            width: 100%;
+            text-align: right !important;
+            padding-right: 0px !important;
+          }
+        }
+        .betnum {
           display: -webkit-box;
           display: -ms-flexbox;
           display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          width: 5.83333rem;
+          padding: 0.4rem 0.5rem !important;
+          margin-left: 0.83333rem;
+        }
+      }
+    }
+    .el-tabs {
+      border-top: 0.25rem solid #000;
+      .el-tabs__header {
+        padding-top: 0;
+        .el-tabs__nav {
+          float: none;
+          background-color: #ffffff;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          position: relative;
+          max-width: 100%;
+          width: 100%;
+          .el-tabs__item {
+            width: 50%;
+            text-align: center;
+            padding: 0;
+            border-bottom: 0.2rem solid #a3a3a3;
+            background-color: #000;
+            .tab-item {
+              display: -webkit-box;
+              display: -ms-flexbox;
+              display: flex;
+              -webkit-box-align: center;
+              -ms-flex-align: center;
+              align-items: center;
+              -webkit-box-pack: center;
+              -ms-flex-pack: center;
+              justify-content: center;
+              color: #f9c901;
+              .fas {
+                margin-bottom: 0.25rem;
+                margin-right: 0.41667rem;
+              }
+            }
+            &.is-active {
+              background-color: #f9c901;
+              border-bottom: 0.16667rem solid #f9c901;
+              .tab-item {
+                color: #000;
+              }
+            }
+          }
+        }
+      }
+    }
+    .profit-list {
+      background: #d6d6d6 !important;
+      .agent-group {
+        &.group-ui {
+          &.none-group {
+            background-color: transparent !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            margin-bottom: 15px;
+            &.padding-top {
+              padding-top: 15px;
+            }
+            .groups {
+              padding: 0px 15px;
+            }
+          }
+        }
+      }
+    }
+    .page-total {
+      padding: 10px 15px;
+      position: relative;
+      background-color: #fff !important;
+      -webkit-box-shadow: 0px 2px 3px 1px #a6a6a6;
+      box-shadow: 0px 2px 3px 1px #a6a6a6;
+      padding-right: 0 !important;
+      .list-row {
+        padding: 0;
+        transform: translateZ(0);
+        -webkit-transform: translateZ(0);
+        .list-sub-item {
+          margin-top: 0.83333rem;
+          width: 100%;
+          &.name {
+            font-weight: bold;
+            font-size: 1.16667rem;
+            width: 100% !important;
+            padding-bottom: 0.41667rem;
+            border-bottom: 0.08333rem solid #ce9600;
+          }
+          &.item-content {
+            padding-left: 140px;
+          }
+        }
+      }
+      .page-item {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        font-size: 1.16667rem;
+        width: 140px;
+        padding-right: 0.41667rem !important;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        position: relative;
+        margin-bottom: 10px;
+        &:first-child {
+          width: 160px;
+          margin-left: 511px;
+          -webkit-box-ordinal-group: 2;
+          -ms-flex-order: 1;
+          order: 1;
+        }
+        &:nth-child(2) {
+          margin-left: 210px;
+          -webkit-box-ordinal-group: 3;
+          -ms-flex-order: 2;
+          order: 2;
+        }
+        &:nth-child(3) {
+          -webkit-box-ordinal-group: 5;
+          -ms-flex-order: 4;
+          order: 4;
+        }
+        &:nth-child(4) {
+          margin-left: 70px;
+          -webkit-box-ordinal-group: 4;
+          -ms-flex-order: 3;
+          order: 3;
+        }
+        &:nth-child(5) {
+          margin-left: 0px;
+          -webkit-box-ordinal-group: 4;
+          -ms-flex-order: 5;
+          order: 5;
+        }
+        &.is-amount {
+          padding-right: 0.41667rem !important;
+          .label,
+          .value {
+            width: 100%;
+            text-align: right !important;
+          }
+        }
+        .label {
+          width: 100%;
+          margin-bottom: 0.41667rem;
+          margin-right: 0;
+          color: #898989;
+        }
+        .value {
+          font-weight: bold;
         }
       }
     }

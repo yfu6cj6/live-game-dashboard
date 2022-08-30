@@ -498,6 +498,13 @@
                                       </div>
                                     </div>
                                   </div>
+                                  <div class="halls-col">
+                                    <div class="halls-label text-right">
+                                      <div class="d-flex align-items-center justify-content-end">
+                                        <span>{{ $t('__giftValue') }}</span>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -595,6 +602,13 @@
                                       </div>
                                     </div>
                                   </div>
+                                  <div class="halls-col">
+                                    <div class="halls-value text-right">
+                                      <div class="d-flex align-items-center justify-content-end">
+                                        <span :class="{'text-red': Number(item.giftValue) > 0, 'text-blue': Number(item.giftValue) < 0}">{{ item.giftValueLabel }}</span>
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -652,10 +666,16 @@
                                   <span :class="{'text-red': Number(item.toSuperior) > 0, 'text-blue': Number(item.toSuperior) < 0}">{{ item.toSuperiorLabel }}</span>
                                 </span>
                               </div>
-                              <div class="to-superiors list-sub-item-col text-right">
+                              <div class="commitSuperiorsValidBetAmount list-sub-item-col text-right">
                                 <span class="label d-none">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
                                 <span class="value">
                                   <span>{{ item.commitSuperiorsValidBetAmount }}</span>
+                                </span>
+                              </div>
+                              <div class="giftValue list-sub-item-col text-right">
+                                <span class="label d-none">{{ $t('__giftValue') }}</span>
+                                <span class="value">
+                                  <span :class="{'text-red': Number(item.giftValue) > 0, 'text-blue': Number(item.giftValue) < 0}">{{ item.giftValueLabel }}</span>
                                 </span>
                               </div>
                             </div>
@@ -668,8 +688,90 @@
               </div>
             </div>
           </template>
+          <div v-else class="no-result">{{ $t('__noInformation') }}</div>
         </div>
       </div>
+      <div v-if="tableData.length > 0" class="page-total">
+        <div class="w-100 list-row">
+          <div class="list-item">
+            <div class="name list-sub-item d-flex align-items-center">
+              <span class="text-golden">{{ $t('__subtotalCount') }}</span>
+            </div>
+            <div class="item-content list-sub-item d-flex flex-nowrap align-items-end">
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__validBetAmount') }}</span>
+                <span class="value">
+                  <span>{{ subtotalCountData.validBetAmount }}</span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__totalAmount') }}</span>
+                <span class="value">
+                  <span :class="{'text-red': Number(subtotalCountData.netPL) > 0, 'text-blue': Number(subtotalCountData.netPL) < 0}">{{ subtotalCountData.netPLLabel }}</span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
+                <span class="value">
+                  <span>{{ subtotalCountData.commitSuperiorsValidBetAmount }}</span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__toSuperior') }}</span>
+                <span class="value">
+                  <span :class="{'text-red': Number(subtotalCountData.toSuperior) > 0, 'text-blue': Number(subtotalCountData.toSuperior) < 0}">{{ subtotalCountData.toSuperiorLabel }}</span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__giftValue') }}</span>
+                <span class="value">
+                  <span :class="{'text-red': Number(subtotalCountData.giftValue) > 0, 'text-blue': Number(subtotalCountData.giftValue) < 0}">{{ subtotalCountData.giftValueLabel }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-100 list-row">
+          <div class="list-item">
+            <div class="name list-sub-item d-flex align-items-center">
+              <span class="text-golden">{{ $t('__totalCount') }}</span>
+            </div>
+            <div class="item-content list-sub-item d-flex flex-nowrap align-items-end">
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__validBetAmount') }}</span>
+                <span class="value">
+                  <span>{{ totalCountData.validBetAmount }}</span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__totalAmount') }}</span>
+                <span class="value">
+                  <span :class="{'text-red': Number(totalCountData.netPL) > 0, 'text-blue': Number(totalCountData.netPL) < 0}">{{ totalCountData.netPLLabel }}</span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
+                <span class="value">
+                  <span>{{ totalCountData.commitSuperiorsValidBetAmount }}</span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__toSuperior') }}</span>
+                <span class="value">
+                  <span :class="{'text-red': Number(totalCountData.toSuperior) > 0, 'text-blue': Number(totalCountData.toSuperior) < 0}">{{ totalCountData.toSuperiorLabel }}</span>
+                </span>
+              </div>
+              <div class="page-item mb-2 is-amount">
+                <span class="label">{{ $t('__giftValue') }}</span>
+                <span class="value">
+                  <span :class="{'text-red': Number(totalCountData.giftValue) > 0, 'text-blue': Number(totalCountData.giftValue) < 0}">{{ totalCountData.giftValueLabel }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-100 p-4" />
     </template>
   </div>
 </template>
