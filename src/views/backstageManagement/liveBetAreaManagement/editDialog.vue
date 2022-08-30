@@ -318,7 +318,7 @@ export default {
       }
     },
     validContent(content) {
-      const valid = !(!content || content.length <= 0)
+      const valid = content && content.length > 0
       valid ? '' : this.errorTips = this.$t('__pleaseCheckFormContent')
       return valid
     },

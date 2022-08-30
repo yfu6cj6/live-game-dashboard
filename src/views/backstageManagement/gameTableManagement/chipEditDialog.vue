@@ -133,7 +133,7 @@ export default {
       this.inputAmountState = this.validContent(this.editForm.amount) ? this.inputState.success : this.inputState.error
     },
     validContent(content) {
-      const valid = !(!content || content.length <= 0)
+      const valid = content && content.length > 0
       if (valid) {
         const num = Number(content)
         const validNum = num > 0

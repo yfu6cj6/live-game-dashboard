@@ -278,7 +278,7 @@ export default {
       }
     },
     validContent(content, canZero) {
-      const valid = !(!content || content.length <= 0)
+      const valid = content && content.length > 0
       if (valid) {
         const validNum = canZero ? Number(content) >= 0 : Number(content) > 0
         if (!validNum) {

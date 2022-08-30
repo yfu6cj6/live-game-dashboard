@@ -333,12 +333,12 @@ export default {
       }
     },
     validContent(content) {
-      const valid = !(!content || content.length <= 0)
+      const valid = content && content.length > 0
       valid ? '' : this.errorTips = this.$t('__pleaseCheckFormContent')
       return valid
     },
     validRound(content) {
-      const valid = !(!content || content.length <= 0)
+      const valid = content && content.length > 0
       if (valid) {
         const num = Number(content)
         const validNum = num > 0
