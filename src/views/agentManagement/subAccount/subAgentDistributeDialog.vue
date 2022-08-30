@@ -230,69 +230,85 @@ export default {
 }
 </script>
 
-<style lang="scss">
-#app .subAgentDistributeDialog {
-  .subAgent {
+<style lang="scss" scoped>
+.mobile {
+  .p-buttons {
+    padding-top: 0.41667rem;
+    padding-bottom: 0.41667rem;
+  }
+  .popup-view {
+    position: fixed;
+    top: 3.75rem;
+    left: 0;
+    z-index: 1;
+    width: 100vw;
+    height: calc(100vh - 3.75rem);
+  }
+  .el-checkbox {
+      color: #606266;
+      font-weight: 500;
+      font-size: 1.4rem;
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+      white-space: nowrap;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      margin-bottom: 0.5rem;
+  }
+  .sub-account-allocations {
     width: 100%;
-    .el-checkbox {
+    height: 100%;
+    margin: 0 auto;
+    .step-content {
+      padding: 0.83333rem 1.66667rem;
+      position: relative;
+      z-index: 0;
       .el-checkbox__input {
         .el-checkbox__inner {
-          width: 2rem;
-          height: 2rem;
+          width: 1.16667rem;
+          height: 1.16667rem;
         }
       }
-      &.red-tick {
-        .is-checked {
-          .el-checkbox__inner {
-            &:after {
-              width: 0.5rem;
-              height: 1.5rem;
-              left: 1rem;
-              top: -0.5rem;
-            }
+      .el-table {
+        font-size: 1rem;
+        line-height: 1rem;
+        text-align: center;
+        color: #000;
+        width: 100%;
+        td {
+          text-align: center;
+          padding: 0.5rem 0;
+          &.w2 {
+            width: 20%;
+          }
+          &.w6 {
+            width: 60%;
+          }
+        }
+        tr {
+          &.head {
+            background: #e9e9e9;
+          }
+          &:nth-child(even) {
+            background: #e9e9e9;
           }
         }
       }
     }
-    .agent {
-      font-size: 1.5rem;
-    }
-  }
-  .el-form {
-    .el-form-item {
-      .el-form-item__label {
-        line-height: 2rem;
+    .page-title {
+      font-size: 1rem;
+      color: #fff;
+      text-align: left;
+      padding: 1rem;
+      margin-top: 1.66667rem;
+      margin-bottom: 0.83333rem;
+      .user-name {
+        color: #f9c901;
       }
     }
   }
-}
-
-.p-buttons {
-  padding-top: 0.41667rem;
-  padding-bottom: 0.41667rem;
-}
-
-.popup-view {
-  position: fixed;
-  top: 3.75rem;
-  left: 0;
-  z-index: 1;
-  width: 100vw;
-  height: calc(100vh - 3.75rem);
-}
-
-.el-checkbox {
-    color: #606266;
-    font-weight: 500;
-    font-size: 1.4rem;
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-    white-space: nowrap;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    margin-bottom: 0.5rem;
 }
 </style>

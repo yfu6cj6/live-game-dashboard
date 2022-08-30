@@ -113,3 +113,171 @@
     }
   }
 }
+
+.os-host,
+.os-host-textarea {
+  position: relative;
+  overflow: visible!important;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  -ms-grid-row-align: flex-start;
+  align-items: flex-start;
+}
+
+.os-resize-observer,
+.os-resize-observer-host {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+  display: block;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.os-resize-observer {
+  -webkit-animation-duration: 1ms;
+  animation-duration: 1ms;
+  -webkit-animation-name: hs-resize-observer-dummy-animation;
+  animation-name: hs-resize-observer-dummy-animation;
+}
+
+.os-resize-observer-host {
+  padding: inherit;
+  border: inherit;
+  border-color: transparent;
+  border-style: solid;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  &:after {
+    content: "";
+  }
+}
+
+.os-resize-observer-host:after,
+.os-resize-observer-host>.os-resize-observer {
+  height: 200%;
+  width: 200%;
+  padding: inherit;
+  border: inherit;
+  margin: 0;
+  display: block;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+.os-resize-observer.observed,
+object.os-resize-observer {
+  -webkit-box-sizing: border-box!important;
+  box-sizing: border-box!important;
+}
+
+.os-size-auto-observer {
+  -webkit-box-sizing: inherit!important;
+  box-sizing: inherit!important;
+  height: 100%;
+  width: inherit;
+  max-width: 1px;
+  position: relative;
+  float: left;
+  max-height: 1px;
+  overflow: hidden;
+  z-index: -1;
+  padding: 0;
+  margin: 0;
+  pointer-events: none;
+  -webkit-box-flex: inherit;
+  -ms-flex-positive: inherit;
+  flex-grow: inherit;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  -ms-flex-preferred-size: 0;
+  flex-basis: 0;
+}
+
+.os-size-auto-observer>.os-resize-observer {
+  width: 1000%;
+  height: 1000%;
+  min-height: 1px;
+  min-width: 1px;
+}
+
+.os-content-glue {
+  max-height: 100%;
+  max-width: 100%;
+  width: 100%;
+  pointer-events: none;
+}
+
+.os-content-glue,
+.os-padding {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+.os-padding {
+  direction: inherit;
+  position: absolute;
+  overflow: visible;
+  padding: 0;
+  margin: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: auto!important;
+  height: auto!important;
+  z-index: 1;
+}
+
+.os-host-overflow>.os-padding,
+.os-viewport {
+  overflow: hidden;
+}
+
+.os-viewport {
+  direction: inherit!important;
+  -webkit-box-sizing: inherit!important;
+  box-sizing: inherit!important;
+  resize: none!important;
+  outline: none!important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.os-content {
+  direction: inherit;
+  position: relative;
+  display: block;
+  height: 100%;
+  width: 100%;
+  visibility: visible;
+}
+
+.os-content,
+.os-content>.os-textarea {
+  -webkit-box-sizing: border-box!important;
+  box-sizing: border-box!important;
+}

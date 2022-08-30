@@ -130,51 +130,87 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
 
-.limit {
-  width: 100%;
-  overflow-x: auto;
-  padding-bottom: 15px;
-  table {
-    color: #fff;
-    font-size: 18px;
-    margin: 0 auto;
-    tr {
-      th {
-        color: $yellow;
-      }
-      td {
-        &.nickname {
-          width: 160px;
-          min-width: 160px;
+#app.mobile {
+  .limit {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    table {
+      color: #fff;
+      font-size: 18px;
+      margin: 0 auto;
+      tr {
+        th {
+          color: $yellow;
         }
-        &.bet_min {
-          width: 160px;
-          min-width: 160px;
-        }
-        &.bet_max {
-          width: 160px;
-          min-width: 160px;
-        }
-        &.currency {
-          width: 100px;
-          min-width: 100px;
+        td {
+          &.nickname {
+            width: 160px;
+            min-width: 160px;
+          }
+          &.bet_min {
+            width: 160px;
+            min-width: 160px;
+          }
+          &.bet_max {
+            width: 160px;
+            min-width: 160px;
+          }
+          &.currency {
+            width: 100px;
+            min-width: 100px;
+          }
         }
       }
     }
   }
-}
-
-.popup-view {
-  position: fixed;
-  top: 3.75rem;
-  left: 0;
-  z-index: 1;
-  width: 100vw;
-  height: calc(100vh - 3.75rem);
-}
-.handicaps-list {
-  .ww-5 {
-    width: 6rem;
+  .handicaps-list {
+    color: #fff;
+    padding-top: 2.5rem;
+    .ww-5 {
+      width: 6rem;
+    }
+    .ww-9 {
+      width: 7.5rem;
+    }
+    .ww-2 {
+      width: 1.66667rem;
+    }
+    .ww-10 {
+      width: 8.33333rem;
+    }
+    .title {
+      padding: 0.83333rem 0.83333rem 0.41667rem 0.83333rem;
+      border-bottom: 0.08333rem solid #f9c901;
+      color: #f9c901;
+    }
+    .content {
+      padding: 0.83333rem 0.83333rem 0 0.83333rem;
+      .item {
+        padding: 0.41667rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        .preview-item-label {
+          color: #f9c901;
+        }
+        .preview-item-value {
+          margin-left: auto;
+        }
+        .handicap-item {
+          margin: auto;
+          word-break: break-all;
+        }
+      }
+    }
+  }
+  .popup-view {
+    position: fixed;
+    top: 3.75rem;
+    left: 0;
+    z-index: 1;
+    width: 100vw;
+    height: calc(100vh - 3.75rem);
   }
 }
 </style>

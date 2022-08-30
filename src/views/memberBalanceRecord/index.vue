@@ -35,7 +35,6 @@
               <div class="d-flex search_options">
                 <div class="d-flex flex-wrap w-100">
                   <div class="d-flex justify-content-between align-items-center search_option_width">
-
                     <div class="field options select_options">
                       <div>
                         <div class="option">

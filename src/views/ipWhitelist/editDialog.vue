@@ -232,17 +232,79 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.notice-cover {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  background-color: rgba(0,0,0,0.5);
-}
+#app.mobile {
+  .notice-cover {
+    z-index: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: rgba(0,0,0,0.5);
+  }
 
-.el-form {
-  margin-bottom: 10px;
+  .add-edit-white-list {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    .form-container {
+      padding: 2.5rem;
+      border-top: 0.25rem solid #f9c901;
+      background-color: #000;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+      width: 100%;
+      height: 25rem;
+      max-height: calc(100vh - 5rem);
+      .el-form-item__content {
+        font-size: 1.16667rem;
+      }
+      .el-form-item__label {
+        font-size: 1.16667rem;
+        height: 1.16667rem;
+        line-height: 1.16667rem;
+      }
+      .el-form-item {
+        margin-bottom: 0.83333rem;
+        .el-form-item__label {
+          width: 100%;
+          text-align: left;
+          color: #f9c901;
+        }
+        .el-input {
+          .el-input__inner {
+            border-radius: 0.25rem;
+            border: 0.08333rem solid #f9c901;
+            background-color: #fff;
+            padding: 0.83333rem;
+            height: 2.5rem;
+            line-height: 2.5rem;
+            font-size: 1.33333rem;
+            color: #000;
+          }
+        }
+        &.is-error {
+          .el-input__inner {
+            border-color: #f56c6c;
+          }
+        }
+      }
+    }
+    .form-alert {
+      .el-alert {
+        padding: 0 !important;
+      }
+    }
+  }
+
+  .el-form {
+    margin-bottom: 10px;
+  }
 }
 </style>

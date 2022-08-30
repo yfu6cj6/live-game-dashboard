@@ -289,22 +289,57 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
 
-.agentInfo {
-  font-size: 18px;
-  font-weight: bold;
-  padding-bottom: 10px;
-  display: flex;
-  .agentInfo-header {
-    color: $yellow;
-    margin-right: 20px;
+#app .mobile {
+  .inferior-psw {
+    background-color: #000;
+    width: 100%;
+    .notice-tip {
+      font-size: 1.33333rem;
+    }
+    .el-form-item {
+      margin-bottom: 0.83333rem;
+    }
+    .el-form-item__content {
+      font-size: 1rem;
+      line-height: 1.66667rem;
+    }
+    .tip {
+      font-size: .83333rem;
+      color: #fff;
+      line-height: 1.5 !important;
+      padding-bottom: 10px;
+    }
+    .custom-psw {
+      &.is-error{
+        .has-error {
+          display: inline-block;
+        }
+      }
+      &.is-success {
+        .no-error {
+          display: inline-block;
+        }
+      }
+    }
   }
-  .agentInfo-content {
-    color: #fff;
-  }
-}
 
-.p-buttons {
-  padding-top: 0.41667rem;
-  padding-bottom: 0.41667rem;
+  .agentInfo {
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    display: flex;
+    .agentInfo-header {
+      color: $yellow;
+      margin-right: 20px;
+    }
+    .agentInfo-content {
+      color: #fff;
+    }
+  }
+
+  .p-buttons {
+    padding-top: 0.41667rem;
+    padding-bottom: 0.41667rem;
+  }
 }
 </style>

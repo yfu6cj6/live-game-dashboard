@@ -517,12 +517,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-checkbox:last-of-type {
-    margin-right: 0.5rem;
-}
-
-label {
-  display: inline-block;
-  margin-bottom: 0.5rem;
+#app.mobile {
+  .el-checkbox:last-of-type {
+      margin-right: 0.5rem;
+  }
+  .initPswFormat {
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+    opacity: 0;
+    position: fixed;
+    z-index: -999;
+    top: 0px;
+    left: 0px;
+  }
+  .initPswFormat input {
+    font-size: 1px;
+    width: 0px;
+    height: 0px;
+  }
+  label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+  }
 }
 </style>

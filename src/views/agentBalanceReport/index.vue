@@ -1,6 +1,6 @@
 <template>
   <div v-loading="dataLoading" class="scroll-wrap flex-column flex-fill">
-    <div class="scroll-inner flex-column flex-fill off">
+    <div class="scroll-inner flex-column flex-fill off agentBalanceReport">
       <div class="scroll-view flex-column flex-fill">
         <div class="credit-report flex-column flex-fill">
           <div class="flex-column flex-fill">
@@ -258,5 +258,93 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+#app.mobile .agentBalanceReport {
+  .credit-report {
+    .el-tabs {
+      border-top: 0;
+      .el-tabs__header {
+        padding-top: 0;
+      }
+      .el-tabs__item {
+        width: 50%;
+        text-align: center;
+        padding: 0;
+        .tab-item {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          -webkit-box-pack: center;
+          -ms-flex-pack: center;
+          justify-content: center;
+          .fas {
+            margin-bottom: 0.25rem;
+            margin-right: 0.41667rem;
+          }
+        }
+      }
+      .el-tabs__nav {
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+    .summary {
+      border-bottom: 0.16667rem solid #000;
+    }
+    .profit-tabs {
+      &.el-tabs {
+        &.light {
+          .el-tabs__nav {
+            .el-tabs__item {
+              border-bottom: 0.2rem solid #a3a3a3;
+              background-color: #000;
+              &.is-active {
+                .tab-item {
+                  color: #000 !important;
+                }
+              }
+              .tab-item {
+                color: #f9c901 !important;
+              }
+            }
+          }
+        }
+      }
+      &.el-tabs.light {
+        .el-tabs__nav {
+          .el-tabs__item {
+            &.is-active {
+              background-color: #f9c901;
+              border-bottom: 0.16667rem solid #f9c901;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .report-list {
+    background: #d6d6d6;
+    .items {
+      .ctrl {
+        position: absolute;
+        right: 0;
+        top: 0.83333rem;
+        text-align: center;
+        -webkit-box-flex: initial;
+        -ms-flex: initial;
+        flex: initial;
+        width: 5rem;
+        z-index: 1;
+        &.exp {
+          top: auto;
+          bottom: 0.83333rem;
+        }
+      }
+    }
+  }
+}
 </style>

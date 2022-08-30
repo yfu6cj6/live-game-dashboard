@@ -384,33 +384,77 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.info {
-  font-size: 16px;
-  width: 100%;
-  margin: 20px auto;
-  .info-item {
-    display: flex;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    .info-header {
-      width: 120px;
-      font-weight: bold;
-    }
-    .info-content {
-      color: #fff;
+#app.mobile {
+  .info {
+    font-size: 16px;
+    width: 100%;
+    margin: 20px auto;
+    .info-item {
+      display: flex;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      .info-header {
+        width: 120px;
+        font-weight: bold;
+      }
+      .info-content {
+        color: #fff;
+      }
     }
   }
+  .detail-credit-form {
+    width: 100%;
+    padding: 0;
+    color: #fff !important;
+    background-color: #000 !important;
+    border-top: 0;
+    .credit-item-group {
+      max-width: 31.25rem;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      margin-bottom: 0.83333rem;
+    }
+    .credit-item {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      height: 2.5rem;
+      .label {
+        margin-right: 0.83333rem;
+        &.fixed-size {
+          width: 8.33333rem;
+        }
+      }
+      .yellow {
+        color: #f9c901;
+        width: 15rem;
+      }
+      &.big {
+        height: 3.33333rem;
+        .value {
+          height: 2.5rem;
+        }
+      }
+    }
+  }
+  .notice-cover {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 3;
+  }
 }
-
-.notice-cover {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  background-color: rgba(0,0,0,0.5);
-  z-index: 3;
-}
-
 </style>
