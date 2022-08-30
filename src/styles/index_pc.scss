@@ -1,0 +1,115 @@
+#app.pc {
+  .overlay-scroll-wrap {
+    max-width: 100%;
+    height: auto;
+    position: relative;
+    .scroll-inner {
+      height: 100%;
+      .scroll-view {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        height: 100%;
+      }
+      &.native {
+        overflow: auto;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+    &.float {
+      .scroll-inner {
+        .scroll-view {
+          min-width: 100%;
+          width: auto;
+          height: 100%;
+          float: left;
+          top: 0;
+          left: 0;
+          padding-right: 10px;
+        }
+      }
+    }
+    .back-top {
+      cursor: pointer;
+      position: absolute;
+      top: 20%;
+      right: 30px;
+      z-index: 2;
+      max-width: 35px;
+      min-width: 25px;
+      max-height: 35px;
+      min-height: 25px;
+      background: #f9c901;
+      border-radius: 50%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-shadow: 0 1px 2px #bbb;
+      box-shadow: 0 1px 2px #bbb;
+      opacity: 0;
+      visibility: hidden;
+      i.el-submenu__icon-arrow {
+        margin-top: 0;
+        position: unset;
+        font-size: inherit;
+        font-weight: bolder;
+      }
+    }
+  }
+  .day-range {
+    width: 100%;
+    padding: 0.41667rem 1.25rem;
+    .date-time-picker-box {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      .picker {
+        width: 26.66667rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin-right: 0.83333rem;
+        .el-range-separator {
+          height: auto !important;
+          line-height: 1 !important;
+          width: 2.08333rem;
+        }
+      }
+      .el-date-editor {
+        height: 2.66667rem;
+        width: 100%;
+        input {
+          font-size: 1rem;
+          padding-left: 0.83333rem;
+          padding-right: 0.83333rem;
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+    .search-range {
+      font-size: 1rem !important;
+      padding: 0.83333rem 1.25rem !important;
+      margin: 0.20833rem !important;
+    }
+  }
+}

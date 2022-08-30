@@ -1,0 +1,79 @@
+#app.mobile {
+  .day-range {
+    width: 100%;
+    padding: 0.41667rem 1.25rem;
+    .search-range {
+      margin-left: 0.5rem !important;
+    }
+    .date-time-picker-box {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      .picker {
+        width: 23.33333rem;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        &.datetimerange {
+          .el-range-input {
+            padding: 0 !important;
+          }
+          .el-range-separator {
+            height: auto !important;
+            line-height: 1 !important;
+            width: 2.08333rem;
+          }
+        }
+      }
+      .el-date-editor {
+        height: 2.66667rem;
+        width: 100%;
+        input {
+          font-size: 1rem;
+          padding-left: 0.83333rem;
+          padding-right: 0.83333rem;
+          height: 100%;
+          width: 100%;
+        }
+      }
+      .label {
+        color: #f9c901;
+        margin-left: 0.58333rem;
+        margin-right: 0.58333rem;
+        font-size: 1.16667rem;
+      }
+    }
+    .day-range-options {
+      width: 100%;
+      padding: 0.83333rem 0rem 0.41667rem 0rem;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      .el-button {
+        &:first-child {
+          margin-left: 0 !important;
+        }
+      }
+    }
+  }
+  // view-more
+  .view-more-container {
+    padding: 1.5rem;
+    .view-more {
+      cursor: pointer;
+      border-bottom: 0.08333rem solid #000;
+      padding-bottom: 0.01667rem;
+    }
+  }
+}

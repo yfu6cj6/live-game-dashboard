@@ -136,7 +136,6 @@
           <div class="os-size-auto-observer" style="height: calc(100% + 1px); float: left;">
             <div class="os-resize-observer observed" />
           </div>
-          <div class="os-content-glue" style="margin: 0px; width: 1919px; height: 968px;" />
           <div class="os-padding">
             <div class="os-viewport os-viewport-native-scrollbars-invisible" style="right: 0px; bottom: 0px;">
               <div class="os-content" style="padding: 0px; height: 100%; width: 100%;">
@@ -803,25 +802,6 @@ export default {
         color: #999;
       }
     }
-  }
-}
-
-.overlay-scroll-wrap {
-  .scroll-inner {
-    height: 100%;
-  }
-}
-
-.overlay-scroll-wrap {
-  .scroll-view {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    height: 100%;
   }
 }
 </style>
