@@ -18,8 +18,7 @@
                                   ref="datePicker"
                                   v-model="searchTime"
                                   type="datetimerange"
-                                  popper-class="ams-timeslot-popper"
-                                  align="right"
+                                  popper-class="ams-timeslot-popper mobilePicker"
                                   :clearable="false"
                                   :editable="false"
                                   time-arrow-control
@@ -836,13 +835,12 @@
                     <div class="mt-4">
                       <div class="day-range">
                         <div class="date-time-picker-box flex-nowrap">
-                          <div class="picker datetimerange datetimerange">
+                          <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
                             <el-date-picker
                               ref="datePicker"
                               v-model="searchTime"
                               type="datetimerange"
-                              popper-class="ams-timeslot-popper"
-                              align="right"
+                              popper-class="ams-timeslot-popper pcPicker"
                               :clearable="false"
                               :editable="false"
                               time-arrow-control

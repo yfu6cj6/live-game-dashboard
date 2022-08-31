@@ -16,14 +16,6 @@
   }
 }
 
-.el-input--small {
-  font-size: 1.3rem;
-  .el-input__inner {
-    height: 3.2rem;
-    line-height: 3.2rem;
-  }
-}
-
 .el-input__icon {
   width: 2.5rem;
   line-height: 4rem;
@@ -151,8 +143,6 @@
 }
 
 #app .el-button {
-  padding: 0.70833rem 0.95833rem;
-  font-size: 1rem;
   &.is-disabled {
     background-color: #c0c4cc;
     border-color: #e4e7ed;
@@ -200,6 +190,13 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   border-radius: 0.4rem;
+  padding: 0.70833rem 0.95833rem;
+  font-size: 1rem;
+}
+
+.el-button--mini {
+  font-size: 1.2rem;
+  border-radius: -.6rem;
 }
 
 .el-date-editor {
@@ -625,15 +622,16 @@
     width: 2.6666656rem;
     padding: 0.3333332rem 0;
     text-align: center;
-    cursor: pointer;
-    position: relative;
     height: 2.499999rem;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
+    cursor: pointer;
+    position: relative;
     div {
       height: 2.499999rem;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
+      padding: 0.2499999rem 0;
     }
     &.disabled {
       div {
@@ -655,6 +653,13 @@
       transform: translateX(-50%);
       border-radius: 50%;
     }
+    &.start-date {
+      div {
+        margin-left: 0.4166665rem;
+        border-top-left-radius: 1.2499995rem;
+        border-bottom-left-radius: 1.2499995rem;
+      }
+    }
   }
 }
 
@@ -670,11 +675,6 @@
       display: none;
     }
   }
-}
-
-.el-button--mini {
-  font-size: 1.2rem;
-  border-radius: -.6rem;
 }
 
 .el-submenu__icon-arrow {
@@ -1239,6 +1239,14 @@
   font-size: 1.4rem;
   display: inline-block;
   width: 100%;
+}
+
+.el-input--small {
+  font-size: 1.3rem;
+  .el-input__inner {
+    height: 3.2rem;
+    line-height: 3.2rem;
+  }
 }
 
 .el-row {

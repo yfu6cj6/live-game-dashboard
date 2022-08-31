@@ -143,14 +143,14 @@ export default {
       const preMonIconSpan = document.createElement('span')
       preMonIconSpan.appendChild(preMonIcon)
       const preMonBtn = document.createElement('button')
-      preMonBtn.className = 'el-button el-button--default preMon line-yellow arrow'
+      preMonBtn.className = 'el-button el-button--default preMon arrow'
       preMonBtn.onclick = onPreMon
       preMonBtn.appendChild(preMonIconSpan)
       // 本月
       const thisMonthSpan = document.createElement('span')
       thisMonthSpan.innerHTML = `${this.$t('__thisMonth')}`
       const thisMonthBtn = document.createElement('button')
-      thisMonthBtn.className = 'el-button el-button--default thisMonth line-yellow'
+      thisMonthBtn.className = 'el-button el-button--default thisMonth'
       thisMonthBtn.onclick = onThisMon
       thisMonthBtn.appendChild(thisMonthSpan)
       // 下月
@@ -159,7 +159,7 @@ export default {
       const nextMonSpan = document.createElement('span')
       nextMonSpan.appendChild(nextMonIcon)
       const nextMonBtn = document.createElement('button')
-      nextMonBtn.className = 'el-button el-button--default nextMon line-yellow arrow'
+      nextMonBtn.className = 'el-button el-button--default nextMon arrow'
       nextMonBtn.onclick = onNextMon
       nextMonBtn.appendChild(nextMonSpan)
       // 月群組
@@ -174,14 +174,14 @@ export default {
       const preDayIconSpan = document.createElement('span')
       preDayIconSpan.appendChild(preDayIcon)
       const preDayBtn = document.createElement('button')
-      preDayBtn.className = 'el-button el-button--default preDay line-yellow arrow'
+      preDayBtn.className = 'el-button el-button--default preDay arrow'
       preDayBtn.onclick = onPreDay
       preDayBtn.appendChild(preDayIconSpan)
       // 今天
       const todaySpan = document.createElement('span')
       todaySpan.innerHTML = `${this.$t('__today')}`
       const todayBtn = document.createElement('button')
-      todayBtn.className = 'el-button el-button--default today line-yellow'
+      todayBtn.className = 'el-button el-button--default today'
       todayBtn.onclick = onToday
       todayBtn.appendChild(todaySpan)
       // 下一天
@@ -190,7 +190,7 @@ export default {
       const nextDaySpan = document.createElement('span')
       nextDaySpan.appendChild(nextDayIcon)
       const nextDayBtn = document.createElement('button')
-      nextDayBtn.className = 'el-button el-button--default nextDay line-yellow arrow'
+      nextDayBtn.className = 'el-button el-button--default nextDay arrow'
       nextDayBtn.onclick = onNextDay
       nextDayBtn.appendChild(nextDaySpan)
       // 日群組
@@ -205,14 +205,14 @@ export default {
       const preWeekIconSpan = document.createElement('span')
       preWeekIconSpan.appendChild(preWeekIcon)
       const preWeekBtn = document.createElement('button')
-      preWeekBtn.className = 'el-button el-button--default preWeek line-yellow arrow'
+      preWeekBtn.className = 'el-button el-button--default preWeek arrow'
       preWeekBtn.onclick = onPreWeek
       preWeekBtn.appendChild(preWeekIconSpan)
       // 本週
       const thisWeekSpan = document.createElement('span')
       thisWeekSpan.innerHTML = `${this.$t('__thisWeek')}`
       const thisWeekBtn = document.createElement('button')
-      thisWeekBtn.className = 'el-button el-button--default thisWeek line-yellow'
+      thisWeekBtn.className = 'el-button el-button--default thisWeek'
       thisWeekBtn.onclick = onThisWeek
       thisWeekBtn.appendChild(thisWeekSpan)
       // 下一週
@@ -221,7 +221,7 @@ export default {
       const nextWeekSpan = document.createElement('span')
       nextWeekSpan.appendChild(nextWeekIcon)
       const nextWeekBtn = document.createElement('button')
-      nextWeekBtn.className = 'el-button el-button--default nextWeek line-yellow arrow'
+      nextWeekBtn.className = 'el-button el-button--default nextWeek arrow'
       nextWeekBtn.onclick = onNextWeek
       nextWeekBtn.appendChild(nextWeekSpan)
       // 週群組

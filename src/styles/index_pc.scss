@@ -498,3 +498,32 @@
     background: #fff;
   }
 }
+
+.ams-timeslot-popper.pcPicker {
+  .el-picker-panel__body {
+    .el-date-range-picker__time-header {
+      padding-top: 0.2rem;
+    }
+  }
+  .quickSearch {
+    .button-group {
+      width: 170px;
+      button {
+        width: 35px;
+        height: 33px;
+        font-size: 15px;
+        &.today,
+        &.thisWeek,
+        &.thisMonth {
+          width: 48%;
+          padding: 0;
+        }
+      }
+    }
+  }
+  .el-picker-panel__footer {
+    .is-plain {
+      width: 120px;
+    }
+  }
+}
