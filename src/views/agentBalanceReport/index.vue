@@ -1,114 +1,118 @@
 <template>
-  <div v-loading="dataLoading" class="scroll-wrap flex-column flex-fill">
-    <div class="scroll-inner flex-column flex-fill off agentBalanceReport">
-      <div class="scroll-view flex-column flex-fill">
-        <div class="credit-report flex-column flex-fill">
-          <div class="flex-column flex-fill">
-            <div class="credit-report-list flex-column flex-fill bg-new-dark-white">
-              <div class="scroll-wrap flex-column flex-fill">
-                <div class="scroll-inner flex-column flex-fill off">
-                  <div class="scroll-view flex-column flex-fill">
-                    <div class="flex-column flex-fill">
-                      <div class="bg-black">
-                        <div class="mt-4 w-100" />
-                      </div>
-                      <div class="report-list common-list summary">
-                        <div>
-                          <div class="agent-group">
-                            <div class="w-100 items">
-                              <div class="ctrl" :class="{'exp': agentInfo.open}" @click.stop="remarkExpand">
-                                <div class="item-inner">
-                                  <div class="fas text-gray">
-                                    <div :class="{'d-none': agentInfo.open}">
-                                      <svg-icon class="fas text-gray" icon-class="more" style="height: 2.5rem; width: 2.5rem;" />
+  <div class="w-100 h-100">
+    <template v-if="device === 'mobile'">
+      <div class="scroll-wrap flex-column flex-fill">
+        <div class="scroll-inner flex-column flex-fill off agentBalanceReport">
+          <div class="scroll-view flex-column flex-fill">
+            <div class="credit-report flex-column flex-fill">
+              <div class="flex-column flex-fill">
+                <div class="credit-report-list flex-column flex-fill bg-new-dark-white">
+                  <div class="scroll-wrap flex-column flex-fill">
+                    <div class="scroll-inner flex-column flex-fill off">
+                      <div class="scroll-view flex-column flex-fill">
+                        <div class="flex-column flex-fill">
+                          <div class="bg-black">
+                            <div class="mt-4 w-100" />
+                          </div>
+                          <div class="report-list common-list summary">
+                            <div>
+                              <div class="agent-group">
+                                <div class="w-100 items">
+                                  <div class="ctrl" :class="{'exp': agentInfo.open}" @click.stop="remarkExpand">
+                                    <div class="item-inner">
+                                      <div class="fas text-gray">
+                                        <div :class="{'d-none': agentInfo.open}">
+                                          <svg-icon class="fas text-gray" icon-class="more" style="height: 2.5rem; width: 2.5rem;" />
+                                        </div>
+                                        <div :class="{'d-none': !agentInfo.open}">
+                                          <svg-icon class="fas text-gray" icon-class="up" style="height: 2.33333rem; width: 2.33333rem;" />
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div :class="{'d-none': !agentInfo.open}">
-                                      <svg-icon class="fas text-gray" icon-class="up" style="height: 2.33333rem; width: 2.33333rem;" />
+                                  </div>
+                                  <div class="agent-list-basic list-row">
+                                    <div class="list-item d-flex align-items-center" style="width: 100%;">
+                                      <span class="icon user">
+                                        <div class="fas gold">
+                                          <svg-icon class="fas gold" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                                        </div>
+                                      </span>
+                                      <span class="value text-golden">{{ agentInfo.agent }}</span>
+                                    </div>
+                                    <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+                                      <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subordinateAgentsBalance") }}</span>
+                                      <span class="value">
+                                        {{ agentInfo.subordinateAgentsBalanceLabel }}
+                                      </span>
+                                    </div>
+                                    <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+                                      <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subordinateMembersBalance") }}</span>
+                                      <span class="value">
+                                        {{ agentInfo.subordinateMembersBalanceLabel }}
+                                      </span>
+                                    </div>
+                                    <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+                                      <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__unassignedBalance") }}</span>
+                                      <span class="value">
+                                        {{ agentInfo.balanceLabel }}
+                                      </span>
+                                    </div>
+                                    <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
+                                      <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__totalBalance") }}</span>
+                                      <span class="value">
+                                        {{ agentInfo.totalBalanceLabel }}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <div v-if="agentInfo.open" class="agent-list-detail list-row">
+                                    <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
+                                      <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__directlyMember") }}</span>
+                                      <span class="value">
+                                        {{ agentInfo.memberCountLabel }}
+                                      </span>
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              <div class="agent-list-basic list-row">
-                                <div class="list-item d-flex align-items-center" style="width: 100%;">
-                                  <span class="icon user">
-                                    <div class="fas gold">
-                                      <svg-icon class="fas gold" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                            </div>
+                          </div>
+                          <div class="profit-tabs light el-tabs">
+                            <div class="el-tabs__header">
+                              <div class="el-tabs__nav">
+                                <div class="el-tabs__item" :class="{'is-active':curTableIndex === 0}" @click.stop="onTableBtnClick(tableEnum.agent)">
+                                  <div class="tab-item">
+                                    <div class="fas black" :class="{'yellow':curTableIndex === 0}">
+                                      <svg-icon icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                                      <span> {{ $t("__agent") }} </span>
                                     </div>
-                                  </span>
-                                  <span class="value text-golden">{{ agentInfo.agent }}</span>
+                                  </div>
                                 </div>
-                                <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
-                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subordinateAgentsBalance") }}</span>
-                                  <span class="value">
-                                    {{ agentInfo.subordinateAgentsBalanceLabel }}
-                                  </span>
-                                </div>
-                                <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
-                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subordinateMembersBalance") }}</span>
-                                  <span class="value">
-                                    {{ agentInfo.subordinateMembersBalanceLabel }}
-                                  </span>
-                                </div>
-                                <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
-                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__unassignedBalance") }}</span>
-                                  <span class="value">
-                                    {{ agentInfo.balanceLabel }}
-                                  </span>
-                                </div>
-                                <div class="list-item d-flex align-items-start is-amount" style="width: 50%; flex-wrap: wrap;">
-                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__totalBalance") }}</span>
-                                  <span class="value">
-                                    {{ agentInfo.totalBalanceLabel }}
-                                  </span>
-                                </div>
-                              </div>
-                              <div v-if="agentInfo.open" class="agent-list-detail list-row">
-                                <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
-                                  <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__directlyMember") }}</span>
-                                  <span class="value">
-                                    {{ agentInfo.memberCountLabel }}
-                                  </span>
+                                <div class="el-tabs__item" :class="{'is-active':curTableIndex === 1}" @click.stop="onTableBtnClick(tableEnum.member)">
+                                  <div class="tab-item">
+                                    <div class="fas black" :class="{'yellow':curTableIndex === 1}">
+                                      <svg-icon icon-class="member" style="height: 1.33333rem; width: 1.33333rem;" />
+                                      <span> {{ $t("__member") }} </span>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                      <div class="profit-tabs light el-tabs">
-                        <div class="el-tabs__header">
-                          <div class="el-tabs__nav">
-                            <div class="el-tabs__item" :class="{'is-active':curTableIndex === 0}" @click.stop="onTableBtnClick(tableEnum.agent)">
-                              <div class="tab-item">
-                                <div class="fas black" :class="{'yellow':curTableIndex === 0}">
-                                  <svg-icon icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
-                                  <span> {{ $t("__agent") }} </span>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="el-tabs__item" :class="{'is-active':curTableIndex === 1}" @click.stop="onTableBtnClick(tableEnum.member)">
-                              <div class="tab-item">
-                                <div class="fas black" :class="{'yellow':curTableIndex === 1}">
-                                  <svg-icon icon-class="member" style="height: 1.33333rem; width: 1.33333rem;" />
-                                  <span> {{ $t("__member") }} </span>
-                                </div>
-                              </div>
-                            </div>
+                          <div class="common-list report-list flex-column flex-fill bg-new-dark-white">
+                            <agent
+                              v-show="curTableIndex === tableEnum.agent"
+                              ref="agent"
+                              @handleRespone="handleAgentRespone"
+                              @setDataLoading="setDataLoading"
+                            />
+                            <member
+                              v-show="curTableIndex === tableEnum.member"
+                              ref="member"
+                              @handleRespone="handleMemberRespone"
+                              @setDataLoading="setDataLoading"
+                            />
                           </div>
                         </div>
-                      </div>
-                      <div class="common-list report-list flex-column flex-fill bg-new-dark-white">
-                        <agent
-                          v-show="curTableIndex === tableEnum.agent"
-                          ref="agent"
-                          @handleRespone="handleAgentRespone"
-                          @setDataLoading="setDataLoading"
-                        />
-                        <member
-                          v-show="curTableIndex === tableEnum.member"
-                          ref="member"
-                          @handleRespone="handleMemberRespone"
-                          @setDataLoading="setDataLoading"
-                        />
                       </div>
                     </div>
                   </div>
@@ -118,7 +122,117 @@
           </div>
         </div>
       </div>
-    </div>
+    </template>
+    <template v-else>
+      <div class="credit-report bg-new-dark-white">
+        <div class="w-100">
+          <div class="credit-report-list flex-fill flex-nowrap bg-new-dark-white">
+            <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
+              <backTop />
+              <div id="scroll-inner" class="scroll-inner on native hasPage">
+                <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
+                  <div class="flex-nowrap">
+                    <div class="bg-black">
+                      <div class="pt-4 w-100" />
+                      <div class="sort">
+                        <button type="button" class="el-button bg-yellow mr-0 filter-search w-auto el-button--default">
+                          <span>{{ $t('__searchAndExport') }}</span>
+                        </button>
+                      </div>
+                    </div>
+                    <div id="report-list" class="common-list summary flex-nowrap report-list flex-fill bg-new-dark-white">
+                      <div class="w-100">
+                        <div class="agent-group">
+                          <div class="w-100 items report-list-item-row">
+                            <div class="agent-list-basic list-row align-items-center">
+                              <div class="list-item d-flex align-items-center" style="width: 140px; margin-left: 35px;">
+                                <span class="icon user">
+                                  <div class="fas gold">
+                                    <svg-icon class="fas gold" icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                                  </div>
+                                </span>
+                                <span class="value text-golden">{{ agentInfo.agent }}</span>
+                              </div>
+                              <div class="list-item d-flex align-items-start is-amount" style="width: 220px; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subordinateAgentsBalance") }}</span>
+                                <span class="value">
+                                  <span>{{ agentInfo.subordinateAgentsBalanceLabel }}</span>
+                                </span>
+                              </div>
+                              <div class="list-item d-flex align-items-start is-amount" style="width: 220px; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__subordinateMembersBalance") }}</span>
+                                <span class="value">
+                                  <span>{{ agentInfo.subordinateMembersBalanceLabel }}</span>
+                                </span>
+                              </div>
+                              <div class="list-item d-flex align-items-start is-amount" style="width: 220px; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__unassignedBalance") }}</span>
+                                <span class="value">
+                                  <span>{{ agentInfo.balanceLabel }}</span>
+                                </span>
+                              </div>
+                              <div class="list-item d-flex align-items-start is-amount" style="width: 160px; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__totalBalance") }}</span>
+                                <span class="value">
+                                  <span>{{ agentInfo.totalBalanceLabel }}</span>
+                                </span>
+                              </div>
+                              <div class="list-item d-flex align-items-start" style="margin-left: 10px; width: 150px; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t("__directlyMember") }}</span>
+                                <span class="value">
+                                  <span>{{ agentInfo.memberCountLabel }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="agent-pop-up-panel" style="display: none;" />
+                    </div>
+                    <div class="profit-tabs light el-tabs">
+                      <div class="el-tabs__header">
+                        <div class="el-tabs__nav">
+                          <div class="el-tabs__item" :class="{'is-active':curTableIndex === 0}" @click.stop="onTableBtnClick(tableEnum.agent)">
+                            <div class="tab-item">
+                              <div class="fas black" :class="{'yellow':curTableIndex === 0}">
+                                <svg-icon icon-class="user" style="height: 1.33333rem; width: 1.33333rem;" />
+                              </div>
+                              {{ $t("__agent") }}
+                            </div>
+                          </div>
+                          <div class="el-tabs__item" :class="{'is-active':curTableIndex === 1}" @click.stop="onTableBtnClick(tableEnum.member)">
+                            <div class="tab-item">
+                              <div class="fas black" :class="{'yellow':curTableIndex === 1}">
+                                <svg-icon icon-class="member" style="height: 1.33333rem; width: 1.33333rem;" />
+                              </div>
+                              {{ $t("__member") }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <agent
+                        v-show="curTableIndex === tableEnum.agent"
+                        ref="agent"
+                        @handleRespone="handleAgentRespone"
+                        @setDataLoading="setDataLoading"
+                      />
+                      <member
+                        v-show="curTableIndex === tableEnum.member"
+                        ref="member"
+                        @handleRespone="handleMemberRespone"
+                        @setDataLoading="setDataLoading"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -132,10 +246,11 @@ import Agent from './agent/index';
 import Member from './member/index';
 import { getFullDateString } from '@/utils/transDate'
 import { numberFormat } from '@/utils/numberFormat'
+import BackTop from '@/components/BackTop'
 
 export default {
   name: 'AgentBalanceReport',
-  components: { Agent, Member },
+  components: { Agent, Member, BackTop },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -145,12 +260,18 @@ export default {
       }),
       agentInfo: {},
       curTableIndex: 0,
-      dataLoading: false,
       agentId: null,
       tempRoute: {}
     }
   },
   computed: {
+  },
+  watch: {
+    'device': function() {
+      this.$nextTick(() => {
+        this.onTableBtnClick(this.curTableIndex)
+      })
+    }
   },
   created() {
     this.formClassName = ['agentInfoFormData', 'agentInfoForm']
@@ -193,12 +314,12 @@ export default {
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     onExportBtnClick() {
-      this.dataLoading = true
+      this.setDataLoading(true)
       agentBalanceReportExport({ agentId: this.agentId }).then((res) => {
         this.onDataOut(res)
-        this.dataLoading = false
+        this.setDataLoading(false)
       }).catch(() => {
-        this.dataLoading = false
+        this.setDataLoading(false)
       })
     },
     onDataOut(tablesData) {
@@ -232,14 +353,14 @@ export default {
       this.agentInfo.totalBalanceLabel = numberFormat(this.agentInfo.totalBalance)
       this.agentInfo.open = open;
       this.setTagsViewTitle()
-      this.dataLoading = false
+      this.setDataLoading(false)
     },
     handleMemberRespone() {
-      this.dataLoading = false
+      this.setDataLoading(false)
     },
     onTableBtnClick(tableEnum) {
       this.curTableIndex = tableEnum
-      this.dataLoading = true
+      this.setDataLoading(true)
       switch (this.curTableIndex) {
         case this.tableEnum.agent: {
           this.$refs.agent.onSearch(this.agentId)
@@ -251,8 +372,8 @@ export default {
         }
       }
     },
-    setDataLoading(dataLoading) {
-      this.dataLoading = dataLoading
+    setDataLoading(loading) {
+      this.$store.dispatch('app/setLoading', loading)
     }
   }
 }
