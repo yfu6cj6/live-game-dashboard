@@ -1108,6 +1108,13 @@
                                                     </div>
                                                   </div>
                                                 </div>
+                                                <div class="halls-col">
+                                                  <div class="halls-value text-right">
+                                                    <div class="d-flex align-items-center justify-content-end">
+                                                      <span :class="{'text-red': Number(agentInfo.agent.giftValue) > 0, 'text-blue': Number(agentInfo.agent.giftValue) < 0}">{{ agentInfo.agent.giftValueLabel }}</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
@@ -1191,7 +1198,7 @@
                                               <div class="w-100 to-superiors text-right">
                                                 <span class="label d-none">{{ $t('__giftValue') }}</span>
                                                 <span class="value">
-                                                  <span>{{ agentInfo.agent.giftValueLabel }}</span>
+                                                  <span :class="{'text-red': Number(agentInfo.agent.giftValue) > 0, 'text-blue': Number(agentInfo.agent.giftValue) < 0}">{{ agentInfo.agent.giftValueLabel }}</span>
                                                 </span>
                                               </div>
                                             </div>
@@ -1285,6 +1292,12 @@
                                           <span class="label">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
                                           <span class="value">
                                             <span>{{ agentInfo.total.commitSuperiorsValidBetAmount }}</span>
+                                          </span>
+                                        </div>
+                                        <div class="group-item align-items-center is-amount">
+                                          <span class="label">{{ $t('__giftValue') }}</span>
+                                          <span class="value">
+                                            <span :class="{'text-red': Number(agentInfo.total.giftValue) > 0, 'text-blue': Number(agentInfo.total.giftValue) < 0}">{{ agentInfo.total.giftValueLabel }}</span>
                                           </span>
                                         </div>
                                       </div>
@@ -1407,6 +1420,13 @@
                                                     </div>
                                                   </div>
                                                 </div>
+                                                <div class="halls-col">
+                                                  <div class="halls-label text-right">
+                                                    <div class="d-flex align-items-center justify-content-end">
+                                                      <span>{{ $t('__giftValue') }}</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
@@ -1504,6 +1524,13 @@
                                                     </div>
                                                   </div>
                                                 </div>
+                                                <div class="halls-col">
+                                                  <div class="halls-value text-right">
+                                                    <div class="d-flex align-items-center justify-content-end">
+                                                      <span :class="{'text-red': Number(agentInfo.member.giftValue) > 0, 'text-blue': Number(agentInfo.member.giftValue) < 0}">{{ agentInfo.member.giftValueLabel }}</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
@@ -1580,6 +1607,14 @@
                                                 <span class="label d-none">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
                                                 <span class="value">
                                                   <span>{{ agentInfo.member.commitSuperiorsValidBetAmount }}</span>
+                                                </span>
+                                              </div>
+                                            </div>
+                                            <div class="list-item">
+                                              <div class="w-100 to-superiors text-right">
+                                                <span class="label d-none">{{ $t('__giftValue') }}</span>
+                                                <span class="value">
+                                                  <span :class="{'text-red': Number(agentInfo.member.giftValue) > 0, 'text-blue': Number(agentInfo.member.giftValue) < 0}">{{ agentInfo.member.giftValueLabel }}</span>
                                                 </span>
                                               </div>
                                             </div>
@@ -1672,6 +1707,12 @@
                                         <span class="label">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
                                         <span class="value">
                                           <span>{{ agentInfo.total.commitSuperiorsValidBetAmount }}</span>
+                                        </span>
+                                      </div>
+                                      <div class="group-item align-items-center is-amount">
+                                        <span class="label">{{ $t('__giftValue') }}</span>
+                                        <span class="value">
+                                          <span :class="{'text-red': Number(agentInfo.total.giftValue) > 0, 'text-blue': Number(agentInfo.total.giftValue) < 0}">{{ agentInfo.total.giftValueLabel }}</span>
                                         </span>
                                       </div>
                                     </div>
@@ -1766,6 +1807,12 @@
                                         <span class="label">{{ $t('__commitSuperiorsValidBetAmount') }}</span>
                                         <span class="value">
                                           <span>{{ agentInfo.total.commitSuperiorsValidBetAmount }}</span>
+                                        </span>
+                                      </div>
+                                      <div class="group-item align-items-center is-amount">
+                                        <span class="label">{{ $t('__giftValue') }}</span>
+                                        <span class="value">
+                                          <span :class="{'text-red': Number(agentInfo.total.giftValue) > 0, 'text-blue': Number(agentInfo.total.giftValue) < 0}">{{ agentInfo.total.giftValueLabel }}</span>
                                         </span>
                                       </div>
                                     </div>
@@ -2916,6 +2963,17 @@ export default {
             .groups {
               padding: 0px 15px;
             }
+            &.player {
+              .list-row {
+                .list-item {
+                  .list-sub-item {
+                    .list-sub-item-col {
+                      margin-bottom: 0;
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -3006,6 +3064,43 @@ export default {
         }
         .value {
           font-weight: bold;
+        }
+      }
+      &.player {
+        .page-item {
+          &:first-child {
+            margin-left: 281px;
+            -webkit-box-ordinal-group: 2;
+            -ms-flex-order: 1;
+            order: 1;
+          }
+          &:nth-child(2) {
+            margin-left: 0px;
+            text-align: right;
+            width: 70px;
+            -webkit-box-ordinal-group: 3;
+            -ms-flex-order: 2;
+            order: 2;
+          }
+          &:nth-child(3) {
+            width: 160px;
+            margin-left: 0px;
+            -webkit-box-ordinal-group: 4;
+            -ms-flex-order: 3;
+            order: 3;
+          }
+          &:nth-child(4) {
+            margin-left: 210px;
+            -webkit-box-ordinal-group: 5;
+            -ms-flex-order: 4;
+            order: 4;
+          }
+          &:last-child {
+            margin-left: 210px;
+            -webkit-box-ordinal-group: 6;
+            -ms-flex-order: 5;
+            order: 5;
+          }
         }
       }
     }

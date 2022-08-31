@@ -392,7 +392,7 @@
             <div
               v-for="(item, index) in tableData"
               :key="index"
-              class="agent-group group-ui none-group"
+              class="agent-group group-ui none-group player"
               :class="{even: (index % 2 === 0), odd: (index % 2 !== 0), 'padding-top': index === 0}"
             >
               <div class="groups">
