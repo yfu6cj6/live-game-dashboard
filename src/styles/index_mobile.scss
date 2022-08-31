@@ -552,13 +552,7 @@
   .pad_frame {
     padding: 0.41667rem 0.83333rem 0.41667rem 0.83333rem;
   }
-  
-  .no-result {
-    min-height: 50vh;
-    padding: 1.66667rem;
-    text-align: center;
-  }
-  
+
   .notice-cover {
     position: fixed;
     top: 0;
@@ -853,34 +847,6 @@
       margin-left: 0.3rem;
       font-size: 1.5rem;
     }
-  }
-  
-  .swiper-wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-transition-property: -webkit-transform;
-    transition-property: -webkit-transform;
-    -o-transition-property: transform;
-    transition-property: transform;
-    transition-property: transform,-webkit-transform;
-    -webkit-box-sizing: content-box;
-    box-sizing: content-box;
-  }
-  
-  .swiper-container {
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-    overflow: hidden;
-    list-style: none;
-    padding: 0;
-    z-index: 1;
   }
   
   #app .el-tabs.light {
