@@ -772,6 +772,14 @@
         </div>
       </div>
       <div class="w-100 p-4" />
+      <pagination
+        :page-size="pageSize"
+        :page-sizes="pageSizes"
+        :total="totalCount"
+        :current-page.sync="currentPage"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </template>
   </div>
 </template>
@@ -782,9 +790,11 @@ import handlePageChange from '@/mixin/handlePageChange'
 import { getFullDate } from '@/utils/transDate'
 import { numberFormat } from '@/utils/numberFormat'
 import { mapGetters } from 'vuex';
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'Agent',
+  components: { Pagination },
   mixins: [handlePageChange],
   props: {
     'payoutTime': {
@@ -834,7 +844,7 @@ export default {
       this.payoutTime.forEach(element => {
         data.payoutTime.push(getFullDate(element))
       })
-      this.setDataLoading(true)
+      this.setLoading(true)
       agentWinLossReportSearch(data).then((res) => {
         const open = this.tableData.filter(item => item.open).map(item => item.agentId)
         res.rows.forEach(element => {
@@ -856,11 +866,11 @@ export default {
         this.totalCount = res.totalCount
         this.$emit('handleRespone', JSON.parse(JSON.stringify(res.agentInfo)))
       }).catch(() => {
-        this.setDataLoading(false)
+        this.setLoading(false)
       })
     },
-    setDataLoading(dataLoading) {
-      this.$emit('setDataLoading', dataLoading)
+    setLoading(loading) {
+      this.$emit('setLoading', loading)
     }
   }
 }

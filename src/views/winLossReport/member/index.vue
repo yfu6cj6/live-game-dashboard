@@ -735,7 +735,7 @@ export default {
       this.payoutTime.forEach(element => {
         data.payoutTime.push(getFullDate(element))
       })
-      this.setDataLoading(true)
+      this.setLoading(true)
       memberWinLossReportSearch(data).then((res) => {
         const open = this.tableData.filter(item => item.open).map(item => item.member_id)
         res.rows.forEach(element => {
@@ -755,11 +755,11 @@ export default {
         this.totalCount = res.totalCount
         this.$emit('handleRespone')
       }).catch(() => {
-        this.setDataLoading(false)
+        this.setLoading(false)
       })
     },
-    setDataLoading(dataLoading) {
-      this.$emit('setDataLoading', dataLoading)
+    setLoading(loading) {
+      this.$emit('setLoading', loading)
     }
   }
 }

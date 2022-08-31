@@ -5,7 +5,8 @@ const state = {
     opened: localStorage.getItem('sidebarStatus') ? localStorage.getItem('sidebarStatus') : true,
     withoutAnimation: false
   },
-  device: 'desktop'
+  device: 'desktop',
+  loading: false
 }
 
 const mutations = {
@@ -21,6 +22,9 @@ const mutations = {
   },
   TOGGLE_DEVICE: (state, device) => {
     state.device = device
+  },
+  SET_LOADING: (state, loading) => {
+    state.loading = loading
   }
 }
 
@@ -37,6 +41,9 @@ const actions = {
   },
   toggleDevice({ commit }, device) {
     commit('TOGGLE_DEVICE', device)
+  },
+  setLoading({ commit }, loading) {
+    commit('SET_LOADING', loading)
   }
 }
 

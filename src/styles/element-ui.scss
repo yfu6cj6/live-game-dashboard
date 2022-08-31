@@ -1270,3 +1270,52 @@
 .el-input__suffix-inner {
   pointer-events: all;
 }
+
+#app .el-pagination {
+  white-space: nowrap;
+  padding: 0.2rem 0.5rem;
+  color: #303133;
+  font-weight: 700;
+  .el-icon,
+  button,
+  i {
+    color: #fff;
+  }
+  li,
+  button {
+    color: #fff;
+    background: transparent;
+    &.active {
+      color: #f9c901;
+    }
+  }
+  .btn-prev {
+    padding-right: 1.2rem;
+  }
+  .btn-next {
+    padding-left: 1.2rem;
+  }
+  .btn-next,
+  .btn-prev {
+    .el-icon {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+  }
+}
+
+.el-pagination--small  {
+  .btn-next,
+  .btn-prev,
+  .el-pager li,
+  .el-pager li.btn-quicknext,
+  .el-pager li.btn-quickprev,
+  .el-pager li:last-child {
+    border-color: transparent;
+    font-size: 1.2rem;
+    line-height: 2.2rem;
+    height: 2.2rem;
+    min-width: 2.2rem;
+  }
+}

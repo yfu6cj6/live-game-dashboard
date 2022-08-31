@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="dataLoading" class="winLossReport">
+  <div class="winLossReport">
     <template v-if="device === 'mobile'">
       <div class="scroll-wrap flex-column flex-fill">
         <div class="scroll-inner flex-column flex-fill off">
@@ -804,14 +804,14 @@
                             ref="agent"
                             :payout-time="searchTime"
                             @handleRespone="handleAgentRespone"
-                            @setDataLoading="setDataLoading"
+                            @setLoading="setLoading"
                           />
                           <member
                             v-show="curTableIndex === tableEnum.member"
                             ref="member"
                             :payout-time="searchTime"
                             @handleRespone="handleMemberRespone"
-                            @setDataLoading="setDataLoading"
+                            @setLoading="setLoading"
                           />
                         </div>
                       </div>
@@ -828,7 +828,7 @@
       <div class="w-100">
         <div>
           <div class="comp profit-report">
-            <div class="overlay-scroll-wrap scrolling float" style="height: calc(100vh - 6.25rem);">
+            <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
               <div class="back-top">
                 <i class="el-submenu__icon-arrow el-icon-arrow-up" />
               </div>
@@ -1850,14 +1850,14 @@
                         ref="agent"
                         :payout-time="searchTime"
                         @handleRespone="handleAgentRespone"
-                        @setDataLoading="setDataLoading"
+                        @setLoading="setLoading"
                       />
                       <member
                         v-show="curTableIndex === tableEnum.member"
                         ref="member"
                         :payout-time="searchTime"
                         @handleRespone="handleMemberRespone"
-                        @setDataLoading="setDataLoading"
+                        @setLoading="setLoading"
                       />
                     </div>
                   </div>
@@ -2044,14 +2044,14 @@ export default {
     },
     onBetMemberCount() {
       const data = this.getData()
-      this.setDataLoading(true)
+      this.setLoading(true)
       agentWinLossReportBetMemberCount(data).then((res) => {
         this.agentInfo.total.betMemberCount = res.count
         this.agentInfo.total = JSON.parse(JSON.stringify(this.agentInfo.total))
         this.agentInfo.total.betMemberCountLabel = numberFormat(res.count, 0)
-        this.setDataLoading(false)
+        this.setLoading(false)
       }).catch(() => {
-        this.setDataLoading(false)
+        this.setLoading(false)
       })
     },
     onDateBtnClick(dateType) {
@@ -2093,12 +2093,12 @@ export default {
     },
     onExportBtnClick() {
       const data = this.getData()
-      this.setDataLoading(true)
+      this.setLoading(true)
       agentWinLossReportExport(data).then((res) => {
         this.onDataOut(res)
-        this.setDataLoading(false)
+        this.setLoading(false)
       }).catch(() => {
-        this.setDataLoading(false)
+        this.setLoading(false)
       })
     },
     onDataOut(tablesData) {
@@ -2127,7 +2127,7 @@ export default {
       this.setAgentInfo(this.agentInfo.member)
       this.setAgentInfo(this.agentInfo.total)
       this.setTagsViewTitle()
-      this.setDataLoading(false)
+      this.setLoading(false)
       this.setHeaderStyle()
     },
     setAgentInfo(data) {
@@ -2144,25 +2144,25 @@ export default {
       data.rollingRateLabel = numberFormat(data.rollingRate)
     },
     handleMemberRespone() {
-      this.setDataLoading(false)
+      this.setLoading(false)
+      this.$refs.agent.onSearch(this.agentId)
     },
     onTableBtnClick(tableEnum) {
       this.curTableIndex = tableEnum
-      this.setDataLoading(true)
+      this.setLoading(true)
       switch (this.curTableIndex) {
         case this.tableEnum.agent: {
           this.$refs.agent.onSearch(this.agentId)
           break
         }
         case this.tableEnum.member: {
-          this.$refs.agent.onSearch(this.agentId)
           this.$refs.member.onSearch(this.agentId)
           break
         }
       }
     },
-    setDataLoading(dataLoading) {
-      this.dataLoading = dataLoading
+    setLoading(loading) {
+      this.$store.dispatch('app/setLoading', loading)
     }
   }
 }

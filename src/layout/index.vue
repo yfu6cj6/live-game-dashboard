@@ -1,5 +1,5 @@
 <template>
-  <div :class="classObj" class="app-container">
+  <div v-loading="loading" :class="classObj" class="app-container">
     <template v-if="device === 'mobile'">
       <navbar class="navbar" />
       <page-tabs class="d-none" />
@@ -41,7 +41,8 @@ export default {
     ...mapGetters([
       'sidebar',
       'device',
-      'modPwd'
+      'modPwd',
+      'loading'
     ]),
     classObj() {
       return {

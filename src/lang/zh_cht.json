@@ -119,8 +119,6 @@
     "__tableId": "台號",
     "__subtotalCount": "小計",
     "__totalCount": "總計",
-    "__total": "共",
-    "__count": "筆",
     "__gameStartTime": "開局時間",
     "__gameEndTime": "結束時間",
     "__lowerLimit": "下限",
@@ -360,5 +358,8 @@
     "__mustBeGreaterOrEqual": "必須大於等於{0}",
     "__gameArea": "遊戲區",
     "__expand": "展開",
-    "__gross": "合計"
+    "__gross": "合計",
+    "__display": "顯示",
+    "__bar": "條",
+    "__total": "總共"
 }

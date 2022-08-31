@@ -1,6 +1,7 @@
 const getters = {
   sidebar: state => state.app.sidebar,
   device: state => state.app.device,
+  loading: state => state.app.loading,
   agentLevelSidebar: state => state.agentManagement.agentLevelSidebar,
   agentLevel: state => state.agentManagement.agentLevel,
   agentLevelLoading: state => state.agentManagement.agentLevelLoading,
