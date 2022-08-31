@@ -217,18 +217,7 @@
       }
     }
   }
-  
-  #app .form-alert {
-    width: 100%;
-    .el-alert--error,
-    .el-alert--warning {
-      padding: 0.83333rem;
-      background-color: transparent;
-      word-break: break-all;
-      color: #ff473d;
-    }
-  }
-  
+    
   .modPwd-container {
     .dialog-body {
       .account-info {
@@ -312,7 +301,7 @@
     }
   }
   
-  #app .animated {
+  .animated {
     -webkit-animation-duration: 0.5s;
     animation-duration: 0.5s;
     -webkit-animation-fill-mode: both;
@@ -605,14 +594,7 @@
       overflow: hidden;
     }
   }
-  
-  #app .form-alert .el-alert--warning {
-    padding: 0.83333rem;
-    background-color: transparent;
-    word-break: break-all;
-    color: #ff473d;
-  }
-  
+
   // index視窗
   .view-container {
     overflow: auto;
@@ -849,7 +831,7 @@
     }
   }
   
-  #app .el-tabs.light {
+  .el-tabs.light {
     .el-tabs__nav {
       float: none;
       background-color: #ffffff;

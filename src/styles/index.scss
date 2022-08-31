@@ -1208,6 +1208,24 @@ table {
   }
 }
 
+#app .form-alert {
+  width: 100%;
+  .el-alert--error,
+  .el-alert--warning {
+    padding: 0.83333rem;
+    background-color: transparent;
+    word-break: break-all;
+    color: #ff473d;
+  }
+}
+
+.form-alert .el-alert--warning {
+  padding: 0.83333rem;
+  background-color: transparent;
+  word-break: break-all;
+  color: #ff473d;
+}
+
 .el-checkbox {
   .el-checkbox__input {
     &.is-indeterminate {
