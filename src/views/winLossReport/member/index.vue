@@ -673,6 +673,15 @@
         </div>
       </div>
       <div class="w-100 p-4" />
+      <pagination
+        :page-size="pageSize"
+        :page-sizes="pageSizes"
+        :total="totalCount"
+        :current-page.sync="currentPage"
+        :show-page-number="totalCount > pageSize"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </template>
   </div>
 </template>
@@ -682,10 +691,12 @@ import { memberWinLossReportSearch } from '@/api/winLossReport/member'
 import handlePageChange from '@/mixin/handlePageChange'
 import { getFullDate } from '@/utils/transDate'
 import { numberFormat } from '@/utils/numberFormat'
-import { mapGetters } from 'vuex';
+import { mapGetters } from 'vuex'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'Member',
+  components: { Pagination },
   mixins: [handlePageChange],
   props: {
     'payoutTime': {

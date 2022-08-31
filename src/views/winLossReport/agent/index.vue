@@ -777,6 +777,7 @@
         :page-sizes="pageSizes"
         :total="totalCount"
         :current-page.sync="currentPage"
+        :show-page-number="totalCount > pageSize"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />

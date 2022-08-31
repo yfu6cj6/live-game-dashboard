@@ -11,14 +11,14 @@
             :total="total"
             :page-size="pageSize"
             :page-sizes="pageSizes"
-            :current-page.sync="currentPage"
+            :current-page.sync="currentPageSync"
             @current-change="handleCurrentChange"
           />
         </div>
         <div class="num-per ml-3" style="position: relative; width: 45px; height: 100%;">
           <div class="dropDown bg-black w-100" style="position: absolute; bottom: 0px; z-index: 10; border: 1px solid rgb(248, 201, 4);">
             <input
-              v-model="inputCurrentPage"
+              v-model.number="inputCurrentPage"
               type="number"
               class="size m-0 w-100 pl-2"
               style="height: 30px; line-height: 30px;"
@@ -99,6 +99,7 @@ export default {
   },
   data() {
     return {
+      currentPageSync: 1,
       inputCurrentPage: 1,
       dropdown: false
     }
@@ -108,19 +109,29 @@ export default {
       'sidebar'
     ])
   },
+  watch: {
+    'currentPage': {
+      handler() {
+        this.currentPageSync = this.currentPage
+        this.inputCurrentPage = this.currentPage
+      },
+      immediate: true
+    }
+  },
   methods: {
     selectPageSize(pageSize) {
       this.$emit('size-change', pageSize)
       this.toggleDropdown()
     },
     handleCurrentChange(page) {
+      let toPage = page
       const max = Math.floor(this.total / this.pageSize) + 1
-      if (page > max) {
-        page = max
-      } else if (page < 1) {
-        page = 1
+      if (toPage > max) {
+        toPage = max
+      } else if (toPage < 1) {
+        toPage = 1
       }
-      this.$emit('current-change', page)
+      this.$emit('current-change', toPage)
     },
     toggleDropdown() {
       this.dropdown = !this.dropdown
