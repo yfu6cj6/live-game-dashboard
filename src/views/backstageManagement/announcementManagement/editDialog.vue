@@ -346,110 +346,66 @@ export default {
       }
       return valid
     },
-    // 點快捷鈕自動將日其放在右邊的table
-    handleCalendarPage_announcement() {
-      // this.$nextTick(() => {
-      //   const parentEl = document.getElementsByClassName('dialogAnnouncementData')[0]
-      //   if (parentEl) {
-      //     const el = parentEl.querySelector('button.el-picker-panel__icon-btn.el-icon-arrow-left')
-      //     if (el) {
-      //       el.click()
-      //     }
-      //   }
-      // })
-    },
     // 日期範圍選擇器點開後要做的初始化
     changeInitCalendarPage_announcement() {
-      this.handleCalendarPage_announcement()
       this.addDateTimeOption(() => {
         this.monthIndex--;
         this.editForm.announcementedAt = getMonthDateTime(this.monthIndex, true)
-        this.handleCalendarPage_announcement()
       }, () => {
         this.monthIndex = 0;
         this.editForm.announcementedAt = getMonthDateTime(this.monthIndex, true)
-        this.handleCalendarPage_announcement()
       }, () => {
         this.monthIndex++;
         this.editForm.announcementedAt = getMonthDateTime(this.monthIndex, true)
-        this.handleCalendarPage_announcement()
       }, () => {
         this.dayIndex--;
         this.editForm.announcementedAt = getDayDateTime(this.dayIndex, true)
-        this.handleCalendarPage_announcement()
       }, () => {
         this.dayIndex = 0;
         this.editForm.announcementedAt = getDayDateTime(this.dayIndex, true)
-        this.handleCalendarPage_announcement()
       }, () => {
         this.dayIndex++;
         this.editForm.announcementedAt = getDayDateTime(this.dayIndex, true);
-        this.handleCalendarPage_announcement()
       }, () => {
         this.weekIndex--;
         this.editForm.announcementedAt = getWeekDateTime(this.weekIndex, true)
-        this.handleCalendarPage_announcement()
       }, () => {
         this.weekIndex = 0;
         this.editForm.announcementedAt = getWeekDateTime(this.weekIndex, true)
-        this.handleCalendarPage_announcement()
       }, () => {
         this.weekIndex++;
         this.editForm.announcementedAt = getWeekDateTime(this.weekIndex, true)
-        this.handleCalendarPage_announcement()
       })
-    },
-    // 點快捷鈕自動將日其放在右邊的table
-    handleCalendarPage_maintain() {
-      // this.$nextTick(() => {
-      //   const parentEl = document.getElementsByClassName('dialogMaintainData')[0]
-      //   if (parentEl) {
-      //     const el = parentEl.querySelector('button.el-picker-panel__icon-btn.el-icon-arrow-left')
-      //     if (el) {
-      //       el.click()
-      //     }
-      //   }
-      // })
     },
     // 日期範圍選擇器點開後要做的初始化
     changeInitCalendarPage_maintain() {
-      this.handleCalendarPage_maintain()
       this.addDateTimeOption(() => {
         this.maintainedMonthIndex--;
         this.editForm.maintainedAt = getMonthDateTime(this.maintainedMonthIndex, true)
-        this.handleCalendarPage_maintain()
       }, () => {
         this.maintainedMonthIndex = 0;
         this.editForm.maintainedAt = getMonthDateTime(this.maintainedMonthIndex, true)
-        this.handleCalendarPage_maintain()
       }, () => {
         this.maintainedMonthIndex++;
         this.editForm.maintainedAt = getMonthDateTime(this.maintainedMonthIndex, true)
-        this.handleCalendarPage_maintain()
       }, () => {
         this.maintainedDayIndex--;
         this.editForm.maintainedAt = getDayDateTime(this.maintainedDayIndex, true)
-        this.handleCalendarPage_maintain()
       }, () => {
         this.maintainedDayIndex = 0;
         this.editForm.maintainedAt = getDayDateTime(this.maintainedDayIndex, true)
-        this.handleCalendarPage_maintain()
       }, () => {
         this.maintainedDayIndex++;
         this.editForm.maintainedAt = getDayDateTime(this.maintainedDayIndex, true);
-        this.handleCalendarPage_maintain()
       }, () => {
         this.maintainedWeekIndex--;
         this.editForm.maintainedAt = getWeekDateTime(this.maintainedWeekIndex, true)
-        this.handleCalendarPage_maintain()
       }, () => {
         this.maintainedWeekIndex = 0;
         this.editForm.maintainedAt = getWeekDateTime(this.maintainedWeekIndex, true)
-        this.handleCalendarPage_maintain()
       }, () => {
         this.maintainedWeekIndex++;
         this.editForm.maintainedAt = getWeekDateTime(this.maintainedWeekIndex, true)
-        this.handleCalendarPage_maintain()
       })
     },
     onSubmit() {
