@@ -829,9 +829,7 @@
         <div>
           <div class="comp profit-report">
             <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
-              <div class="back-top">
-                <i class="el-submenu__icon-arrow el-icon-arrow-up" />
-              </div>
+              <backTop />
               <div class="scroll-inner on native">
                 <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
                   <div class="comp profit-report normal flex-column flex-fill">
@@ -1879,12 +1877,13 @@ import Agent from './agent/index'
 import Member from './member/index'
 import { getFullDate, getFullDateString, getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
 import { numberFormat } from '@/utils/numberFormat'
+import BackTop from '@/components/BackTop'
 
 const defaultSearchTime = getDayDateTime()
 
 export default {
   name: 'WinLossReport',
-  components: { Agent, Member },
+  components: { Agent, Member, BackTop },
   mixins: [common, viewCommon],
   data() {
     return {

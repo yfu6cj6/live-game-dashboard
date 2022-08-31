@@ -70,6 +70,16 @@ export default {
       dropdown: false
     }
   },
+  mounted() {
+    document.addEventListener('click', (e) => {
+      if (e.target.className !== 'language-item') {
+        this.dropdown = false
+      }
+    })
+  },
+  beforeDestroy() {
+    window.removeEventListener('click', () => {}, true)
+  },
   methods: {
     changLang(lang, index) {
       this.curLangIndex = index
