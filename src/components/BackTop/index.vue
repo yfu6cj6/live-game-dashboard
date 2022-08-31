@@ -72,6 +72,9 @@ export default {
             }, 1000)
           } else {
             this.active = false
+            if (this.timeOutKey) {
+              clearTimeout(this.timeOutKey)
+            }
           }
           this.inactive = false
         }
