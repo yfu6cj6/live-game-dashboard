@@ -72,7 +72,7 @@ export default {
   width: 100%;
   position: relative;
   .navbar {
-    z-index: 999;
+    z-index: 10;
   }
   .drawer-bg.opened {
     display: block;

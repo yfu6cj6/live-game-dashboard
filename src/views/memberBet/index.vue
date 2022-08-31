@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="dataLoading" class="scroll-wrap flex-column flex-fill">
+  <div class="scroll-wrap flex-column flex-fill">
     <div class="scroll-inner flex-column flex-fill off">
       <div class="scroll-view flex-column flex-fill">
         <div class="report-theme ab-record all-bet bet-record red-packet flex-column flex-fill">
@@ -38,8 +38,7 @@
                           <el-date-picker
                             v-model="searchTime"
                             type="datetimerange"
-                            popper-class="ams-timeslot-popper"
-                            align="right"
+                            popper-class="ams-timeslot-popper mobilePicker"
                             :clearable="false"
                             :editable="false"
                             time-arrow-control
@@ -745,7 +744,7 @@ export default {
       }
     },
     gameResultClick(round_id) {
-      this.dataLoading = true
+      this.setLoading(true)
       gameResultGetScoreCards({ round_id: round_id }).then((res) => {
         this.roundInfo = res.roundInfo
         this.countInfo = res.countInfo
@@ -755,9 +754,9 @@ export default {
           this.setHeaderStyle()
         }])
         this.curDialogIndex = this.dialogEnum.resultdialog
-        this.dataLoading = false
+        this.setLoading(false)
       }).catch(() => {
-        this.dataLoading = false
+        this.setLoading(false)
       })
     },
     onReset() {
@@ -767,7 +766,7 @@ export default {
       this.handleCurrentChange(1)
     },
     handleRequest(data) {
-      this.dataLoading = true
+      this.setLoading(true)
       const searchTime = []
       if (!this.searchTime) {
         this.searchTime = defaultSearchTime
@@ -799,28 +798,28 @@ export default {
       })
       this.totalCount = res.totalCount
       this.setTagsViewTitle()
-      this.dataLoading = false
+      this.setLoading(false)
     },
     onPlaybackPic(row) {
-      this.dataLoading = true
+      this.setLoading(true)
       this.selectForm = JSON.parse(JSON.stringify(row))
       gameResultGetPlaybackPic({ round_id: row.round_id }).then((res) => {
         this.playbackPic = res.playbackPic
         this.curDialogIndex = this.dialogEnum.pic
-        this.dataLoading = false
+        this.setLoading(false)
       }).catch(() => {
-        this.dataLoading = false
+        this.setLoading(false)
       })
     },
     onPlaybackUrl(row) {
-      this.dataLoading = true
+      this.setLoading(true)
       this.selectForm = JSON.parse(JSON.stringify(row))
       gameResultGetPlaybackUrl({ round_id: row.round_id }).then((res) => {
         this.playbackUrl = res.playbackUrl
         this.curDialogIndex = this.dialogEnum.video
-        this.dataLoading = false
+        this.setLoading(false)
       }).catch(() => {
-        this.dataLoading = false
+        this.setLoading(false)
       })
     },
     onSubmit() {
@@ -831,7 +830,7 @@ export default {
       memberBetSearch(data).then((res) => {
         this.handleRespone(res)
       }).catch(() => {
-        this.dataLoading = false
+        this.setLoading(false)
       })
     },
     onExportBtnClick() {
@@ -840,9 +839,9 @@ export default {
       memberBetExport(data).then((res) => {
         this.searchForm[this.searchTimeType] = undefined
         this.onDataOut(res.rows)
-        this.dataLoading = false
+        this.setLoading(false)
       }).catch(() => {
-        this.dataLoading = false
+        this.setLoading(false)
       })
     },
     onDataOut(tableData) {
@@ -862,6 +861,9 @@ export default {
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+    },
+    setLoading(loading) {
+      this.$store.dispatch('app/setLoading', loading)
     }
   }
 }
