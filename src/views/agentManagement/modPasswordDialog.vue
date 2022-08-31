@@ -289,7 +289,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
 
-#app .mobile {
+#app.mobile .agentManagement {
   .inferior-psw {
     background-color: #000;
     width: 100%;

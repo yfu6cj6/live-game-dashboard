@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="dataLoading" class="agent flex-column flex-fill">
+  <div v-loading="dataLoading" class="flex-column flex-fill h-100">
     <div class="agent-container bg-white flex-column flex-fill tree-close agentManagement">
       <div class="agent-container-inner flex-column flex-fill">
         <div class="agent-content flex-column flex-fill">
@@ -546,6 +546,44 @@ export default {
 @import "~@/styles/variables.scss";
 
 #app.mobile .agentManagement {
+  .agent-container {
+    height: 100%;
+    width: 100%;
+  }
+  .agent-container-inner {
+    background-color: #fff;
+    height: -webkit-fill-available;
+    min-height: 50vh;
+  }
+  .agent-content {
+    padding: 0;
+    width: 100%;
+    position: relative;
+    .floatNav {
+      position: absolute;
+      top: 1.66667rem;
+      left: 0.83333rem;
+      .fas {
+        width: 2.08333rem;
+        font-size: 1.83333rem;
+      }
+    }
+    .list-container {
+      height: 100%;
+    }
+  }
+  .agent-summary {
+    position: relative;
+    .floatNav {
+      position: absolute;
+      top: 1.66667rem;
+      left: 0.83333rem;
+      .fas {
+        width: 2.08333rem;
+        font-size: 1.83333rem;
+      }
+    }
+  }
   #agentInfo {
     padding: 0.41667rem 2.70833rem 0.83333rem 3.125rem;
     border-bottom: 0.08333rem solid #e9e9e9;
@@ -930,6 +968,9 @@ export default {
         }
       }
     }
+  }
+  .animate-box {
+    overflow: hidden;
   }
 }
 </style>

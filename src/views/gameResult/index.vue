@@ -598,7 +598,18 @@ export default {
 <style lang="scss" scoped>
 #app .dashboard-container {
   padding-top: 0;
+  -ms-flex-preferred-size: 0;
+  flex-basis: 0;
+  -ms-flex-positive: 1;
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  max-width: 768px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  margin: 0 auto;
 }
+
 .dashboard-container {
     margin-left: 0;
 }

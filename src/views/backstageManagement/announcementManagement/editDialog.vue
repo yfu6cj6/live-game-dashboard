@@ -1,7 +1,7 @@
 <template>
   <div v-if="visible">
     <template v-if="device === 'mobile'">
-      <div class="black_bg">
+      <div class="black_bg announcementManagementDialog">
         <div v-loading="dialogLoading" class="data_content">
           <div class="titleBar yellow">
             <span class="titleTips">{{ title }}</span>
@@ -476,10 +476,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.datetimerange {
-  width: 100%;
-}
-.day-range {
-  padding: 0;
+#app.mobile .announcementManagementDialog {
+  .datetimerange {
+    width: 100%;
+  }
+  .day-range {
+    padding: 0;
+  }
 }
 </style>

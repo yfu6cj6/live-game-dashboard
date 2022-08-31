@@ -1149,6 +1149,102 @@ table {
   }
 }
 
+.clearfix:after {
+  display: block;
+  clear: both;
+  content: "";
+}
+
+#app .text-link {
+  cursor: pointer;
+}
+
+.profit-tabs {
+  &.el-tabs {
+    &.light {
+      .el-tabs__nav:after {
+        border: none;
+      }
+    }
+  }
+}
+
+#app .el-tabs.deep {
+  .el-tabs__nav {
+    background-color: #000;
+    border-bottom: 0.16667rem solid #a3a3a3;
+    .el-tabs__item {
+      border-bottom: 0;
+      &.clickable {
+        .tab-item {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+.el-input {
+  &.is-disabled {
+    .el-input__inner {
+      background-color: #a3a3a3 !important;
+      color: #333;
+    }
+  }
+}
+
+#app .el-input {
+  &.yellow {
+    .el-input__inner {
+      border-radius: 0.25rem;
+      border: 0.08333rem solid #f9c901;
+      background-color: white;
+      padding: 0.83333rem;
+      height: 2.5rem;
+      line-height: 2.5rem;
+      font-size: 1.33333rem;
+      color: #000;
+    }
+  }
+}
+
+.el-checkbox {
+  .el-checkbox__input {
+    &.is-indeterminate {
+      .el-checkbox__inner::before {
+        background-color: #f9c901;
+        border: 0.1rem solid #f9c901;
+      }
+    }
+  }
+}
+
+#app .el-checkbox {
+  .is-checked {
+    .el-checkbox__inner:after {
+      -webkit-transform: rotate(45deg) scale(1.5);
+      transform: rotate(45deg) scale(1.5);
+      border: 0.16667rem solid #f9c901;
+      width: 0.25rem;
+      height: 0.75rem;
+      top: -0.25rem;
+      left: 0.5rem;
+      border-left: 0;
+      border-top: 0;
+    }
+  }
+}
+
+.el-button {
+  padding: 0.70833rem 0.95833rem;
+  font-size: 1rem;
+  &.bg-yellow {
+    color: #000;
+    background: #f9c901;
+    border: 0.08333rem solid #f9c901;
+    border-radius: 0.25rem;
+  }
+}
 // --------------------------------
 
 

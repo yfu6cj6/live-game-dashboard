@@ -16,304 +16,38 @@
 //   float: none;
 // }
 
+// .swiper-container-free-mode.swiper-wrapper {
+//   -webkit-transition-timing-function: ease-out;
+//   -o-transition-timing-function: ease-out;
+//   transition-timing-function: ease-out;
+//   margin: 0 auto;
+// }
+
+// #app {
+//   .agent-form {
+//     .step-content {
+//       .el-input__suffix {
+//         .el-input__icon {
+//           line-height: 2.4rem !important;
+//         }
+//       }
+//       .el-input__inner {
+//         border-radius: 0.25rem;
+//         border: 0.08333rem solid #f9c901;
+//         background-color: #fff;
+//         padding: 0.83333rem;
+//         height: 2.5rem;
+//         line-height: 2.5rem;
+//         font-size: 1.33333rem;
+//         color: #000;
+//       }
+//       .is-disabled {
+//         .el-input__inner {
+//           color: #6e6e6e;
+//         }
+//       }
+//     }
+//   }
+// }
+
 // ---------------------------
-
-.el-input.input_size {
-  .el-input__inner {
-    font-size: 1rem;
-    padding-left: 0.83333rem;
-    height: 2.66667rem;
-    line-height: 2.66667rem;
-    width: 100%;
-  }
-}
-
-.profit-tabs {
-  &.el-tabs {
-    &.light {
-      .el-tabs__nav:after {
-        border: none;
-      }
-    }
-  }
-}
-
-#app .el-tabs.light {
-  .el-tabs__nav {
-    float: none;
-    background-color: #ffffff;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    position: relative;
-    .el-tabs__item {
-      &.is-active {
-        border-bottom: 0.16667rem solid #ce9600;
-      }
-    }
-  }
-}
-
-.agent {
-  height: 100%;
-}
-.agent-container {
-  height: 100%;
-  width: 100%;
-}
-.agent-container-inner {
-  background-color: #fff;
-  height: -webkit-fill-available;
-  min-height: 50vh;
-}
-.agent-content {
-  padding: 0;
-  width: 100%;
-  position: relative;
-  .floatNav {
-    position: absolute;
-    top: 1.66667rem;
-    left: 0.83333rem;
-    .fas {
-      width: 2.08333rem;
-      font-size: 1.83333rem;
-    }
-  }
-  .list-container {
-    height: 100%;
-  }
-}
-.agent-summary {
-  position: relative;
-  .floatNav {
-    position: absolute;
-    top: 1.66667rem;
-    left: 0.83333rem;
-    .fas {
-      width: 2.08333rem;
-      font-size: 1.83333rem;
-    }
-  }
-}
-.fas {
-  &.gray-deep {
-    fill: #4e4e4e !important;
-  }
-}
-.animate-box {
-  overflow: hidden;
-}
-
-.swiper-container {
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-  overflow: hidden;
-  list-style: none;
-  padding: 0;
-  z-index: 1;
-}
-.swiper-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: -webkit-transform;
-  -o-transition-property: transform;
-  transition-property: transform;
-  transition-property: transform,-webkit-transform;
-  -webkit-box-sizing: content-box;
-  box-sizing: content-box;
-}
-.swiper-container-android {
-  .swiper-slide, 
-  .swiper-wrapper {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-  }
-}
-.swiper-container-free-mode>.swiper-wrapper {
-  -webkit-transition-timing-function: ease-out;
-  -o-transition-timing-function: ease-out;
-  transition-timing-function: ease-out;
-  margin: 0 auto;
-}
-
-.el-button {
-  padding: 0.70833rem 0.95833rem;
-  font-size: 1rem;
-  &.bg-yellow {
-    color: #000;
-    background: #f9c901;
-    border: 0.08333rem solid #f9c901;
-    border-radius: 0.25rem;
-  }
-}
-
-.el-tabs {
-  &.deep {
-    .el-tabs__nav {
-      .el-tabs__item {
-        &.is-active {
-          .tab-item {
-            color: #f9c901;
-            border-bottom: 0.16667rem solid #f9c901;
-          }
-        }
-      }
-    }
-  }
-}
-#app .el-tabs.deep {
-  .el-tabs__nav {
-    background-color: #000;
-    border-bottom: 0.16667rem solid #a3a3a3;
-    .el-tabs__item {
-      border-bottom: 0;
-      &.clickable {
-        .tab-item {
-          color: #ffffff;
-        }
-      }
-    }
-  }
-}
-
-#app .text-link {
-  cursor: pointer;
-}
-
-.clearfix:after {
-  display: block;
-  clear: both;
-  content: "";
-}
-
-#app {
-  .agent-form {
-    .step-content {
-      .el-input__suffix {
-        .el-input__icon {
-          line-height: 2.4rem !important;
-        }
-      }
-      .el-input__inner {
-        border-radius: 0.25rem;
-        border: 0.08333rem solid #f9c901;
-        background-color: #fff;
-        padding: 0.83333rem;
-        height: 2.5rem;
-        line-height: 2.5rem;
-        font-size: 1.33333rem;
-        color: #000;
-      }
-      .is-disabled {
-        .el-input__inner {
-          color: #6e6e6e;
-        }
-      }
-    }
-  }
-}
-
-#app .el-checkbox {
-  .is-checked {
-    .el-checkbox__inner:after {
-      -webkit-transform: rotate(45deg) scale(1.5);
-      transform: rotate(45deg) scale(1.5);
-      border: 0.16667rem solid #f9c901;
-      width: 0.25rem;
-      height: 0.75rem;
-      top: -0.25rem;
-      left: 0.5rem;
-      border-left: 0;
-      border-top: 0;
-    }
-  }
-}
-
-.el-input {
-  &.is-disabled {
-    .el-input__inner {
-      background-color: #a3a3a3 !important;
-      color: #333;
-    }
-  }
-}
-
-#app .el-input {
-  &.yellow {
-    .el-input__inner {
-      border-radius: 0.25rem;
-      border: 0.08333rem solid #f9c901;
-      background-color: white;
-      padding: 0.83333rem;
-      height: 2.5rem;
-      line-height: 2.5rem;
-      font-size: 1.33333rem;
-      color: #000;
-    }
-  }
-}
-
-.el-checkbox-group {
-  font-size: 0;
-}
-
-.el-input__suffix-inner {
-  pointer-events: all;
-}
-
-.el-checkbox {
-  .el-checkbox__input {
-    &.is-indeterminate {
-      .el-checkbox__inner::before {
-        background-color: #f9c901;
-        border: 0.1rem solid #f9c901;
-      }
-    }
-  }
-}
-
-#app .form-alert .el-alert--warning {
-  padding: 0.83333rem;
-  background-color: transparent;
-  word-break: break-all;
-  color: #ff473d;
-}
-
-#app .dashboard-container {
-  padding-top: 4.16667rem;
-  -ms-flex-preferred-size: 0;
-  flex-basis: 0;
-  -ms-flex-positive: 1;
-  -webkit-box-flex: 1;
-  flex-grow: 1;
-  max-width: 768px;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  margin: 0 auto;
-}
-
-.game-result {
-  .day-range {
-    padding: 0.41667rem 0.83333rem;
-  }
-}
-
-.filters .options {
-  width: 11.41667rem;
-}
-
-.please-search {
-  padding: 1.66667rem;
-  text-align: center;
-  min-height: 50vh;
-  color: #fff;
-}
