@@ -143,6 +143,8 @@
 }
 
 #app .el-button {
+  padding: 0.70833rem 0.95833rem;
+  font-size: 1rem;
   &.is-disabled {
     background-color: #c0c4cc;
     border-color: #e4e7ed;
@@ -190,8 +192,6 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   border-radius: 0.4rem;
-  padding: 0.70833rem 0.95833rem;
-  font-size: 1rem;
 }
 
 .el-button--mini {
