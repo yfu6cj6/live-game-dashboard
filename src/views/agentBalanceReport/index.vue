@@ -129,7 +129,7 @@
           <div class="credit-report-list flex-fill flex-nowrap bg-new-dark-white">
             <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
               <backTop />
-              <div id="scroll-inner" class="scroll-inner on native hasPage">
+              <div id="scroll-inner" class="scroll-inner on native">
                 <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
                   <div class="flex-nowrap">
                     <div class="bg-black">
@@ -269,9 +269,11 @@ export default {
   },
   watch: {
     'device': function() {
-      this.$nextTick(() => {
-        this.onTableBtnClick(this.curTableIndex)
-      })
+      if (this.$route.name === this.tempRoute.name) {
+        this.$nextTick(() => {
+          this.onTableBtnClick(this.curTableIndex)
+        })
+      }
     }
   },
   created() {
