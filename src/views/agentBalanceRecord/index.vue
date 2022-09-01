@@ -700,10 +700,12 @@ export default {
   },
   watch: {
     'device': function() {
-      this.$nextTick(() => {
-        this.search()
-        this.addSelectFilter()
-      })
+      if (this.$route.name === this.tempRoute.name) {
+        this.$nextTick(() => {
+          this.search()
+          this.addSelectFilter()
+        })
+      }
     }
   },
   created() {
