@@ -5,6 +5,7 @@
     position: relative;
     .scroll-inner {
       height: 100%;
+      z-index: 1;
       .scroll-view {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -528,78 +529,17 @@
     background: #fff;
   }
 
-  .overlay-scroll-wrap {
-    .scroll-inner {
-      height: 100%;
-      z-index: 1;
-      &.native {
-        &.hasPage {
-          border-bottom: 1px solid #000;
-        }
-      }
-    }
-  }
-
   .filter-outer {
     border-bottom: 3px solid #f9c901;
   }
 
-  .left-expand {
-    .filters {
-      max-width: calc(100vw - 200px);
-    }
-  }
-  
   .filters {
-    position: relative;
-    padding: 0 0.83333rem 0.41667rem 0.83333rem;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
     .options {
-      width: 11rem;
-      margin-right: 1.25rem;
       &.dim {
         width: auto;
         margin-left: 1.66667rem;
         margin-right: auto;
       }
-    }
-    .filter-search {
-      position: static !important;
-      font-size: 1.16667rem;
-      height: 2.66667rem;
-      width: 7.5rem;
-      padding: 0.56667rem 0.83333rem;
-      margin-right: auto;
-      -ms-flex-item-align: end;
-      align-self: flex-end;
-      margin-left: 0rem !important;
-    }
-    .filter-options {
-      width: 100%;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-      -webkit-box-pack: start;
-      -ms-flex-pack: start;
-      justify-content: flex-start;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      .day-range {
-        padding: 0;
-        width: auto;
-        margin-right: 1.25rem;
-      }
-    }
-    .el-button {
-      padding: 0.70833rem 0.95833rem;
-      font-size: 1rem;
-      margin: 0.41667rem;
-      font-weight: bold;
     }
   }
 
