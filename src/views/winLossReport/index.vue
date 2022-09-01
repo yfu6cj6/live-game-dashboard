@@ -2585,11 +2585,6 @@ export default {
             }
           }
         }
-        .no-result {
-          min-height: 50vh;
-          padding: 1.66667rem;
-          text-align: center;
-        }
       }
       .bottom-line {
         display: block;
