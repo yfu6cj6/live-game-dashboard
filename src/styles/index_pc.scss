@@ -295,18 +295,22 @@
   }
 
   .report-list {
+    z-index: unset;
     .items {
       position: relative;
       width: 100%;
       padding: 0.625rem 1.16667rem 0.625rem 1.16667rem;
       &:nth-child(odd) {
         background-color: #f4f4f4;
+        &.high-light {
+          background-color: #fdf3c9;
+        }
       }
       &:nth-child(even) {
         background-color: #fff;
-      }
-      &.high-light {
-        background-color: #fdf3c9;
+        &.high-light {
+          background-color: #fdf3c9;
+        }
       }
       .list-row {
         -webkit-box-align: start;
@@ -343,6 +347,9 @@
           width: auto;
           color: #6e6e6e;
           word-break: break-word;
+          &.text-black {
+            color: #000;
+          }
         }
         .value {
           font-weight: bold;
@@ -351,7 +358,33 @@
         .is-amount {
           padding-right: 5px !important;
         }
+        .solid-circle {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          -ms-flex-item-align: center;
+          align-self: center;
+          background: #f9c901;
+          width: 2.5rem;
+          height: 2.5rem;
+          border-radius: 50%;
+          .fas {
+            margin: auto;
+          }
+          &.small {
+            width: 20px;
+            height: 20px;
+          }
+        }
       }
+    }
+    .agent-break-line {
+      width: 100%;
+      height: 0.08333rem;
+      display: block;
     }
     &.flex-nowrap {
       .list-row {
@@ -363,9 +396,6 @@
         }
       }
     }
-  }
-
-  .report-list {
     &.has-index {
       .items {
         .list-row {
@@ -497,6 +527,117 @@
   .el-tabs__nav {
     background: #fff;
   }
+
+  .overlay-scroll-wrap {
+    .scroll-inner {
+      height: 100%;
+      z-index: 1;
+      &.native {
+        &.hasPage {
+          border-bottom: 1px solid #000;
+        }
+      }
+    }
+  }
+
+  .filter-outer {
+    border-bottom: 3px solid #f9c901;
+  }
+
+  .left-expand {
+    .filters {
+      max-width: calc(100vw - 200px);
+    }
+  }
+  
+  .filters {
+    position: relative;
+    padding: 0 0.83333rem 0.41667rem 0.83333rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    .options {
+      width: 11rem;
+      margin-right: 1.25rem;
+      &.dim {
+        width: auto;
+        margin-left: 1.66667rem;
+        margin-right: auto;
+      }
+    }
+    .filter-search {
+      position: static !important;
+      font-size: 1.16667rem;
+      height: 2.66667rem;
+      width: 7.5rem;
+      padding: 0.56667rem 0.83333rem;
+      margin-right: auto;
+      -ms-flex-item-align: end;
+      align-self: flex-end;
+      margin-left: 0rem !important;
+    }
+    .filter-options {
+      width: 100%;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      -webkit-box-pack: start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      .day-range {
+        padding: 0;
+        width: auto;
+        margin-right: 1.25rem;
+      }
+    }
+    .el-button {
+      padding: 0.70833rem 0.95833rem;
+      font-size: 1rem;
+      margin: 0.41667rem;
+      font-weight: bold;
+    }
+  }
+
+  .credit-records {
+    .filter-options {
+      .options {
+        &.dim {
+          margin-left: 0;
+          margin-right: 20px;
+          .el-checkbox {
+            .el-checkbox__label {
+              color: #ffffff;
+            }
+          }
+        }
+      }
+    }
+    .date-time-picker-box {
+      .picker {
+        margin-right: 0 !important;
+      }
+    }
+  }
+
+  .option {
+    .el-checkbox {
+      .el-checkbox__label {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .el-checkbox__label {
+    display: inline-block;
+    padding-left: 1rem;
+    line-height: 1.9rem;
+    font-size: 1.4rem;
+  }
 }
 
 .ams-timeslot-popper.pcPicker {
@@ -527,3 +668,4 @@
     }
   }
 }
+

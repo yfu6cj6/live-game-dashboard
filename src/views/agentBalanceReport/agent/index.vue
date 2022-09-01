@@ -167,6 +167,8 @@
                 v-for="(item, index) in tableData"
                 :key="index"
                 class="w-100 items report-list-item-row"
+                :class="{'high-light': item.tap === true}"
+                @click.stop="tapRow(item)"
               >
                 <div class="agent-list-basic list-row align-items-center">
                   <span>
@@ -352,6 +354,10 @@ export default {
         this.tableData = Object.assign([], this.tableData)
       })
     },
+    tapRow(row) {
+      row.tap = !row.tap
+      this.tableData = Object.assign([], this.tableData)
+    },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex >= this.tableData.length - 2) {
         return 'settlement'
@@ -377,6 +383,7 @@ export default {
       agentBalanceReportSearch(data).then((res) => {
         const open = this.tableData.filter(item => item.open).map(item => item.agentId)
         res.rows.forEach(element => {
+          element.tap = false
           element.balanceLabel = element.balance === '-' ? element.balance : numberFormat(element.balance)
           element.memberCountLabel = numberFormat(element.memberCount, 0)
           element.subordinateAgentsBalanceLabel = numberFormat(element.subordinateAgentsBalance)

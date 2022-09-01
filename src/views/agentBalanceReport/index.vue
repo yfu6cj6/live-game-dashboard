@@ -143,7 +143,7 @@
                     <div id="report-list" class="common-list summary flex-nowrap report-list flex-fill bg-new-dark-white">
                       <div class="w-100">
                         <div class="agent-group">
-                          <div class="w-100 items report-list-item-row">
+                          <div class="w-100 items report-list-item-row" :class="{'high-light': agentTap === true}" @click.stop="tapAgent()">
                             <div class="agent-list-basic list-row align-items-center">
                               <div class="list-item d-flex align-items-center" style="width: 140px; margin-left: 35px;">
                                 <span class="icon user">
@@ -261,7 +261,8 @@ export default {
       agentInfo: {},
       curTableIndex: 0,
       agentId: null,
-      tempRoute: {}
+      tempRoute: {},
+      agentTap: false
     }
   },
   computed: {
@@ -298,6 +299,9 @@ export default {
       } else {
         this.$store.dispatch('common/setHeaderStyle', [this.$t('__agentBalanceReport'), false, () => { }])
       }
+    },
+    tapAgent() {
+      this.agentTap = !this.agentTap
     },
     remarkExpand() {
       this.$nextTick(() => {
@@ -343,6 +347,7 @@ export default {
       multipleSheetExport(excelDatas, 'AgentBalanceReport_' + getFullDateString(new Date()), true, 'xlsx')
     },
     handleAgentRespone(agentInfo) {
+      this.agentTap = false
       const open = this.agentInfo.open;
       this.agentInfo = agentInfo
 

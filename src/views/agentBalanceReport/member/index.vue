@@ -85,6 +85,8 @@
                 v-for="(item, index) in tableData"
                 :key="index"
                 class="w-100 items report-list-item-row"
+                :class="{'high-light': item.tap === true}"
+                @click.stop="tapRow(item)"
               >
                 <div class="agent-list-basic list-row align-items-center">
                   <span>
@@ -193,6 +195,10 @@ export default {
       this.pageSizeCount++;
       this.handleCurrentChange(1);
     },
+    tapRow(row) {
+      row.tap = !row.tap
+      this.tableData = Object.assign([], this.tableData)
+    },
     // 父物件呼叫
     onSearch(agentId) {
       this.pageSizeCount = 1
@@ -209,6 +215,7 @@ export default {
       memberBalanceReportSearch(data).then((res) => {
         this.tableData = res.rows.slice(0, res.rows.length - 2)
         this.tableData.forEach(element => {
+          element.tap = false
           element.totalBalanceLabel = numberFormat(element.totalBalance);
         });
 
