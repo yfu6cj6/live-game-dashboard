@@ -14,7 +14,8 @@ export default {
       currentPage: 1,
       pageSizes: [50, 100, 200, 300, 500],
       paginationPagerCount: 7,
-      pageSizeCount: 1
+      pageSizeCount: 1,
+      hasSearch: false
     }
   },
   computed: {
@@ -22,11 +23,7 @@ export default {
   watch: {
     'device': {
       handler() {
-        if (this.device === 'mobile') {
-          this.pageSize = this.pageSize_mobile
-        } else {
-          this.pageSize = this.pageSize_pc
-        }
+        this.pageSize = (this.device === 'mobile') ? this.pageSize_mobile : this.pageSize = this.pageSize_pc
         this.currentPage = 1
       },
       immediate: true

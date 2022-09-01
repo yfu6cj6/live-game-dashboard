@@ -750,6 +750,11 @@ export default {
             -webkit-transition: background-color 5000s ease-in-out 0s;
             transition: background-color 5000s ease-in-out 0s;
           }
+          &.custom-psw {
+            &.el-input {
+              height: auto;
+            }
+          }
         }
         .el-button {
           font-size: 1.33333rem;
@@ -784,11 +789,6 @@ export default {
         .fas svg {
           width: 2rem !important;
           height: 2rem !important;
-        }
-      }
-      .custom-psw {
-        &.el-input {
-          height: auto;
         }
       }
     }

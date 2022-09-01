@@ -13,6 +13,28 @@ export default {
     }
   },
   watch: {
+    'device': function() {
+      this.$nextTick(() => {
+        const datePicker = document.getElementsByClassName('ams-timeslot-popper')
+        if (datePicker && datePicker.length > 0) {
+          if (this.device === 'mobile') {
+            datePicker.forEach(element => {
+              if (element.classList.contains('pcPicker')) {
+                element.classList.remove('pcPicker')
+                element.classList.add('mobilePicker')
+              }
+            })
+          } else {
+            datePicker.forEach(element => {
+              if (element.classList.contains('mobilePicker')) {
+                element.classList.remove('mobilePicker')
+                element.classList.add('pcPicker')
+              }
+            })
+          }
+        }
+      })
+    }
   },
   created() {
     this.pickerOptions = {
