@@ -200,23 +200,23 @@
                       <div class="page-item mb-2 is-amount">
                         <span class="label">{{ $t('__totalIncome') }}</span>
                         <span class="value">
-                          <span class="news">{{ subtotalInfo.income }}</span>
+                          <span class="news">{{ subtotalInfo.incomeLabel }}</span>
                         </span>
                       </div>
                       <div class="page-item mb-2 is-amount">
                         <span class="label">{{ $t('__totalExpenditure') }}</span>
                         <span class="value">
-                          <span class="news">{{ subtotalInfo.payout }}</span>
+                          <span class="news">{{ subtotalInfo.payoutLabel }}</span>
                         </span>
                       </div>
                       <div class="page-item mb-2 mt is-amount">
                         <span class="label">{{ $t('__incomeAndExpenditure') }}</span>
                         <span class="value">
-                          <span class="news">{{ subtotalInfo.incomeAndPayout }}</span>
+                          <span class="news">{{ subtotalInfo.incomeAndPayoutLabel }}</span>
                         </span>
                       </div>
                       <div class="page-item mb-2 is-amount">
-                        <span class="label">{{ `${$stringFormat($t('__totalDataAmount'), [subtotalInfo.totalAmount])}` }}</span>
+                        <span class="label">{{ `${$stringFormat($t('__totalDataAmount'), [subtotalInfo.totalAmountLabel])}` }}</span>
                       </div>
                     </div>
                   </div>
@@ -230,23 +230,23 @@
                       <div class="page-item mb-2 is-amount">
                         <span class="label">{{ $t('__totalIncome') }}</span>
                         <span class="value">
-                          <span class="news">{{ totalInfo.income }}</span>
+                          <span class="news">{{ totalInfo.incomeLabel }}</span>
                         </span>
                       </div>
                       <div class="page-item mb-2 is-amount">
                         <span class="label">{{ $t('__totalExpenditure') }}</span>
                         <span class="value">
-                          <span class="news">{{ totalInfo.payout }}</span>
+                          <span class="news">{{ totalInfo.payoutLabel }}</span>
                         </span>
                       </div>
                       <div class="page-item mb-2 mt is-amount">
                         <span class="label">{{ $t('__incomeAndExpenditure') }}</span>
                         <span class="value">
-                          <span class="news">{{ totalInfo.incomeAndPayout }}</span>
+                          <span class="news">{{ totalInfo.incomeAndPayoutLabel }}</span>
                         </span>
                       </div>
                       <div class="page-item mb-2 is-amount">
-                        <span class="label">{{ `${$stringFormat($t('__totalDataAmount'), [totalCount])}` }}</span>
+                        <span class="label">{{ `${$stringFormat($t('__totalDataAmount'), [totalCountLabel])}` }}</span>
                       </div>
                     </div>
                   </div>
@@ -262,7 +262,7 @@
       <div class="comp credit-records PlayerCreditRecords left-expand memberBalanceRecord">
         <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
           <backTop />
-          <div id="scroll-inner" class="scroll-inner on native hasPage">
+          <div id="scroll-inner" class="scroll-inner on native">
             <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
               <div class="flex-column flex-fill flex-nowrap bg-new-dark-white">
                 <div class="filter-bar bg-black pt-3">
@@ -470,7 +470,7 @@
                           v-for="(item, index) in tableData"
                           :key="index"
                           class="w-100 items report-list-item-row"
-                          :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0, 'high-light': item.tap === true}"
+                          :class="{'high-light': item.tap === true}"
                           @click.stop="tapRow(item)"
                         >
                           <div class="agent-list-basic list-row align-items-center">
@@ -527,17 +527,17 @@
                             </div>
                             <div class="list-item d-flex align-items-start is-amount" style="width: 125px; flex-wrap: wrap;">
                               <span class="value">
-                                <span class="">{{ item.pre_trade_balanceLabel }}</span>
+                                <span>{{ item.pre_trade_balanceLabel }}</span>
                               </span>
                             </div>
                             <div class="list-item d-flex align-items-start is-amount" style="width: 120px; flex-wrap: wrap;">
-                              <span class="value">
-                                <span :class="{'text_align_right front' : item.income > 0, 'text_align_right news': item.income <= 0}">{{ item.incomeLabel }}</span>
+                              <span class="value" :class="{'text-green': item.income > 0}">
+                                <span>{{ item.incomeLabel }}</span>
                               </span>
                             </div>
                             <div class="list-item d-flex align-items-start is-amount" style="width: 120px; flex-wrap: wrap;">
-                              <span class="value text-red">
-                                <span :class="{'back text_align_right' : item.payout < 0, 'news text_align_right': item.payout <= 0}">{{ item.payoutLabel }}</span>
+                              <span class="value" :class="{'text-red': item.payout < 0}">
+                                <span>{{ item.payoutLabel }}</span>
                               </span>
                             </div>
                             <div class="list-item d-flex align-items-start is-amount" style="width: 125px; flex-wrap: wrap;">
@@ -572,6 +572,126 @@
                       @size-change="handleSizeChange"
                       @current-change="handleCurrentChange"
                     />
+                  </div>
+                  <div class="page-total2">
+                    <div class="agent-break-line" style="border-bottom: 1px solid rgb(206, 150, 0);" />
+                    <div class="w-100 list-row totals">
+                      <div class="list-item" style="position: relative;">
+                        <div class="name list-sub-item d-flex align-items-center">
+                          <span>{{ $t('__subtotalCount') }}</span>
+                        </div>
+                        <div class="d-flex w-100" style="padding-left: 50px !important;">
+                          <div class="d-flex" style="position: relative;">
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 170px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 95px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 30px; min-width: 40px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 95px; flex-wrap: wrap; margin-left: -10px;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 30px; min-width: 40px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 185px; flex-wrap: wrap; margin-left: -10px;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 90px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 125px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item relative-target" style="width: 120px; flex-wrap: wrap;">
+                              <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                                <div data-itemname="income" class="page-item mb-2 flex-column justify-content-between is-amount">
+                                  <span class="label">{{ $t('__totalIncome') }}</span>
+                                  <span class="value">
+                                    <span>{{ subtotalInfo.incomeLabel }}</span>
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="item-content list-sub-item d-flex align-items-start cny" style="position: absolute; bottom: 0px; right: calc(100% + 50px);" />
+                            </div>
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 120px; flex-wrap: wrap;">
+                              <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                                <div data-itemname="outcome" class="page-item mb-2 flex-column justify-content-between is-amount">
+                                  <span class="label">{{ $t('__totalExpenditure') }}</span>
+                                  <span class="value">
+                                    <span>{{ subtotalInfo.payoutLabel }}</span>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 125px; flex-wrap: wrap;">
+                              <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                                <div data-itemname="creditAfter" class="page-item mb-2 flex-column justify-content-between is-amount">
+                                  <span class="label">{{ $t('__incomeAndExpenditure') }}</span>
+                                  <span class="value">
+                                    <span>{{ subtotalInfo.incomeAndPayoutLabel }}</span>
+                                  </span>
+                                </div>
+                                <span class="label sum-total-record w-auto">
+                                  {{ `${$t('__gong') } ` }}
+                                  <span style="font-weight:bold">{{ subtotalInfo.totalAmountLabel }}</span>
+                                  {{ ` ${$t('__bi') }` }}
+                                </span>
+                              </div>
+                            </div>
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 145px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 245px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 150px; flex-wrap: wrap;" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="agent-break-line" style="border-bottom: 1px solid rgb(206, 150, 0);" />
+                    <div class="w-100 list-row totals">
+                      <div class="list-item" style="position: relative;">
+                        <div class="name list-sub-item d-flex align-items-center">
+                          <span>{{ $t('__totalCount') }}</span>
+                        </div>
+                        <div class="d-flex w-100" style="padding-left: 50px !important;">
+                          <div class="d-flex" style="position: relative;">
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 170px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 95px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 30px; min-width: 40px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 95px; flex-wrap: wrap; margin-left: -10px;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 30px; min-width: 40px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 185px; flex-wrap: wrap; margin-left: -10px;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 90px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 125px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item relative-target" style="width: 120px; flex-wrap: wrap;">
+                              <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                                <div data-itemname="income" class="page-item mb-2 flex-column justify-content-between is-amount">
+                                  <span class="label">{{ $t('__totalIncome') }}</span>
+                                  <span class="value">
+                                    <span>{{ totalInfo.incomeLabel }}</span>
+                                  </span>
+                                </div>
+                              </div>
+                              <div class="item-content list-sub-item d-flex align-items-start cny" style="position: absolute; bottom: 0px; right: calc(100% + 50px);" />
+                            </div>
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 120px; flex-wrap: wrap;">
+                              <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                                <div data-itemname="outcome" class="page-item mb-2 flex-column justify-content-between is-amount">
+                                  <span class="label">{{ $t('__totalExpenditure') }}</span>
+                                  <span class="value">
+                                    <span>{{ totalInfo.payoutLabel }}</span>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 125px; flex-wrap: wrap;">
+                              <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                                <div data-itemname="creditAfter" class="page-item mb-2 flex-column justify-content-between is-amount">
+                                  <span class="label">{{ $t('__incomeAndExpenditure') }}</span>
+                                  <span class="value">
+                                    <span>{{ totalInfo.incomeAndPayoutLabel }}</span>
+                                  </span>
+                                </div>
+                                <span class="label sum-total-record w-auto">
+                                  {{ `${$t('__gong') } ` }}
+                                  <span style="font-weight:bold">{{ totalCountLabel }}</span>
+                                  {{ ` ${$t('__bi') }` }}
+                                </span>
+                              </div>
+                            </div>
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 145px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 245px; flex-wrap: wrap;" />
+                            <div class="list-item align-items-center text-right is-amount page-item" style="width: 150px; flex-wrap: wrap;" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </template>
                 <template v-else>
@@ -610,7 +730,8 @@ export default {
       searchFormOpen: false,
       subtotalInfo: {},
       totalInfo: {},
-      selectOption: {}
+      selectOption: {},
+      totalCountLabel: ''
     }
   },
   computed: {
@@ -623,10 +744,12 @@ export default {
   },
   watch: {
     'device': function() {
-      this.$nextTick(() => {
-        this.search()
-        this.addSelectFilter()
-      })
+      if (this.$route.name === this.tempRoute.name) {
+        this.$nextTick(() => {
+          this.search()
+          this.addSelectFilter()
+        })
+      }
     }
   },
   created() {
@@ -729,8 +852,17 @@ export default {
     },
     handleRespone(res) {
       this.subtotalInfo = res.subtotalInfo
+      this.subtotalInfo.incomeLabel = numberFormat(this.subtotalInfo.income)
+      this.subtotalInfo.payoutLabel = numberFormat(this.subtotalInfo.payout)
+      this.subtotalInfo.incomeAndPayoutLabel = numberFormat(this.subtotalInfo.incomeAndPayout)
       this.subtotalInfo.totalAmount = (this.pageSize * this.pageSizeCount) > res.totalCount ? res.totalCount : (this.pageSize * this.pageSizeCount)
+      this.subtotalInfo.totalAmountLabel = numberFormat(this.subtotalInfo.totalAmount, 0)
+
       this.totalInfo = res.totalInfo
+      this.totalInfo.incomeLabel = numberFormat(this.totalInfo.income)
+      this.totalInfo.payoutLabel = numberFormat(this.totalInfo.payout)
+      this.totalInfo.incomeAndPayoutLabel = numberFormat(this.totalInfo.incomeAndPayout)
+
       this.searchItems = JSON.parse(JSON.stringify(res.searchItems))
       this.selectOption = JSON.parse(JSON.stringify(res.searchItems))
       const open = this.tableData.filter(item => item.open).map(item => item.id)
@@ -743,10 +875,11 @@ export default {
       this.tableData.forEach(element => {
         element.balance_after_tradeLabel = numberFormat(element.balance_after_trade)
         element.pre_trade_balanceLabel = numberFormat(element.pre_trade_balance)
-        element.incomeLabel = numberFormat(element.income)
+        element.incomeLabel = '+' + numberFormat(element.income)
         element.payoutLabel = numberFormat(element.payout)
       });
       this.totalCount = res.totalCount
+      this.totalCountLabel = numberFormat(this.totalCount, 0)
       this.setDataLoading(false)
     },
     onSubmit() {
@@ -1065,8 +1198,85 @@ export default {
 
 #app.pc {
   .memberBalanceRecord {
+    .page-total2 {
+      background-color: #e9e9e9;
+      padding: 0px;
+      position: relative;
+      z-index: 0;
+      .totals {
+        min-height: 50px;
+        padding-top: 5px;
+        .label {
+          margin-top: 0px !important;
+        }
+      }
+      .list-sub-item {
+        margin-top: 0px !important;
+        &.name {
+          position: absolute;
+          top: 0;
+          left: 0;
+          color: #ce9600;
+          font-weight: bold;
+          font-size: 1.16667rem;
+          width: 100% !important;
+          margin-bottom: -30px !important;
+          padding: 10px 15px 10px 15px !important;
+        }
+      }
+      .page-item {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        font-size: 1.16667rem;
+        width: 180px;
+        position: relative;
+        padding: 0 !important;
+        -ms-flex-item-align: stretch;
+        align-self: stretch;
+        .label.pos-a {
+          position: absolute;
+          top: 0;
+          left: 0;
+          padding-right: 5px;
+        }
+        .label {
+          width: 100%;
+          margin-bottom: 0.41667rem;
+          margin-right: 0;
+          color: #898989;
+        }
+        .value {
+          font-weight: bold;
+        }
+        &.is-amount {
+          padding-right: 5px !important;
+          .label,
+          .value {
+            width: 100%;
+            text-align: right !important;
+          }
+        }
+        &.relative-target {
+          z-index: 1;
+        }
+      }
+      .sum-total-record {
+        position: absolute;
+        top: 0;
+        left: calc(100% + 50px);
+        white-space: nowrap;
+      }
+    }
+
     .el-checkbox__input.is-checked + .el-checkbox__label {
       margin-right: 0;
+      font-weight: normal;
     }
   }
 }

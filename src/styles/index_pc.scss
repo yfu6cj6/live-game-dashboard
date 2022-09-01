@@ -544,6 +544,24 @@
   }
 
   .credit-records {
+    .page-total2 {
+      padding: 0px !important;
+      .list-sub-item {
+        .page-item {
+          width: 120px;
+          padding-left: 0 !important;
+          padding-right: 5px !important;
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          &.is-amount {
+            padding-left: 0 !important;
+            padding-right: 5px !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+          }
+        }
+      }
+    }
     .filter-options {
       .options {
         &.dim {
