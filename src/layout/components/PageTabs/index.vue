@@ -128,7 +128,8 @@ export default {
   computed: {
     ...mapGetters([
       'visitedViews',
-      'permission_routes'
+      'permission_routes',
+      'device'
     ])
   },
   watch: {
@@ -142,6 +143,11 @@ export default {
       } else {
         document.body.removeEventListener('click', this.closeMenu)
       }
+    },
+    device() {
+      this.$nextTick(() => {
+        this.closeOthersTags()
+      })
     }
   },
   mounted() {
@@ -208,40 +214,55 @@ export default {
     },
     moveToCurrentTag() {
       const pages = this.visitedViews
-      const $container = document.getElementsByClassName('swiper-container')[0]
-      const $wrapper = document.getElementsByClassName('swiper-wrapper')[0]
-      this.$nextTick(() => {
-        let lastPage = null
-
-        // find first tag and last tag
-        if (pages.length > 0) {
-          lastPage = pages[pages.length - 1].path
-        }
-        if (this.$route.path === '/home') {
+      if (this.device === 'mobile') {
+        this.$nextTick(() => {
           this.translateX = 0
-        } else if (lastPage === this.$route.path) {
-          this.translateX = $container.offsetWidth - $wrapper.scrollWidth
-        } else {
-          const $swiperSlide = document.getElementsByClassName('swiper-slide active')[0]
-          const curPos = $swiperSlide.getBoundingClientRect()
-          const containerPos = $container.getBoundingClientRect()
-          const currentIndex = pages.findIndex(item => item.path === this.$route.path)
-          if (curPos.left < containerPos.left) {
-            this.translateX = -(currentIndex - 1) * curPos.width
-          } else if (curPos.right > containerPos.right) {
-            this.translateX = containerPos.width - (curPos.width * (currentIndex + 2));
-          }
-        }
-        for (const page of pages) {
-          if (page.path === this.$route.path) {
-            // when query is different then update
-            if (page.fullPath !== this.$route.fullPath) {
-              this.$store.dispatch('tagsView/updateVisitedView', this.$route)
+          for (const page of pages) {
+            if (page.path === this.$route.path) {
+              // when query is different then update
+              if (page.fullPath !== this.$route.fullPath) {
+                this.$store.dispatch('tagsView/updateVisitedView', this.$route)
+              }
+              break
             }
-            break
           }
-        }
-      })
+        })
+      } else {
+        const $container = document.querySelector('.swiper-container')
+        const $wrapper = document.querySelector('.swiper-wrapper')
+        this.$nextTick(() => {
+          let lastPage = null
+
+          // find first tag and last tag
+          if (pages.length > 0) {
+            lastPage = pages[pages.length - 1].path
+          }
+          if (this.$route.path === '/home') {
+            this.translateX = 0
+          } else if (lastPage === this.$route.path) {
+            this.translateX = $container.offsetWidth - $wrapper.scrollWidth
+          } else {
+            const $swiperSlide = document.querySelector('.swiper-slide.active')
+            const curPos = $swiperSlide.getBoundingClientRect()
+            const containerPos = $container.getBoundingClientRect()
+            const currentIndex = pages.findIndex(item => item.path === this.$route.path)
+            if (curPos.left < containerPos.left) {
+              this.translateX = -(currentIndex - 1) * curPos.width
+            } else if (curPos.right > containerPos.right) {
+              this.translateX = containerPos.width - (curPos.width * (currentIndex + 2));
+            }
+          }
+          for (const page of pages) {
+            if (page.path === this.$route.path) {
+              // when query is different then update
+              if (page.fullPath !== this.$route.fullPath) {
+                this.$store.dispatch('tagsView/updateVisitedView', this.$route)
+              }
+              break
+            }
+          }
+        })
+      }
     },
     refreshSelectedTag(view) {
       this.$store.dispatch('tagsView/delCachedView', view).then(() => {
@@ -261,8 +282,8 @@ export default {
       })
     },
     closeOthersTags() {
-      this.$router.push(this.selectedTag)
-      this.$store.dispatch('tagsView/delOthersViews', this.selectedTag).then(() => {
+      this.$router.push(this.$route)
+      this.$store.dispatch('tagsView/delOthersViews', this.$route).then(() => {
         this.moveToCurrentTag()
       })
     },

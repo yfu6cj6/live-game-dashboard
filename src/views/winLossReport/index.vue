@@ -1980,6 +1980,13 @@ export default {
       if (!hasSet) {
         this.curDateEnumIndex = this.dateEnum.none
       }
+    },
+    'device': function() {
+      if (this.tempRoute.path === this.$route.path) {
+        this.$nextTick(() => {
+          this.onTableBtnClick(this.curTableIndex)
+        })
+      }
     }
   },
   created() {

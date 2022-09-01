@@ -14,8 +14,7 @@ export default {
       currentPage: 1,
       pageSizes: [50, 100, 200, 300, 500],
       paginationPagerCount: 7,
-      pageSizeCount: 1,
-      hasSearch: false
+      pageSizeCount: 1
     }
   },
   computed: {
