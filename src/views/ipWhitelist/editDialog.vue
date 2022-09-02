@@ -12,7 +12,7 @@
                     <label for="userName" class="el-form-item__label">{{ $t('__agentOrSubAccount') }}</label>
                     <div class="el-form-item__content">
                       <div class="el-input">
-                        <input v-model="editForm.account" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkInput()" @blur="checkInput()">
+                        <input v-model="editForm.account" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkValidInput('account')" @blur="checkValidInput('account')">
                         <span class="el-input__suffix">
                           <span class="el-input__suffix-inner" />
                           <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.account.state === inputState.error, 'el-icon-success': inputData.account.state === inputState.success}" />
@@ -24,7 +24,7 @@
                     <label for="domain" class="el-form-item__label">IP</label>
                     <div class="el-form-item__content">
                       <div class="el-input">
-                        <input v-model="editForm.ip" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.ip)" @change="checkInput()" @blur="checkInput()">
+                        <input v-model="editForm.ip" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.ip)" @change="checkValidInput('ip')" @blur="checkValidInput('ip')">
                         <span class="el-input__suffix">
                           <span class="el-input__suffix-inner" />
                           <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.ip.state === inputState.error, 'el-icon-success': inputData.ip.state === inputState.success}" />
@@ -61,37 +61,79 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
-        v-if="visible"
-        :loading="dialogLoading"
-        :title="title"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <el-form ref="editForm" :model="editForm" :rules="rules">
-          <el-form-item :label="$t('__account')" prop="account">
-            <el-input v-model="editForm.account" />
-          </el-form-item>
-          <el-form-item label="IP" prop="ip">
-            <el-input v-model="editForm.ip" />
-          </el-form-item>
-        </el-form>
-        <span v-if="!dialogLoading" slot="bodyFooter">
-          <el-button class="bg-gray" @click="onReset">{{ $t("__reset") }}</el-button>
-          <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-        </span>
-      </Dialog>
+      <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" />
+        <div class="popup-panel animated fadeInUp" style="max-width: 600px; min-width: unset;">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
+          </div>
+          <div id="add-edit-white-list" class="add-edit-white-list">
+            <div class="overlay-scroll-wrap scrolling">
+              <div class="back-top" />
+              <div id="scroll-inner" class="scroll-inner on native">
+                <div class="scroll-view" style="max-height: calc(729px);">
+                  <div class="form-container h-100 p-0 pt-3">
+                    <form class="el-form">
+                      <div class="el-form-item el-form-item--feedback" :class="{'is-error': inputData.account.state === inputState.error, 'is-success': inputData.account.state === inputState.success}">
+                        <label for="userName" class="el-form-item__label">{{ $t('__agentOrSubAccount') }}</label>
+                        <div class="el-form-item__content">
+                          <div class="el-input">
+                            <input v-model="editForm.account" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkValidInput('account')" @blur="checkValidInput('account')">
+                            <span class="el-input__suffix">
+                              <span class="el-input__suffix-inner" />
+                              <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.account.state === inputState.error, 'el-icon-success': inputData.account.state === inputState.success}" />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="el-form-item el-form-item--feedback" :class="{'is-error': inputData.ip.state === inputState.error, 'is-success': inputData.ip.state === inputState.success}">
+                        <label for="domain" class="el-form-item__label">IP</label>
+                        <div class="el-form-item__content">
+                          <div class="el-input">
+                            <input v-model="editForm.ip" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.ip)" @change="checkValidInput('ip')" @blur="checkValidInput('ip')">
+                            <span class="el-input__suffix">
+                              <span class="el-input__suffix-inner" />
+                              <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.ip.state === inputState.error, 'el-icon-success': inputData.ip.state === inputState.success}" />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-alert">
+              <div v-show="errorTips !== ''" role="alert" class="el-alert el-alert--warning is-light fade hidden">
+                <i class="el-alert__icon el-icon-info" />
+                <div class="el-alert__content">
+                  <span v-if="errorTips !== ''" class="el-alert__title">{{ errorTips }}</span>
+                  <i class="el-alert__closebtn el-icon-close" style="display: none;" />
+                </div>
+              </div>
+            </div>
+            <div class="d-flex w-100 justify-content-center mt-3">
+              <button type="button" class="el-button bg-yellow common-button el-button--primary" @click="onSubmit">
+                <span>{{ $t('__submit') }}</span>
+              </button>
+              <button type="button" class="el-button bg-gray common-button el-button--primary" @click="onClose">
+                <span>{{ $t('__cancel') }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon';
-import Dialog from '@/components/Dialog'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditDialog',
-  components: { Dialog },
+  components: { },
   mixins: [dialogCommon],
   props: {
     'title': {
@@ -121,13 +163,6 @@ export default {
     }
   },
   data: function() {
-    const validate = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else {
-        callback()
-      }
-    }
     return {
       inputData: {
         account: {
@@ -139,15 +174,14 @@ export default {
           state: 0
         }
       },
-      rules: {
-        account: [{ required: true, trigger: 'blur', validator: validate }],
-        ip: [{ required: true, trigger: 'blur', validator: validate }]
-      },
       editForm: {},
       errorTips: ''
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
   },
   watch: {
     visible() {
@@ -160,33 +194,38 @@ export default {
     inputFocus(input) {
       input.state = this.inputState.none
     },
-    checkInput() {
+    checkValidInput(type) {
       this.errorTips = ''
-      if (!this.editForm.account || this.editForm.account.length <= 0) {
-        this.inputData.account.state = this.inputState.error
-        this.errorTips = this.editForm.account.length > 0 ? `${this.$t('__agentOrSubAccount')}${this.$t('__formatInvalid')}` : ''
-      } else {
-        this.inputData.account.state = this.inputState.success
-      }
-      if (!this.checkIpValid()) {
-        this.inputData.ip.state = this.inputState.error
-        if (this.errorTips === '' && this.editForm.ip.length > 0) {
-          this.errorTips = `IP${this.$t('__formatInvalid')}`
-        }
-      } else {
-        this.inputData.ip.state = this.inputState.success
+      switch (type) {
+        case 'account':
+          if (this.editForm.account !== undefined && this.editForm.account.length > 0) {
+            this.inputData.account.state = this.inputState.success
+          } else {
+            this.inputData.account.state = this.inputState.error
+            this.errorTips = `${this.$t('__agentOrSubAccount')}${this.$t('__formatInvalid')}`
+          }
+          break
+        case 'ip':
+          if (this.checkIpValid()) {
+            this.inputData.ip.state = this.inputState.success
+          } else {
+            this.inputData.ip.state = this.inputState.error
+            this.errorTips = `IP${this.$t('__formatInvalid')}`
+          }
+          break;
       }
     },
     checkIpValid() {
-      if (!this.editForm.ip || this.editForm.ip.length <= 0) {
+      if (!this.editForm.ip === undefined) {
         return false
       }
-
+      if (this.editForm.ip.length <= 0) {
+        return false
+      }
       var strs = this.editForm.ip.split('.')
       if (strs.length !== 4) {
         return false
       }
-
       var valid = true
       for (let i = 0; i < strs.length; i++) {
         if (strs[i].length <= 0) {
@@ -210,21 +249,14 @@ export default {
         this.errorTips = this.$t('__pleaseCheckFormContent')
         return
       }
-
       this.$emit('confirm', JSON.parse(JSON.stringify(this.editForm)))
-      // this.$refs.editForm.validate((valid) => {
-      //   if (valid) {
-      //     this.$emit('confirm', JSON.parse(JSON.stringify(this.editForm)))
-      //   }
-      // })
     },
     onReset() {
-      this.editForm = JSON.parse(JSON.stringify(this.form))
-      this.errorTips = ''
-      this.inputData.account.state = this.inputState.none
-      this.inputData.ip.state = this.inputState.none
       this.$nextTick(() => {
-        // this.$refs.editForm.clearValidate()
+        this.editForm = JSON.parse(JSON.stringify(this.form))
+        this.errorTips = ''
+        this.inputData.account.state = this.inputState.none
+        this.inputData.ip.state = this.inputState.none
       })
     }
   }
@@ -305,6 +337,13 @@ export default {
 
   .el-form {
     margin-bottom: 10px;
+  }
+}
+
+#app.pc {
+  .sidebar_open {
+    left: 200px;
+    width: calc(100vw - 200px);
   }
 }
 </style>
