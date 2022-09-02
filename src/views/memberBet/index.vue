@@ -883,6 +883,499 @@
                   </div>
                 </div>
               </div>
+              <template v-if="tableData.length > 0">
+                <div class="page-total2 bg-gray-white-light small">
+                  <div class="w-100 list-row totals">
+                    <div class="list-item" style="position: relative;">
+                      <div class="name list-sub-item d-flex align-items-center">
+                        <span>{{ $t('__totalCount') }}</span>
+                      </div>
+                      <div class="d-flex w-100" style="padding-left: 50px !important;">
+                        <div class="d-flex" style="position: relative;">
+                          <div class="list-item align-items-center text-right is-amount page-item item-agentIcon">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-agent">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-playerIcon">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-player">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-betLogId">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-betTime">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-settleTime">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-gameTypeCode">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-gameRoundId">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-result">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-status">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-bet">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-betAmount relative-target">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between">
+                                <div class="label">{{ $t('__betAmount') }}</div>
+                                <div class="value">
+                                  <span>{{ totalInfo.betAmountLabel }}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-winOrLossAmount">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between">
+                                <div class="label">{{ $t('__result') }}</div>
+                                <div class="value">
+                                  <span
+                                    :class="{
+                                      'text-red': totalInfo.payout > 0,
+                                      'text-blue': totalInfo.payout < 0
+                                    }"
+                                  >
+                                    {{ totalInfo.payoutLabel }}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-validAmount">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between">
+                                <div class="label">{{ $t('__validBetAmount') }}</div>
+                                <div class="value">
+                                  <span>{{ totalInfo.validBetAmountLabel }}</span>
+                                </div>
+                                <div class="page-item flex-column justify-content-between ab-record-total-record">
+                                  <div class="label">
+                                    {{ `${$t('__gong')} ` }}
+                                    <span style="font-weight:bold">{{ totalInfo.count }}</span>
+                                    {{ ` ${$t('__bi')}` }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-appType">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-ip">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="agent-break-line" style="border-bottom: 1px solid rgb(51, 51, 51); background-color: black;" />
+                  <div class="flex-nowrap report-list bg-new-dark-white has-index">
+                    <div class="w-100">
+                      <div class="agent-group">
+                        <div class="w-100 items pb-0">
+                          <div class="agent-list-basic list-row pb-2">
+                            <span class="index" />
+                            <div class="list-item d-flex align-items-center item-agentIcon">
+                              <span class="label font-weight-bold text-black" v-html="'&nbsp;'" />
+                            </div>
+                            <div class="list-item d-flex align-items-center item-agent">
+                              <span class="label font-weight-bold text-black">{{ $t('__agent') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-playerIcon">
+                              <span class="label font-weight-bold text-black" v-html="'&nbsp;'" />
+                            </div>
+                            <div class="list-item d-flex align-items-center item-player">
+                              <span class="label font-weight-bold text-black">{{ $t('__member') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-betLogId">
+                              <span class="label font-weight-bold text-black">{{ $t('__orderNumber') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-betTime">
+                              <span class="label font-weight-bold text-black">{{ $t('__betTime') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-settleTime">
+                              <span class="label font-weight-bold text-black">{{ $t('__payoutTime') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-gameTypeCode">
+                              <span class="label font-weight-bold text-black">{{ $t('__gameType') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-gameRoundId">
+                              <span class="label font-weight-bold text-black">{{ $t('__roundId') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-result">
+                              <span class="label font-weight-bold text-black">{{ $t('__gameResult') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-status">
+                              <span class="label font-weight-bold text-black">{{ $t('__status') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-bet">
+                              <span class="label font-weight-bold text-black">{{ $t('__gamePlay') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-betAmount is-amount">
+                              <span class="label font-weight-bold text-black">{{ $t('__betAmount') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-winOrLossAmount is-amount">
+                              <span class="label font-weight-bold text-black">{{ $t('__result') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-validAmount is-amount">
+                              <span class="label font-weight-bold text-black">{{ $t('__validBetAmount') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-appType">
+                              <span class="label font-weight-bold text-black">{{ $t('__device') }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-center item-ip">
+                              <span class="label font-weight-bold text-black">IP</span>
+                            </div>
+                          </div>
+                          <div class="agent-break-line" style="border-bottom: 1px solid rgb(51, 51, 51);" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="flex-nowrap report-list flex-fill bg-new-dark-white has-index">
+                  <div class="w-100">
+                    <div class="agent-group">
+                      <div
+                        v-for="(item, index) in tableData"
+                        :key="index"
+                        class="w-100 items report-list-item-row"
+                        :class="{'high-light': item.tap}"
+                        @click.stop="tapRow(item)"
+                      >
+                        <div class="agent-list-basic list-row align-items-center">
+                          <span>
+                            <span class="index" style="font-size:17px!important;margin-top:-8.5px!important">{{ index + 1 }}</span>
+                          </span>
+                          <div class="list-item d-flex align-items-start item-agentIcon">
+                            <span class="value d-flex">
+                              <span class="solid-circle align-self-center clickable small">
+                                <div class="fas black">
+                                  <svg-icon icon-class="top" style="height: 1rem; width: 1rem;" />
+                                </div>
+                              </span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-agent">
+                            <span class="value text-black">
+                              <span>{{ item.agent }}</span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-playerIcon">
+                            <span class="value d-flex">
+                              <span class="solid-circle align-self-center clickable small">
+                                <div class="fas black">
+                                  <svg-icon icon-class="info" style="height: 1.25rem; width: 1.25rem;" />
+                                </div>
+                              </span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-player">
+                            <span class="value">
+                              <span>{{ item.member }}</span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-betLogId">
+                            <span class="value">
+                              <span>{{ item.order_number }}</span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-betTime">
+                            <span class="value flex-column">
+                              <span style="color: rgb(110, 110, 110);">{{ item.bet_time.split(' ')[0] }}</span>
+                              <span>{{ item.bet_time.split(' ')[1] }}</span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-settleTime">
+                            <span class="value flex-column">
+                              <span style="color: rgb(110, 110, 110);">{{ item.payout_time.split(' ')[0] }}</span>
+                              <span>{{ item.payout_time.split(' ')[1] }}</span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-gameTypeCode">
+                            <span class="value">
+                              <span>{{ item.game_type }}</span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-gameRoundId">
+                            <span class="value text-link">
+                              <span>
+                                <span class="text-underline">{{ item.round_id }}</span>
+                              </span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-result">
+                            <span data-vakey="10" class="value gameResultAndVideo">
+                              <template v-if="item.gameResult.result === -1">
+                                <div>-</div>
+                              </template>
+                              <template v-else>
+                                <div class="fas videoBtn white">
+                                  <i class="el-icon-picture text-yellow mr-2 playbackPic" @click.stop="onPlaybackPic(item)" />
+                                </div>
+                                <div class="fas videoBtn text-link white">
+                                  <img :src="require(`@/assets/gameResult/playbackUrl.png`)" style="height: 1.5rem; width: 1.5rem;" @click.stop="onPlaybackUrl(item)">
+                                </div>
+                                <span class="border-bottom border-dark" @click.stop="gameResultClick(item.round_id)">
+                                  <span
+                                    class="mr-1"
+                                    :class="{
+                                      'text-red': item.gameResult.result === 0,
+                                      'text-blue': item.gameResult.result === 1,
+                                      'text-green': item.gameResult.result === 2
+                                    }"
+                                  >
+                                    {{ item.gameResult.resultLabel }}
+                                  </span>
+                                  <span>{{ '[' }}</span>
+                                  <span>{{ $t('__player') }}</span>
+                                  <span class="mr-1">{{ item.gameResult.player_point }}</span>
+                                  <span>{{ $t('__banker') }}</span>
+                                  <span>{{ item.gameResult.banker_point }}</span>
+                                  <span>{{ ']' }}</span>
+                                </span>
+                              </template>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-status">
+                            <span class="value text-center w-100">
+                              <span>
+                                <span
+                                  :class="{
+                                    'text-green': item.status === 1,
+                                    'text-blue': item.status === 2
+                                  }"
+                                >
+                                  {{ $t(item.statusLabel) }}
+                                </span>
+                              </span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-bet">
+                            <span class="value font-weight-bold winner PLAYER">
+                              <span
+                                :class="{
+                                  'text-red': item.game_play.key === 0,
+                                  'text-blue': item.game_play.key === 1,
+                                  'text-green': item.game_play.key === 2
+                                }"
+                              >
+                                {{ $t(item.gamePlayLabel) }}
+                              </span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-betAmount is-amount">
+                            <span class="value">
+                              <span>{{ item.betAmountLabel }}</span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-winOrLossAmount is-amount">
+                            <span class="value">
+                              <span
+                                :class="{
+                                  'text-red': item.payout > 0,
+                                  'text-blue': item.payout < 0
+                                }"
+                              >
+                                {{ item.payoutLabel }}
+                              </span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-validAmount is-amount">
+                            <span class="value">
+                              <span class="">{{ item.validBetAmountLabel }}</span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-appType">
+                            <span class="value">
+                              <span>{{ item.device }}</span>
+                            </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-ip">
+                            <span class="value">
+                              <span class="text-yellow">{{ item.ip }}</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <pagination
+                    :page-size="pageSize"
+                    :page-sizes="pageSizes"
+                    :total="totalCount"
+                    :current-page.sync="currentPage"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                  />
+                </div>
+                <div class="page-total2">
+                  <div class="agent-break-line" style="border-bottom: 1px solid rgb(206, 150, 0);" />
+                  <div class="w-100 list-row totals">
+                    <div class="list-item" style="position: relative;">
+                      <div class="name list-sub-item d-flex align-items-center">
+                        <span>小计</span>
+                      </div>
+                      <div class="d-flex w-100" style="padding-left: 50px !important;">
+                        <div class="d-flex" style="position: relative;">
+                          <div class="list-item align-items-center text-right is-amount page-item item-agentIcon">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-agent">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-playerIcon">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-player">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-betLogId">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-betTime">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-settleTime">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-gameTypeCode">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-gameRoundId">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-result">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-status">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-bet">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-betAmount relative-target">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between">
+                                <div class="label">{{ $t('__betAmount') }}</div>
+                                <div class="value">
+                                  <span>590,513.00</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-winOrLossAmount">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between">
+                                <div class="label">输赢</div>
+                                <div class="value">
+                                  <span class="text-blue">-183,488.50</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-validAmount">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between">
+                                <div class="page-item mb-2 flex-column justify-content-between">
+                                  <div class="label">有效投注</div>
+                                  <div class="value">
+                                    <span>586,217.50</span>
+                                  </div>
+                                  <div class="page-item flex-column justify-content-between ab-record-total-record">
+                                    <div class="label">
+                                      共
+                                    <span style="font-weight:bold">100</span>
+                                    笔
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="list-item align-items-center text-right is-amount page-item item-appType">
+                          <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                            <div class="page-item mb-2 flex-column justify-content-between" />
+                          </div>
+                        </div>
+                        <div class="list-item align-items-center text-right is-amount page-item item-betMethod">
+                          <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                            <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <div v-else class="no-result">{{ $t('__noInformation') }}</div>
             </div>
           </div>
         </div>
@@ -903,13 +1396,14 @@ import { numberFormat } from '@/utils/numberFormat'
 import PlaybackDialog from '@/components/GameResult/playbackDialog'
 import GameResultDialog from '@/components/GameResult/gameResultDialog'
 import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 const defaultSearchTimeType = 'betTime'
 const defaultSearchTime = getDayDateTime()
 
 export default {
   name: 'MemberBet',
-  components: { PlaybackDialog, GameResultDialog, BackTop },
+  components: { PlaybackDialog, GameResultDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -928,7 +1422,8 @@ export default {
       countInfo: {},
       scoreCards: [],
       searchOpen: false,
-      selectOption: {}
+      selectOption: {},
+      subtotalInfo: {}
     }
   },
   computed: {
@@ -983,15 +1478,12 @@ export default {
       localStorage.setItem(`memberBet${this.memberId}`, this.searchTime.toString())
     },
     'device': function() {
-      const datePicker = document.querySelector('ams-timeslot-popper')
-      console.log(datePicker)
-      if (datePicker) {
-        console.log("AA")
-        document.removeChild(datePicker)
+      if (this.tempRoute.path === this.$route.path) {
+        this.$nextTick(() => {
+          this.handleCurrentChange(this.currentPage)
+          this.addSelectFilter()
+        })
       }
-      this.$nextTick(() => {
-        this.addSelectFilter()
-      })
     }
   },
   created() {
@@ -1017,6 +1509,10 @@ export default {
     this.setHeaderStyle()
   },
   methods: {
+    tapRow(row) {
+      row.tap = !row.tap
+      this.tableData = Object.assign([], this.tableData)
+    },
     setHeaderStyle() {
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__memberBet'), false, () => { }])
     },
@@ -1141,6 +1637,14 @@ export default {
         element.gamePlayLabel = this.game_play.find(item => item.key === element.game_play.key).nickname
         element.statusLabel = this.statusType.find(item => item.key === element.status.toString()).nickname
       })
+      this.subtotalInfo = res.subtotalInfo
+      this.subtotalInfo.betAmountLabel = numberFormat(this.subtotalInfo.bet_amount)
+      this.subtotalInfo.payoutLabel = numberFormat(this.subtotalInfo.payout)
+      this.subtotalInfo.validBetAmountLabel = numberFormat(this.subtotalInfo.valid_bet_amount)
+      this.totalInfo = res.totalInfo
+      this.totalInfo.betAmountLabel = numberFormat(this.totalInfo.bet_amount)
+      this.totalInfo.payoutLabel = numberFormat(this.totalInfo.payout)
+      this.totalInfo.validBetAmountLabel = numberFormat(this.totalInfo.valid_bet_amount)
       this.totalCount = res.totalCount
       this.setTagsViewTitle()
       this.setLoading(false)
@@ -1215,6 +1719,14 @@ export default {
 </script>
 
 <style lang="scss">
+#app {
+  .memberBet {
+    .playbackPic {
+      transform: scale(1.3);
+      vertical-align: middle;
+    }
+  }
+}
 #app.mobile {
   .memberBet {
     width: 100%;
@@ -1224,16 +1736,149 @@ export default {
         line-height: 1.5;
       }
     }
-    .playbackPic {
-      transform: scale(1.3);
-      vertical-align: middle;
-    }
   }
 }
 #app.pc {
   .memberBet {
-    .filter-outer {
-      border-bottom: 3px solid #f9c901;
+    .page-total2 {
+      background-color: #e9e9e9;
+      padding: 0px;
+      position: relative;
+      z-index: 0;
+      &.bg-gray-white-light {
+        background: #f4f4f4;
+      }
+      .totals {
+        min-height: 50px;
+        padding-top: 5px;
+      }
+      &.small {
+        .totals {
+          min-height: 41px;
+          padding-top: 2px;
+          .label {
+            font-size: 12px;
+            padding-top: 3px;
+          }
+        }
+      }
+      .list-sub-item {
+        margin-top: 0px !important;
+        &.name {
+          position: absolute;
+          top: 0;
+          left: 0;
+          font-weight: bold;
+          width: 100% !important;
+          margin-bottom: -30px !important;
+          padding: 10px 15px 10px 15px !important;
+          font-size: 16px;
+          color: #000;
+        }
+      }
+      .page-item {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        font-size: 1.16667rem;
+        width: 180px;
+        position: relative;
+        padding: 0 !important;
+        -ms-flex-item-align: stretch;
+        align-self: stretch;
+        .label {
+          width: 100%;
+          margin-bottom: 0.41667rem;
+          margin-right: 0;
+          color: #898989;
+        }
+        .value {
+          font-weight: bold;
+        }
+        &.is-amount {
+          padding-right: 5px !important;
+          .label,
+          .value {
+            width: 100%;
+            text-align: right !important;
+          }
+        }
+      }
+    }
+    .ab-record {
+      .page-total2,
+      .report-list {
+        .list-sub-item {
+          width: 100%;
+        }
+        .list-item {
+          width: 100px;
+          min-width: 100px;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+          margin-right: 5px;
+          &.item-agentIcon,
+          &.item-playerIcon {
+            width: 25px;
+            min-width: 25px;
+          }
+          &.item-appType,
+          &.item-bet {
+            width: 75px;
+            min-width: 75px;
+          }
+          &.item-gameRoundId {
+            width: 85px;
+            min-width: 85px;
+          }
+          &.item-agent {
+            width: 95px;
+            min-width: 95px;
+          }
+          &.item-status {
+            width: 100px;
+            min-width: 100px;
+            text-align: center;
+            .label {
+              width: 100%;
+            }
+          }
+          &.item-settleTime,
+          &.item-betTime {
+            width: 120px;
+            min-width: 120px;
+          }
+          &.item-result,
+          &.item-ip {
+            width: 145px;
+            min-width: 145px;
+          }
+          &.item-validAmount,
+          &.item-winOrLossAmount,
+          &.item-betAmount,
+          &.item-gameTypeCode {
+            width: 160px;
+            min-width: 160px;
+          }
+          &.item-betLogId,
+          &.item-player {
+            width: 185px;
+            min-width: 185px;
+          }
+          .videoBtn {
+            display: inline;
+            margin-right: 0.20833rem;
+          }
+        }
+      }
+    }
+    .no-result {
+      color: #fff;
     }
   }
 }

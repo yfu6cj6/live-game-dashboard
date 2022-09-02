@@ -596,6 +596,13 @@
     line-height: 1.9rem;
     font-size: 1.4rem;
   }
+  
+  .ab-record .page-item.ab-record-total-record {
+    position: absolute !important;
+    top: 0;
+    left: 100%;
+    width: 100px !important;
+  }
 }
 
 .ams-timeslot-popper.pcPicker {
