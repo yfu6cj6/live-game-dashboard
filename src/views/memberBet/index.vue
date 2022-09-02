@@ -1256,7 +1256,7 @@
                   <div class="w-100 list-row totals">
                     <div class="list-item" style="position: relative;">
                       <div class="name list-sub-item d-flex align-items-center">
-                        <span>小计</span>
+                        <span>{{ $t('__subtotalCount') }}</span>
                       </div>
                       <div class="d-flex w-100" style="padding-left: 50px !important;">
                         <div class="d-flex" style="position: relative;">
@@ -1325,7 +1325,7 @@
                               <div class="page-item mb-2 flex-column justify-content-between">
                                 <div class="label">{{ $t('__betAmount') }}</div>
                                 <div class="value">
-                                  <span>590,513.00</span>
+                                  <span>{{ subtotalInfo.betAmountLabel }}</span>
                                 </div>
                               </div>
                             </div>
@@ -1333,9 +1333,16 @@
                           <div class="list-item align-items-center text-right is-amount page-item item-winOrLossAmount">
                             <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
                               <div class="page-item mb-2 flex-column justify-content-between">
-                                <div class="label">输赢</div>
+                                <div class="label">{{ $t('__result') }}</div>
                                 <div class="value">
-                                  <span class="text-blue">-183,488.50</span>
+                                  <span
+                                    :class="{
+                                      'text-red': subtotalInfo.payout > 0,
+                                      'text-blue': subtotalInfo.payout < 0
+                                    }"
+                                  >
+                                    {{ subtotalInfo.payoutLabel }}
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -1344,15 +1351,143 @@
                             <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
                               <div class="page-item mb-2 flex-column justify-content-between">
                                 <div class="page-item mb-2 flex-column justify-content-between">
-                                  <div class="label">有效投注</div>
+                                  <div class="label">{{ $t('__validBetAmount') }}</div>
                                   <div class="value">
-                                    <span>586,217.50</span>
+                                    <span>{{ subtotalInfo.validBetAmountLabel }}</span>
                                   </div>
                                   <div class="page-item flex-column justify-content-between ab-record-total-record">
                                     <div class="label">
-                                      共
-                                      <span style="font-weight:bold">100</span>
-                                      笔
+                                      {{ `${$t('__gong')} ` }}
+                                      <span style="font-weight:bold">{{ subtotalInfo.count }}</span>
+                                      {{ ` ${$t('__bi')}` }}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-appType">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-betMethod">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="agent-break-line" style="border-bottom: 1px solid rgb(206, 150, 0);" />
+                  <div class="w-100 list-row totals">
+                    <div class="list-item" style="position: relative;">
+                      <div class="name list-sub-item d-flex align-items-center">
+                        <span>{{ $t('__totalCount') }}</span>
+                      </div>
+                      <div class="d-flex w-100" style="padding-left: 50px !important;">
+                        <div class="d-flex" style="position: relative;">
+                          <div class="list-item align-items-center text-right is-amount page-item item-agentIcon">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-agent">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-playerIcon">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-player">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-betLogId">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-betTime">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-settleTime">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-gameTypeCode">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-gameRoundId">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-result">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-status">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-bet">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-betAmount relative-target">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between">
+                                <div class="label">{{ $t('__betAmount') }}</div>
+                                <div class="value">
+                                  <span>{{ totalInfo.betAmountLabel }}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-winOrLossAmount">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between">
+                                <div class="label">{{ $t('__result') }}</div>
+                                <div class="value">
+                                  <span
+                                    :class="{
+                                      'text-red': totalInfo.payout > 0,
+                                      'text-blue': totalInfo.payout < 0
+                                    }"
+                                  >
+                                    {{ totalInfo.payoutLabel }}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="list-item align-items-center text-right is-amount page-item item-validAmount">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between">
+                                <div class="page-item mb-2 flex-column justify-content-between">
+                                  <div class="label">{{ $t('__validBetAmount') }}</div>
+                                  <div class="value">
+                                    <span>{{ totalInfo.validBetAmountLabel }}</span>
+                                  </div>
+                                  <div class="page-item flex-column justify-content-between ab-record-total-record">
+                                    <div class="label">
+                                      {{ `${$t('__gong')} ` }}
+                                      <span style="font-weight:bold">{{ totalInfo.count }}</span>
+                                      {{ ` ${$t('__bi')}` }}
                                     </div>
                                   </div>
                                 </div>
