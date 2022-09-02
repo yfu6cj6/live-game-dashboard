@@ -1351,22 +1351,22 @@
                                   <div class="page-item flex-column justify-content-between ab-record-total-record">
                                     <div class="label">
                                       共
-                                    <span style="font-weight:bold">100</span>
-                                    笔
+                                      <span style="font-weight:bold">100</span>
+                                      笔
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="list-item align-items-center text-right is-amount page-item item-appType">
-                          <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
-                            <div class="page-item mb-2 flex-column justify-content-between" />
+                          <div class="list-item align-items-center text-right is-amount page-item item-appType">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
+                            </div>
                           </div>
-                        </div>
-                        <div class="list-item align-items-center text-right is-amount page-item item-betMethod">
-                          <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
-                            <div class="page-item mb-2 flex-column justify-content-between" />
+                          <div class="list-item align-items-center text-right is-amount page-item item-betMethod">
+                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
+                              <div class="page-item mb-2 flex-column justify-content-between" />
                             </div>
                           </div>
                         </div>
