@@ -1,8 +1,8 @@
 <template>
-  <div v-loading="dataLoading" class="w-100 h-100">
-    <div class="view-container">
-      <div class="bg-black">
-        <template v-if="device === 'mobile'">
+  <div class="w-100 h-100">
+    <template v-if="device === 'mobile'">
+      <div class="view-container">
+        <div class="bg-black">
           <div class="yellow-border-bottom search-container">
             <div class="options">
               <div class="option">
@@ -84,19 +84,14 @@
               </div>
             </div>
           </div>
-        </template>
-        <template v-else>
-          -
-        </template>
-      </div>
-      <div class="table-container">
-        <template v-if="tableData.length > 0">
-          <dir
-            v-for="(item, index) in tableData"
-            :key="index"
-            :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
-          >
-            <template v-if="device === 'mobile'">
+        </div>
+        <div class="table-container">
+          <template v-if="tableData.length > 0">
+            <dir
+              v-for="(item, index) in tableData"
+              :key="index"
+              :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+            >
               <div class="left">
                 <div class="item">
                   <span class="title">ID</span>
@@ -137,49 +132,49 @@
                   <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                 </div>
               </div>
-            </template>
-            <template v-else>
-              -
-            </template>
-          </dir>
-          <div v-if="totalCount > pageSize" class="more_btn_space">
-            <div v-if="tableData.length >= totalCount" class="search_more">
-              <span>{{ $t("__noMoreInformation") }}</span>
+            </dir>
+            <div v-if="totalCount > pageSize" class="more_btn_space">
+              <div v-if="tableData.length >= totalCount" class="search_more">
+                <span>{{ $t("__noMoreInformation") }}</span>
+              </div>
+              <div v-else class="search_more">
+                <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+              </div>
             </div>
-            <div v-else class="search_more">
-              <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
-            </div>
-          </div>
-        </template>
-        <template v-else>
-          <div class="noInformation">{{ $t("__noInformation") }}</div>
-        </template>
+          </template>
+          <template v-else>
+            <div class="noInformation">{{ $t("__noInformation") }}</div>
+          </template>
+        </div>
       </div>
-    </div>
 
-    <editDialog
-      ref="createDialog"
-      :title="`${$t('__create')}${$t('__liveBetAreaId')}`"
-      :visible="curDialogIndex === dialogEnum.create"
-      :confirm="$t('__confirm')"
-      :form="selectForm"
-      :currency="currency"
-      :activated="activated"
-      @close="closeDialogEven"
-      @confirm="createDialogConfirmEven"
-    />
+      <editDialog
+        ref="createDialog"
+        :title="`${$t('__create')}${$t('__liveBetAreaId')}`"
+        :visible="curDialogIndex === dialogEnum.create"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        :currency="currency"
+        :activated="activated"
+        @close="closeDialogEven"
+        @confirm="createDialogConfirmEven"
+      />
 
-    <editDialog
-      ref="editDialog"
-      :title="$stringFormat(`${$t('__edit')}${$t('__liveBetAreaId')} - ID:{0}`, [selectForm.id])"
-      :visible="curDialogIndex === dialogEnum.edit"
-      :confirm="$t('__revise')"
-      :form="selectForm"
-      :currency="currency"
-      :activated="activated"
-      @close="closeDialogEven"
-      @confirm="editDialogConfirmEven"
-    />
+      <editDialog
+        ref="editDialog"
+        :title="$stringFormat(`${$t('__edit')}${$t('__liveBetAreaId')} - ID:{0}`, [selectForm.id])"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :confirm="$t('__revise')"
+        :form="selectForm"
+        :currency="currency"
+        :activated="activated"
+        @close="closeDialogEven"
+        @confirm="editDialogConfirmEven"
+      />
+    </template>
+    <template v-else>
+      -
+    </template>
   </div>
 </template>
 
@@ -258,7 +253,7 @@ export default {
       this.handleCurrentChange(page)
     },
     onSubmit() {
-      this.dataLoading = true
+      this.setDataLoading(true)
       liveBetAreaSearch(this.searchForm).then((res) => {
         this.handleRespone(res)
       }).catch(() => {
@@ -289,7 +284,7 @@ export default {
     closeLoading() {
       this.$refs.createDialog.setDialogLoading(false)
       this.$refs.editDialog.setDialogLoading(false)
-      this.dataLoading = false
+      this.setDataLoading(false)
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
@@ -330,13 +325,16 @@ export default {
     },
     onDeleteBtnClick(item) {
       this.confirmMsg(this.$stringFormat(`${this.$t('__confirmDeletion')}?`, [`"ID: ${item.id}"`]), () => {
-        this.dataLoading = true
+        this.setDataLoading(true)
         liveBetAreaDelete(item.id).then((res) => {
           this.handleRespone(res)
         }).catch(() => {
           this.closeLoading()
         })
       })
+    },
+    setDataLoading(loading) {
+      this.$store.dispatch('app/setLoading', loading)
     }
   }
 }

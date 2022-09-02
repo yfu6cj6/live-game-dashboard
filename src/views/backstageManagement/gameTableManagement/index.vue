@@ -1,8 +1,8 @@
 <template>
-  <div v-loading="dataLoading" class="w-100 h-100">
-    <div class="view-container">
-      <div class="bg-black">
-        <template v-if="device === 'mobile'">
+  <div class="w-100 h-100">
+    <template v-if="device === 'mobile'">
+      <div class="view-container">
+        <div class="bg-black">
           <div class="yellow-border-bottom search-container">
             <div class="options">
               <div class="option">
@@ -73,20 +73,15 @@
               </div>
             </div>
           </div>
-        </template>
-        <template v-else>
-          -
-        </template>
-      </div>
-      <div class="table-container">
-        <template v-if="tableData.length > 0">
-          <dir
-            v-for="(item, index) in tableData"
-            :key="index"
-            class="flex-column"
-            :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
-          >
-            <template v-if="device === 'mobile'">
+        </div>
+        <div class="table-container">
+          <template v-if="tableData.length > 0">
+            <div
+              v-for="(item, index) in tableData"
+              :key="index"
+              class="flex-column"
+              :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+            >
               <div class="d-flex">
                 <div class="left">
                   <div class="item">
@@ -138,82 +133,81 @@
                   </div>
                 </div>
               </div>
-            </template>
-            <template v-else>
-              -
-            </template>
-          </dir>
-          <div v-if="totalCount > pageSize" class="more_btn_space">
-            <div v-if="tableData.length >= totalCount" class="search_more">
-              <span>{{ $t("__noMoreInformation") }}</span>
             </div>
-            <div v-else class="search_more">
-              <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+            <div v-if="totalCount > pageSize" class="more_btn_space">
+              <div v-if="tableData.length >= totalCount" class="search_more">
+                <span>{{ $t("__noMoreInformation") }}</span>
+              </div>
+              <div v-else class="search_more">
+                <span class="search_more_btn" @click.stop="moreInfo()">{{ $t("__searchMoreValue") }}</span>
+              </div>
             </div>
-          </div>
-        </template>
-        <template v-else>
-          <div class="noInformation">{{ $t("__noInformation") }}</div>
-        </template>
+          </template>
+          <template v-else>
+            <div class="noInformation">{{ $t("__noInformation") }}</div>
+          </template>
+        </div>
       </div>
-    </div>
 
-    <editDialog
-      ref="createDialog"
-      :title="`${$t('__create')}${$t('__gameTable')}`"
-      :visible="curDialogIndex === dialogEnum.create"
-      :confirm="$t('__confirm')"
-      :form="selectForm"
-      :status="searchItems.status"
-      :is-edit="false"
-      @close="closeDialogEven"
-      @confirm="createDialogConfirmEven"
-    />
+      <editDialog
+        ref="createDialog"
+        :title="`${$t('__create')}${$t('__gameTable')}`"
+        :visible="curDialogIndex === dialogEnum.create"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        :status="searchItems.status"
+        :is-edit="false"
+        @close="closeDialogEven"
+        @confirm="createDialogConfirmEven"
+      />
 
-    <editDialog
-      ref="editDialog"
-      :title="$stringFormat(`${$t('__revise')}${$t('__gameTable')} - ID:{0}`, [selectForm.id])"
-      :visible="curDialogIndex === dialogEnum.edit"
-      :confirm="$t('__revise')"
-      :form="selectForm"
-      :status="searchItems.status"
-      :is-edit="true"
-      @close="closeDialogEven"
-      @confirm="editDialogConfirmEven"
-    />
+      <editDialog
+        ref="editDialog"
+        :title="$stringFormat(`${$t('__revise')}${$t('__gameTable')} - ID:{0}`, [selectForm.id])"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :confirm="$t('__revise')"
+        :form="selectForm"
+        :status="searchItems.status"
+        :is-edit="true"
+        @close="closeDialogEven"
+        @confirm="editDialogConfirmEven"
+      />
 
-    <chipSettingDialog
-      ref="chipSettingDialog"
-      :title="$stringFormat($t('__chipsSetting'), [selectForm.name])"
-      :visible="curDialogIndex === dialogEnum.chipsSetting"
-      :chips-data="chipsData"
-      @search="chipSearch"
-      @create="chipCreate"
-      @edit="chipEdit"
-      @delete="chipDelete"
-      @close="closeDialogEven"
-    />
+      <chipSettingDialog
+        ref="chipSettingDialog"
+        :title="$stringFormat($t('__chipsSetting'), [selectForm.name])"
+        :visible="curDialogIndex === dialogEnum.chipsSetting"
+        :chips-data="chipsData"
+        @search="chipSearch"
+        @create="chipCreate"
+        @edit="chipEdit"
+        @delete="chipDelete"
+        @close="closeDialogEven"
+      />
 
-    <chipEditDialog
-      ref="chipCreateDialog"
-      :title="$stringFormat($t('__createChips'), [selectForm.name])"
-      :visible="curDialogIndex === dialogEnum.chipsCreate"
-      :confirm="$t('__confirm')"
-      :form="chipEditForm"
-      @close="chipEditCloseDialogEven"
-      @confirm="chipCreateDialogConfirmEven"
-    />
+      <chipEditDialog
+        ref="chipCreateDialog"
+        :title="$stringFormat($t('__createChips'), [selectForm.name])"
+        :visible="curDialogIndex === dialogEnum.chipsCreate"
+        :confirm="$t('__confirm')"
+        :form="chipEditForm"
+        @close="chipEditCloseDialogEven"
+        @confirm="chipCreateDialogConfirmEven"
+      />
 
-    <chipEditDialog
-      ref="chipEditDialog"
-      :title="$stringFormat($t('__editChips'), [selectForm.name])"
-      :visible="curDialogIndex === dialogEnum.chipsEdit"
-      :confirm="$t('__revise')"
-      :form="chipEditForm"
-      @close="chipEditCloseDialogEven"
-      @confirm="chipEditDialogConfirmEven"
-    />
-
+      <chipEditDialog
+        ref="chipEditDialog"
+        :title="$stringFormat($t('__editChips'), [selectForm.name])"
+        :visible="curDialogIndex === dialogEnum.chipsEdit"
+        :confirm="$t('__revise')"
+        :form="chipEditForm"
+        @close="chipEditCloseDialogEven"
+        @confirm="chipEditDialogConfirmEven"
+      />
+    </template>
+    <template v-else>
+      -
+    </template>
   </div>
 </template>
 
@@ -297,7 +291,7 @@ export default {
       this.handleCurrentChange(page)
     },
     onSubmit() {
-      this.dataLoading = true
+      this.setDataLoading(true)
       gameTableSearch(this.searchForm).then((res) => {
         this.handleRespone(res)
       }).catch(() => {
@@ -320,7 +314,7 @@ export default {
     closeLoading() {
       this.$refs.createDialog.setDialogLoading(false)
       this.$refs.editDialog.setDialogLoading(false)
-      this.dataLoading = false
+      this.setDataLoading(false)
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
@@ -363,7 +357,7 @@ export default {
     },
     onDeleteBtnClick(item) {
       this.confirmMsg(this.$stringFormat(`${this.$t('__confirmDeletion')}?`, [`"ID: ${item.id}"`]), () => {
-        this.dataLoading = true
+        this.setDataLoading(true)
         gameTableDelete(item.id).then((res) => {
           this.handleRespone(res)
         }).catch(() => {
@@ -372,12 +366,12 @@ export default {
       })
     },
     onChipsSettingBtnClick(item) {
-      this.dataLoading = true
+      this.setDataLoading(true)
       this.selectForm = JSON.parse(JSON.stringify(item))
       gameTableChipsSearch({ table_id: this.selectForm.id }).then((res) => {
         this.chipsData = res.rows
         this.curDialogIndex = this.dialogEnum.chipsSetting
-        this.dataLoading = false
+        this.setDataLoading(false)
       }).catch(() => {
         this.closeLoading()
       })
@@ -433,6 +427,9 @@ export default {
     },
     chipEditCloseDialogEven() {
       this.curDialogIndex = this.dialogEnum.chipsSetting
+    },
+    setDataLoading(loading) {
+      this.$store.dispatch('app/setLoading', loading)
     }
   }
 }
