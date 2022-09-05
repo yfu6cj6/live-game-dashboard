@@ -28,6 +28,7 @@
                                 :format="'yyyy-MM-dd HH:mm'"
                                 prefix-icon="''"
                                 clear-icon="''"
+                                @blur="handleChangePickerClass"
                               />
                             </div>
                             <span>
@@ -401,7 +402,7 @@
                                     <span class="label d-none">space</span>
                                     <span class="value d-none">space</span>
                                   </div>
-                                  <div class="list-item d-flex align-items-start item-appType" style="width: 30%; flex-wrap: wrap;">
+                                  <div class="list-item d-flex align-items-start item-w6" style="width: 30%; flex-wrap: wrap;">
                                     <span class="label">{{ $t('__device') }}</span>
                                     <span class="value">
                                       <span>{{ item.device }}</span>
@@ -477,6 +478,7 @@
                                 :format="'yyyy-MM-dd HH:mm'"
                                 prefix-icon="''"
                                 clear-icon="''"
+                                @blur="handleChangePickerClass"
                               />
                             </div>
                           </div>
@@ -757,34 +759,37 @@
                           <div class="list-item d-flex align-items-center item-player">
                             <span class="label font-weight-bold text-black">{{ $t('__dealer') }}</span>
                           </div>
-                          <div class="list-item d-flex align-items-center item-betTime">
+                          <div class="list-item d-flex align-items-center item-w1">
                             <span class="label font-weight-bold text-black">{{ $t('__giftTime') }}</span>
                           </div>
-                          <div class="list-item d-flex align-items-center item-gameTypeCode">
+                          <div class="list-item d-flex align-items-center item-w2">
                             <span class="label font-weight-bold text-black">{{ $t('__gameType') }}</span>
                           </div>
-                          <div class="list-item d-flex align-items-center item-gameRoundId">
+                          <div class="list-item d-flex align-items-center item-w3">
                             <span class="label font-weight-bold text-black">{{ $t('__roundId') }}</span>
                           </div>
-                          <div class="list-item d-flex align-items-center item-betLogId">
+                          <div class="list-item d-flex align-items-center item-w3">
                             <span class="label font-weight-bold text-black">{{ $t('__gift') }}</span>
                           </div>
-                          <div class="list-item d-flex align-items-center item-betLogId">
+                          <div class="list-item d-flex align-items-center item-w6">
+                            <span class="label font-weight-bold text-black" />
+                          </div>
+                          <div class="list-item d-flex align-items-center item-w8">
                             <span class="label font-weight-bold text-black">{{ $t('__giftNumber') }}</span>
                           </div>
-                          <div class="list-item d-flex align-items-center item-status">
+                          <div class="list-item d-flex align-items-center item-w4">
                             <span class="label font-weight-bold text-black">{{ $t('__giftAmount') }}</span>
                           </div>
-                          <div class="list-item d-flex align-items-center item-betAmount is-amount">
+                          <div class="list-item d-flex align-items-center item-w5 is-amount">
                             <span class="label font-weight-bold text-black">{{ $t('__giftValue') }}</span>
                           </div>
-                          <div class="list-item d-flex align-items-center item-betMethod">
+                          <div class="list-item d-flex align-items-center item-w6">
                             <span class="label font-weight-bold text-black">{{ $t('__currency') }}</span>
                           </div>
-                          <div class="list-item d-flex align-items-center item-appType">
+                          <div class="list-item d-flex align-items-center item-w6">
                             <span class="label font-weight-bold text-black">{{ $t('__device') }}</span>
                           </div>
-                          <div class="list-item d-flex align-items-center item-betLogId">
+                          <div class="list-item d-flex align-items-center item-w0">
                             <span class="label font-weight-bold text-black">IP</span>
                           </div>
                         </div>
@@ -802,6 +807,8 @@
                         v-for="(item, index) in tableData"
                         :key="index"
                         class="w-100 items report-list-item-row"
+                        :class="{'high-light': item.tap === true}"
+                        @click.stop="tapRow(item)"
                       >
                         <div class="agent-list-basic list-row align-items-center">
                           <span>
@@ -817,7 +824,7 @@
                             </span>
                           </div>
                           <div class="list-item d-flex align-items-start item-agent">
-                            <span class="value text-black">
+                            <span class="value  text-yellow">
                               <span>{{ item.agent }}</span>
                             </span>
                           </div>
@@ -841,56 +848,58 @@
                               <span>{{ item.dealer }}</span>
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start item-betTime">
+                          <div class="list-item d-flex align-items-start item-w1">
                             <span class="value">
                               <span>{{ item.gift_time }}</span>
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start item-gameTypeCode">
+                          <div class="list-item d-flex align-items-start item-w2">
                             <span class="value">
                               <span>{{ item.game_type }}</span>
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start item-gameRoundId">
+                          <div class="list-item d-flex align-items-start item-w3">
                             <span class="value">
                               <span>{{ item.round_id }}</span>
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start item-betLogId align-items-center">
+                          <div class="list-item d-flex align-items-start item-w3 align-items-center">
                             <span class="value mr-3">
                               <span>{{ item.gift }}</span>
                             </span>
+                          </div>
+                          <div class="list-item d-flex align-items-start item-w6 align-items-center">
                             <span class="giftImage">
                               <img :src="item.gift_img_address" :alt="item.gift">
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start item-betLogId">
+                          <div class="list-item d-flex align-items-start item-w8">
                             <span class="value">
                               <span>{{ item.record_number }}</span>
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start item-status">
+                          <div class="list-item d-flex align-items-start item-w4">
                             <span class="value">
                               <span>{{ item.amount }}</span>
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start item-betAmount is-amount">
+                          <div class="list-item d-flex align-items-start item-w5 is-amount">
                             <span class="value">
                               <span :class="{'text-red': item.value > 0, 'text-blue': item.value < 0}">{{ item.valueLabel }}</span>
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start item-betMethod">
+                          <div class="list-item d-flex align-items-start item-w6">
                             <span class="value">
                               <span>{{ item.currency }}</span>
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start item-appType">
+                          <div class="list-item d-flex align-items-start item-w6">
                             <span class="value">
                               <span>{{ item.device }}</span>
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start item-betLogId">
-                            <span class="value">
+                          <div class="list-item d-flex align-items-start item-w0">
+                            <span class="value text-yellow">
                               <span>{{ item.ip }}</span>
                             </span>
                           </div>
@@ -1073,6 +1082,10 @@ export default {
         this.selectOption.deviceType = JSON.parse(JSON.stringify(this.searchItems.deviceType)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
     },
+    tapRow(row) {
+      row.tap = !row.tap
+      this.tableData = Object.assign([], this.tableData)
+    },
     setSearchOpen() {
       this.searchOpen = !this.searchOpen
     },
@@ -1178,5 +1191,69 @@ export default {
       height: 5rem;
     }
   }
+
+  .ab-record {
+    .agent-break-line {
+      border-bottom: 1px solid #333;
+      background-color: black;
+    }
+    .page-item {
+      &.ab-record-total-record {
+        position: absolute !important;
+        top: 0;
+        left: 100%;
+        width: 100px !important;
+      }
+    }
+    .list-item {
+      width: 100px;
+      min-width: 100px;
+      -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+      margin-right: 5px;
+      &.item-agentIcon,
+      &.item-playerIcon {
+        width: 25px;
+        min-width: 25px;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-right: 5px;
+      }
+      &.item-agent,
+      &.item-player {
+        width: 95px;
+        min-width: 95px;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-right: 5px;
+      }
+      &.item-w0  {
+        width: 145px;
+      }
+      &.item-w1  {
+        width: 95px;
+      }
+      &.item-w2 {
+        width: 120px;
+      }
+      &.item-w3 {
+        width: 85px;
+      }
+      &.item-w4 {
+        width: 70px;
+        text-align: center;
+      }
+      &.item-w5 {
+        width: 160px;
+      }
+      &.item-w6 {
+        width: 75px;
+      }
+      &.item-w8 {
+        width: 185px;
+      }
+    }
+  }
+
 }
 </style>
