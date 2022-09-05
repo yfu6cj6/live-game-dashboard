@@ -339,11 +339,4 @@ export default {
     margin-bottom: 10px;
   }
 }
-
-#app.pc {
-  .sidebar_open {
-    left: 200px;
-    width: calc(100vw - 200px);
-  }
-}
 </style>

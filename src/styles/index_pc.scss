@@ -636,6 +636,12 @@
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
+    transition: all .3s;
+    &.sidebar_open {
+      left: 200px;
+      width: calc(100vw - 200px);
+      transition: all .5s;
+    }
     .popup-cover {
       position: absolute;
       top: 0;
