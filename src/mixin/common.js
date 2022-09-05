@@ -122,6 +122,10 @@ export default {
     },
     // 新增多選過濾器
     addSelectDropDownFilter(name, onSelectAll, onClear, onInputFilter) {
+      const parent = document.getElementsByClassName(name)[0].getElementsByClassName('custom-dropdown')[0]
+      if (parent && parent.querySelector('.el-filter')) {
+        return
+      }
       const selectAll = document.createElement('span')
       selectAll.className = 'text-link'
       selectAll.onclick = onSelectAll
@@ -155,7 +159,7 @@ export default {
       filter.className = 'el-filter'
       filter.appendChild(inputFilter)
       filter.appendChild(filterOption)
-      document.getElementsByClassName(name)[0].getElementsByClassName('custom-dropdown')[0].prepend(filter)
+      parent.prepend(filter)
     },
     // 新增日期快捷紐
     addDateTimeOption(onPreMon, onThisMon, onNextMon, onPreDay, onToday, onNextDay, onPreWeek, onThisWeek, onNextWeek) {
