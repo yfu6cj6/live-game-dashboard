@@ -730,7 +730,6 @@
       }
     }
   }
-
   .animated {
     -webkit-animation-duration: 0.5s;
     animation-duration: 0.5s;
@@ -743,10 +742,10 @@
   }
   @keyframes fadeInUp {
     0% {
-      bottom: -20%;
+      top: 70%;
     }
     100% {
-      bottom: 0;
+      top: 0;
     }
   }
   .icon-close {
@@ -759,7 +758,6 @@
   .common-button {
     width: 140px;
   }
-
   .report-list .items:nth-child(odd) {
     background-color: #f4f4f4;
   }
