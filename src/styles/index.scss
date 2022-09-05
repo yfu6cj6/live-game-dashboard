@@ -212,16 +212,6 @@ table {
   }
 }
 
-.d-block {
-  display: block!important;
-}
-
-.align-items-end {
-  -ms-flex-align: end!important;
-  -webkit-box-align: end!important;
-  align-items: flex-end!important;
-}
-
 // 寬
 .w-25 {
   width: 25%!important;
@@ -262,6 +252,12 @@ table {
 .d-none {
   display: none !important;
 }
+.d-block {
+  display: block!important;
+}
+.d-inline-block {
+  display: inline-block!important;
+}
 
 // display-flex
 .flex-wrap {
@@ -276,6 +272,11 @@ table {
   -ms-flex-align: center!important;
   -webkit-box-align: center!important;
   align-items: center!important;
+}
+.align-items-end {
+  -ms-flex-align: end!important;
+  -webkit-box-align: end!important;
+  align-items: flex-end!important;
 }
 .justify-content-center {
   -ms-flex-pack: center!important;
@@ -310,6 +311,10 @@ table {
   -ms-flex-positive: 0!important;
   -webkit-box-flex: 0!important;
   flex-grow: 0!important;
+}
+
+#app .pos-r {
+  position: relative;
 }
 
 // margin
@@ -1267,5 +1272,72 @@ table {
   .el-button {
     margin: 0.41667rem;
     font-weight: bold;
+  }
+}
+
+.road-card {
+  width: 100%;
+  .road {
+    display: inline-block;
+    width: 100%;
+    .pan-container {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      overflow: overlay;
+      width: 100%;
+      position: relative;
+      .pan-body {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+    .cell {
+      padding: 0;
+      .ball {
+        fill: transparent;
+        stroke: transparent;
+        .current {
+          fill: #ffff7c;
+          stroke: #f9c901;
+        }
+      }
+      .threeSmallRoadBall {
+        fill: transparent;
+        stroke: transparent;
+        .current {
+          fill: #fbfb6c;
+          stroke: #f98a01;
+        }
+      }
+      .banker-hollow {
+        stroke: #ff4949;
+      }
+      .player-hollow {
+        stroke: #0090ff;
+      }
+      .tie-hollow {
+        stroke: #13ce66;
+      }
+      .banker-solid {
+        fill: #ff4949;
+        stroke: #ff4949;
+      }
+      .player-solid {
+        fill: #0090ff;
+        stroke: #0090ff;
+      }
+      .tie-solid {
+        fill: #13ce66;
+        stroke: #13ce66;
+      }
+      .tieCount {
+        fill: #000;
+      }
+      .winnerText {
+        fill: #fff;
+      }
+    }
   }
 }

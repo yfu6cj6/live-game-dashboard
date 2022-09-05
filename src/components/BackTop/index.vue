@@ -3,7 +3,7 @@
     class="back-top"
     :class="{'active': active, 'inactive': inactive}"
     style="width: 85.25px; height: 85.25px; font-size: 20px; top: 20px;"
-    @click="backTop"
+    @click="backTopLerp"
   >
     <i class="el-submenu__icon-arrow el-icon-arrow-up" />
   </div>
@@ -44,6 +44,12 @@ export default {
   },
   methods: {
     backTop() {
+      const inner = document.querySelector(this.innerClass)
+      if (inner) {
+        inner.scrollTop = 0
+      }
+    },
+    backTopLerp() {
       const inner = document.querySelector(this.innerClass)
       if (inner) {
         const timer = setInterval(() => {

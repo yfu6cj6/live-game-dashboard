@@ -415,7 +415,7 @@
                                         <div class="fas videoBtn white">
                                           <img :src="require(`@/assets/gameResult/playbackUrl.png`)" style="height: 1.5rem; width: 1.5rem;" @click.stop="onPlaybackUrl(item)">
                                         </div>
-                                        <span class="border-bottom border-dark" @click.stop="gameResultClick(item.round_id)">
+                                        <span class="border-bottom border-dark" @click.stop="gameResultClick(item)">
                                           <span
                                             class="mr-1"
                                             :class="{
@@ -535,19 +535,21 @@
         </div>
         <playbackDialog
           v-if="curDialogIndex === dialogEnum.pic"
-          :title="`${$t('__gameType')}:${selectForm.game_type} ${$t('__roundId')}:${selectForm.round_id}`"
+          :data="selectForm"
           :visible="curDialogIndex === dialogEnum.pic"
           :playback-type="dialogEnum.pic"
           :url="imagePlaybackpic"
+          :click-playback-pos="clickPlaybackPos"
           @close="closeDialogEven"
         />
 
         <playbackDialog
           v-if="curDialogIndex === dialogEnum.video"
-          :title="`${$t('__gameType')}:${selectForm.game_type} ${$t('__roundId')}:${selectForm.round_id}`"
+          :data="selectForm"
           :visible="curDialogIndex === dialogEnum.video"
           :playback-type="dialogEnum.video"
           :url="videoPlaybackUrl"
+          :click-playback-pos="clickPlaybackPos"
           @close="closeDialogEven"
         />
 
@@ -556,6 +558,7 @@
           :round-info="roundInfo"
           :count-info="countInfo"
           :score-cards="scoreCards"
+          :click-playback-pos="clickPlaybackPos"
           @close="closeDialogEven"
         />
       </div>
@@ -563,7 +566,7 @@
     <template v-else>
       <div class="report-theme ab-record all-bet rpa-record red-packet">
         <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
-          <backTop />
+          <backTop ref="backTop" />
           <div class="scroll-inner on native">
             <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
               <div class="filter-bar bg-black pt-3">
@@ -1144,7 +1147,7 @@
                             </span>
                           </div>
                           <div class="list-item d-flex align-items-start item-result">
-                            <span data-vakey="10" class="value gameResultAndVideo">
+                            <span class="value gameResultAndVideo" :class="`gameResult-${item.id}`">
                               <template v-if="item.gameResult.result === -1">
                                 <div>-</div>
                               </template>
@@ -1155,7 +1158,7 @@
                                 <div class="fas videoBtn text-link white">
                                   <img :src="require(`@/assets/gameResult/playbackUrl.png`)" style="height: 1.5rem; width: 1.5rem;" @click.stop="onPlaybackUrl(item)">
                                 </div>
-                                <span class="border-bottom border-dark" @click.stop="gameResultClick(item.round_id)">
+                                <span class="border-bottom border-dark" @click.stop="gameResultClick(item)">
                                   <span
                                     class="mr-1"
                                     :class="{
@@ -1237,6 +1240,32 @@
                           </div>
                         </div>
                       </div>
+                      <playbackDialog
+                        v-if="curDialogIndex === dialogEnum.pic"
+                        :data="selectForm"
+                        :visible="curDialogIndex === dialogEnum.pic"
+                        :playback-type="dialogEnum.pic"
+                        :url="imagePlaybackpic"
+                        :click-playback-pos="clickPlaybackPos"
+                        @close="closeDialogEven"
+                      />
+                      <playbackDialog
+                        v-if="curDialogIndex === dialogEnum.video"
+                        :data="selectForm"
+                        :visible="curDialogIndex === dialogEnum.video"
+                        :playback-type="dialogEnum.video"
+                        :url="videoPlaybackUrl"
+                        :click-playback-pos="clickPlaybackPos"
+                        @close="closeDialogEven"
+                      />
+                      <gameResultDialog
+                        :visible="curDialogIndex === dialogEnum.resultdialog"
+                        :round-info="roundInfo"
+                        :count-info="countInfo"
+                        :score-cards="scoreCards"
+                        :click-playback-pos="clickPlaybackPos"
+                        @close="closeDialogEven"
+                      />
                     </div>
                   </div>
                   <pagination
@@ -1510,31 +1539,6 @@
               <div v-else class="no-result">{{ $t('__noInformation') }}</div>
             </div>
           </div>
-          <playbackDialog
-            v-if="curDialogIndex === dialogEnum.pic"
-            :title="`${$t('__gameType')}: ${selectForm.game_type}  ${$t('__roundId')}: ${selectForm.round_id}`"
-            :visible="curDialogIndex === dialogEnum.pic"
-            :playback-type="dialogEnum.pic"
-            :url="imagePlaybackpic"
-            @close="closeDialogEven"
-          />
-
-          <playbackDialog
-            v-if="curDialogIndex === dialogEnum.video"
-            :title="`${$t('__gameType')}: ${selectForm.game_type}  ${$t('__roundId')}: ${selectForm.round_id}`"
-            :visible="curDialogIndex === dialogEnum.video"
-            :playback-type="dialogEnum.video"
-            :url="videoPlaybackUrl"
-            @close="closeDialogEven"
-          />
-
-          <gameResultDialog
-            :visible="curDialogIndex === dialogEnum.resultdialog"
-            :round-info="roundInfo"
-            :count-info="countInfo"
-            :score-cards="scoreCards"
-            @close="closeDialogEven"
-          />
         </div>
       </div>
     </template>
@@ -1580,7 +1584,8 @@ export default {
       scoreCards: [],
       searchOpen: false,
       selectOption: {},
-      subtotalInfo: {}
+      subtotalInfo: {},
+      clickPlaybackPos: {}
     }
   },
   computed: {
@@ -1663,7 +1668,6 @@ export default {
   },
   activated() {
     this.closeDialogEven()
-    this.setHeaderStyle()
   },
   methods: {
     tapRow(row) {
@@ -1741,17 +1745,18 @@ export default {
         this.$store.dispatch('tagsView/updateVisitedView', route)
       }
     },
-    gameResultClick(round_id) {
+    gameResultClick(row) {
       this.setLoading(true)
-      gameResultGetScoreCards({ round_id: round_id }).then((res) => {
+      this.selectForm = JSON.parse(JSON.stringify(row))
+      gameResultGetScoreCards({ round_id: row.round_id }).then((res) => {
         this.roundInfo = res.roundInfo
         this.countInfo = res.countInfo
         this.scoreCards = res.scoreCards
         this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameResult'), true, () => {
           this.closeDialogEven()
-          this.setHeaderStyle()
         }])
         this.curDialogIndex = this.dialogEnum.resultdialog
+        this.getRowPos(this.selectForm)
         this.setLoading(false)
       }).catch(() => {
         this.setLoading(false)
@@ -1804,14 +1809,33 @@ export default {
       this.totalInfo.validBetAmountLabel = numberFormat(this.totalInfo.valid_bet_amount)
       this.totalCount = res.totalCount
       this.setTagsViewTitle()
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
+      this.closeDialogEven()
       this.setLoading(false)
+    },
+    getRowPos(row) {
+      const parent = document.querySelector('.agent-group')
+      const el = document.querySelector(`.gameResult-${row.id}`)
+      if (parent && el) {
+        const parentPos = parent.getBoundingClientRect()
+        const elPos = el.getBoundingClientRect()
+        this.clickPlaybackPos = { top: elPos.top - parentPos.top, left: elPos.left - parentPos.left }
+      } else {
+        this.$nextTick(() => {
+          this.clickPlaybackPos = { top: 30, left: 0 }
+        })
+      }
     },
     onPlaybackPic(row) {
       this.setLoading(true)
       this.selectForm = JSON.parse(JSON.stringify(row))
+      this.closeDialogEven()
       gameResultGetPlaybackPic({ round_id: row.round_id }).then((res) => {
         this.playbackPic = res.playbackPic
         this.curDialogIndex = this.dialogEnum.pic
+        this.getRowPos(this.selectForm)
         this.setLoading(false)
       }).catch(() => {
         this.setLoading(false)
@@ -1820,11 +1844,14 @@ export default {
     onPlaybackUrl(row) {
       this.setLoading(true)
       this.selectForm = JSON.parse(JSON.stringify(row))
+      this.closeDialogEven()
       gameResultGetPlaybackUrl({ round_id: row.round_id }).then((res) => {
         this.playbackUrl = res.playbackUrl
         this.curDialogIndex = this.dialogEnum.video
+        this.getRowPos(this.selectForm)
         this.setLoading(false)
       }).catch(() => {
+        console.log("err")
         this.setLoading(false)
       })
     },
@@ -1867,6 +1894,7 @@ export default {
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+      this.setHeaderStyle()
     },
     setLoading(loading) {
       this.$store.dispatch('app/setLoading', loading)
@@ -2032,6 +2060,9 @@ export default {
             margin-right: 0.20833rem;
           }
         }
+      }
+      .agent-group {
+        position: relative;
       }
     }
     .no-result {

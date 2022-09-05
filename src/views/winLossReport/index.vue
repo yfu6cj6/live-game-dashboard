@@ -829,7 +829,7 @@
         <div>
           <div class="comp profit-report">
             <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
-              <backTop />
+              <backTop ref="backTop" />
               <div class="scroll-inner on native">
                 <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
                   <div class="comp profit-report normal flex-column flex-fill">
@@ -2130,6 +2130,9 @@ export default {
       this.setTagsViewTitle()
       this.setLoading(false)
       this.setHeaderStyle()
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
     },
     setAgentInfo(data) {
       data.betAmountLabel = numberFormat(data.betAmount)

@@ -62,6 +62,13 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.app-container {
+  &>.el-loading-mask {
+    z-index: 3500;
+  }
+}
+</style>
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 @import "~@/styles/variables.scss";
@@ -145,7 +152,7 @@ export default {
       position: fixed;
       top: 45px;
       left: 0;
-      z-index: 12;
+      z-index: 3000;
       visibility: visible;
     }
 

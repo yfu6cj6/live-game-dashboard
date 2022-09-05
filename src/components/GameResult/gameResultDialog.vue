@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible">
+  <div v-if="visible" class="gameResultDialog" :style="`top: ${topPx}px; left: ${leftPx}px`">
     <template v-if="device==='mobile'">
       <div class="game-result-detail flex-column flex-fill">
         <div class="comp">
@@ -116,11 +116,183 @@
         </div>
       </div>
     </template>
+    <template v-else>
+      <div class="pop-over bg-black">
+        <div class="resize-panel d-inline-block panel-1662367855533" style="transform: translate(0px, 0px); position: absolute; top: -10px; right: 100%; z-index: 1; height: 15px;">
+          <div class="canvas">
+            <div class="panel" style="left: 15px; right: auto; top: 15px;">
+              <div
+                class="fas icon-close text-link yellow"
+                style="height: 1.77778rem; width: 1.77778rem;"
+                @click.stop="onClose"
+              >
+                <svg
+                  id="close"
+                  data-name="close"
+                  xmlns="http://www.w3.org/2000/svg"
+                  version="1.1"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 47.971 47.971"
+                  style="height: 0.941176rem; width: 0.941176rem;"
+                  xml:space="preserve"
+                >
+                  <g>
+                    <path
+                      d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,
+                      0.88   c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,
+                      3.071,0,4.242   C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,
+                      0.879,2.121,0.879   s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div class="game-result-detail">
+                <div class="panel-title pos-r">
+                  <div class="w-100 d-flex flex-wrap align-items-center">
+                    <span class="panel-label">{{ $t('__game') }}</span>
+                    <span class="panel-value">{{ roundInfo.gameType }}</span>
+                    <span class="panel-label">{{ $t('__roundId') }}</span>
+                    <span class="panel-value">{{ roundInfo.roundId }}</span>
+                    <div class="w-100 d-flex flex-wrap">
+                      <div class="w-auto d-flex">
+                        <span class="panel-label">{{ $t('__gameStartTime') }}</span>
+                        <span class="panel-value">{{ roundInfo.startTime }}</span>
+                      </div>
+                      <div class="w-auto d-flex">
+                        <span class="panel-label">{{ $t('__gameEndTime') }}</span>
+                        <span class="panel-value">{{ roundInfo.endTime }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="comp">
+                  <div class="result-detail-container ">
+                    <div class="result-detail" style="width: 650px;">
+                      <div class="d-flex cards flex-wrap" style="margin-bottom: -1.1rem;">
+                        <div class="player">
+                          <div class="w-100 mt-3" />
+                          <div class="text-blue text-left">{{ $t('__player') }}</div>
+                          <div class="d-flex">
+                            <div class="poker-box  text-center" style="height: 6.15rem; width: 6.15rem; margin-top: 1.025rem;">
+                              <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[2]}.png`)" class="poker back" style="height: 6.15rem; width: 4.1rem;">
+                            </div>
+                            <div class="poker-box  text-center" style="height: 6.15rem; width: 4.1rem;">
+                              <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[0]}.png`)" class="poker yellow mr-1" style="height: 6.15rem; width: 4.1rem;">
+                            </div>
+                            <div class="poker-box  text-center" style="height: 6.15rem; width: 4.1rem;">
+                              <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[1]}.png`)" class="poker yellow mr-1" style="height: 6.15rem; width: 4.1rem;">
+                            </div>
+                          </div>
+                        </div>
+                        <div style="height: 80%; border-right: 1px solid rgb(206, 150, 0); margin: auto 15px auto 10px;" />
+                        <div class="banker pr-3 mr-3">
+                          <div class="w-100 mt-3" />
+                          <div class="text-red text-right">{{ $t('__banker') }}</div>
+                          <div class="d-flex">
+                            <div class="poker-box  text-center" style="height: 6.15rem; width: 4.1rem;">
+                              <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[0]}.png`)" class="poker yellow mr-1" style="height: 6.15rem; width: 4.1rem;">
+                            </div>
+                            <div class="poker-box  text-center" style="height: 6.15rem; width: 4.1rem;">
+                              <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[1]}.png`)" class="poker yellow mr-1" style="height: 6.15rem; width: 4.1rem;">
+                            </div>
+                            <div class="poker-box  text-center mr-0" style="height: 6.15rem; width: 6.15rem; margin-top: 1.025rem;">
+                              <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[2]}.png`)" class="poker back" style="height: 6.15rem; width: 4.1rem;">
+                            </div>
+                          </div>
+                        </div>
+                        <div>
+                          <div class="w-100 mt-3" />
+                          <div class="desc">
+                            <div class="d-flex">
+                              <div class="d">
+                                <span class="info">
+                                  <span class="text-yellow">{{ `${$t('__totalLength')}：` }}</span>
+                                  {{ `${countInfo.total} ${$t('__round')}` }}
+                                </span>
+                                <span class="info">
+                                  <span class="text-red">{{ `${$t('__banker')}：` }}</span>
+                                  {{ `${countInfo.banker} ${$t('__round')}` }}
+                                </span>
+                                <span class="info">
+                                  <span class="text-red">{{ `${$t('__bankerPair')}：` }}</span>
+                                  {{ `${countInfo.bankerPair} ${$t('__round')}` }}
+                                </span>
+                                <span class="info">
+                                  <span class="text-red">{{ `${$t('__bankerContinuousWin')}：` }}</span>
+                                  {{ `${countInfo.bankerInstantWin} ${$t('__round')}` }}
+                                </span>
+                              </div>
+                              <div class="d">
+                                <span class="info">
+                                  <span class="text-green">{{ `${$t('__tie')}：` }}</span>
+                                  {{ `${countInfo.tie} ${$t('__round')}` }}
+                                </span>
+                                <span class="info">
+                                  <span class="text-blue">{{ `${$t('__player')}：` }}</span>
+                                  {{ `${countInfo.player} ${$t('__round')}` }}
+                                </span>
+                                <span class="info">
+                                  <span class="text-blue">{{ `${$t('__playerPair')}：` }}</span>
+                                  {{ `${countInfo.playerPair} ${$t('__round')}` }}
+                                </span>
+                                <span class="info">
+                                  <span class="text-blue">{{ `${$t('__playerContinuousWin')}：` }}</span>
+                                  {{ `${countInfo.playerInstantWin} ${$t('__round')}` }}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="w-100 mt-3" />
+                      <div class="road-card ml-0">
+                        <div class="road road-comp is-column w-100">
+                          <div class="main">
+                            <div class="pan-container w-100" style="padding-top: 17.6471%;">
+                              <div class="pan-body" :style="`width: ${bigRoad.roadData[0].length * 2.9}%;`">
+                                <svg :viewBox="`0 0 ${bigRoad.roadData[0].length * 10} 60`" class="bigRoad" />
+                              </div>
+                            </div>
+                            <div class="pan-container w-100" style="padding-top: 8.82355%;">
+                              <div class="pan-body" :style="`width: ${bigEyeRoad.roadData[0].length * 1.45}%;`">
+                                <svg :viewBox="`0 0 ${bigEyeRoad.roadData[0].length * 5} 30`" class="bigEyeRoad" />
+                              </div>
+                            </div>
+                            <div class="d-flex">
+                              <div class="pan-container" style="padding-top: 8.82355%;">
+                                <div class="pan-body" :style="`width: ${smallEyeRoad.roadData[0].length * 2.9}%;`">
+                                  <svg :viewBox="`0 0 ${smallEyeRoad.roadData[0].length * 5} 30`" class="smallRoad" />
+                                </div>
+                              </div>
+                              <div class="pan-container" style="padding-top: 8.82355%;">
+                                <div class="pan-body" :style="`width: ${cockroachRoad.roadData[0].length * 2.9}%;`">
+                                  <svg :viewBox="`0 0 ${cockroachRoad.roadData[0].length * 5} 30`" class="cockroachRoad" />
+                                </div>
+                              </div>
+                            </div>
+                            <div class="pan-container w-100" style="padding-top: 35.2942%;">
+                              <div class="pan-body" :style="`width: ${beadRoad.roadData[0].length * 5.8}%;`">
+                                <svg :viewBox="`0 0 ${beadRoad.roadData[0].length * 20} 120`" class="beadRoad" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
-import dialogCommon from '@/mixin/dialogCommon'
+import { mapGetters } from 'vuex';
 import { getRoadArray } from '@/utils/roadLogic'
 
 const road = {
@@ -131,7 +303,6 @@ const road = {
 
 export default {
   name: 'GameResultDialog',
-  mixins: [dialogCommon],
   props: {
     'visible': {
       type: Boolean,
@@ -157,6 +328,13 @@ export default {
       default() {
         return []
       }
+    },
+    'clickPlaybackPos': {
+      type: Object,
+      require: true,
+      default() {
+        return {}
+      }
     }
   },
   data: function() {
@@ -165,76 +343,94 @@ export default {
       bigEyeRoad: JSON.parse(JSON.stringify(road)),
       smallEyeRoad: JSON.parse(JSON.stringify(road)),
       cockroachRoad: JSON.parse(JSON.stringify(road)),
-      beadRoad: JSON.parse(JSON.stringify(road))
+      beadRoad: JSON.parse(JSON.stringify(road)),
+      top: 0,
+      left: 0
     }
   },
   computed: {
+    ...mapGetters([
+      'device'
+    ]),
+    topPx() {
+      return this.device === 'mobile' ? 0 : this.top
+    },
+    leftPx() {
+      return this.device === 'mobile' ? 0 : this.left
+    }
   },
   watch: {
-    visible() {
-      if (this.visible) {
-        this.dialogLoading = true
-        if (this.roundInfo.result) {
-          for (let i = 0; i < 3; i++) {
-            if (!this.roundInfo.result.PlayerCard[i]) {
-              this.roundInfo.result.PlayerCard[i] = "None"
-            }
-            if (!this.roundInfo.result.BankerCard[i]) {
-              this.roundInfo.result.BankerCard[i] = "None"
+    'visible': {
+      handler() {
+        if (this.visible) {
+          this.$nextTick(() => {
+            const el = document.querySelector('.game-result-detail')
+            const elPos = el.getBoundingClientRect()
+            this.top = this.clickPlaybackPos.top - 20
+            this.left = this.clickPlaybackPos.left - elPos.width - 30
+          })
+          if (this.roundInfo.result) {
+            for (let i = 0; i < 3; i++) {
+              if (!this.roundInfo.result.PlayerCard[i]) {
+                this.roundInfo.result.PlayerCard[i] = "None"
+              }
+              if (!this.roundInfo.result.BankerCard[i]) {
+                this.roundInfo.result.BankerCard[i] = "None"
+              }
             }
           }
-        }
-        const roadData = this.scoreCards.toString()
+          const roadData = this.scoreCards.toString()
 
-        this.bigRoad.allData = getRoadArray(0, roadData, this.roundInfo.scoreCardsId);
-        this.bigRoad.allData.forEach(element => {
-          const info = element.filter(item => { return item !== "" })
-          const last = element.lastIndexOf(info[info.length - 1])
-          if (this.bigRoad.lastIndex < last) {
-            this.bigRoad.lastIndex = last
-          }
-        })
-        this.bigEyeRoad.allData = getRoadArray(2, roadData, this.roundInfo.scoreCardsId)
-        this.bigEyeRoad.allData.forEach(element => {
-          const info = element.filter(item => { return item !== "" })
-          const last = element.lastIndexOf(info[info.length - 1])
-          if (this.bigEyeRoad.lastIndex < last) {
-            this.bigEyeRoad.lastIndex = last
-          }
-        })
-        this.smallEyeRoad.allData = getRoadArray(3, roadData, this.roundInfo.scoreCardsId)
-        this.smallEyeRoad.allData.forEach(element => {
-          const info = element.filter(item => { return item !== "" })
-          const last = element.lastIndexOf(info[info.length - 1])
-          if (this.smallEyeRoad.lastIndex < last) {
-            this.smallEyeRoad.lastIndex = last
-          }
-        })
-        this.cockroachRoad.allData = getRoadArray(4, roadData, this.roundInfo.scoreCardsId)
-        this.cockroachRoad.allData.forEach(element => {
-          const info = element.filter(item => { return item !== "" })
-          const last = element.lastIndexOf(info[info.length - 1])
-          if (this.cockroachRoad.lastIndex < last) {
-            this.cockroachRoad.lastIndex = last
-          }
-        })
-        this.beadRoad.allData = getRoadArray(1, roadData, this.roundInfo.scoreCardsId)
-        this.beadRoad.allData.forEach(element => {
-          const info = element.filter(item => { return item !== "" })
-          const last = element.lastIndexOf(info[info.length - 1])
-          if (this.beadRoad.lastIndex < last) {
-            this.beadRoad.lastIndex = last
-          }
-        })
-        this.drawing();
-        this.dialogLoading = false
-      } else {
-        this.bigRoad = JSON.parse(JSON.stringify(road));
-        this.bigEyeRoad = JSON.parse(JSON.stringify(road));
-        this.smallEyeRoad = JSON.parse(JSON.stringify(road));
-        this.cockroachRoad = JSON.parse(JSON.stringify(road));
-        this.beadRoad = JSON.parse(JSON.stringify(road));
-      }
+          this.bigRoad.allData = getRoadArray(0, roadData, this.roundInfo.scoreCardsId);
+          this.bigRoad.allData.forEach(element => {
+            const info = element.filter(item => { return item !== "" })
+            const last = element.lastIndexOf(info[info.length - 1])
+            if (this.bigRoad.lastIndex < last) {
+              this.bigRoad.lastIndex = last
+            }
+          })
+          this.bigEyeRoad.allData = getRoadArray(2, roadData, this.roundInfo.scoreCardsId)
+          this.bigEyeRoad.allData.forEach(element => {
+            const info = element.filter(item => { return item !== "" })
+            const last = element.lastIndexOf(info[info.length - 1])
+            if (this.bigEyeRoad.lastIndex < last) {
+              this.bigEyeRoad.lastIndex = last
+            }
+          })
+          this.smallEyeRoad.allData = getRoadArray(3, roadData, this.roundInfo.scoreCardsId)
+          this.smallEyeRoad.allData.forEach(element => {
+            const info = element.filter(item => { return item !== "" })
+            const last = element.lastIndexOf(info[info.length - 1])
+            if (this.smallEyeRoad.lastIndex < last) {
+              this.smallEyeRoad.lastIndex = last
+            }
+          })
+          this.cockroachRoad.allData = getRoadArray(4, roadData, this.roundInfo.scoreCardsId)
+          this.cockroachRoad.allData.forEach(element => {
+            const info = element.filter(item => { return item !== "" })
+            const last = element.lastIndexOf(info[info.length - 1])
+            if (this.cockroachRoad.lastIndex < last) {
+              this.cockroachRoad.lastIndex = last
+            }
+          })
+          this.beadRoad.allData = getRoadArray(1, roadData, this.roundInfo.scoreCardsId)
+          this.beadRoad.allData.forEach(element => {
+            const info = element.filter(item => { return item !== "" })
+            const last = element.lastIndexOf(info[info.length - 1])
+            if (this.beadRoad.lastIndex < last) {
+              this.beadRoad.lastIndex = last
+            }
+          })
+          this.drawing();
+        } else {
+          this.bigRoad = JSON.parse(JSON.stringify(road));
+          this.bigEyeRoad = JSON.parse(JSON.stringify(road));
+          this.smallEyeRoad = JSON.parse(JSON.stringify(road));
+          this.cockroachRoad = JSON.parse(JSON.stringify(road));
+          this.beadRoad = JSON.parse(JSON.stringify(road));
+        }
+      },
+      immediate: true
     }
   },
   methods: {
@@ -510,7 +706,7 @@ export default {
             winnerCircle.setAttribute('class', winnerCircleClassName)
             winnerCircle.setAttribute('cx', `${2.5 + (j * 5)}`)
             winnerCircle.setAttribute('cy', `${2.5 + (i * 5)}`)
-            winnerCircle.setAttribute('r', '1.7')
+            winnerCircle.setAttribute('r', '1.2')
             ball.appendChild(winnerCircle)
             cell.appendChild(ball)
             smallRoadEl.appendChild(cell)
@@ -741,135 +937,148 @@ export default {
         line2.setAttribute('stroke-width', '0.6')
         beadRoadEl.appendChild(line2)
       })
+    },
+    onClose() {
+      this.$emit('close');
     }
   }
 }
 </script>
 
 <style lang="scss">
-@import "~@/styles/variables.scss";
+#app.mobile {
+  .gameResultDialog {
+    .game-result-detail {
+      height: calc(100vh - 3.75rem);
+      background: #000;
+      overflow: auto;
+      .result-detail {
+        width: 31.25rem;
+        margin: 0 auto;
+        .game-detail-info {
+          margin-top: 0.83333rem;
+          padding: 0.83333rem;
+          .label {
+            color: #a3a3a3;
+          }
+          .value {
+            color: #fff;
+          }
+        }
+        .road-title {
+          background-color: #f9c901;
+          padding: 0.41667rem;
+          font-weight: bolder;
+          color: #000;
+          display: inline-block;
+        }
+        .cards {
+          .line {
+            height: 16.66667rem;
+            margin: auto 1.66667rem;
+          }
+          .poker {
+            margin: auto;
+            &.back {
+              -webkit-transform: rotate(90deg);
+              transform: rotate(90deg);
+              -webkit-transform-origin: center;
+              transform-origin: center;
+            }
+          }
+        }
+        .desc {
+          color: #fff;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+          .info {
+            margin-right: 0.83333rem;
+            margin-bottom: 0.83333rem;
+          }
+        }
+      }
+      .yellow-border-bottom {
+        border-bottom: 0.08333rem solid #ce9600;
+      }
+      .yellow-border-right {
+        border-right: 0.08333rem solid #ce9600;
+      }
+      .road-card {
+        max-width: 30.83333rem;
+      }
+    }
+  }
+}
 
-.game-result-detail {
-  height: calc(100vh - 3.75rem);
-  background: #000;
-  overflow: auto;
-  .result-detail {
-    width: 31.25rem;
-    margin: 0 auto;
-    .game-detail-info {
-      margin-top: 0.83333rem;
-      padding: 0.83333rem;
-      .label {
-        color: #a3a3a3;
-      }
-      .value {
-        color: #fff;
-      }
-    }
-    .road-title {
-      background-color: #f9c901;
-      padding: 0.41667rem;
-      font-weight: bolder;
-      color: #000;
-      display: inline-block;
-    }
-    .cards {
-      .line {
-        height: 16.66667rem;
-        margin: auto 1.66667rem;
-      }
-      .poker {
-        margin: auto;
-        &.back {
-          -webkit-transform: rotate(90deg);
-          transform: rotate(90deg);
-          -webkit-transform-origin: center;
-          transform-origin: center;
-        }
-      }
-    }
-    .desc {
-      color: #fff;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-      .info {
-        margin-right: 0.83333rem;
-        margin-bottom: 0.83333rem;
-      }
-    }
-  }
-  .yellow-border-bottom {
-    border-bottom: 0.08333rem solid #ce9600;
-  }
-  .yellow-border-right {
-    border-right: 0.08333rem solid #ce9600;
-  }
-  .road-card {
-    width: 100%;
-    max-width: 30.83333rem;
-    .road {
-      display: inline-block;
-      width: 100%;
-      .pan-container {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        overflow: overlay;
-        width: 100%;
-        position: relative;
-        .pan-body {
-          position: absolute;
-          top: 0;
-          left: 0;
-        }
-      }
-      .cell {
-        padding: 0;
-        .ball {
-          fill: transparent;
-          stroke: transparent;
-          .current {
-            fill: #ffff7c;
-            stroke: #f9c901;
+#app.pc {
+  .gameResultDialog {
+    position: absolute;
+    top: 0;
+    left: 0;
+    .pop-over {
+      .resize-panel {
+        .panel {
+          .game-result-detail {
+            padding-left: 5px;
+            padding-right: 5px;
+            .result-detail {
+              width: 100%;
+              margin: 0 auto;
+              font-weight: bold;
+              .poker-box {
+                margin-right: 5px;
+                .poker {
+                  &.back {
+                    -webkit-transform: rotate(90deg);
+                    transform: rotate(90deg);
+                    -webkit-transform-origin: center;
+                    transform-origin: center;
+                  }
+                }
+              }
+              .desc {
+                color: #fff;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -ms-flex-wrap: wrap;
+                flex-wrap: wrap;
+                white-space: nowrap;
+                word-break: keep-all;
+                .info {
+                  margin-right: 0.83333rem;
+                  margin-bottom: 0.83333rem;
+                  white-space: nowrap;
+                  word-break: keep-all;
+                  display: -webkit-box;
+                  display: -ms-flexbox;
+                  display: flex;
+                  -webkit-box-pack: justify;
+                  -ms-flex-pack: justify;
+                  justify-content: space-between;
+                }
+              }
+              .road-card {
+                //整個滾動條
+                ::-webkit-scrollbar {
+                  width: 4px;
+                  height: 4px;
+                  //滾動條上的滾動滑塊
+                  &-thumb {
+                    border-radius: 3px;
+                    // border: none;
+                    border-top: 1px solid rgba(0, 0, 0, 0);
+                    border-right: none;
+                    border-bottom: none;
+                    border-left: none;
+                  }
+                }
+              }
+            }
           }
-        }
-        .threeSmallRoadBall {
-          fill: transparent;
-          stroke: transparent;
-          .current {
-            fill: #fbfb6c;
-            stroke: #f98a01;
-          }
-        }
-        .banker-hollow {
-          stroke: #ff4949;
-        }
-        .player-hollow {
-          stroke: #0090ff;
-        }
-        .tie-hollow {
-          stroke: #13ce66;
-        }
-        .banker-solid {
-          fill: #ff4949;
-          stroke: #ff4949;
-        }
-        .player-solid {
-          fill: #0090ff;
-          stroke: #0090ff;
-        }
-        .tie-solid {
-          fill: #13ce66;
-          stroke: #13ce66;
-        }
-        .tieCount {
-          fill: #000;
-        }
-        .winnerText {
-          fill: #fff;
         }
       }
     }
