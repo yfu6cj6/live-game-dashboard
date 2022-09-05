@@ -753,6 +753,9 @@
       svg {
         fill: #fff !important;
       }
+      &:hover {
+        background-color: #666;
+      }
     }
   }
   .common-button {

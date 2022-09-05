@@ -62,7 +62,7 @@
     </template>
     <template v-else>
       <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
-        <div class="popup-cover" />
+        <div class="popup-cover" @click="onClose" />
         <div class="popup-panel animated fadeInUp" style="max-width: 600px; min-width: unset;">
           <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
             <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
