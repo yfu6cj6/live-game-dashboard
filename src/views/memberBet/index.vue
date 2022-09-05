@@ -52,6 +52,7 @@
                                 :format="'yyyy-MM-dd HH:mm'"
                                 prefix-icon="''"
                                 clear-icon="''"
+                                @blur="handleChangePickerClass"
                               />
                             </div>
                             <span>
@@ -612,6 +613,7 @@
                                 :format="'yyyy-MM-dd HH:mm'"
                                 prefix-icon="''"
                                 clear-icon="''"
+                                @blur="handleChangePickerClass"
                               />
                             </div>
                           </div>
@@ -1615,7 +1617,7 @@ export default {
     'device': function() {
       if (this.tempRoute.path === this.$route.path) {
         this.$nextTick(() => {
-          this.handleCurrentChange(this.currentPage)
+          this.handleCurrentChange(1)
           this.addSelectFilter()
         })
       }

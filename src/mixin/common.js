@@ -14,26 +14,7 @@ export default {
   },
   watch: {
     'device': function() {
-      this.$nextTick(() => {
-        const datePicker = document.getElementsByClassName('ams-timeslot-popper')
-        if (datePicker && datePicker.length > 0) {
-          if (this.device === 'mobile') {
-            datePicker.forEach(element => {
-              if (element.classList.contains('pcPicker')) {
-                element.classList.remove('pcPicker')
-                element.classList.add('mobilePicker')
-              }
-            })
-          } else {
-            datePicker.forEach(element => {
-              if (element.classList.contains('mobilePicker')) {
-                element.classList.remove('mobilePicker')
-                element.classList.add('pcPicker')
-              }
-            })
-          }
-        }
-      })
+      this.handleChangePickerClass()
     }
   },
   created() {
@@ -68,6 +49,28 @@ export default {
       }).then(_ => {
         callBack()
       }).catch(() => {
+      })
+    },
+    handleChangePickerClass() {
+      this.$nextTick(() => {
+        const datePicker = document.getElementsByClassName('ams-timeslot-popper')
+        if (datePicker && datePicker.length > 0) {
+          if (this.device === 'mobile') {
+            datePicker.forEach(element => {
+              if (element.classList.contains('pcPicker')) {
+                element.classList.remove('pcPicker')
+                element.classList.add('mobilePicker')
+              }
+            })
+          } else {
+            datePicker.forEach(element => {
+              if (element.classList.contains('mobilePicker')) {
+                element.classList.remove('mobilePicker')
+                element.classList.add('pcPicker')
+              }
+            })
+          }
+        }
       })
     },
     // 點快捷鈕自動將日其放在右邊的table

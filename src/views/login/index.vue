@@ -385,6 +385,10 @@ export default {
     const nameSplit = browserVersion().split(' ')
     this.browserName = this.$stringFormat('{0} - {1}', nameSplit)
   },
+  mounted() {
+    this.$store.dispatch('tagsView/delAllViews')
+    this.$store.dispatch('app/setLoading', false)
+  },
   methods: {
     changLang(lang, index) {
       this.curLangIndex = index

@@ -30,6 +30,7 @@
                                   :format="'yyyy-MM-dd HH:mm'"
                                   prefix-icon="''"
                                   clear-icon="''"
+                                  @blur="handleChangePickerClass"
                                 />
                               </div>
                               <el-button class="bg-yellow ml-auto mr-0 search-range" @click="onTableBtnClick(curTableIndex)">
@@ -852,6 +853,7 @@
                               :format="'yyyy-MM-dd HH:mm'"
                               prefix-icon="''"
                               clear-icon="''"
+                              @blur="handleChangePickerClass"
                             />
                           </div>
                           <el-button class="bg-yellow ml-auto mr-0 search-range" @click="onTableBtnClick(curTableIndex)">
