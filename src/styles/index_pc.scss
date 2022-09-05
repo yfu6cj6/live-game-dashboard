@@ -611,12 +611,432 @@
     line-height: 1.9rem;
     font-size: 1.4rem;
   }
-  
-  .ab-record .page-item.ab-record-total-record {
-    position: absolute !important;
-    top: 0;
-    left: 100%;
-    width: 100px !important;
+
+
+
+  .ab-record {
+    .agent-break-line {
+      border-bottom: 1px solid #333;
+      background-color: black;
+    }
+    .page-item {
+      &.ab-record-total-record {
+        position: absolute !important;
+        top: 0;
+        left: 100%;
+        width: 100px !important;
+      }
+    }
+    .report-list {
+      .items {
+        .list-item {
+          width: 100px;
+          min-width: 100px;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+          margin-right: 5px;
+          &.item-agentIcon,
+          &.item-playerIcon {
+            width: 25px;
+            min-width: 25px;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: 5px;
+          }
+          &.item-agent,
+          .item-player {
+            width: 95px;
+            min-width: 95px;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: 5px;
+          }
+          &.item-betLogId  {
+            width: 145px;
+          }
+          &.item-betTime  {
+            width: 95px;
+          }
+          &.item-settleTime {
+            width: 95px;
+          }
+          &.item-gameTypeCode {
+            width: 120px;
+          }
+          &.item-gameRoundId {
+            width: 85px;
+          }
+          &.item-shoeAndGameRoundNum {
+            width: 80px;
+          }
+          &.item-result {
+            width: 200px;
+          }
+          &.item-status {
+            width: 70px;
+            text-align: center;
+          }
+          &.item-bet {
+            width: 75px;
+            font-size: 1.1rem;
+          }
+          &.item-betAmount {
+            width: 160px;
+          }
+          &.item-winOrLossAmount {
+            width: 160px;
+          }
+          &.item-validAmount {
+            width: 160px;
+          }
+          &.item-appType {
+            width: 75px;
+          }
+          &.item-betMethod {
+            width: 75px;
+          }
+        }
+        .list-row {
+          .list-item {
+            width: 100px;
+            min-width: 100px;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: 5px;
+            &.item-agentIcon,
+            &.item-playerIcon {
+              width: 25px;
+              min-width: 25px;
+              -ms-flex-wrap: wrap;
+              flex-wrap: wrap;
+              margin-right: 5px;
+            }
+            &.item-agent,
+            &.item-player {
+              width: 95px;
+              min-width: 95px;
+              -ms-flex-wrap: wrap;
+              flex-wrap: wrap;
+              margin-right: 5px;
+            }
+            &.item-betLogId  {
+              width: 145px;
+            }
+            &.item-betTime  {
+              width: 95px;
+            }
+            &.item-settleTime {
+              width: 95px;
+            }
+            &.item-gameTypeCode {
+              width: 120px;
+            }
+            &.item-gameRoundId {
+              width: 85px;
+            }
+            &.item-shoeAndGameRoundNum {
+              width: 80px;
+            }
+            &.item-result {
+              width: 200px;
+            }
+            &.item-status {
+              width: 70px;
+              text-align: center;
+            }
+            &.item-bet {
+              width: 75px;
+              font-size: 1.1rem;
+            }
+            &.item-betAmount {
+              width: 160px;
+            }
+            &.item-winOrLossAmount {
+              width: 160px;
+            }
+            &.item-validAmount {
+              width: 160px;
+            }
+            &.item-appType {
+              width: 75px;
+            }
+            &.item-betMethod {
+              width: 75px;
+            }
+          }
+        }
+      }
+      .list-row {
+        .list-item {
+          width: 100px;
+          min-width: 100px;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+          margin-right: 5px;
+          &.item-agentIcon,
+          &.item-playerIcon {
+            width: 25px;
+            min-width: 25px;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: 5px;
+          }
+          &.item-betLogId  {
+            width: 145px;
+          }
+          &.item-betTime  {
+            width: 95px;
+          }
+          &.item-settleTime {
+            width: 95px;
+          }
+          &.item-gameTypeCode {
+            width: 120px;
+          }
+          &.item-gameRoundId {
+            width: 85px;
+          }
+          &.item-shoeAndGameRoundNum {
+            width: 80px;
+          }
+          &.item-result {
+            width: 200px;
+          }
+          &.item-status {
+            width: 70px;
+            text-align: center;
+          }
+          &.item-bet {
+            width: 75px;
+            font-size: 1.1rem;
+          }
+          &.item-betAmount {
+            width: 160px;
+          }
+          &.item-winOrLossAmount {
+            width: 160px;
+          }
+          &.item-validAmount {
+            width: 160px;
+          }
+          &.item-appType {
+            width: 75px;
+          }
+          &.item-betMethod {
+            width: 75px;
+          }
+        }
+      }
+    }
+    .page-total2 {
+      .items {
+        .list-item {
+          width: 100px;
+          min-width: 100px;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+          margin-right: 5px;
+          &.item-agentIcon,
+          &.item-playerIcon {
+            width: 25px;
+            min-width: 25px;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: 5px;
+          }
+          &.item-agent,
+          &.item-player {
+            width: 95px;
+            min-width: 95px;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: 5px;
+          }
+          &.item-betLogId  {
+            width: 145px;
+          }
+          &.item-betTime  {
+            width: 95px;
+          }
+          &.item-settleTime {
+            width: 95px;
+          }
+          &.item-gameTypeCode {
+            width: 120px;
+          }
+          &.item-gameRoundId {
+            width: 85px;
+          }
+          &.item-shoeAndGameRoundNum {
+            width: 80px;
+          }
+          &.item-result {
+            width: 200px;
+          }
+          &.item-status {
+            width: 70px;
+            text-align: center;
+          }
+          &.item-bet {
+            width: 75px;
+            font-size: 1.1rem;
+          }
+          &.item-betAmount {
+            width: 160px;
+          }
+          &.item-winOrLossAmount {
+            width: 160px;
+          }
+          &.item-validAmount {
+            width: 160px;
+          }
+          &.item-appType {
+            width: 75px;
+          }
+          &.item-betMethod {
+            width: 75px;
+          }
+        }
+        .list-row {
+          .list-item {
+            width: 100px;
+            min-width: 100px;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: 5px;
+            &.item-agentIcon,
+            &.item-playerIcon {
+              width: 25px;
+              min-width: 25px;
+              -ms-flex-wrap: wrap;
+              flex-wrap: wrap;
+              margin-right: 5px;
+            }
+            &.item-agent,
+            &.item-player {
+              width: 95px;
+              min-width: 95px;
+              -ms-flex-wrap: wrap;
+              flex-wrap: wrap;
+              margin-right: 5px;
+            }
+            &.item-betLogId  {
+              width: 145px;
+            }
+            &.item-betTime  {
+              width: 95px;
+            }
+            &.item-settleTime {
+              width: 95px;
+            }
+            &.item-gameTypeCode {
+              width: 120px;
+            }
+            &.item-gameRoundId {
+              width: 85px;
+            }
+            &.item-shoeAndGameRoundNum {
+              width: 80px;
+            }
+            &.item-result {
+              width: 200px;
+            }
+            &.item-status {
+              width: 70px;
+              text-align: center;
+            }
+            &.item-bet {
+              width: 75px;
+              font-size: 1.1rem;
+            }
+            &.item-betAmount {
+              width: 160px;
+            }
+            &.item-winOrLossAmount {
+              width: 160px;
+            }
+            &.item-validAmount {
+              width: 160px;
+            }
+            &.item-appType {
+              width: 75px;
+            }
+            &.item-betMethod {
+              width: 75px;
+            }
+          }
+        }
+      }
+      .list-row {
+        .list-item {
+          width: 100px;
+          min-width: 100px;
+          -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+          margin-right: 5px;
+          &.item-agentIcon,
+          &.item-playerIcon {
+            width: 25px;
+            min-width: 25px;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: 5px;
+          }
+          &.item-agent,
+          &.item-player {
+            width: 95px;
+            min-width: 95px;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: 5px;
+          }
+          &.item-betLogId  {
+            width: 145px;
+          }
+          &.item-betTime  {
+            width: 95px;
+          }
+          &.item-settleTime {
+            width: 95px;
+          }
+          &.item-gameTypeCode {
+            width: 120px;
+          }
+          &.item-gameRoundId {
+            width: 85px;
+          }
+          &.item-shoeAndGameRoundNum {
+            width: 80px;
+          }
+          &.item-result {
+            width: 200px;
+          }
+          &.item-status {
+            width: 70px;
+            text-align: center;
+          }
+          &.item-bet {
+            width: 75px;
+            font-size: 1.1rem;
+          }
+          &.item-betAmount {
+            width: 160px;
+          }
+          &.item-winOrLossAmount {
+            width: 160px;
+          }
+          &.item-validAmount {
+            width: 160px;
+          }
+          &.item-appType {
+            width: 75px;
+          }
+          &.item-betMethod {
+            width: 75px;
+          }
+        }
+      }
+    }
   }
 
   .agent-pop-up-panel {
@@ -743,7 +1163,6 @@
       bottom: 0;
     }
   }
-
   .icon-close {
     &.fas {
       svg {
@@ -751,12 +1170,13 @@
       }
     }
   }
-
   .common-button {
     width: 140px;
   }
 
-
+  .report-list .items:nth-child(odd) {
+    background-color: #f4f4f4;
+}
 
 
 
