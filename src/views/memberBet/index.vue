@@ -410,7 +410,7 @@
                                     <template v-else>
                                       <span class="value text-link">
                                         <div class="fas videoBtn white">
-                                          <i class="el-icon-picture text-yellow mr-2 playbackPic" @click.stop="onPlaybackPic(item)" />
+                                          <i class="el-icon-picture text-yellow mr-2 playbackPicIcon" @click.stop="onPlaybackPic(item)" />
                                         </div>
                                         <div class="fas videoBtn white">
                                           <img :src="require(`@/assets/gameResult/playbackUrl.png`)" style="height: 1.5rem; width: 1.5rem;" @click.stop="onPlaybackUrl(item)">
@@ -1003,11 +1003,6 @@
                               <div class="page-item mb-2 flex-column justify-content-between" />
                             </div>
                           </div>
-                          <div class="list-item align-items-center text-right is-amount page-item item-ip">
-                            <div class="item-content list-sub-item d-flex align-items-start" style="position: relative; z-index: 10;">
-                              <div class="page-item mb-2 flex-column justify-content-between" />
-                            </div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -1155,7 +1150,7 @@
                               </template>
                               <template v-else>
                                 <div class="fas videoBtn white">
-                                  <i class="el-icon-picture text-yellow mr-2 playbackPic" @click.stop="onPlaybackPic(item)" />
+                                  <i class="el-icon-picture text-yellow mr-2 playbackPicIcon" @click.stop="onPlaybackPic(item)" />
                                 </div>
                                 <div class="fas videoBtn text-link white">
                                   <img :src="require(`@/assets/gameResult/playbackUrl.png`)" style="height: 1.5rem; width: 1.5rem;" @click.stop="onPlaybackUrl(item)">
@@ -1515,6 +1510,31 @@
               <div v-else class="no-result">{{ $t('__noInformation') }}</div>
             </div>
           </div>
+          <playbackDialog
+            v-if="curDialogIndex === dialogEnum.pic"
+            :title="`${$t('__gameType')}: ${selectForm.game_type}  ${$t('__roundId')}: ${selectForm.round_id}`"
+            :visible="curDialogIndex === dialogEnum.pic"
+            :playback-type="dialogEnum.pic"
+            :url="imagePlaybackpic"
+            @close="closeDialogEven"
+          />
+
+          <playbackDialog
+            v-if="curDialogIndex === dialogEnum.video"
+            :title="`${$t('__gameType')}: ${selectForm.game_type}  ${$t('__roundId')}: ${selectForm.round_id}`"
+            :visible="curDialogIndex === dialogEnum.video"
+            :playback-type="dialogEnum.video"
+            :url="videoPlaybackUrl"
+            @close="closeDialogEven"
+          />
+
+          <gameResultDialog
+            :visible="curDialogIndex === dialogEnum.resultdialog"
+            :round-info="roundInfo"
+            :count-info="countInfo"
+            :score-cards="scoreCards"
+            @close="closeDialogEven"
+          />
         </div>
       </div>
     </template>
@@ -1858,7 +1878,7 @@ export default {
 <style lang="scss">
 #app {
   .memberBet {
-    .playbackPic {
+    .playbackPicIcon {
       transform: scale(1.3);
       vertical-align: middle;
     }

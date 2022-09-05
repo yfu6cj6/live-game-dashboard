@@ -87,7 +87,7 @@ export default {
 }
 
 .dialog {
-  position: fixed;
+  position: absolute;
   width: calc(100% - 20px);
   max-width: 80%;
   max-height: calc(100% - 160px);
@@ -112,7 +112,10 @@ export default {
       position: fixed;
       top: 5px;
       right: 10px;
-      color: $yellow;
+      border-radius: 50%;
+      &:hover {
+        background-color: #666;
+      }
     }
   }
   .dialog-body {
@@ -138,7 +141,7 @@ export default {
   }
 }
 
-@media (min-width: 992px) {
+@media (max-width: 992px) {
   .dialog {
     max-width: 50%;
   }
