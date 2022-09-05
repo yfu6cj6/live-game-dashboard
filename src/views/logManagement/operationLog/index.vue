@@ -21,6 +21,7 @@
                 :format="'yyyy-MM-dd HH:mm'"
                 prefix-icon="d-none"
                 clear-icon="''"
+                @blur="handleChangePickerClass"
               />
             </div>
             <div v-if="isAdminister" class="pad_frame">
@@ -121,6 +122,7 @@
                                 :format="'yyyy-MM-dd HH:mm'"
                                 prefix-icon="''"
                                 clear-icon="''"
+                                @blur="handleChangePickerClass"
                               />
                             </div>
                           </div>

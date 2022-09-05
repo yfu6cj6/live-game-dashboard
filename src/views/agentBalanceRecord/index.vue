@@ -24,6 +24,7 @@
                     :format="'yyyy-MM-dd HH:mm'"
                     prefix-icon="d-none"
                     clear-icon="''"
+                    @blur="handleChangePickerClass"
                   />
                   <span>
                     <div class="d-flex align-items-center more_option text-yellow" @click.stop="searchFormOpen = !searchFormOpen">
@@ -282,6 +283,7 @@
                                   :format="'yyyy-MM-dd HH:mm'"
                                   prefix-icon="''"
                                   clear-icon="''"
+                                  @blur="handleChangePickerClass"
                                 />
                               </div>
                             </div>

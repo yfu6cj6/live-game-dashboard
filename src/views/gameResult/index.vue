@@ -1,341 +1,668 @@
 <template>
-  <div v-loading="dataLoading" class="dashboard-container">
-    <div class="dashboard-cover" />
-    <div class="scroll-wrap flex-column flex-fill">
-      <div id="scroll-inner" class="scroll-inner flex-column flex-fill off">
-        <div class="game-result flex-column flex-fill" gametype="baccarat">
-          <div class="flex-column flex-fill">
-            <div class="scroll-wrap flex-column flex-fill">
-              <div id="scroll-inner" class="scroll-inner flex-column flex-fill off">
-                <div class="scroll-view flex-column flex-fill">
-                  <div class="bg-black">
-                    <div class="pt-3 pl-2 pr-2">
-                      <div class="option">
-                        <span class="prefix-label" />
-                        <div class="comp selected-filter">
-                          <select v-model="searchTimeType" class="el-select">
-                            <option v-for="item in gameResultTimeType" :key="item.key" :value="item.key">
-                              {{ $t(item.nickname) }}
-                            </option>
-                          </select>
-                          <div class="fas gray-deep">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 63 63"
-                              style="height: 0.916667rem; width: 0.916667rem;"
-                            >
-                              <title>arrow_2</title>
-                              <g id="hGqiqI.tif">
-                                <path d="M63,10.44,31.74,52.56,0,10.44Z" />
-                              </g>
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="day-range pl-2 pr-2">
-                      <div class="date-time-picker-box">
-                        <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
-                          <el-date-picker
-                            v-model="searchTime"
-                            type="datetimerange"
-                            popper-class="ams-timeslot-popper"
-                            align="right"
-                            :clearable="false"
-                            :editable="false"
-                            time-arrow-control
-                            :range-separator="$t('__to')"
-                            :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
-                            :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
-                            :default-time="['00:00:00', '23:59:59']"
-                            :picker-options="pickerOptions"
-                            :format="'yyyy-MM-dd HH:mm'"
-                            prefix-icon="''"
-                            clear-icon="''"
-                          />
-                        </div>
-                        <span @click.stop="expandSearch">
-                          <a class="more-opiton text-link text-underline text-yellow d-flex align-items-center">
-                            <svg-icon class="yellow fas label icon align-items-center d-flex" :class="{'d-none': !searchFormOpen}" icon-class="less" />
-                            <svg-icon class="yellow fas label icon align-items-center" :class="{'d-none': searchFormOpen}" icon-class="add" />
-                            {{ ` ${$t('__options')} ` }}
-                          </a>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="filters flex-wrap pl-2 pr-2">
-                      <div class="d-flex w-100">
-                        <div>
-                          <div class="filter-options">
-                            <div class="options">
-                              <div>
-                                <div class="option tableType">
-                                  <span class="prefix-label" />
-                                  <div class="comp selected-filter custom">
-                                    <el-select
-                                      v-model="searchForm.table_id"
-                                      class="d-flex"
-                                      multiple
-                                      :popper-append-to-body="false"
-                                      :collapse-tags="tableIdCollapse"
-                                      :placeholder="$t('__tableId')"
-                                      :popper-class="'custom-dropdown w-auto'"
-                                    >
-                                      <el-option
-                                        v-for="item in selectOption.tables"
-                                        :key="item.key"
-                                        :label="item.nickname"
-                                        :value="item.key"
-                                      />
-                                    </el-select>
-                                  </div>
-                                  <span class="suffix-label" />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="options">
-                              <div>
-                                <div class="option">
-                                  <span class="prefix-label" />
-                                  <div class="input-filter">
-                                    <div class="el-input">
-                                      <input v-model="searchForm.round_id" type="text" autocomplete="off" :placeholder="$t('__roundId')" class="el-input__inner">
-                                    </div>
-                                  </div>
-                                  <span class="suffix-label" />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="filter-options" :class="{'d-none': !searchFormOpen}">
-                            <div class="options">
-                              <div>
-                                <div class="option gameType">
-                                  <span class="prefix-label" />
-                                  <div class="comp selected-filter custom">
-                                    <el-select
-                                      v-model="searchForm.gameType"
-                                      class="d-flex"
-                                      multiple
-                                      :popper-append-to-body="false"
-                                      :collapse-tags="gameTypeCollapse"
-                                      :placeholder="$t('__gameType')"
-                                      :popper-class="'custom-dropdown w-auto'"
-                                    >
-                                      <el-option
-                                        v-for="item in selectOption.gameType"
-                                        :key="item.key"
-                                        :label="item.nickname"
-                                        :value="item.key"
-                                      />
-                                    </el-select>
-                                  </div>
-                                  <span class="suffix-label" />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="options">
-                              <div>
-                                <div class="option status">
-                                  <span class="prefix-label" />
-                                  <div class="comp selected-filter custom">
-                                    <el-select
-                                      v-model="searchForm.status"
-                                      class="d-flex"
-                                      multiple
-                                      :popper-append-to-body="false"
-                                      :collapse-tags="statusCollapse"
-                                      :placeholder="$t('__status')"
-                                      :popper-class="'custom-dropdown w-auto'"
-                                    >
-                                      <el-option
-                                        v-for="item in selectOption.gamePaymentStatus"
-                                        :key="item.key"
-                                        :label="item.nickname"
-                                        :value="item.key"
-                                      />
-                                    </el-select>
-                                  </div>
-                                  <span class="suffix-label" />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="options">
-                              <div>
-                                <div class="option">
-                                  <span class="prefix-label" />
-                                  <div class="input-filter">
-                                    <div class="el-input">
-                                      <el-input v-model="searchForm.banker_points" :placeholder="$t('__bankerPoints')" type="number" />
-                                    </div>
-                                  </div>
-                                  <span class="suffix-label" />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="options">
-                              <div>
-                                <div class="option">
-                                  <span class="prefix-label" />
-                                  <div class="input-filter">
-                                    <div class="el-input">
-                                      <el-input v-model="searchForm.player_points" :placeholder="$t('__playerPoints')" type="number" />
-                                    </div>
-                                  </div>
-                                  <span class="suffix-label" />
-                                </div>
+  <div class="w-100 h-100">
+    <template v-if="device === 'mobile'">
+      <div class="dashboard-container">
+        <div class="dashboard-cover" />
+        <div class="scroll-wrap flex-column flex-fill">
+          <div id="scroll-inner" class="scroll-inner flex-column flex-fill off">
+            <div class="game-result flex-column flex-fill" gametype="baccarat">
+              <div class="flex-column flex-fill">
+                <div class="scroll-wrap flex-column flex-fill">
+                  <div id="scroll-inner" class="scroll-inner flex-column flex-fill off">
+                    <div class="scroll-view flex-column flex-fill">
+                      <div class="bg-black">
+                        <div class="pt-3 pl-2 pr-2">
+                          <div class="option">
+                            <span class="prefix-label" />
+                            <div class="comp selected-filter">
+                              <select v-model="searchTimeType" class="el-select">
+                                <option v-for="item in gameResultTimeType" :key="item.key" :value="item.key">
+                                  {{ $t(item.nickname) }}
+                                </option>
+                              </select>
+                              <div class="fas gray-deep">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 63 63"
+                                  style="height: 0.916667rem; width: 0.916667rem;"
+                                >
+                                  <title>arrow_2</title>
+                                  <g id="hGqiqI.tif">
+                                    <path d="M63,10.44,31.74,52.56,0,10.44Z" />
+                                  </g>
+                                </svg>
                               </div>
                             </div>
                           </div>
                         </div>
-                        <button type="button" class="el-button bg-yellow filter-search el-button--default" @click.stop="onSearch">
-                          <span>{{ $t('__search') }}</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div v-show="tableData.length > 0" id="report-list" class="common-list flex-column flex-fill report-list flex-column flex-fill bg-new-dark-white">
-                    <div class="agent-group">
-                      <div
-                        v-for="(item, index) in tableData"
-                        :key="index"
-                        class="w-100 items"
-                      >
-                        <div class="agent-list-basic list-row">
-                          <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
-                            <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__game') }}</span>
-                            <span class="value">
-                              <span>{{ item.game_type }}</span>
+                        <div class="day-range pl-2 pr-2">
+                          <div class="date-time-picker-box">
+                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
+                              <el-date-picker
+                                v-model="searchTime"
+                                type="datetimerange"
+                                popper-class="ams-timeslot-popper mobilePicker"
+                                :clearable="false"
+                                :editable="false"
+                                time-arrow-control
+                                :range-separator="$t('__to')"
+                                :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
+                                :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
+                                :default-time="['00:00:00', '23:59:59']"
+                                :picker-options="pickerOptions"
+                                :format="'yyyy-MM-dd HH:mm'"
+                                prefix-icon="''"
+                                clear-icon="''"
+                                @blur="handleChangePickerClass"
+                              />
+                            </div>
+                            <span @click.stop="expandSearch">
+                              <a class="more-opiton text-link text-underline text-yellow d-flex align-items-center">
+                                <svg-icon class="yellow fas label icon align-items-center d-flex" :class="{'d-none': !searchFormOpen}" icon-class="less" />
+                                <svg-icon class="yellow fas label icon align-items-center" :class="{'d-none': searchFormOpen}" icon-class="add" />
+                                {{ ` ${$t('__options')} ` }}
+                              </a>
                             </span>
                           </div>
-                          <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
-                            <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__tableId') }}</span>
-                            <span class="value">
-                              <span>{{ item.table_id }}</span>
-                            </span>
-                          </div>
-                          <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
-                            <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__gameStartTime') }}</span>
-                            <span class="value">{{ item.game_start_time }}</span>
-                          </div>
-                          <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
-                            <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__gameEndTime') }}</span>
-                            <span class="value">
-                              <span>{{ item.game_end_time }}</span>
-                            </span>
-                          </div>
-                          <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
-                            <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__roundId') }}</span>
-                            <span class="value">
-                              <span>{{ item.round_id }}</span>
-                            </span>
-                          </div>
-                          <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
-                            <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__status') }}</span>
-                            <span class="value">
-                              <span>
-                                <span :class="{'text-blue': [2, 3, 4, 6, 7].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ item.game_payment_status_name }}</span>
-                              </span>
-                            </span>
-                          </div>
-                          <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap; margin-right: 0rem;">
-                            <span class="label" style="width: 100%; padding-bottom: 1rem;">{{ $t('__gameResult') }}</span>
-                            <span class="value">
-                              <span v-if="item.gameResult.result !== -1" class="value text-link">
-                                <div class="fas videoBtn white">
-                                  <i class="el-icon-picture playbackPic" @click="onPlaybackPic(item)" />
-                                  <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click="onPlaybackUrl(item)">
+                        </div>
+                        <div class="filters flex-wrap pl-2 pr-2">
+                          <div class="d-flex w-100">
+                            <div>
+                              <div class="filter-options">
+                                <div class="options">
+                                  <div>
+                                    <div class="option tableType">
+                                      <span class="prefix-label" />
+                                      <div class="comp selected-filter custom">
+                                        <el-select
+                                          v-model="searchForm.table_id"
+                                          class="d-flex"
+                                          multiple
+                                          :popper-append-to-body="false"
+                                          :collapse-tags="tableIdCollapse"
+                                          :placeholder="$t('__tableId')"
+                                          :popper-class="'custom-dropdown w-auto'"
+                                        >
+                                          <el-option
+                                            v-for="item in selectOption.tables"
+                                            :key="item.key"
+                                            :label="item.nickname"
+                                            :value="item.key"
+                                          />
+                                        </el-select>
+                                      </div>
+                                      <span class="suffix-label" />
+                                    </div>
+                                  </div>
                                 </div>
-                                <span>
-                                  <span class="border-bottom border-dark" @click.stop="gameResultClick(item.round_id)">
-                                    <span class="winner" :class="{'BANKER': item.gameResult.result === 0, 'PLAYER': item.gameResult.result === 1, 'TIE': item.gameResult.result === 2}">
-                                      {{ item.gameResult.resultLabel }}
+                                <div class="options">
+                                  <div>
+                                    <div class="option">
+                                      <span class="prefix-label" />
+                                      <div class="input-filter">
+                                        <div class="el-input">
+                                          <input v-model="searchForm.round_id" type="text" autocomplete="off" :placeholder="$t('__roundId')" class="el-input__inner">
+                                        </div>
+                                      </div>
+                                      <span class="suffix-label" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="filter-options" :class="{'d-none': !searchFormOpen}">
+                                <div class="options">
+                                  <div>
+                                    <div class="option gameType">
+                                      <span class="prefix-label" />
+                                      <div class="comp selected-filter custom">
+                                        <el-select
+                                          v-model="searchForm.gameType"
+                                          class="d-flex"
+                                          multiple
+                                          :popper-append-to-body="false"
+                                          :collapse-tags="gameTypeCollapse"
+                                          :placeholder="$t('__gameType')"
+                                          :popper-class="'custom-dropdown w-auto'"
+                                        >
+                                          <el-option
+                                            v-for="item in selectOption.gameType"
+                                            :key="item.key"
+                                            :label="item.nickname"
+                                            :value="item.key"
+                                          />
+                                        </el-select>
+                                      </div>
+                                      <span class="suffix-label" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="options">
+                                  <div>
+                                    <div class="option status">
+                                      <span class="prefix-label" />
+                                      <div class="comp selected-filter custom">
+                                        <el-select
+                                          v-model="searchForm.status"
+                                          class="d-flex"
+                                          multiple
+                                          :popper-append-to-body="false"
+                                          :collapse-tags="statusCollapse"
+                                          :placeholder="$t('__status')"
+                                          :popper-class="'custom-dropdown w-auto'"
+                                        >
+                                          <el-option
+                                            v-for="item in selectOption.gamePaymentStatus"
+                                            :key="item.key"
+                                            :label="item.nickname"
+                                            :value="item.key"
+                                          />
+                                        </el-select>
+                                      </div>
+                                      <span class="suffix-label" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="options">
+                                  <div>
+                                    <div class="option">
+                                      <span class="prefix-label" />
+                                      <div class="input-filter">
+                                        <div class="el-input">
+                                          <el-input v-model="searchForm.banker_points" :placeholder="$t('__bankerPoints')" type="number" />
+                                        </div>
+                                      </div>
+                                      <span class="suffix-label" />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="options">
+                                  <div>
+                                    <div class="option">
+                                      <span class="prefix-label" />
+                                      <div class="input-filter">
+                                        <div class="el-input">
+                                          <el-input v-model="searchForm.player_points" :placeholder="$t('__playerPoints')" type="number" />
+                                        </div>
+                                      </div>
+                                      <span class="suffix-label" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <button type="button" class="el-button bg-yellow filter-search el-button--default" @click.stop="onSearch">
+                              <span>{{ $t('__search') }}</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-show="tableData.length > 0" id="report-list" class="common-list flex-column flex-fill report-list flex-column flex-fill bg-new-dark-white">
+                        <div class="agent-group">
+                          <div
+                            v-for="(item, index) in tableData"
+                            :key="index"
+                            class="w-100 items"
+                          >
+                            <div class="agent-list-basic list-row">
+                              <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__game') }}</span>
+                                <span class="value">
+                                  <span>{{ item.game_type }}</span>
+                                </span>
+                              </div>
+                              <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__tableId') }}</span>
+                                <span class="value">
+                                  <span>{{ item.table_id }}</span>
+                                </span>
+                              </div>
+                              <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__gameStartTime') }}</span>
+                                <span class="value">{{ item.game_start_time }}</span>
+                              </div>
+                              <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__gameEndTime') }}</span>
+                                <span class="value">
+                                  <span>{{ item.game_end_time }}</span>
+                                </span>
+                              </div>
+                              <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__roundId') }}</span>
+                                <span class="value">
+                                  <span>{{ item.round_id }}</span>
+                                </span>
+                              </div>
+                              <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
+                                <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__status') }}</span>
+                                <span class="value">
+                                  <span>
+                                    <span :class="{'text-blue': [2, 3, 4, 6, 7].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ item.game_payment_status_name }}</span>
+                                  </span>
+                                </span>
+                              </div>
+                              <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap; margin-right: 0rem;">
+                                <span class="label" style="width: 100%; padding-bottom: 1rem;">{{ $t('__gameResult') }}</span>
+                                <span class="value">
+                                  <span v-if="item.gameResult.result !== -1" class="value text-link">
+                                    <div class="fas videoBtn white">
+                                      <i class="el-icon-picture playbackPic" @click="onPlaybackPic(item)" />
+                                      <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click="onPlaybackUrl(item)">
+                                    </div>
+                                    <span>
+                                      <span class="border-bottom border-dark" @click.stop="gameResultClick(item.round_id)">
+                                        <span class="winner" :class="{'BANKER': item.gameResult.result === 0, 'PLAYER': item.gameResult.result === 1, 'TIE': item.gameResult.result === 2}">
+                                          {{ item.gameResult.resultLabel }}
+                                        </span>
+                                        {{ `[${$t('__player')}${item.gameResult.player_point} ${$t('__banker')}${item.gameResult.banker_point}]` }}
+                                      </span>
                                     </span>
-                                    {{ `[${$t('__player')}${item.gameResult.player_point} ${$t('__banker')}${item.gameResult.banker_point}]` }}
                                   </span>
+                                  <span v-else>-</span>
                                 </span>
-                              </span>
-                              <span v-else>-</span>
-                            </span>
-                          </div>
-                          <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
-                            <div v-if="item.game_payment_status === 2" class="checkboxGroup">
-                              -
+                              </div>
+                              <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
+                                <div v-if="item.game_payment_status === 2" class="checkboxGroup">
+                                  -
+                                </div>
+                                <div v-else>
+                                  <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.billingStatus, item)">
+                                    <span class="el-checkbox red-tick">
+                                      <span class="el-checkbox__input" :class="{'is-checked': item.invalidRound}">
+                                        <span class="el-checkbox__inner" />
+                                      </span>
+                                    </span>
+                                    <span class="label">{{ $t('__invalidRound') }}</span>
+                                  </span>
+                                </div>
+                              </div>
                             </div>
-                            <div v-else>
-                              <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.billingStatus, item)">
-                                <span class="el-checkbox red-tick">
-                                  <span class="el-checkbox__input" :class="{'is-checked': item.invalidRound}">
-                                    <span class="el-checkbox__inner" />
-                                  </span>
-                                </span>
-                                <span class="label">{{ $t('__invalidRound') }}</span>
-                              </span>
+                            <div class="agent-break-line" />
+                          </div>
+                        </div>
+                        <div v-if="totalCount > pageSize">
+                          <div v-if="tableData.length >= totalCount">
+                            <span>{{ $t("__noMoreInformation") }}</span>
+                          </div>
+                          <div v-else>
+                            <div class="text-center view-more-container bg-white">
+                              <span class="view-more border-bottom border-dark" @click="moreInfo">{{ $t('__searchMoreValue') }}</span>
+                              <span style="display: block; width: 100%; height: 3.5rem;" />
                             </div>
                           </div>
                         </div>
-                        <div class="agent-break-line" />
+                        <div style="display: none;" />
                       </div>
-                    </div>
-                    <div v-if="totalCount > pageSize">
-                      <div v-if="tableData.length >= totalCount">
-                        <span>{{ $t("__noMoreInformation") }}</span>
-                      </div>
-                      <div v-else>
-                        <div class="text-center view-more-container bg-white">
-                          <span class="view-more border-bottom border-dark" @click="moreInfo">{{ $t('__searchMoreValue') }}</span>
-                          <span style="display: block; width: 100%; height: 3.5rem;" />
+                      <div v-show="tableData.length <= 0">
+                        <div class="noInformation">
+                          <span>{{ $t('__noInformation') }}</span>
                         </div>
                       </div>
-                    </div>
-                    <div style="display: none;" />
-                  </div>
-                  <div v-show="tableData.length <= 0">
-                    <div class="noInformation">
-                      <span>{{ $t('__noInformation') }}</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <operateDialog
+            ref="invalidRoundDialog"
+            :visible="curDialogIndex === dialogEnum.billingStatus"
+            :content="$stringFormat($t('__gameRoundInvalidMsg'), operateDialogMsgParameter)"
+            :form="editForm"
+            @close="closeDialogEven"
+            @onSubmit="operateSubmit"
+          />
+
+          <playbackDialog
+            v-if="curPlaybackIndex === playbackEnum.pic"
+            :title="playbackTitle"
+            :visible="curPlaybackIndex === playbackEnum.pic"
+            :playback-type="playbackEnum.pic"
+            :url="imagePlaybackpic"
+            @close="closePlaybackDialogEven"
+          />
+
+          <playbackDialog
+            v-if="curPlaybackIndex === playbackEnum.video"
+            :title="playbackTitle"
+            :visible="curPlaybackIndex === playbackEnum.video"
+            :playback-type="playbackEnum.video"
+            :url="videoPlaybackUrl"
+            @close="closePlaybackDialogEven"
+          />
+
+          <gameResultDialog
+            :visible="curDialogIndex === dialogEnum.resultdialog"
+            :round-info="roundInfo"
+            :count-info="countInfo"
+            :score-cards="scoreCards"
+            @close="closeDialogEven"
+          />
         </div>
       </div>
-      <operateDialog
-        ref="invalidRoundDialog"
-        :visible="curDialogIndex === dialogEnum.billingStatus"
-        :content="$stringFormat($t('__gameRoundInvalidMsg'), operateDialogMsgParameter)"
-        :form="editForm"
-        @close="closeDialogEven"
-        @onSubmit="operateSubmit"
-      />
+    </template>
+    <template v-else>
+      <div class="game-result bg-new-dark-white">
+        <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
+          <backTop />
+          <div id="scroll-inner" class="scroll-inner on native hasPage">
+            <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
+              <div class="flex-column flex-fill bg-new-dark-white flex-nowrap">
+                <div class="filter-bar bg-black pt-3">
+                  <div class="filter-outer">
+                    <div class="filters flex-wrap">
+                      <div class="filter-inner">
+                        <div class="filter-options">
+                          <div class="option select_w">
+                            <span class="prefix-label" />
+                            <div class="comp selected-filter">
+                              <select v-model="searchTimeType" class="el-select">
+                                <option v-for="item in gameResultTimeType" :key="item.key" :value="item.key">
+                                  {{ $t(item.nickname) }}
+                                </option>
+                              </select>
+                              <div class="fas gray-deep">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 63 63"
+                                  style="height: 0.916667rem; width: 0.916667rem;"
+                                >
+                                  <title>arrow_2</title>
+                                  <g id="hGqiqI.tif">
+                                    <path d="M63,10.44,31.74,52.56,0,10.44Z" />
+                                  </g>
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="day-range">
+                            <div class="date-time-picker-box">
+                              <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
+                                <el-date-picker
+                                  v-model="searchTime"
+                                  type="datetimerange"
+                                  popper-class="ams-timeslot-popper pcPicker"
+                                  :clearable="false"
+                                  :editable="false"
+                                  time-arrow-control
+                                  :range-separator="$t('__to')"
+                                  :start-placeholder="`${$t('__createdAt')}(${$t('__start')})`"
+                                  :end-placeholder="`${$t('__createdAt')}(${$t('__end')})`"
+                                  :default-time="['00:00:00', '23:59:59']"
+                                  :picker-options="pickerOptions"
+                                  :format="'yyyy-MM-dd HH:mm'"
+                                  prefix-icon="''"
+                                  clear-icon="''"
+                                  @blur="handleChangePickerClass"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="options">
+                            <div>
+                              <div class="option tableType">
+                                <span class="prefix-label" />
+                                <div class="comp selected-filter custom">
+                                  <el-select
+                                    v-model="searchForm.table_id"
+                                    class="d-flex"
+                                    multiple
+                                    :popper-append-to-body="false"
+                                    :collapse-tags="tableIdCollapse"
+                                    :placeholder="$t('__tableId')"
+                                    :popper-class="'custom-dropdown w-auto'"
+                                  >
+                                    <el-option
+                                      v-for="item in selectOption.tables"
+                                      :key="item.key"
+                                      :label="item.nickname"
+                                      :value="item.key"
+                                    />
+                                  </el-select>
+                                </div>
+                                <span class="suffix-label" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="options">
+                            <div>
+                              <div class="option">
+                                <span class="prefix-label" />
+                                <div class="input-filter">
+                                  <div class="el-input">
+                                    <input v-model="searchForm.round_id" type="text" autocomplete="off" :placeholder="$t('__roundId')" class="el-input__inner">
+                                  </div>
+                                </div>
+                                <span class="suffix-label" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="options">
+                            <div>
+                              <div class="option gameType">
+                                <span class="prefix-label" />
+                                <div class="comp selected-filter custom">
+                                  <el-select
+                                    v-model="searchForm.gameType"
+                                    class="d-flex"
+                                    multiple
+                                    :popper-append-to-body="false"
+                                    :collapse-tags="gameTypeCollapse"
+                                    :placeholder="$t('__gameType')"
+                                    :popper-class="'custom-dropdown w-auto'"
+                                  >
+                                    <el-option
+                                      v-for="item in selectOption.gameType"
+                                      :key="item.key"
+                                      :label="item.nickname"
+                                      :value="item.key"
+                                    />
+                                  </el-select>
+                                </div>
+                                <span class="suffix-label" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="options">
+                            <div>
+                              <div class="option status">
+                                <span class="prefix-label" />
+                                <div class="comp selected-filter custom">
+                                  <el-select
+                                    v-model="searchForm.status"
+                                    class="d-flex"
+                                    multiple
+                                    :popper-append-to-body="false"
+                                    :collapse-tags="statusCollapse"
+                                    :placeholder="$t('__status')"
+                                    :popper-class="'custom-dropdown w-auto'"
+                                  >
+                                    <el-option
+                                      v-for="item in selectOption.gamePaymentStatus"
+                                      :key="item.key"
+                                      :label="item.nickname"
+                                      :value="item.key"
+                                    />
+                                  </el-select>
+                                </div>
+                                <span class="suffix-label" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="options">
+                            <div>
+                              <div class="option">
+                                <span class="prefix-label" />
+                                <div class="input-filter">
+                                  <div class="el-input">
+                                    <el-input v-model="searchForm.banker_points" :placeholder="$t('__bankerPoints')" type="number" />
+                                  </div>
+                                </div>
+                                <span class="suffix-label" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="options">
+                            <div>
+                              <div class="option">
+                                <span class="prefix-label" />
+                                <div class="input-filter">
+                                  <div class="el-input">
+                                    <el-input v-model="searchForm.player_points" :placeholder="$t('__playerPoints')" type="number" />
+                                  </div>
+                                </div>
+                                <span class="suffix-label" />
+                              </div>
+                            </div>
+                          </div>
+                          <button type="button" class="el-button bg-yellow filter-search el-button--default" @click.stop="onSearch">
+                            <span>{{ $t('__search') }}</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="report-list" class="common-list flex-nowrap report-list flex-fill bg-new-dark-white has-index">
+                  <template v-if="tableData.length > 0">
+                    <div class="w-100">
+                      <div class="agent-group">
+                        <div
+                          v-for="(item, index) in tableData"
+                          :key="index"
+                          class="w-100 items report-list-item-row"
+                          :class="{'high-light': item.tap === true}"
+                          @click.stop="tapRow(item)"
+                        >
+                          <div class="agent-list-basic list-row align-items-center">
+                            <span>
+                              <span class="index" style="font-size:17px!important;margin-top:-8.5px!important">{{ (index+1) }}</span>
+                            </span>
+                            <div class="list-item d-flex align-items-start" style="width: 90px; flex-wrap: wrap;">
+                              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__game') }}</span>
+                              <span class="value">
+                                <span>{{ item.game_type }}</span>
+                              </span>
+                            </div>
+                            <div class="list-item d-flex align-items-start" style="width: 100px; flex-wrap: wrap;">
+                              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__tableId') }}</span>
+                              <span class="value">
+                                <span>{{ item.table_id }}</span>
+                              </span>
+                            </div>
+                            <div class="list-item d-flex align-items-start" style="width: 160px; flex-wrap: wrap;">
+                              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__gameStartTime') }}</span>
+                              <span class="value">{{ item.game_start_time }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-start" style="width: 160px; flex-wrap: wrap;">
+                              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__gameEndTime') }}</span>
+                              <span class="value">{{ item.game_end_time }}</span>
+                            </div>
+                            <div class="list-item d-flex align-items-start" style="width: 120px; flex-wrap: wrap;">
+                              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__roundId') }}</span>
+                              <span class="value">
+                                <span>{{ item.round_id }}</span>
+                              </span>
+                            </div>
+                            <div class="list-item d-flex align-items-start" style="width: 150px; flex-wrap: wrap; margin-right: 1rem;">
+                              <span class="label" style="width: 100%; padding-bottom: 1rem;">{{ $t('__gameResult') }}</span>
+                              <span class="value gameResultAndVideo text-link" style="line-height: 1.3;">
+                                <span v-if="item.gameResult.result !== -1" class="value text-link playback">
+                                  <div class="fas videoBtn text-link white">
+                                    <i class="el-icon-picture playbackPic" @click="onPlaybackPic(item)" />
+                                    <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click="onPlaybackUrl(item)">
+                                  </div>
+                                  <span>
+                                    <span class="border-bottom border-dark" @click.stop="gameResultClick(item.round_id)">
+                                      <span class="winner" :class="{'BANKER': item.gameResult.result === 0, 'PLAYER': item.gameResult.result === 1, 'TIE': item.gameResult.result === 2}">
+                                        {{ item.gameResult.resultLabel }}
+                                      </span>
+                                      {{ `[${$t('__player')}${item.gameResult.player_point} ${$t('__banker')}${item.gameResult.banker_point}]` }}
+                                    </span>
+                                  </span>
+                                </span>
+                                <span v-else>-</span>
+                              </span>
+                            </div>
+                            <div class="list-item d-flex align-items-start" style="width: 100px; flex-wrap: wrap;">
+                              <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__status') }}</span>
+                              <span class="value">
+                                <span :class="{'text-blue': [2, 3, 4, 6, 7].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ item.game_payment_status_name }}</span>
+                              </span>
+                            </div>
+                            <div class="list-item d-flex align-items-start" style="width: 10%; flex-wrap: wrap;">
+                              <div v-if="item.game_payment_status === 2" class="checkboxGroup">
+                                -
+                              </div>
+                              <div v-else>
+                                <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.billingStatus, item)">
+                                  <span class="el-checkbox red-tick">
+                                    <span class="el-checkbox__input" :class="{'is-checked': item.invalidRound}">
+                                      <span class="el-checkbox__inner" />
+                                    </span>
+                                  </span>
+                                  <span class="label">{{ $t('__invalidRound') }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <pagination
+                      :page-size="pageSize"
+                      :page-sizes="pageSizes"
+                      :total="totalCount"
+                      :current-page.sync="currentPage"
+                      @size-change="handleSizeChange"
+                      @current-change="handleCurrentChange"
+                    />
+                    <div class="agent-pop-up-panel" style="display: none;" />
+                  </template>
+                  <template v-else>
+                    <div class="no-result">{{ $t('__noInformation') }}</div>
+                  </template>
+                </div>
+                <div class="w-100 p-4" />
+              </div>
+            </div>
+          </div>
+          <operateDialog
+            ref="invalidRoundDialog"
+            :visible="curDialogIndex === dialogEnum.billingStatus"
+            :content="$stringFormat($t('__gameRoundInvalidMsg'), operateDialogMsgParameter)"
+            :form="editForm"
+            @close="closeDialogEven"
+            @onSubmit="operateSubmit"
+          />
 
-      <playbackDialog
-        v-if="curPlaybackIndex === playbackEnum.pic"
-        :title="playbackTitle"
-        :visible="curPlaybackIndex === playbackEnum.pic"
-        :playback-type="playbackEnum.pic"
-        :url="imagePlaybackpic"
-        @close="closePlaybackDialogEven"
-      />
+          <playbackDialog
+            v-if="curPlaybackIndex === playbackEnum.pic"
+            :title="playbackTitle"
+            :visible="curPlaybackIndex === playbackEnum.pic"
+            :playback-type="playbackEnum.pic"
+            :url="imagePlaybackpic"
+            @close="closePlaybackDialogEven"
+          />
 
-      <playbackDialog
-        v-if="curPlaybackIndex === playbackEnum.video"
-        :title="playbackTitle"
-        :visible="curPlaybackIndex === playbackEnum.video"
-        :playback-type="playbackEnum.video"
-        :url="videoPlaybackUrl"
-        @close="closePlaybackDialogEven"
-      />
+          <playbackDialog
+            v-if="curPlaybackIndex === playbackEnum.video"
+            :title="playbackTitle"
+            :visible="curPlaybackIndex === playbackEnum.video"
+            :playback-type="playbackEnum.video"
+            :url="videoPlaybackUrl"
+            @close="closePlaybackDialogEven"
+          />
 
-      <gameResultDialog
-        :visible="curDialogIndex === dialogEnum.resultdialog"
-        :round-info="roundInfo"
-        :count-info="countInfo"
-        :score-cards="scoreCards"
-        @close="closeDialogEven"
-      />
-    </div>
+          <gameResultDialog
+            :visible="curDialogIndex === dialogEnum.resultdialog"
+            :round-info="roundInfo"
+            :count-info="countInfo"
+            :score-cards="scoreCards"
+            @close="closeDialogEven"
+          />
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -349,13 +676,15 @@ import { mapGetters } from 'vuex'
 import OperateDialog from '@/views/gameResult/operateDialog'
 import PlaybackDialog from '@/components/GameResult/playbackDialog'
 import GameResultDialog from '@/components/GameResult/gameResultDialog';
+import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 const defaultSearchTimeType = 'startTime'
 const defaultSearchTime = getDayDateTime()
 
 export default {
   name: 'GameResult',
-  components: { OperateDialog, PlaybackDialog, GameResultDialog },
+  components: { OperateDialog, PlaybackDialog, GameResultDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -411,6 +740,14 @@ export default {
     }
   },
   watch: {
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.$nextTick(() => {
+          this.onSearch()
+          this.addSelectFilter()
+        })
+      }
+    }
   },
   created() {
     this.searchTime = defaultSearchTime
@@ -455,6 +792,10 @@ export default {
     expandSearch() {
       this.searchFormOpen = !this.searchFormOpen
     },
+    tapRow(row) {
+      row.tap = !row.tap
+      this.tableData = Object.assign([], this.tableData)
+    },
     onSearch() {
       this.pageSizeCount = 1
       this.handleCurrentChange(1)
@@ -494,7 +835,7 @@ export default {
     },
     gameResultClick(round_id) {
       this.showRoadInfo = false
-      this.dataLoading = true
+      this.setDataLoading(true)
       const data = { round_id: round_id }
       this.countInfo = {}
       gameResultGetScoreCards(data).then((res) => {
@@ -506,9 +847,9 @@ export default {
           this.setHeaderStyle()
         }])
         this.curDialogIndex = this.dialogEnum.resultdialog
-        this.dataLoading = false
+        this.setDataLoading(false)
       }).catch(() => {
-        this.dataLoading = false
+        this.setDataLoading(false)
       })
     },
     onReset() {
@@ -519,7 +860,7 @@ export default {
       this.handleCurrentChange(1)
     },
     handleRequest(data) {
-      this.dataLoading = true
+      this.setDataLoading(true)
       const searchTime = []
       if (!this.searchTime) {
         this.searchTime = defaultSearchTime
@@ -549,30 +890,31 @@ export default {
         }
 
         element.invalidRound = element.game_payment_status === 1
+        element.tap = false
       })
       this.totalCount = res.totalCount
-      this.dataLoading = false
+      this.setDataLoading(false)
     },
     onPlaybackPic(row) {
-      this.dataLoading = true
+      this.setDataLoading(true)
       this.playbackTitle = `${this.$t('__gameType')} ${row.game_type} ${this.$t('__tableId')} ${row.table_id} ${this.$t('__roundId')} ${row.round_id}`
       gameResultGetPlaybackPic({ round_id: row.round_id }).then((res) => {
         this.playbackPic = res.playbackPic
         this.curPlaybackIndex = this.playbackEnum.pic
-        this.dataLoading = false
+        this.setDataLoading(false)
       }).catch(() => {
-        this.dataLoading = false
+        this.setDataLoading(false)
       })
     },
     onPlaybackUrl(row) {
-      this.dataLoading = true
+      this.setDataLoading(true)
       this.playbackTitle = `${this.$t('__gameType')} ${row.game_type} ${this.$t('__tableId')} ${row.table_id} ${this.$t('__roundId')} ${row.round_id}`
       gameResultGetPlaybackUrl({ round_id: row.round_id }).then((res) => {
         this.playbackUrl = res.playbackUrl
         this.curPlaybackIndex = this.playbackEnum.video
-        this.dataLoading = false
+        this.setDataLoading(false)
       }).catch(() => {
-        this.dataLoading = false
+        this.setDataLoading(false)
       })
     },
     onSubmit() {
@@ -582,7 +924,7 @@ export default {
       gameResultSearch(this.searchForm).then((res) => {
         this.handleRespone(res)
       }).catch(() => {
-        this.dataLoading = false
+        this.setDataLoading(false)
       })
     },
     closePlaybackDialogEven() {
@@ -590,34 +932,53 @@ export default {
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+    },
+    setDataLoading(loading) {
+      this.$store.dispatch('app/setLoading', loading)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-#app .dashboard-container {
-  padding-top: 0;
-  -ms-flex-preferred-size: 0;
-  flex-basis: 0;
-  -ms-flex-positive: 1;
-  -webkit-box-flex: 1;
-  flex-grow: 1;
-  max-width: 768px;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  margin: 0 auto;
+.playbackPic {
+  -webkit-transform: scale(1.3);
+  transform: scale(1.3);
+  vertical-align: middle;
+  color: #f9c901;
+  margin-right: 0.8rem;
 }
 
-.dashboard-container {
-    margin-left: 0;
-}
-.dashboard-cover {
-    display: none;
+.playbackIcon{
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #f9c901;
+  margin-right: 0.2rem;
 }
 
-.filters .filter-options {
+#app.mobile {
+  .dashboard-container {
+    padding-top: 0;
+    -ms-flex-preferred-size: 0;
+    flex-basis: 0;
+    -ms-flex-positive: 1;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    max-width: 768px;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    margin: 0 auto;
+  }
+
+  .dashboard-container {
+      margin-left: 0;
+  }
+  .dashboard-cover {
+      display: none;
+  }
+
+  .filters .filter-options {
     width: 23.33333rem;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -630,38 +991,34 @@ export default {
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-}
+  }
 
-.filters {
-  .options {
-    width: 11.41667rem;
-    margin-right: 0;
+  .filters {
+    .options {
+      width: 11.41667rem;
+      margin-right: 0;
+    }
+  }
+
+  .filters {
+    .filter-search {
+      margin-left: 0.5rem !important;
+    }
+  }
+
+  .noInformation {
+    margin-top: 1rem;
+    text-align: center;
   }
 }
 
-.filters {
-  .filter-search {
-    margin-left: 0.5rem !important;
+#app.pc {
+  .select_w {
+    width: 24.66667rem;
+  }
+  .playback {
+    display: flex;
   }
 }
 
-.playbackPic {
-    -webkit-transform: scale(1.3);
-    transform: scale(1.3);
-    vertical-align: middle;
-    color: #f9c901;
-    margin-right: 0.8rem;
-}
-
-.playbackIcon{
-    width: 1.5rem;
-    height: 1.5rem;
-    color: #f9c901;
-    margin-right: 0.2rem;
-}
-
-.noInformation {
-  margin-top: 1rem;
-  text-align: center;
-}
 </style>
