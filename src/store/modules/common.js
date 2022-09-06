@@ -93,6 +93,10 @@ const gamePaymentStatusType = [{
 {
   key: 7,
   nickname: '__stopBet'
+},
+{
+  key: 8,
+  nickname: '__forcedTermination'
 }]
 
 const game_play = [{

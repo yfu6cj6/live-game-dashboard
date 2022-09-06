@@ -236,14 +236,14 @@
                                 <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__status') }}</span>
                                 <span class="value">
                                   <span>
-                                    <span :class="{'text-blue': [2, 3, 4, 6, 7].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ item.game_payment_status_name }}</span>
+                                    <span :class="{'text-blue': [2, 3, 4, 6, 7, 8].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ item.game_payment_status_name }}</span>
                                   </span>
                                 </span>
                               </div>
                               <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap; margin-right: 0rem;">
                                 <span class="label" style="width: 100%; padding-bottom: 1rem;">{{ $t('__gameResult') }}</span>
                                 <span class="value">
-                                  <span v-if="item.gameResult.result !== -1" class="value text-link">
+                                  <span v-if="item.gameResult.result !== -1 && item.game_payment_status !== 8" class="value text-link">
                                     <div class="fas videoBtn white">
                                       <i class="el-icon-picture playbackPic" @click="onPlaybackPic(item)" />
                                       <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click="onPlaybackUrl(item)">
@@ -261,7 +261,7 @@
                                 </span>
                               </div>
                               <div class="list-item d-flex align-items-start" style="width: 50%; flex-wrap: wrap;">
-                                <div v-if="item.game_payment_status === 2" class="checkboxGroup">
+                                <div v-if="item.game_payment_status === 2 || item.game_payment_status === 8" class="checkboxGroup">
                                   -
                                 </div>
                                 <div v-else>
@@ -566,7 +566,7 @@
                             <div class="list-item d-flex align-items-start" style="width: 150px; flex-wrap: wrap; margin-right: 1rem;">
                               <span class="label" style="width: 100%; padding-bottom: 1rem;">{{ $t('__gameResult') }}</span>
                               <span class="value gameResultAndVideo text-link" style="line-height: 1.3;">
-                                <span v-if="item.gameResult.result !== -1" class="value text-link playback">
+                                <span v-if="item.gameResult.result !== -1 && item.game_payment_status !== 8" class="value text-link playback">
                                   <div class="fas videoBtn text-link white">
                                     <i class="el-icon-picture playbackPic" @click="onPlaybackPic(item)" />
                                     <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click="onPlaybackUrl(item)">
@@ -586,11 +586,11 @@
                             <div class="list-item d-flex align-items-start" style="width: 100px; flex-wrap: wrap;">
                               <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__status') }}</span>
                               <span class="value">
-                                <span :class="{'text-blue': [2, 3, 4, 6, 7].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ item.game_payment_status_name }}</span>
+                                <span :class="{'text-blue': [2, 3, 4, 6, 7, 8].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ item.game_payment_status_name }}</span>
                               </span>
                             </div>
                             <div class="list-item d-flex align-items-start" style="width: 10%; flex-wrap: wrap;">
-                              <div v-if="item.game_payment_status === 2" class="checkboxGroup">
+                              <div v-if="item.game_payment_status === 2 || item.game_payment_status === 8" class="checkboxGroup">
                                 -
                               </div>
                               <div v-else>

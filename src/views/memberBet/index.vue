@@ -539,7 +539,8 @@
           :visible="curDialogIndex === dialogEnum.pic"
           :playback-type="dialogEnum.pic"
           :url="imagePlaybackpic"
-          :click-playback-pos="clickPlaybackPos"
+          :group-rect="groupRect"
+          :select-el-rect="selectElRect"
           @close="closeDialogEven"
         />
 
@@ -549,17 +550,19 @@
           :visible="curDialogIndex === dialogEnum.video"
           :playback-type="dialogEnum.video"
           :url="videoPlaybackUrl"
-          :click-playback-pos="clickPlaybackPos"
+          :group-rect="groupRect"
+          :select-el-rect="selectElRect"
           @close="closeDialogEven"
         />
 
         <gameResultDialog
-          :visible="curDialogIndex === dialogEnum.resultdialog"
+          :visible="openResultdialog"
           :round-info="roundInfo"
           :count-info="countInfo"
           :score-cards="scoreCards"
-          :click-playback-pos="clickPlaybackPos"
-          @close="closeDialogEven"
+          :group-rect="groupRect"
+          :select-el-rect="selectElRect"
+          @close="setResultdialogActive(false)"
         />
       </div>
     </template>
@@ -1077,7 +1080,7 @@
                 </div>
                 <div class="flex-nowrap report-list flex-fill bg-new-dark-white has-index">
                   <div class="w-100">
-                    <div class="agent-group">
+                    <div class="agent-group memberBet-table">
                       <div
                         v-for="(item, index) in tableData"
                         :key="index"
@@ -1152,13 +1155,13 @@
                                 <div>-</div>
                               </template>
                               <template v-else>
-                                <div class="fas videoBtn white">
+                                <div class="fas videoBtn text-link white">
                                   <i class="el-icon-picture text-yellow mr-2 playbackPicIcon" @click.stop="onPlaybackPic(item)" />
                                 </div>
                                 <div class="fas videoBtn text-link white">
                                   <img :src="require(`@/assets/gameResult/playbackUrl.png`)" style="height: 1.5rem; width: 1.5rem;" @click.stop="onPlaybackUrl(item)">
                                 </div>
-                                <span class="border-bottom border-dark" @click.stop="gameResultClick(item)">
+                                <span class="border-bottom border-dark text-link" @click.stop="gameResultClick(item)">
                                   <span
                                     class="mr-1"
                                     :class="{
@@ -1246,7 +1249,8 @@
                         :visible="curDialogIndex === dialogEnum.pic"
                         :playback-type="dialogEnum.pic"
                         :url="imagePlaybackpic"
-                        :click-playback-pos="clickPlaybackPos"
+                        :group-rect="groupRect"
+                        :select-el-rect="selectElRect"
                         @close="closeDialogEven"
                       />
                       <playbackDialog
@@ -1255,16 +1259,18 @@
                         :visible="curDialogIndex === dialogEnum.video"
                         :playback-type="dialogEnum.video"
                         :url="videoPlaybackUrl"
-                        :click-playback-pos="clickPlaybackPos"
+                        :group-rect="groupRect"
+                        :select-el-rect="selectElRect"
                         @close="closeDialogEven"
                       />
                       <gameResultDialog
-                        :visible="curDialogIndex === dialogEnum.resultdialog"
+                        :visible="openResultdialog"
                         :round-info="roundInfo"
                         :count-info="countInfo"
                         :score-cards="scoreCards"
-                        :click-playback-pos="clickPlaybackPos"
-                        @close="closeDialogEven"
+                        :group-rect="groupRect"
+                        :select-el-rect="selectElRect"
+                        @close="setResultdialogActive(false)"
                       />
                     </div>
                   </div>
@@ -1571,9 +1577,9 @@ export default {
       dialogEnum: Object.freeze({
         'none': 0,
         'pic': 1,
-        'video': 2,
-        'resultdialog': 3
+        'video': 2
       }),
+      openResultdialog: false,
       searchTimeType: defaultSearchTimeType,
       memberId: null,
       playbackPic: undefined,
@@ -1585,7 +1591,8 @@ export default {
       searchOpen: false,
       selectOption: {},
       subtotalInfo: {},
-      clickPlaybackPos: {}
+      groupRect: {},
+      selectElRect: {}
     }
   },
   computed: {
@@ -1747,7 +1754,11 @@ export default {
     },
     gameResultClick(row) {
       this.setLoading(true)
+      if (this.selectForm.id !== row.id) {
+        this.closeDialogEven()
+      }
       this.selectForm = JSON.parse(JSON.stringify(row))
+      this.setResultdialogActive(false)
       gameResultGetScoreCards({ round_id: row.round_id }).then((res) => {
         this.roundInfo = res.roundInfo
         this.countInfo = res.countInfo
@@ -1755,7 +1766,7 @@ export default {
         this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameResult'), true, () => {
           this.closeDialogEven()
         }])
-        this.curDialogIndex = this.dialogEnum.resultdialog
+        this.setResultdialogActive(true)
         this.getRowPos(this.selectForm)
         this.setLoading(false)
       }).catch(() => {
@@ -1813,23 +1824,27 @@ export default {
         this.$refs.backTop.backTop()
       }
       this.closeDialogEven()
+      this.setResultdialogActive(false)
       this.setLoading(false)
     },
     getRowPos(row) {
-      const parent = document.querySelector('.agent-group')
+      const parent = document.querySelector('.memberBet-table')
       const el = document.querySelector(`.gameResult-${row.id}`)
       if (parent && el) {
-        const parentPos = parent.getBoundingClientRect()
-        const elPos = el.getBoundingClientRect()
-        this.clickPlaybackPos = { top: elPos.top - parentPos.top, left: elPos.left - parentPos.left }
+        this.groupRect = JSON.parse(JSON.stringify(parent.getBoundingClientRect()))
+        this.selectElRect = JSON.parse(JSON.stringify(el.getBoundingClientRect()))
       } else {
         this.$nextTick(() => {
-          this.clickPlaybackPos = { top: 30, left: 0 }
+          this.groupRect = {}
+          this.selectElRect = {}
         })
       }
     },
     onPlaybackPic(row) {
       this.setLoading(true)
+      if (this.selectForm.id !== row.id) {
+        this.setResultdialogActive(false)
+      }
       this.selectForm = JSON.parse(JSON.stringify(row))
       this.closeDialogEven()
       gameResultGetPlaybackPic({ round_id: row.round_id }).then((res) => {
@@ -1843,6 +1858,9 @@ export default {
     },
     onPlaybackUrl(row) {
       this.setLoading(true)
+      if (this.selectForm.id !== row.id) {
+        this.setResultdialogActive(false)
+      }
       this.selectForm = JSON.parse(JSON.stringify(row))
       this.closeDialogEven()
       gameResultGetPlaybackUrl({ round_id: row.round_id }).then((res) => {
@@ -1851,7 +1869,6 @@ export default {
         this.getRowPos(this.selectForm)
         this.setLoading(false)
       }).catch(() => {
-        console.log("err")
         this.setLoading(false)
       })
     },
@@ -1895,6 +1912,9 @@ export default {
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
       this.setHeaderStyle()
+    },
+    setResultdialogActive(active) {
+      this.openResultdialog = active
     },
     setLoading(loading) {
       this.$store.dispatch('app/setLoading', loading)

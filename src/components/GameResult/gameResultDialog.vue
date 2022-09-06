@@ -329,7 +329,14 @@ export default {
         return []
       }
     },
-    'clickPlaybackPos': {
+    'groupRect': {
+      type: Object,
+      require: true,
+      default() {
+        return {}
+      }
+    },
+    'selectElRect': {
       type: Object,
       require: true,
       default() {
@@ -366,8 +373,12 @@ export default {
           this.$nextTick(() => {
             const el = document.querySelector('.game-result-detail')
             const elPos = el.getBoundingClientRect()
-            this.top = this.clickPlaybackPos.top - 20
-            this.left = this.clickPlaybackPos.left - elPos.width - 30
+            let top = this.selectElRect.top - this.groupRect.top + this.selectElRect.height
+            if ((top + elPos.height) > this.groupRect.height) {
+              top = top - elPos.height - 40
+            }
+            this.top = top
+            this.left = this.selectElRect.left - this.groupRect.left - elPos.width - 30
           })
           if (this.roundInfo.result) {
             for (let i = 0; i < 3; i++) {
