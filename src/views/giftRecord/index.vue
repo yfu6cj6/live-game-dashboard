@@ -452,7 +452,7 @@
     <template v-else>
       <div class="report-theme ab-record all-bet rpa-record red-packet">
         <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
-          <backTop />
+          <backTop ref="backTop" />
           <div id="scroll-inner" class="scroll-inner on native hasPage">
             <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
               <div class="filter-bar bg-black pt-3">
@@ -1121,6 +1121,9 @@ export default {
       });
       this.totalCount = res.totalCount
       this.setTagsViewTitle()
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
       this.setDataLoading(false)
     },
     onSubmit() {

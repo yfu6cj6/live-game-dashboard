@@ -343,7 +343,7 @@
     <template v-else>
       <div class="game-result bg-new-dark-white">
         <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
-          <backTop />
+          <backTop ref="backTop" />
           <div id="scroll-inner" class="scroll-inner on native hasPage">
             <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
               <div class="flex-column flex-fill bg-new-dark-white flex-nowrap">
@@ -893,6 +893,9 @@ export default {
         element.tap = false
       })
       this.totalCount = res.totalCount
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
       this.setDataLoading(false)
     },
     onPlaybackPic(row) {

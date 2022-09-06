@@ -256,7 +256,7 @@
     <template v-else>
       <div class="comp credit-records SubAgentCreditRecords agentBalanceRecord">
         <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
-          <backTop />
+          <backTop ref="backTop" />
           <div id="scroll-inner" class="scroll-inner on native">
             <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
               <div class="flex-column flex-fill flex-nowrap bg-new-dark-white">
@@ -837,6 +837,9 @@ export default {
       });
       this.totalCount = res.totalCount
       this.totalCountLabel = numberFormat(this.totalCount, 0)
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
       this.setDataLoading(false)
     },
     onSubmit() {

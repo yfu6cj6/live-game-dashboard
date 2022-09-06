@@ -128,7 +128,7 @@
         <div class="w-100">
           <div class="credit-report-list flex-fill flex-nowrap bg-new-dark-white">
             <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
-              <backTop />
+              <backTop ref="backTop" />
               <div id="scroll-inner" class="scroll-inner on native">
                 <div class="scroll-view" style="min-width: 100%; padding-right: 0px;">
                   <div class="flex-nowrap">
@@ -360,9 +360,15 @@ export default {
       this.agentInfo.totalBalanceLabel = numberFormat(this.agentInfo.totalBalance)
       this.agentInfo.open = open;
       this.setTagsViewTitle()
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
       this.setDataLoading(false)
     },
     handleMemberRespone() {
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
       this.setDataLoading(false)
     },
     onTableBtnClick(tableEnum) {
