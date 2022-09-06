@@ -20,11 +20,9 @@
         overflow: auto;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-      }
-      &.native {
-        overflow: auto;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        &.hasPage {
+          border-bottom: 1px solid #000;
+        }
       }
     }
     .scroll-view {

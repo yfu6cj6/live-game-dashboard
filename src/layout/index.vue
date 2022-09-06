@@ -156,6 +156,10 @@ export default {
       visibility: visible;
     }
 
+    .agentLevel {
+      z-index: 3010;
+    }
+
     .appMain {
       padding-top: calc(3.75rem + 30px);
       padding-left: $pcHideSidebarWidth;
