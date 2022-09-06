@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="gameResultDialog" :style="`top: ${topPx}px; left: ${leftPx}px`">
+  <drag v-if="visible" class="gameResultDialog" :x="leftPx" :y="topPx" :parent-limitation="true">
     <template v-if="device==='mobile'">
       <div class="game-result-detail flex-column flex-fill">
         <div class="comp">
@@ -118,9 +118,9 @@
     </template>
     <template v-else>
       <div class="pop-over bg-black">
-        <div class="resize-panel d-inline-block panel-1662367855533" style="transform: translate(0px, 0px); position: absolute; top: -10px; right: 100%; z-index: 1; height: 15px;">
+        <div class="resize-panel d-inline-block" style="transform: translate(0px, 0px); position: absolute; top: -10px; right: 100%; z-index: 1; height: 15px;">
           <div class="canvas">
-            <div class="panel" style="left: 15px; right: auto; top: 15px;">
+            <div class="panel result-panel" style="left: 15px; right: auto; top: 15px;">
               <div
                 class="fas icon-close text-link yellow"
                 style="height: 1.77778rem; width: 1.77778rem;"
@@ -288,12 +288,13 @@
         </div>
       </div>
     </template>
-  </div>
+  </drag>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { getRoadArray } from '@/utils/roadLogic'
+import Drag from '@/components/Drag'
 
 const road = {
   roadData: [[]],
@@ -303,6 +304,7 @@ const road = {
 
 export default {
   name: 'GameResultDialog',
+  components: { Drag },
   props: {
     'visible': {
       type: Boolean,
@@ -371,14 +373,19 @@ export default {
       handler() {
         if (this.visible) {
           this.$nextTick(() => {
-            const el = document.querySelector('.game-result-detail')
-            const elPos = el.getBoundingClientRect()
-            let top = this.selectElRect.top - this.groupRect.top + this.selectElRect.height
-            if ((top + elPos.height) > this.groupRect.height) {
-              top = top - elPos.height - 40
+            const el = document.querySelector('.panel.result-panel')
+            if (el) {
+              const elPos = el.getBoundingClientRect()
+              let top = this.selectElRect.top - this.groupRect.top + 30
+              if ((top + elPos.height) > this.groupRect.height) {
+                top = top - elPos.height - 40
+              }
+              this.top = top
+              this.left = this.selectElRect.left - this.groupRect.left - elPos.width - 30
+            } else {
+              this.top = 0
+              this.left = 0
             }
-            this.top = top
-            this.left = this.selectElRect.left - this.groupRect.left - elPos.width - 30
           })
           if (this.roundInfo.result) {
             for (let i = 0; i < 3; i++) {
@@ -1029,6 +1036,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
+    cursor: move;
     .pop-over {
       .resize-panel {
         .panel {

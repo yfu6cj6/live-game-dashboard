@@ -493,7 +493,6 @@ export default {
         }
         this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
           this.dialogLoading = true
-          console.log(data);
           subAccountEdit(data).then((res) => {
             this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
             this.dialogLoading = false

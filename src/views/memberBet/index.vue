@@ -1764,7 +1764,8 @@ export default {
         this.countInfo = res.countInfo
         this.scoreCards = res.scoreCards
         this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameResult'), true, () => {
-          this.closeDialogEven()
+          this.setResultdialogActive(false)
+          this.setHeaderStyle()
         }])
         this.setResultdialogActive(true)
         this.getRowPos(this.selectForm)

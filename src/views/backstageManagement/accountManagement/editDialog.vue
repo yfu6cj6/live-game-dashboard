@@ -452,7 +452,6 @@ export default {
       const valid = this.validContent(content, lessLength);
       if (valid) {
         if (this.editForm.password !== this.confirmPassword) {
-          console.log('validPassword');
           this.errorTips = `${this.$t('__confirmPassword')}${this.$t('__and')}${this.$t('__password')}${this.$t('__inconsistent')}`
           return false
         } else {
@@ -463,7 +462,6 @@ export default {
     },
     onSubmit() {
       this.checkValidInput('');
-      console.log(this.errorTips)
       if (this.errorTips !== '') {
         return;
       }

@@ -1,5 +1,5 @@
-<template>
-  <div v-if="visible" class="playbackDialog" :style="`top: ${topPx}px; left: ${leftPx}px`">
+<template v-if="visible">
+  <drag class="playbackDialog" :x="leftPx" :y="topPx" :parent-limitation="true">
     <template v-if="device==='mobile'">
       <div class="videoPlayer">
         <div class="video-wrap">
@@ -15,7 +15,7 @@
     </template>
     <template v-else>
       <div class="pop-over bg-black">
-        <div class="resize-panel d-inline-block playback" style="width: 1005px; height: 570px; min-width: 350px; min-height: 200px; padding: 5px; position: relative; z-index: 1; cursor: move;">
+        <div class="resize-panel d-inline-block playback-popover" style="width: 1005px; height: 570px; min-width: 350px; min-height: 200px; padding: 5px; position: relative; z-index: 1; cursor: move;">
           <div class="canvas">
             <div class="panel" style="left: 15px; right: auto; top: 15px;">
               <div class="fas icon-close text-link yellow" style="height: 1.77778rem; width: 1.77778rem;" @click.stop="onClose">
@@ -56,7 +56,12 @@
                   Your browser does not support HTML5 video.
                 </video>
               </div>
-              <div class="fas nwse-resize gray">
+              <div
+                class="fas nwse-resize gray"
+                @mousedown.stop.prevent="stickDown($event)"
+                @touchstart.stop.prevent="stickDown($event)"
+                @touchend.stop.prevent="up($event)"
+              >
                 <svg
                   id="Capa_1"
                   xmlns="http://www.w3.org/2000/svg"
@@ -80,14 +85,16 @@
         </div>
       </div>
     </template>
-  </div>
+  </drag>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import Drag from '@/components/Drag'
 
 export default {
   name: 'PlaybackDialog',
+  components: { Drag },
   props: {
     'data': {
       type: Object,
@@ -98,7 +105,10 @@ export default {
     },
     'visible': {
       type: Boolean,
-      require: true
+      require: true,
+      default() {
+        return false
+      }
     },
     'playbackType': {
       type: Number,
@@ -151,14 +161,19 @@ export default {
       handler() {
         if (this.visible) {
           this.$nextTick(() => {
-            const el = document.querySelector('.resize-panel.playback')
-            const elPos = el.getBoundingClientRect()
-            let top = this.selectElRect.top - this.groupRect.top + 10
-            if ((top + elPos.height) > this.groupRect.height) {
-              top = top - elPos.height - 40
+            const el = document.querySelector('.resize-panel.playback-popover')
+            if (el) {
+              const elPos = el.getBoundingClientRect()
+              let top = this.selectElRect.top - this.groupRect.top + 20
+              if ((top + elPos.height) > this.groupRect.height) {
+                top = top - elPos.height - 60
+              }
+              this.top = top
+              this.left = this.selectElRect.left - this.groupRect.left
+            } else {
+              this.top = 0
+              this.left = 0
             }
-            this.top = top
-            this.left = this.selectElRect.left - this.groupRect.left
           })
         }
       },
@@ -166,6 +181,10 @@ export default {
     }
   },
   methods: {
+    stickDown(ev) {
+    },
+    up(ev) {
+    },
     onClose() {
       this.$emit('close');
     }
