@@ -342,6 +342,10 @@
         flex-wrap: wrap;
         width: 100%;
         padding: 0;
+        .videoBtn {
+          display: inline;
+          margin-right: 0.20833rem;
+        }
         .list-item {
           font-size: 1.16667rem;
           width: 50%;

@@ -352,7 +352,7 @@
                     <div class="filters flex-wrap">
                       <div class="filter-inner">
                         <div class="filter-options">
-                          <div class="option select_w">
+                          <div class="option select_w" style="width: 100px;">
                             <span class="prefix-label" />
                             <div class="comp selected-filter">
                               <select v-model="searchTimeType" class="el-select">
@@ -944,14 +944,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.playbackPic {
-  -webkit-transform: scale(1.3);
-  transform: scale(1.3);
-  vertical-align: middle;
-  color: #f9c901;
-  margin-right: 0.8rem;
-}
-
 .playbackIcon{
   width: 1.5rem;
   height: 1.5rem;
@@ -1009,6 +1001,14 @@ export default {
     }
   }
 
+  .playbackPic {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+    vertical-align: middle;
+    color: #f9c901;
+    margin-right: 0.8rem;
+  }
+
   .noInformation {
     margin-top: 1rem;
     text-align: center;
@@ -1021,6 +1021,13 @@ export default {
   }
   .playback {
     display: flex;
+  }
+  .playbackPic {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+    vertical-align: middle;
+    color: #f9c901;
+    margin-right: 0.5rem;
   }
 }
 
