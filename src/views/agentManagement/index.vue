@@ -537,7 +537,6 @@ import SubAccount from './subAccount/index'
 import Member from './member/index'
 import LimitDialog from '@/views/agentManagement/limitDialog'
 import BackTop from '@/components/BackTop'
-// import Pagination from '@/components/Pagination'
 
 export default {
   name: 'AgentManagement',
@@ -1258,11 +1257,9 @@ export default {
 }
 
 #app.pc .agentManagement {
-
   .el-tabs__item {
     font-size: 1.33333rem;
   }
-
   .el-tabs {
     &.deep {
       .el-tabs__nav {
@@ -1277,7 +1274,6 @@ export default {
       }
     }
   }
-
   .agent-container-inner {
     background-color: #fff;
     height: calc(100vh - 3.75rem - 145px);
@@ -1287,7 +1283,6 @@ export default {
     width: 100%;
     height: 100%;
   }
-
   .agent-page-tab {
     &.el-tabs {
       width: 700px;
@@ -1370,7 +1365,6 @@ export default {
       }
     }
   }
-
   .agentSearchBar {
     margin-left: 0;
     padding: 0 5px 0 0.83333rem;
@@ -1431,7 +1425,6 @@ export default {
       }
     }
   }
-
   .agent-content {
     .filter-wrap {
       padding: 0.41667rem;
@@ -1476,6 +1469,10 @@ export default {
       width: 100%;
       min-height: 2.5rem;
       background-color: #000;
+    }
+    .agent-list {
+      width: 100%;
+      background-color: #fff;
     }
   }
 }

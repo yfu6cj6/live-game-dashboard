@@ -845,6 +845,10 @@
       }
     }
   }
+  .align-self-center {
+    -ms-flex-item-align: center!important;
+    align-self: center!important;
+  }
 }
 
 .ams-timeslot-popper.pcPicker {
