@@ -283,11 +283,7 @@ export default {
         'create': 1,
         'edit': 2
       }),
-      searchForm: {},
-      selectForm: {},
-      curDialogIndex: 0,
-      searchH: 0,
-      topH: 0
+      curDialogIndex: 0
     }
   },
   computed: {

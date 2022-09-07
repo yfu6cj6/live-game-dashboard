@@ -261,7 +261,6 @@ export default {
       agentInfo: {},
       curTableIndex: 0,
       agentId: null,
-      tempRoute: {},
       agentTap: false
     }
   },
@@ -310,9 +309,6 @@ export default {
         this.agentInfo.open = !this.agentInfo.open;
         this.agentInfo = JSON.parse(JSON.stringify(this.agentInfo))
       })
-    },
-    numberFormatStr(number) {
-      return numberFormat(number)
     },
     setTagsViewTitle() {
       const title = this.$t(this.tempRoute.meta.title)

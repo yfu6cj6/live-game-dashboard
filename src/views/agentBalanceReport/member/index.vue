@@ -174,15 +174,6 @@ export default {
   name: 'Member',
   components: { Pagination },
   mixins: [viewCommon, handlePageChange],
-  props: {
-    'viewHeight': {
-      type: Number,
-      require: true,
-      default() {
-        return 0
-      }
-    }
-  },
   data() {
     return {
       agentId: 0,

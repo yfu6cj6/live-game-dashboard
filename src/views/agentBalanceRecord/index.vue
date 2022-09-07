@@ -682,8 +682,6 @@ export default {
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
-      searchForm: {},
-      searchItems: {},
       fuzzyMatchingByOrderNumber: false,
       searchFormOpen: false,
       subtotalInfo: {},
@@ -756,9 +754,6 @@ export default {
     moreInfo() {
       this.pageSizeCount++;
       this.handleCurrentChange(1);
-    },
-    numberFormatStr(number) {
-      return numberFormat(number)
     },
     onExportBtnClick() {
       const data = JSON.parse(JSON.stringify(this.searchForm))
