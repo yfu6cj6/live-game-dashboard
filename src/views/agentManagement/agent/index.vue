@@ -548,6 +548,13 @@
                       </button>
                     </span>
                   </div>
+                  <div v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'" class="list-item flex-none align-self-center flex-wrap" style="width: auto; white-space: nowrap; margin-right: 1rem; margin-bottom: 0.5rem;">
+                    <span class="value">
+                      <button class="el-button bg-yellow el-button--default" @click.stop="onOneClickRecyclingBtnClick(item)">
+                        <span>{{ $t('__oneClickRecycling') }}</span>
+                      </button>
+                    </span>
+                  </div>
                   <div class="list-item flex-none" style="width: 85px; margin-right: 10px; align-self: center;">
                     <div class="two-row-items">
                       <div class="items-label text-left mt-1">
@@ -611,7 +618,7 @@
                       <span class="label">{{ $t('__totallyDisabled') }}</span>
                     </span>
                   </div>
-                  <div class="list-item flex-none align-self-start" style="width: auto; white-space: nowrap; padding: 0px; height: 25px;">
+                  <div v-if="!isAgentSubAccount" class="list-item flex-none align-self-start" style="width: auto; white-space: nowrap; padding: 0px; height: 25px;">
                     <span class="value clickable" @click.stop="onOperateCheckboxClick(dialogEnum.debarBet, item)">
                       <span class="el-checkbox red-tick">
                         <span class="el-checkbox__input" :class="{'is-disabled': agentInfoBetStatusDisabled, 'is-checked': item.debarBet}">
@@ -621,7 +628,7 @@
                       <span class="label">{{ $t('__debarBet') }}</span>
                     </span>
                   </div>
-                  <div class="list-item flex-none align-self-start" style="width: auto; white-space: nowrap; margin-right: 10px; padding: 0px; height: 25px;">
+                  <div v-if="!isAgentSubAccount" class="list-item flex-none align-self-start" style="width: auto; white-space: nowrap; margin-right: 10px; padding: 0px; height: 25px;">
                     <span class="value clickable" @click.stop="onOperateCheckboxClick(dialogEnum.lockLogin, item)">
                       <span class="el-checkbox red-tick">
                         <span class="el-checkbox__input" :class="{'is-checked': item.lockLogin}">
@@ -643,7 +650,7 @@
                       <span class="label">{{ $t('__weeklyLossSettlement') }}</span>
                     </span>
                   </div>
-                  <div class="list-item flex-none align-self-center" style="width: auto; white-space: nowrap; height: 25px;">
+                  <div v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'" class="list-item flex-none align-self-center" style="width: auto; white-space: nowrap; height: 25px;">
                     <span class="value clickable" @click.stop="onOperateCheckboxClick(dialogEnum.oneClickRecycling, item)">
                       <span class="el-checkbox red-tick">
                         <span class="el-checkbox__input" :class="{'is-checked': item.oneClickRecycling}">
@@ -653,7 +660,7 @@
                       <span class="label">{{ $t('__oneClickRecycling') }}</span>
                     </span>
                   </div>
-                  <div class="list-item flex-none align-self-center" style="width: auto; white-space: nowrap; height: 25px;">
+                  <div v-if="!isAgentSubAccount && agentInfo.gift_status === '1'" class="list-item flex-none align-self-center" style="width: auto; white-space: nowrap; height: 25px;">
                     <span class="value clickable" @click.stop="onOperateCheckboxClick(dialogEnum.giftEffect, item)">
                       <span class="el-checkbox red-tick">
                         <span class="el-checkbox__input" :class="{'is-checked': item.giftEffect}">
