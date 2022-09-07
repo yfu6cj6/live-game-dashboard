@@ -260,7 +260,7 @@
       @editSuccess="handleRespone"
     />
 
-    <agentTreeDialog
+    <agentTreeDialogMobile
       ref="agentTreeDialog"
       :visible="curDialogIndex === dialogEnum.agentInfo"
       :agent-level="agentLevel"
@@ -282,7 +282,8 @@ import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import OperateDialog from '@/views/agentManagement/operateDialog'
 import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
-import AgentTreeDialog from '@/components/InfoDialog/agentTreeDialog'
+import AgentTreeDialogMobile from '@/components/InfoDialog/agentTreeDialog_mobile'
+import AgentTreeDialogPC from '@/components/InfoDialog/agentTreeDialog_pc'
 
 const defaultForm = {
   account: '',
@@ -299,7 +300,7 @@ const defaultForm = {
 
 export default {
   name: 'Member',
-  components: { SubAccountEditDialog, OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog, AgentTreeDialog },
+  components: { SubAccountEditDialog, OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog, AgentTreeDialogMobile, AgentTreeDialogPC },
   mixins: [handlePageChange],
   data() {
     return {

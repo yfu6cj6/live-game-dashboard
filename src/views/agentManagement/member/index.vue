@@ -419,7 +419,7 @@
         @close="closeDialogEven"
       />
 
-      <agentTreeDialog
+      <agentTreeDialogMobile
         ref="agentTreeDialog"
         :visible="curDialogIndex === dialogEnum.agentInfo"
         :agent-level="agentLevel"
@@ -928,7 +928,7 @@
         @close="closeDialogEven"
       />
 
-      <agentTreeDialog
+      <agentTreeDialogPC
         ref="agentTreeDialog"
         :visible="curDialogIndex === dialogEnum.agentInfo"
         :agent-level="agentLevel"
@@ -955,7 +955,8 @@ import OperateDialog from '@/views/agentManagement/operateDialog'
 import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
-import AgentTreeDialog from '@/components/InfoDialog/agentTreeDialog'
+import AgentTreeDialogMobile from '@/components/InfoDialog/agentTreeDialog_mobile'
+import AgentTreeDialogPC from '@/components/InfoDialog/agentTreeDialog_pc'
 import Pagination from '@/components/Pagination'
 
 const defaultForm = {
@@ -981,7 +982,7 @@ const editFormStepEnum = Object.freeze({ 'memberInfo': 0, 'rate': 1, 'limit': 2,
 
 export default {
   name: 'Member',
-  components: { MemberEditDialog, LimitDialog, ModPasswordDialog, BalanceDialog, OperateDialog, PasswordTipDialog, AgentTreeDialog, Pagination },
+  components: { MemberEditDialog, LimitDialog, ModPasswordDialog, BalanceDialog, OperateDialog, PasswordTipDialog, AgentTreeDialogMobile, AgentTreeDialogPC, Pagination },
   mixins: [handlePageChange],
   data() {
     return {
