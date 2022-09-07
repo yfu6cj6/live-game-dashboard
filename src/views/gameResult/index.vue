@@ -312,7 +312,7 @@
             @onSubmit="operateSubmit"
           />
 
-          <playbackDialog
+          <playbackDialogMobile
             v-if="curPlaybackIndex === playbackEnum.pic"
             :title="playbackTitle"
             :visible="curPlaybackIndex === playbackEnum.pic"
@@ -321,7 +321,7 @@
             @close="closePlaybackDialogEven"
           />
 
-          <playbackDialog
+          <playbackDialogMobile
             v-if="curPlaybackIndex === playbackEnum.video"
             :title="playbackTitle"
             :visible="curPlaybackIndex === playbackEnum.video"
@@ -330,7 +330,7 @@
             @close="closePlaybackDialogEven"
           />
 
-          <gameResultDialog
+          <gameResultDialogMobile
             :visible="curDialogIndex === dialogEnum.resultdialog"
             :round-info="roundInfo"
             :count-info="countInfo"
@@ -635,7 +635,7 @@
             @onSubmit="operateSubmit"
           />
 
-          <playbackDialog
+          <playbackDialogPC
             v-if="curPlaybackIndex === playbackEnum.pic"
             :title="playbackTitle"
             :visible="curPlaybackIndex === playbackEnum.pic"
@@ -644,7 +644,7 @@
             @close="closePlaybackDialogEven"
           />
 
-          <playbackDialog
+          <playbackDialogPC
             v-if="curPlaybackIndex === playbackEnum.video"
             :title="playbackTitle"
             :visible="curPlaybackIndex === playbackEnum.video"
@@ -653,7 +653,7 @@
             @close="closePlaybackDialogEven"
           />
 
-          <gameResultDialog
+          <gameResultDialogPC
             :visible="curDialogIndex === dialogEnum.resultdialog"
             :round-info="roundInfo"
             :count-info="countInfo"
@@ -674,8 +674,10 @@ import handlePageChange from '@/mixin/handlePageChange';
 import { getFullDate, getDayDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
 import OperateDialog from '@/views/gameResult/operateDialog'
-import PlaybackDialog from '@/components/GameResult/playbackDialog'
-import GameResultDialog from '@/components/GameResult/gameResultDialog';
+import PlaybackDialogPC from '@/components/GameResult/playbackDialog_pc'
+import PlaybackDialogMobile from '@/components/GameResult/playbackDialog_mobile'
+import GameResultDialogPC from '@/components/GameResult/gameResultDialog_pc'
+import GameResultDialogMobile from '@/components/GameResult/gameResultDialog_mobile'
 import BackTop from '@/components/BackTop'
 import Pagination from '@/components/Pagination'
 
@@ -684,7 +686,7 @@ const defaultSearchTime = getDayDateTime()
 
 export default {
   name: 'GameResult',
-  components: { OperateDialog, PlaybackDialog, GameResultDialog, BackTop, Pagination },
+  components: { OperateDialog, PlaybackDialogPC, PlaybackDialogMobile, GameResultDialogPC, GameResultDialogMobile, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {

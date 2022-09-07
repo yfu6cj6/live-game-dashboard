@@ -1,301 +1,124 @@
 <template>
-  <drag v-if="visible" class="gameResultDialog" :x="leftPx" :y="topPx" :parent-limitation="true">
-    <template v-if="device==='mobile'">
-      <div class="game-result-detail flex-column flex-fill">
-        <div class="comp">
-          <div class="result-detail-container ">
-            <div class="result-detail p-3">
-              <div>
-                <div class="d-flex align-item-center game-detail-info">
-                  <span class="mr-3 label">{{ $t('__game') }}</span>
-                  <span class="mr-3 value">{{ roundInfo.gameType }}</span>
-                  <span class="mr-3 label ml-auto">{{ $t('__roundId') }}</span>
-                  <span class="mr-3 value">{{ roundInfo.roundId }}</span>
+  <div v-if="visible" class="gameResultDialog">
+    <div class="game-result-detail flex-column flex-fill">
+      <div class="comp">
+        <div class="result-detail-container ">
+          <div class="result-detail p-3">
+            <div>
+              <div class="d-flex align-item-center game-detail-info">
+                <span class="mr-3 label">{{ $t('__game') }}</span>
+                <span class="mr-3 value">{{ roundInfo.gameType }}</span>
+                <span class="mr-3 label ml-auto">{{ $t('__roundId') }}</span>
+                <span class="mr-3 value">{{ roundInfo.roundId }}</span>
+              </div>
+              <div class="d-flex flex-wrap align-item-center game-detail-info pt-0 mt-0">
+                <span class="mr-3 label">{{ $t('__gameStartTime') }}</span>
+                <span class="mr-3 value">{{ roundInfo.startTime }}</span>
+                <div class="pt-2 w-100" />
+                <span class="mr-3 label">{{ $t('__gameEndTime') }}</span>
+                <span class="mr-3 value">{{ roundInfo.endTime }}</span>
+              </div>
+              <div class="yellow-border-bottom w-100" />
+              <div class="d-flex cards">
+                <div class="player w-50">
+                  <div class="w-100 mt-3" />
+                  <div class="road-title">{{ $t('__playerCard') }}</div>
+                  <div class="w-100 mt-3" />
+                  <div class="d-flex">
+                    <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[0]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
+                    <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[1]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
+                  </div>
+                  <div class="d-flex mt-3">
+                    <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[2]}.png`)" class="poker back" style="height: 7.5rem; width: 5rem;">
+                  </div>
                 </div>
-                <div class="d-flex flex-wrap align-item-center game-detail-info pt-0 mt-0">
-                  <span class="mr-3 label">{{ $t('__gameStartTime') }}</span>
-                  <span class="mr-3 value">{{ roundInfo.startTime }}</span>
-                  <div class="pt-2 w-100" />
-                  <span class="mr-3 label">{{ $t('__gameEndTime') }}</span>
-                  <span class="mr-3 value">{{ roundInfo.endTime }}</span>
-                </div>
-                <div class="yellow-border-bottom w-100" />
-                <div class="d-flex cards">
-                  <div class="player w-50">
+                <div class="yellow-border-right line" />
+                <div class="banker w-50">
+                  <div shadow="never">
                     <div class="w-100 mt-3" />
-                    <div class="road-title">{{ $t('__playerCard') }}</div>
+                    <div class="road-title">{{ $t('__bankerCard') }}</div>
                     <div class="w-100 mt-3" />
                     <div class="d-flex">
-                      <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[0]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
-                      <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[1]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
-                    </div>
-                    <div class="d-flex mt-3">
-                      <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[2]}.png`)" class="poker back" style="height: 7.5rem; width: 5rem;">
+                      <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[0]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
+                      <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[1]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
                     </div>
                   </div>
-                  <div class="yellow-border-right line" />
-                  <div class="banker w-50">
-                    <div shadow="never">
-                      <div class="w-100 mt-3" />
-                      <div class="road-title">{{ $t('__bankerCard') }}</div>
-                      <div class="w-100 mt-3" />
-                      <div class="d-flex">
-                        <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[0]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
-                        <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[1]}.png`)" class="poker yellow" style="height: 7.5rem; width: 5rem;">
+                  <div class="d-flex mt-3">
+                    <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[2]}.png`)" class="poker back" style="height: 7.5rem; width: 5rem;">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="yellow-border-bottom w-100" />
+            <div class="w-100 mt-3" />
+            <div class="road-title">{{ $t('__cardRoad') }}</div>
+            <div class="w-100 mt-3" />
+            <div class="road-card ml-0">
+              <div class="road d-block w-100">
+                <div class="d-block w-100">
+                  <div class="pan-container w-100" style="padding-top: 17.6471%;">
+                    <div class="pan-body" :style="`width: ${bigRoad.roadData[0].length * 2.9}%;`">
+                      <svg :viewBox="`0 0 ${bigRoad.roadData[0].length * 10} 60`" class="bigRoad" />
+                    </div>
+                  </div>
+                  <div class="pan-container w-100" style="padding-top: 8.82355%;">
+                    <div class="pan-body" :style="`width: ${bigEyeRoad.roadData[0].length * 1.45}%;`">
+                      <svg :viewBox="`0 0 ${bigEyeRoad.roadData[0].length * 5} 30`" class="bigEyeRoad" />
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <div class="pan-container" style="padding-top: 8.82355%;">
+                      <div class="pan-body" :style="`width: ${smallEyeRoad.roadData[0].length * 2.9}%;`">
+                        <svg :viewBox="`0 0 ${smallEyeRoad.roadData[0].length * 5} 30`" class="smallRoad" />
                       </div>
                     </div>
-                    <div class="d-flex mt-3">
-                      <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[2]}.png`)" class="poker back" style="height: 7.5rem; width: 5rem;">
+                    <div class="pan-container" style="padding-top: 8.82355%;">
+                      <div class="pan-body" :style="`width: ${cockroachRoad.roadData[0].length * 2.9}%;`">
+                        <svg :viewBox="`0 0 ${cockroachRoad.roadData[0].length * 5} 30`" class="cockroachRoad" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pan-container w-100" style="padding-top: 35.2942%;">
+                    <div class="pan-body" :style="`width: ${beadRoad.roadData[0].length * 5.8}%;`">
+                      <svg :viewBox="`0 0 ${beadRoad.roadData[0].length * 20} 120`" class="beadRoad" />
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="yellow-border-bottom w-100" />
+            </div>
+            <div class="yellow-border-bottom w-100" />
+            <div>
               <div class="w-100 mt-3" />
-              <div class="road-title">{{ $t('__cardRoad') }}</div>
+              <div class="road-title">{{ $t('__totalCount') }}</div>
               <div class="w-100 mt-3" />
-              <div class="road-card ml-0">
-                <div class="road d-block w-100">
-                  <div class="d-block w-100">
-                    <div class="pan-container w-100" style="padding-top: 17.6471%;">
-                      <div class="pan-body" :style="`width: ${bigRoad.roadData[0].length * 2.9}%;`">
-                        <svg :viewBox="`0 0 ${bigRoad.roadData[0].length * 10} 60`" class="bigRoad" />
-                      </div>
-                    </div>
-                    <div class="pan-container w-100" style="padding-top: 8.82355%;">
-                      <div class="pan-body" :style="`width: ${bigEyeRoad.roadData[0].length * 1.45}%;`">
-                        <svg :viewBox="`0 0 ${bigEyeRoad.roadData[0].length * 5} 30`" class="bigEyeRoad" />
-                      </div>
-                    </div>
-                    <div class="d-flex">
-                      <div class="pan-container" style="padding-top: 8.82355%;">
-                        <div class="pan-body" :style="`width: ${smallEyeRoad.roadData[0].length * 2.9}%;`">
-                          <svg :viewBox="`0 0 ${smallEyeRoad.roadData[0].length * 5} 30`" class="smallRoad" />
-                        </div>
-                      </div>
-                      <div class="pan-container" style="padding-top: 8.82355%;">
-                        <div class="pan-body" :style="`width: ${cockroachRoad.roadData[0].length * 2.9}%;`">
-                          <svg :viewBox="`0 0 ${cockroachRoad.roadData[0].length * 5} 30`" class="cockroachRoad" />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="pan-container w-100" style="padding-top: 35.2942%;">
-                      <div class="pan-body" :style="`width: ${beadRoad.roadData[0].length * 5.8}%;`">
-                        <svg :viewBox="`0 0 ${beadRoad.roadData[0].length * 20} 120`" class="beadRoad" />
-                      </div>
-                    </div>
-                  </div>
+              <div class="desc">
+                <div class="d-flex mr-3">
+                  <span class="info">{{ `${$t('__banker')}：${countInfo.banker} ${$t('__round')}` }}</span>
+                  <span class="info">{{ `${$t('__player')}：${countInfo.player} ${$t('__round')}` }}</span>
                 </div>
-              </div>
-              <div class="yellow-border-bottom w-100" />
-              <div>
-                <div class="w-100 mt-3" />
-                <div class="road-title">{{ $t('__totalCount') }}</div>
-                <div class="w-100 mt-3" />
-                <div class="desc">
-                  <div class="d-flex mr-3">
-                    <span class="info">{{ `${$t('__banker')}：${countInfo.banker} ${$t('__round')}` }}</span>
-                    <span class="info">{{ `${$t('__player')}：${countInfo.player} ${$t('__round')}` }}</span>
-                  </div>
-                  <div class="d-flex mr-3">
-                    <span class="info">{{ `${$t('__tie')}：${countInfo.tie} ${$t('__round')}` }}</span>
-                    <span class="info">{{ `${$t('__bankerPair')}：${countInfo.bankerPair} ${$t('__round')}` }}</span>
-                  </div>
-                  <div class="d-flex mr-3">
-                    <span class="info">{{ `${$t('__playerPair')}：${countInfo.playerPair} ${$t('__round')}` }}</span>
-                    <span class="info">{{ `${$t('__bankerContinuousWin')}：${countInfo.bankerInstantWin} ${$t('__round')}` }}</span>
-                  </div>
-                  <div class="d-flex mr-3">
-                    <span class="info">{{ `${$t('__playerContinuousWin')}：${countInfo.playerInstantWin} ${$t('__round')}` }}</span>
-                    <span>{{ `${$t('__totalLength')}：${countInfo.total} ${$t('__round')}` }}</span>
-                  </div>
+                <div class="d-flex mr-3">
+                  <span class="info">{{ `${$t('__tie')}：${countInfo.tie} ${$t('__round')}` }}</span>
+                  <span class="info">{{ `${$t('__bankerPair')}：${countInfo.bankerPair} ${$t('__round')}` }}</span>
+                </div>
+                <div class="d-flex mr-3">
+                  <span class="info">{{ `${$t('__playerPair')}：${countInfo.playerPair} ${$t('__round')}` }}</span>
+                  <span class="info">{{ `${$t('__bankerContinuousWin')}：${countInfo.bankerInstantWin} ${$t('__round')}` }}</span>
+                </div>
+                <div class="d-flex mr-3">
+                  <span class="info">{{ `${$t('__playerContinuousWin')}：${countInfo.playerInstantWin} ${$t('__round')}` }}</span>
+                  <span>{{ `${$t('__totalLength')}：${countInfo.total} ${$t('__round')}` }}</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </template>
-    <template v-else>
-      <div class="pop-over bg-black">
-        <div class="resize-panel d-inline-block" style="transform: translate(0px, 0px); position: absolute; top: -10px; right: 100%; z-index: 1; height: 15px;">
-          <div class="canvas">
-            <div class="panel result-panel" style="left: 15px; right: auto; top: 15px;">
-              <div
-                class="fas icon-close text-link yellow"
-                style="height: 1.77778rem; width: 1.77778rem;"
-                @click.stop="onClose"
-              >
-                <svg
-                  id="close"
-                  data-name="close"
-                  xmlns="http://www.w3.org/2000/svg"
-                  version="1.1"
-                  x="0px"
-                  y="0px"
-                  viewBox="0 0 47.971 47.971"
-                  style="height: 0.941176rem; width: 0.941176rem;"
-                  xml:space="preserve"
-                >
-                  <g>
-                    <path
-                      d="M28.228,23.986L47.092,5.122c1.172-1.171,1.172-3.071,0-4.242c-1.172-1.172-3.07-1.172-4.242,0L23.986,19.744L5.121,
-                      0.88   c-1.172-1.172-3.07-1.172-4.242,0c-1.172,1.171-1.172,3.071,0,4.242l18.865,18.864L0.879,42.85c-1.172,1.171-1.172,
-                      3.071,0,4.242   C1.465,47.677,2.233,47.97,3,47.97s1.535-0.293,2.121-0.879l18.865-18.864L42.85,47.091c0.586,0.586,1.354,
-                      0.879,2.121,0.879   s1.535-0.293,2.121-0.879c1.172-1.171,1.172-3.071,0-4.242L28.228,23.986z"
-                    />
-                  </g>
-                </svg>
-              </div>
-              <div class="game-result-detail">
-                <div class="panel-title pos-r">
-                  <div class="w-100 d-flex flex-wrap align-items-center">
-                    <span class="panel-label">{{ $t('__game') }}</span>
-                    <span class="panel-value">{{ roundInfo.gameType }}</span>
-                    <span class="panel-label">{{ $t('__roundId') }}</span>
-                    <span class="panel-value">{{ roundInfo.roundId }}</span>
-                    <div class="w-100 d-flex flex-wrap">
-                      <div class="w-auto d-flex">
-                        <span class="panel-label">{{ $t('__gameStartTime') }}</span>
-                        <span class="panel-value">{{ roundInfo.startTime }}</span>
-                      </div>
-                      <div class="w-auto d-flex">
-                        <span class="panel-label">{{ $t('__gameEndTime') }}</span>
-                        <span class="panel-value">{{ roundInfo.endTime }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="comp">
-                  <div class="result-detail-container ">
-                    <div class="result-detail" style="width: 650px;">
-                      <div class="d-flex cards flex-wrap" style="margin-bottom: -1.1rem;">
-                        <div class="player">
-                          <div class="w-100 mt-3" />
-                          <div class="text-blue text-left">{{ $t('__player') }}</div>
-                          <div class="d-flex">
-                            <div class="poker-box  text-center" style="height: 6.15rem; width: 6.15rem; margin-top: 1.025rem;">
-                              <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[2]}.png`)" class="poker back" style="height: 6.15rem; width: 4.1rem;">
-                            </div>
-                            <div class="poker-box  text-center" style="height: 6.15rem; width: 4.1rem;">
-                              <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[0]}.png`)" class="poker yellow mr-1" style="height: 6.15rem; width: 4.1rem;">
-                            </div>
-                            <div class="poker-box  text-center" style="height: 6.15rem; width: 4.1rem;">
-                              <img :src="require(`@/assets/poker/${roundInfo.result.PlayerCard[1]}.png`)" class="poker yellow mr-1" style="height: 6.15rem; width: 4.1rem;">
-                            </div>
-                          </div>
-                        </div>
-                        <div style="height: 80%; border-right: 1px solid rgb(206, 150, 0); margin: auto 15px auto 10px;" />
-                        <div class="banker pr-3 mr-3">
-                          <div class="w-100 mt-3" />
-                          <div class="text-red text-right">{{ $t('__banker') }}</div>
-                          <div class="d-flex">
-                            <div class="poker-box  text-center" style="height: 6.15rem; width: 4.1rem;">
-                              <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[0]}.png`)" class="poker yellow mr-1" style="height: 6.15rem; width: 4.1rem;">
-                            </div>
-                            <div class="poker-box  text-center" style="height: 6.15rem; width: 4.1rem;">
-                              <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[1]}.png`)" class="poker yellow mr-1" style="height: 6.15rem; width: 4.1rem;">
-                            </div>
-                            <div class="poker-box  text-center mr-0" style="height: 6.15rem; width: 6.15rem; margin-top: 1.025rem;">
-                              <img :src="require(`@/assets/poker/${roundInfo.result.BankerCard[2]}.png`)" class="poker back" style="height: 6.15rem; width: 4.1rem;">
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <div class="w-100 mt-3" />
-                          <div class="desc">
-                            <div class="d-flex">
-                              <div class="d">
-                                <span class="info">
-                                  <span class="text-yellow">{{ `${$t('__totalLength')}：` }}</span>
-                                  {{ `${countInfo.total} ${$t('__round')}` }}
-                                </span>
-                                <span class="info">
-                                  <span class="text-red">{{ `${$t('__banker')}：` }}</span>
-                                  {{ `${countInfo.banker} ${$t('__round')}` }}
-                                </span>
-                                <span class="info">
-                                  <span class="text-red">{{ `${$t('__bankerPair')}：` }}</span>
-                                  {{ `${countInfo.bankerPair} ${$t('__round')}` }}
-                                </span>
-                                <span class="info">
-                                  <span class="text-red">{{ `${$t('__bankerContinuousWin')}：` }}</span>
-                                  {{ `${countInfo.bankerInstantWin} ${$t('__round')}` }}
-                                </span>
-                              </div>
-                              <div class="d">
-                                <span class="info">
-                                  <span class="text-green">{{ `${$t('__tie')}：` }}</span>
-                                  {{ `${countInfo.tie} ${$t('__round')}` }}
-                                </span>
-                                <span class="info">
-                                  <span class="text-blue">{{ `${$t('__player')}：` }}</span>
-                                  {{ `${countInfo.player} ${$t('__round')}` }}
-                                </span>
-                                <span class="info">
-                                  <span class="text-blue">{{ `${$t('__playerPair')}：` }}</span>
-                                  {{ `${countInfo.playerPair} ${$t('__round')}` }}
-                                </span>
-                                <span class="info">
-                                  <span class="text-blue">{{ `${$t('__playerContinuousWin')}：` }}</span>
-                                  {{ `${countInfo.playerInstantWin} ${$t('__round')}` }}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="w-100 mt-3" />
-                      <div class="road-card ml-0">
-                        <div class="road road-comp is-column w-100">
-                          <div class="main">
-                            <div class="pan-container w-100" style="padding-top: 17.6471%;">
-                              <div class="pan-body" :style="`width: ${bigRoad.roadData[0].length * 2.9}%;`">
-                                <svg :viewBox="`0 0 ${bigRoad.roadData[0].length * 10} 60`" class="bigRoad" />
-                              </div>
-                            </div>
-                            <div class="pan-container w-100" style="padding-top: 8.82355%;">
-                              <div class="pan-body" :style="`width: ${bigEyeRoad.roadData[0].length * 1.45}%;`">
-                                <svg :viewBox="`0 0 ${bigEyeRoad.roadData[0].length * 5} 30`" class="bigEyeRoad" />
-                              </div>
-                            </div>
-                            <div class="d-flex">
-                              <div class="pan-container" style="padding-top: 8.82355%;">
-                                <div class="pan-body" :style="`width: ${smallEyeRoad.roadData[0].length * 2.9}%;`">
-                                  <svg :viewBox="`0 0 ${smallEyeRoad.roadData[0].length * 5} 30`" class="smallRoad" />
-                                </div>
-                              </div>
-                              <div class="pan-container" style="padding-top: 8.82355%;">
-                                <div class="pan-body" :style="`width: ${cockroachRoad.roadData[0].length * 2.9}%;`">
-                                  <svg :viewBox="`0 0 ${cockroachRoad.roadData[0].length * 5} 30`" class="cockroachRoad" />
-                                </div>
-                              </div>
-                            </div>
-                            <div class="pan-container w-100" style="padding-top: 35.2942%;">
-                              <div class="pan-body" :style="`width: ${beadRoad.roadData[0].length * 5.8}%;`">
-                                <svg :viewBox="`0 0 ${beadRoad.roadData[0].length * 20} 120`" class="beadRoad" />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-  </drag>
+    </div>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { getRoadArray } from '@/utils/roadLogic'
-import Drag from '@/components/Drag'
-
 const road = {
   roadData: [[]],
   allData: [[]],
@@ -303,12 +126,14 @@ const road = {
 }
 
 export default {
-  name: 'GameResultDialog',
-  components: { Drag },
+  name: 'GameResultDialogMobile',
   props: {
     'visible': {
       type: Boolean,
-      require: true
+      require: true,
+      default() {
+        return false
+      }
     },
     'roundInfo': {
       type: Object,
@@ -352,41 +177,15 @@ export default {
       bigEyeRoad: JSON.parse(JSON.stringify(road)),
       smallEyeRoad: JSON.parse(JSON.stringify(road)),
       cockroachRoad: JSON.parse(JSON.stringify(road)),
-      beadRoad: JSON.parse(JSON.stringify(road)),
-      top: 0,
-      left: 0
+      beadRoad: JSON.parse(JSON.stringify(road))
     }
   },
   computed: {
-    ...mapGetters([
-      'device'
-    ]),
-    topPx() {
-      return this.device === 'mobile' ? 0 : this.top
-    },
-    leftPx() {
-      return this.device === 'mobile' ? 0 : this.left
-    }
   },
   watch: {
     'visible': {
       handler() {
         if (this.visible) {
-          this.$nextTick(() => {
-            const el = document.querySelector('.panel.result-panel')
-            if (el) {
-              const elPos = el.getBoundingClientRect()
-              let top = this.selectElRect.top - this.groupRect.top + 30
-              if ((top + elPos.height) > this.groupRect.height) {
-                top = top - elPos.height - 40
-              }
-              this.top = top
-              this.left = this.selectElRect.left - this.groupRect.left - elPos.width - 30
-            } else {
-              this.top = 0
-              this.left = 0
-            }
-          })
           if (this.roundInfo.result) {
             for (let i = 0; i < 3; i++) {
               if (!this.roundInfo.result.PlayerCard[i]) {
@@ -1026,79 +825,6 @@ export default {
       }
       .road-card {
         max-width: 30.83333rem;
-      }
-    }
-  }
-}
-
-#app.pc {
-  .gameResultDialog {
-    position: absolute;
-    top: 0;
-    left: 0;
-    cursor: move;
-    .pop-over {
-      .resize-panel {
-        .panel {
-          .game-result-detail {
-            padding-left: 5px;
-            padding-right: 5px;
-            .result-detail {
-              width: 100%;
-              margin: 0 auto;
-              font-weight: bold;
-              .poker-box {
-                margin-right: 5px;
-                .poker {
-                  &.back {
-                    -webkit-transform: rotate(90deg);
-                    transform: rotate(90deg);
-                    -webkit-transform-origin: center;
-                    transform-origin: center;
-                  }
-                }
-              }
-              .desc {
-                color: #fff;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -ms-flex-wrap: wrap;
-                flex-wrap: wrap;
-                white-space: nowrap;
-                word-break: keep-all;
-                .info {
-                  margin-right: 0.83333rem;
-                  margin-bottom: 0.83333rem;
-                  white-space: nowrap;
-                  word-break: keep-all;
-                  display: -webkit-box;
-                  display: -ms-flexbox;
-                  display: flex;
-                  -webkit-box-pack: justify;
-                  -ms-flex-pack: justify;
-                  justify-content: space-between;
-                }
-              }
-              .road-card {
-                //整個滾動條
-                ::-webkit-scrollbar {
-                  width: 4px;
-                  height: 4px;
-                  //滾動條上的滾動滑塊
-                  &-thumb {
-                    border-radius: 3px;
-                    // border: none;
-                    border-top: 1px solid rgba(0, 0, 0, 0);
-                    border-right: none;
-                    border-bottom: none;
-                    border-left: none;
-                  }
-                }
-              }
-            }
-          }
-        }
       }
     }
   }

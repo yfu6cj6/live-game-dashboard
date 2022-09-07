@@ -1,15 +1,43 @@
 <template>
   <div
+    class="vdr"
     :style="positionStyle"
+    :class="`${(active || isActive) ? 'active' : 'inactive'} ${contentClass ? contentClass: ''}`"
     @mousedown="bodyDown($event)"
     @touchstart="bodyDown($event)"
     @touchend="up($event)"
   >
-    <slot />
+    <div ref="container" :style="sizeStyle" class="content-container">
+      <slot />
+    </div>
+    <template v-if="showStick">
+      <div
+        v-for="(stick, index) in sticks"
+        :key="index"
+        class="vdr-stick"
+        :class="['vdr-stick-' + stick, isResizable ? '' : 'not-resizable']"
+        :style="vdrStick(stick)"
+        @mousedown.stop.prevent="stickDown(stick, $event)"
+        @touchstart.stop.prevent="stickDown(stick, $event)"
+      />
+    </template>
   </div>
 </template>
 
 <script>
+const styleMapping = {
+  y: {
+    t: 'top',
+    m: 'marginTop',
+    b: 'bottom'
+  },
+  x: {
+    l: 'left',
+    m: 'marginLeft',
+    r: 'right'
+  }
+};
+
 function addEvents(events) {
   events.forEach((cb, eventName) => {
     document.documentElement.addEventListener(eventName, cb);
@@ -23,8 +51,18 @@ function removeEvents(events) {
 }
 
 export default {
-  name: 'Drag',
+  name: 'DragResize',
+  emits: ['clicked', 'dragging', 'dragstop', 'resizing', 'resizestop', 'activated', 'deactivated'],
   props: {
+    autoInit: {
+      type: Boolean, default: true
+    },
+    showStick: {
+      type: Boolean, default: true
+    },
+    stickSize: {
+      type: Number, default: 8
+    },
     parentScaleX: {
       type: Number, default: 1
     },
@@ -38,6 +76,9 @@ export default {
       type: Boolean, default: false
     },
     isDraggable: {
+      type: Boolean, default: true
+    },
+    isResizable: {
       type: Boolean, default: true
     },
     aspectRatio: {
@@ -79,28 +120,28 @@ export default {
     },
     w: {
       type: [String, Number],
-      default: 200,
+      default: 0,
       validator(val) {
         return (typeof val === 'string') ? val === 'auto' : val >= 0;
       }
     },
     h: {
       type: [String, Number],
-      default: 200,
+      default: 0,
       validator(val) {
         return (typeof val === 'string') ? val === 'auto' : val >= 0;
       }
     },
     minw: {
       type: Number,
-      default: 50,
+      default: 0,
       validator(val) {
         return val >= 0;
       }
     },
     minh: {
       type: Number,
-      default: 50,
+      default: 0,
       validator(val) {
         return val >= 0;
       }
@@ -181,6 +222,17 @@ export default {
         height: this.h === 'auto' ? 'auto' : this.height + 'px'
       };
     },
+    vdrStick() {
+      return (stick) => {
+        const stickStyle = {
+          width: `${this.stickSize / this.parentScaleX}px`,
+          height: `${this.stickSize / this.parentScaleY}px`
+        };
+        stickStyle[styleMapping.y[stick[0]]] = `${this.stickSize / this.parentScaleX / -2}px`;
+        stickStyle[styleMapping.x[stick[1]]] = `${this.stickSize / this.parentScaleX / -2}px`;
+        return stickStyle;
+      };
+    },
     width() {
       return this.parentWidth - this.left - this.right;
     },
@@ -220,8 +272,7 @@ export default {
     },
     x: {
       handler(newVal, oldVal) {
-        this.left = newVal
-        if (this.stickDrag || this.bodyDrag || (newVal === this.left)) {
+        if (this.stickDrag || (newVal === this.left)) {
           return;
         }
 
@@ -237,10 +288,10 @@ export default {
     },
     y: {
       handler(newVal, oldVal) {
-        this.top = newVal
-        if (this.stickDrag || this.bodyDrag || (newVal === this.top)) {
+        if (this.stickDrag || (newVal === this.top)) {
           return;
         }
+
         const delta = oldVal - newVal;
 
         this.bodyDown({ pageX: this.left, pageY: this.top });
@@ -304,19 +355,9 @@ export default {
       top: { min: null, max: null },
       bottom: { min: null, max: null }
     };
-
     this.currentStick = null;
   },
   mounted() {
-    this.parentElement = this.$el.parentNode;
-    this.parentWidth = this.parentW ? this.parentW : this.parentElement.clientWidth;
-    this.parentHeight = this.parentH ? this.parentH : this.parentElement.clientHeight;
-
-    this.left = this.x;
-    this.top = this.y;
-    this.right = this.parentWidth - (this.w === 'auto' ? this.$refs.container.scrollWidth : this.w) - this.left;
-    this.bottom = this.parentHeight - (this.h === 'auto' ? this.$refs.container.scrollHeight : this.h) - this.top;
-
     this.domEvents = new Map([
       ['mousemove', this.move],
       ['mouseup', this.up],
@@ -330,22 +371,36 @@ export default {
 
     addEvents(this.domEvents);
 
-    if (this.dragHandle) {
-      [...this.$el.querySelectorAll(this.dragHandle)].forEach((dragHandle) => {
-        dragHandle.setAttribute('data-drag-handle', this._uid);
-      });
-    }
-
-    if (this.dragCancel) {
-      [...this.$el.querySelectorAll(this.dragCancel)].forEach((cancelHandle) => {
-        cancelHandle.setAttribute('data-drag-cancel', this._uid);
-      });
+    if (this.autoInit) {
+      this.init()
     }
   },
   beforeDestroy() {
     removeEvents(this.domEvents);
   },
   methods: {
+    init() {
+      this.parentElement = this.$el.parentNode;
+      this.parentWidth = this.parentW ? this.parentW : this.parentElement.clientWidth;
+      this.parentHeight = this.parentH ? this.parentH : this.parentElement.clientHeight;
+
+      this.left = this.x;
+      this.top = this.y;
+      this.right = this.parentWidth - (this.w === 'auto' ? this.$refs.container.scrollWidth : this.w) - this.left;
+      this.bottom = this.parentHeight - (this.h === 'auto' ? this.$refs.container.scrollHeight : this.h) - this.top;
+
+      if (this.dragHandle) {
+        [...this.$el.querySelectorAll(this.dragHandle)].forEach((dragHandle) => {
+          dragHandle.setAttribute('data-drag-handle', this._uid);
+        });
+      }
+
+      if (this.dragCancel) {
+        [...this.$el.querySelectorAll(this.dragCancel)].forEach((cancelHandle) => {
+          cancelHandle.setAttribute('data-drag-cancel', this._uid);
+        });
+      }
+    },
     deselect() {
       if (this.preventActiveBehavior) {
         return;
@@ -356,6 +411,7 @@ export default {
       if (!this.stickDrag && !this.bodyDrag) {
         return;
       }
+
       ev.stopPropagation();
 
       const pageX = typeof ev.pageX !== 'undefined' ? ev.pageX : ev.touches[0].pageX;
@@ -503,7 +559,7 @@ export default {
       };
     },
     stickDown(stick, ev, force = false) {
-      if (!this.active && !force) {
+      if ((!this.isResizable || !this.active) && !force) {
         return;
       }
 
@@ -554,6 +610,7 @@ export default {
           if (snapToGrid) {
             newBottom = parentHeight - Math.round((parentHeight - newBottom) / gridY) * gridY;
           }
+
           break;
         case 't':
           newTop = dimensionsBeforeMove.top - delta.y;
@@ -561,6 +618,7 @@ export default {
           if (snapToGrid) {
             newTop = Math.round(newTop / gridY) * gridY;
           }
+
           break;
         default:
           break;
@@ -575,7 +633,6 @@ export default {
           }
 
           break;
-
         case 'l':
           newLeft = dimensionsBeforeMove.left - delta.x;
 
@@ -702,6 +759,7 @@ export default {
           };
         }
       }
+
       return limits;
     },
     sideCorrectionByLimit(limit, current) {
@@ -771,3 +829,52 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.vdr {
+  position: absolute;
+  box-sizing: border-box;
+}
+.vdr.active:before{
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  // outline: 1px dashed #d6d6d6;
+}
+.vdr-stick {
+  box-sizing: border-box;
+  position: absolute;
+  font-size: 1px;
+  background: #ffffff;
+  border: 1px solid #6c6c6c;
+  box-shadow: 0 0 2px #bbb;
+}
+.inactive .vdr-stick {
+  display: none;
+}
+.vdr-stick-tl, .vdr-stick-br {
+  cursor: nwse-resize;
+}
+.vdr-stick-tm, .vdr-stick-bm {
+  left: 50%;
+  cursor: ns-resize;
+}
+.vdr-stick-tr, .vdr-stick-bl {
+  cursor: nesw-resize;
+}
+.vdr-stick-ml, .vdr-stick-mr {
+  top: 50%;
+  cursor: ew-resize;
+}
+.vdr-stick.not-resizable{
+  display: none;
+}
+.content-container{
+  display: block;
+  position: relative;
+}
+</style>

@@ -533,7 +533,7 @@
             </div>
           </div>
         </div>
-        <playbackDialog
+        <playbackDialogMobile
           v-if="curDialogIndex === dialogEnum.pic"
           :data="selectForm"
           :visible="curDialogIndex === dialogEnum.pic"
@@ -544,7 +544,7 @@
           @close="closeDialogEven"
         />
 
-        <playbackDialog
+        <playbackDialogMobile
           v-if="curDialogIndex === dialogEnum.video"
           :data="selectForm"
           :visible="curDialogIndex === dialogEnum.video"
@@ -555,7 +555,7 @@
           @close="closeDialogEven"
         />
 
-        <gameResultDialog
+        <gameResultDialogMobile
           :visible="openResultdialog"
           :round-info="roundInfo"
           :count-info="countInfo"
@@ -1243,7 +1243,7 @@
                           </div>
                         </div>
                       </div>
-                      <playbackDialog
+                      <playbackDialogPC
                         v-if="curDialogIndex === dialogEnum.pic"
                         :data="selectForm"
                         :visible="curDialogIndex === dialogEnum.pic"
@@ -1253,7 +1253,7 @@
                         :select-el-rect="selectElRect"
                         @close="closeDialogEven"
                       />
-                      <playbackDialog
+                      <playbackDialogPC
                         v-if="curDialogIndex === dialogEnum.video"
                         :data="selectForm"
                         :visible="curDialogIndex === dialogEnum.video"
@@ -1263,7 +1263,7 @@
                         :select-el-rect="selectElRect"
                         @close="closeDialogEven"
                       />
-                      <gameResultDialog
+                      <gameResultDialogPC
                         :visible="openResultdialog"
                         :round-info="roundInfo"
                         :count-info="countInfo"
@@ -1560,8 +1560,10 @@ import handlePageChange from '@/mixin/handlePageChange'
 import { getFullDate, getFullDateString, getDayDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
-import PlaybackDialog from '@/components/GameResult/playbackDialog'
-import GameResultDialog from '@/components/GameResult/gameResultDialog'
+import PlaybackDialogPC from '@/components/GameResult/playbackDialog_pc'
+import PlaybackDialogMobile from '@/components/GameResult/playbackDialog_mobile'
+import GameResultDialogPC from '@/components/GameResult/gameResultDialog_pc'
+import GameResultDialogMobile from '@/components/GameResult/gameResultDialog_mobile'
 import BackTop from '@/components/BackTop'
 import Pagination from '@/components/Pagination'
 
@@ -1570,7 +1572,7 @@ const defaultSearchTime = getDayDateTime()
 
 export default {
   name: 'MemberBet',
-  components: { PlaybackDialog, GameResultDialog, BackTop, Pagination },
+  components: { PlaybackDialogPC, PlaybackDialogMobile, GameResultDialogPC, GameResultDialogMobile, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -1648,6 +1650,8 @@ export default {
     },
     'device': function() {
       if (this.tempRoute.path === this.$route.path) {
+        this.closeDialogEven()
+        this.setResultdialogActive(false)
         this.$nextTick(() => {
           this.handleCurrentChange(1)
           this.addSelectFilter()
