@@ -469,7 +469,7 @@
                       </div>
                     </span>
                   </div>
-                  <div class="list-item flex-none flex-wrap align-self-center mr-3 clickable" style="width: auto; white-space: nowrap; margin-bottom: 0.5rem;" @click="onEditBtnClick(item)">
+                  <div v-if="!isAgentSubAccount" class="list-item flex-none flex-wrap align-self-center mr-3 clickable" style="width: auto; white-space: nowrap; margin-bottom: 0.5rem;" @click="onEditBtnClick(item)">
                     <span class="value">
                       <span class="edit">
                         <div class="fas yellow">
@@ -478,7 +478,7 @@
                       </span>
                     </span>
                   </div>
-                  <div class="list-item flex-none flex-wrap align-self-center clickable" style="width: auto; margin-bottom: 0.5rem;" @click="onModPasswordBtnClick(item)">
+                  <div v-if="!isAgentSubAccount" class="list-item flex-none flex-wrap align-self-center clickable" style="width: auto; margin-bottom: 0.5rem;" @click="onModPasswordBtnClick(item)">
                     <span class="value">
                       <span class="key">
                         <div class="fas yellow">
@@ -504,17 +504,24 @@
                       </div>
                     </div>
                   </div>
-                  <div class="list-item flex-none align-self-center" style="width: auto; white-space: nowrap; flex-wrap: wrap; margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                  <div v-if="!isAgentSubAccount" class="list-item flex-none align-self-center" style="width: auto; white-space: nowrap; flex-wrap: wrap; margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.5rem;">
                     <span class="value" style="margin-right: 0.5rem;">
                       <button class="el-button bg-yellow el-button--default" @click.stop="onDepositBtnClick(item)">
                         <span>{{ $t('__deposit') }}</span>
                       </button>
                     </span>
                   </div>
-                  <div class="list-item flex-none align-self-center flex-wrap" style="width: auto; white-space: nowrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                  <div v-if="!isAgentSubAccount" class="list-item flex-none align-self-center flex-wrap" style="width: auto; white-space: nowrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
                     <span class="value" style="margin-right: 0.5rem;">
                       <button class="el-button bg-yellow video el-button--default" @click.stop="onWithdrawBtnClick(item)">
                         <span>{{ $t('__withdraw') }}</span>
+                      </button>
+                    </span>
+                  </div>
+                  <div v-if="!isAgentSubAccount && agentInfo.one_click_recycling === '1'" class="list-item flex-none align-self-center flex-wrap" style="width: auto; white-space: nowrap; margin-right: 0.5rem; margin-bottom: 0.5rem;">
+                    <span class="value" style="margin-right: 0.5rem;">
+                      <button class="el-button bg-yellow video el-button--default" @click.stop="onOneClickRecyclingBtnClick(item)">
+                        <span>{{ $t('__oneClickRecycling') }}</span>
                       </button>
                     </span>
                   </div>
@@ -1323,6 +1330,12 @@ export default {
   text-align: center;
 }
 
+.exceeded {
+  color: red;
+  display: block;
+  line-height: 16px;
+}
+
 .mobile {
   .hall-row {
     width: 100vw;
@@ -1365,10 +1378,10 @@ export default {
       border-top: 0.08333rem solid #f9c901;
     }
   }
-  .exceeded {
-    color: red;
-    display: block;
-    line-height: 16px;
+}
+.pc {
+  .api-button {
+    display: inline;
   }
 }
 </style>
