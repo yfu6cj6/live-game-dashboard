@@ -430,7 +430,7 @@
                                       <div>
                                         <svg-icon class="icon fas yellow" icon-class="add" style="height: 1.66667rem; width: 1.66667rem;" />
                                       </div>
-                                      <button class="ml-2 el-button bg-yellow el-button--default" @click.stop="onAddSubBtnClick()">{{ $t('__addSubAgent') }}</button>
+                                      <button class="ml-2 el-button bg-yellow el-button--default" @click.stop="onAddSubBtnClick()">{{ addSubBtnTitle }}</button>
                                     </div>
                                     <template v-if="curTableIndex === tableEnum.agent">
                                       <div class="filter-item search">
@@ -581,6 +581,20 @@ export default {
     ]),
     agentInfoBalance() {
       return this.agentInfo.id === 1 ? 'oo' : this.agentInfo.balanceLabel
+    },
+    addSubBtnTitle() {
+      switch (this.curTableIndex) {
+        case this.tableEnum.agent: {
+          return this.$t('__addSubAgent')
+        }
+        case this.tableEnum.member: {
+          return this.$t('__addMember')
+        }
+        case this.tableEnum.subAccount: {
+          return this.$t('__addSubAccount')
+        }
+      }
+      return ''
     }
   },
   watch: {
