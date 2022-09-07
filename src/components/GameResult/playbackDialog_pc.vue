@@ -1,11 +1,12 @@
 <template v-if="visible">
   <dragResize
     ref="dragResize"
-    class="playbackDialog playbackDialogPC"
+    class="playbackDialog"
     :auto-init="false"
     :show-stick="false"
     :x="left"
     :y="top"
+    :z="1"
     :w="1005"
     :h="598.56"
     :minw="300"
@@ -145,12 +146,11 @@ export default {
       handler() {
         if (this.visible) {
           this.$nextTick(() => {
-            const el = document.querySelector('.playbackDialogPC')
+            const el = this.$el
             if (el) {
-              const elPos = el.getBoundingClientRect()
               let top = this.selectElRect.top - this.groupRect.top + 30
-              if ((top + elPos.height) > this.groupRect.height) {
-                top = top - elPos.height - 40
+              if ((top + 598.56) > this.groupRect.height) {
+                top = top - 598.56 - 40
               }
               this.top = top
               this.left = this.selectElRect.left - this.groupRect.left
@@ -190,13 +190,13 @@ export default {
     .pop-over {
       .panel {
         .videoPlayer {
-          display: block;
-          width: 100%;
-          height: 100%;
-          margin-top: 10px;
+        display: block;
+        width: 100%;
+        height: 100%;
+        margin-top: 10px;
           video,
           img {
-            width: 100%;
+            width: 993px;
           }
         }
       }

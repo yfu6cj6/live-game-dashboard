@@ -1086,18 +1086,6 @@ table {
   }
 }
 
-.winner {
-  &.PLAYER {
-    color: #0090ff;
-  }
-  &.BANKER {
-    color: #ff473d;
-  }
-  &.TIE {
-    color: #56ad10;
-  }
-}
-
 .clearfix:after {
   display: block;
   clear: both;

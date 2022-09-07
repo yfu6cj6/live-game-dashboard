@@ -249,8 +249,8 @@
                                       <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click="onPlaybackUrl(item)">
                                     </div>
                                     <span>
-                                      <span class="border-bottom border-dark" @click.stop="gameResultClick(item.round_id)">
-                                        <span class="winner" :class="{'BANKER': item.gameResult.result === 0, 'PLAYER': item.gameResult.result === 1, 'TIE': item.gameResult.result === 2}">
+                                      <span class="border-bottom border-dark" @click.stop="gameResultClick(item)">
+                                        <span class="winner" :class="{'text-red': item.gameResult.result === 0, 'text-blue': item.gameResult.result === 1, 'text-green': item.gameResult.result === 2}">
                                           {{ item.gameResult.resultLabel }}
                                         </span>
                                         {{ `[${$t('__player')}${item.gameResult.player_point} ${$t('__banker')}${item.gameResult.banker_point}]` }}
@@ -307,14 +307,14 @@
             ref="invalidRoundDialog"
             :visible="curDialogIndex === dialogEnum.billingStatus"
             :content="$stringFormat($t('__gameRoundInvalidMsg'), operateDialogMsgParameter)"
-            :form="editForm"
+            :form="selectForm"
             @close="closeDialogEven"
             @onSubmit="operateSubmit"
           />
 
           <playbackDialogMobile
             v-if="curPlaybackIndex === playbackEnum.pic"
-            :title="playbackTitle"
+            :data="selectForm"
             :visible="curPlaybackIndex === playbackEnum.pic"
             :playback-type="playbackEnum.pic"
             :url="imagePlaybackpic"
@@ -323,7 +323,7 @@
 
           <playbackDialogMobile
             v-if="curPlaybackIndex === playbackEnum.video"
-            :title="playbackTitle"
+            :data="selectForm"
             :visible="curPlaybackIndex === playbackEnum.video"
             :playback-type="playbackEnum.video"
             :url="videoPlaybackUrl"
@@ -525,7 +525,7 @@
                 <div id="report-list" class="common-list flex-nowrap report-list flex-fill bg-new-dark-white has-index">
                   <template v-if="tableData.length > 0">
                     <div class="w-100">
-                      <div class="agent-group">
+                      <div class="agent-group gameResult-table">
                         <div
                           v-for="(item, index) in tableData"
                           :key="index"
@@ -565,15 +565,15 @@
                             </div>
                             <div class="list-item d-flex align-items-start" style="width: 150px; flex-wrap: wrap; margin-right: 1rem;">
                               <span class="label" style="width: 100%; padding-bottom: 1rem;">{{ $t('__gameResult') }}</span>
-                              <span class="value gameResultAndVideo text-link" style="line-height: 1.3;">
+                              <span class="value gameResultAndVideo text-link" style="line-height: 1.3;" :class="`gameResult-table-${item.id}`">
                                 <span v-if="item.gameResult.result !== -1 && item.game_payment_status !== 8" class="value text-link playback">
                                   <div class="fas videoBtn text-link white">
                                     <i class="el-icon-picture playbackPic" @click="onPlaybackPic(item)" />
                                     <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click="onPlaybackUrl(item)">
                                   </div>
                                   <span>
-                                    <span class="border-bottom border-dark" @click.stop="gameResultClick(item.round_id)">
-                                      <span class="winner" :class="{'BANKER': item.gameResult.result === 0, 'PLAYER': item.gameResult.result === 1, 'TIE': item.gameResult.result === 2}">
+                                    <span class="border-bottom border-dark" @click.stop="gameResultClick(item)">
+                                      <span class="winner" :class="{'text-red': item.gameResult.result === 0, 'text-blue': item.gameResult.result === 1, 'text-green': item.gameResult.result === 2}">
                                         {{ item.gameResult.resultLabel }}
                                       </span>
                                       {{ `[${$t('__player')}${item.gameResult.player_point} ${$t('__banker')}${item.gameResult.banker_point}]` }}
@@ -606,6 +606,43 @@
                             </div>
                           </div>
                         </div>
+                        <operateDialog
+                          ref="invalidRoundDialog"
+                          :visible="curDialogIndex === dialogEnum.billingStatus"
+                          :content="$stringFormat($t('__gameRoundInvalidMsg'), operateDialogMsgParameter)"
+                          :form="selectForm"
+                          @close="closeDialogEven"
+                          @onSubmit="operateSubmit"
+                        />
+                        <playbackDialogPC
+                          v-if="curPlaybackIndex === playbackEnum.pic"
+                          :data="selectForm"
+                          :visible="curPlaybackIndex === playbackEnum.pic"
+                          :playback-type="playbackEnum.pic"
+                          :url="imagePlaybackpic"
+                          :group-rect="groupRect"
+                          :select-el-rect="selectElRect"
+                          @close="closePlaybackDialogEven"
+                        />
+                        <playbackDialogPC
+                          v-if="curPlaybackIndex === playbackEnum.video"
+                          :data="selectForm"
+                          :visible="curPlaybackIndex === playbackEnum.video"
+                          :playback-type="playbackEnum.video"
+                          :url="videoPlaybackUrl"
+                          :group-rect="groupRect"
+                          :select-el-rect="selectElRect"
+                          @close="closePlaybackDialogEven"
+                        />
+                        <gameResultDialogPC
+                          :visible="curDialogIndex === dialogEnum.resultdialog"
+                          :round-info="roundInfo"
+                          :count-info="countInfo"
+                          :score-cards="scoreCards"
+                          :group-rect="groupRect"
+                          :select-el-rect="selectElRect"
+                          @close="closeDialogEven"
+                        />
                       </div>
                     </div>
                     <pagination
@@ -626,40 +663,6 @@
               </div>
             </div>
           </div>
-          <operateDialog
-            ref="invalidRoundDialog"
-            :visible="curDialogIndex === dialogEnum.billingStatus"
-            :content="$stringFormat($t('__gameRoundInvalidMsg'), operateDialogMsgParameter)"
-            :form="editForm"
-            @close="closeDialogEven"
-            @onSubmit="operateSubmit"
-          />
-
-          <playbackDialogPC
-            v-if="curPlaybackIndex === playbackEnum.pic"
-            :title="playbackTitle"
-            :visible="curPlaybackIndex === playbackEnum.pic"
-            :playback-type="playbackEnum.pic"
-            :url="imagePlaybackpic"
-            @close="closePlaybackDialogEven"
-          />
-
-          <playbackDialogPC
-            v-if="curPlaybackIndex === playbackEnum.video"
-            :title="playbackTitle"
-            :visible="curPlaybackIndex === playbackEnum.video"
-            :playback-type="playbackEnum.video"
-            :url="videoPlaybackUrl"
-            @close="closePlaybackDialogEven"
-          />
-
-          <gameResultDialogPC
-            :visible="curDialogIndex === dialogEnum.resultdialog"
-            :round-info="roundInfo"
-            :count-info="countInfo"
-            :score-cards="scoreCards"
-            @close="closeDialogEven"
-          />
         </div>
       </div>
     </template>
@@ -701,21 +704,18 @@ export default {
         'video': 2
       }),
       searchTimeType: defaultSearchTimeType,
-      searchForm: {},
-      searchItems: {},
       selectOption: {},
       playbackPic: undefined,
       playbackUrl: undefined,
-      showRoadInfo: false,
+      curDialogIndex: 0,
       roundInfo: {},
       countInfo: {},
-      curDialogIndex: 0,
-      editForm: {},
+      scoreCards: [],
       operateDialogMsgParameter: [],
-      playbackTitle: "",
       curPlaybackIndex: 0,
       searchFormOpen: false,
-      scoreCards: []
+      groupRect: {},
+      selectElRect: {}
     }
   },
   computed: {
@@ -727,9 +727,6 @@ export default {
     },
     videoPlaybackUrl() {
       return this.playbackUrl
-    },
-    gameResultPopperClassName() {
-      return this.showRoadInfo ? '' : 'display_none'
     },
     tableIdCollapse() {
       return this.searchForm.table_id && this.searchForm.table_id.length > this.selectCollapseCount
@@ -744,6 +741,8 @@ export default {
   watch: {
     'device': function() {
       if (this.$route.name === this.tempRoute.name) {
+        this.closePlaybackDialogEven()
+        this.closeDialogEven()
         this.$nextTick(() => {
           this.onSearch()
           this.addSelectFilter()
@@ -762,7 +761,6 @@ export default {
   },
   activated() {
     this.closeDialogEven()
-    this.setHeaderStyle()
   },
   methods: {
     setHeaderStyle() {
@@ -803,7 +801,7 @@ export default {
       this.handleCurrentChange(1)
     },
     onOperateCheckboxClick(operateType, rowData) {
-      this.editForm = { round_id: rowData.round_id }
+      this.selectForm = { round_id: rowData.round_id }
       switch (operateType) {
         case this.dialogEnum.billingStatus: {
           this.curDialogIndex = this.dialogEnum.billingStatus
@@ -832,15 +830,14 @@ export default {
         }
       }
     },
-    closeGameResultPopover(round_id) {
-      this.$refs[`roadInfo-${round_id}`].doClose()
-    },
-    gameResultClick(round_id) {
-      this.showRoadInfo = false
+    gameResultClick(row) {
       this.setDataLoading(true)
-      const data = { round_id: round_id }
-      this.countInfo = {}
-      gameResultGetScoreCards(data).then((res) => {
+      if (this.selectForm.id !== row.id) {
+        this.closeDialogEven()
+      }
+      this.selectForm = JSON.parse(JSON.stringify(row))
+      this.closeDialogEven()
+      gameResultGetScoreCards({ round_id: row.round_id }).then((res) => {
         this.roundInfo = res.roundInfo
         this.countInfo = res.countInfo
         this.scoreCards = res.scoreCards
@@ -849,6 +846,7 @@ export default {
           this.setHeaderStyle()
         }])
         this.curDialogIndex = this.dialogEnum.resultdialog
+        this.getRowPos(this.selectForm)
         this.setDataLoading(false)
       }).catch(() => {
         this.setDataLoading(false)
@@ -898,14 +896,34 @@ export default {
       if (this.$refs.backTop) {
         this.$refs.backTop.backTop()
       }
+      this.closeDialogEven()
+      this.closePlaybackDialogEven()
       this.setDataLoading(false)
+    },
+    getRowPos(row) {
+      const parent = document.querySelector('.gameResult-table')
+      const el = document.querySelector(`.gameResult-table-${row.id}`)
+      if (parent && el) {
+        this.groupRect = JSON.parse(JSON.stringify(parent.getBoundingClientRect()))
+        this.selectElRect = JSON.parse(JSON.stringify(el.getBoundingClientRect()))
+      } else {
+        this.$nextTick(() => {
+          this.groupRect = {}
+          this.selectElRect = {}
+        })
+      }
     },
     onPlaybackPic(row) {
       this.setDataLoading(true)
-      this.playbackTitle = `${this.$t('__gameType')} ${row.game_type} ${this.$t('__tableId')} ${row.table_id} ${this.$t('__roundId')} ${row.round_id}`
+      if (this.selectForm.id !== row.id) {
+        this.closeDialogEven()
+      }
+      this.selectForm = JSON.parse(JSON.stringify(row))
+      this.closePlaybackDialogEven()
       gameResultGetPlaybackPic({ round_id: row.round_id }).then((res) => {
         this.playbackPic = res.playbackPic
         this.curPlaybackIndex = this.playbackEnum.pic
+        this.getRowPos(this.selectForm)
         this.setDataLoading(false)
       }).catch(() => {
         this.setDataLoading(false)
@@ -913,10 +931,15 @@ export default {
     },
     onPlaybackUrl(row) {
       this.setDataLoading(true)
-      this.playbackTitle = `${this.$t('__gameType')} ${row.game_type} ${this.$t('__tableId')} ${row.table_id} ${this.$t('__roundId')} ${row.round_id}`
+      if (this.selectForm.id !== row.id) {
+        this.closeDialogEven()
+      }
+      this.selectForm = JSON.parse(JSON.stringify(row))
+      this.closePlaybackDialogEven()
       gameResultGetPlaybackUrl({ round_id: row.round_id }).then((res) => {
         this.playbackUrl = res.playbackUrl
         this.curPlaybackIndex = this.playbackEnum.video
+        this.getRowPos(this.selectForm)
         this.setDataLoading(false)
       }).catch(() => {
         this.setDataLoading(false)
@@ -934,9 +957,11 @@ export default {
     },
     closePlaybackDialogEven() {
       this.curPlaybackIndex = this.playbackEnum.none
+      this.setHeaderStyle()
     },
     closeDialogEven() {
       this.curDialogIndex = this.dialogEnum.none
+      this.setHeaderStyle()
     },
     setDataLoading(loading) {
       this.$store.dispatch('app/setLoading', loading)
@@ -1031,6 +1056,8 @@ export default {
     color: #f9c901;
     margin-right: 0.5rem;
   }
+  .agent-group {
+    position: relative;
+  }
 }
-
 </style>

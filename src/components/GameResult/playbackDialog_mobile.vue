@@ -45,20 +45,6 @@ export default {
       default() {
         return ''
       }
-    },
-    'groupRect': {
-      type: Object,
-      require: true,
-      default() {
-        return {}
-      }
-    },
-    'selectElRect': {
-      type: Object,
-      require: true,
-      default() {
-        return {}
-      }
     }
   },
   data: function() {

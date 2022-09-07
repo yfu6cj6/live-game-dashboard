@@ -539,8 +539,6 @@
           :visible="curDialogIndex === dialogEnum.pic"
           :playback-type="dialogEnum.pic"
           :url="imagePlaybackpic"
-          :group-rect="groupRect"
-          :select-el-rect="selectElRect"
           @close="closeDialogEven"
         />
 
@@ -550,8 +548,6 @@
           :visible="curDialogIndex === dialogEnum.video"
           :playback-type="dialogEnum.video"
           :url="videoPlaybackUrl"
-          :group-rect="groupRect"
-          :select-el-rect="selectElRect"
           @close="closeDialogEven"
         />
 
@@ -560,8 +556,6 @@
           :round-info="roundInfo"
           :count-info="countInfo"
           :score-cards="scoreCards"
-          :group-rect="groupRect"
-          :select-el-rect="selectElRect"
           @close="setResultdialogActive(false)"
         />
       </div>
@@ -1150,7 +1144,7 @@
                             </span>
                           </div>
                           <div class="list-item d-flex align-items-start item-result">
-                            <span class="value gameResultAndVideo" :class="`gameResult-${item.id}`">
+                            <span class="value gameResultAndVideo" :class="`memberBet-table-${item.id}`">
                               <template v-if="item.gameResult.result === -1">
                                 <div>-</div>
                               </template>
@@ -1834,7 +1828,7 @@ export default {
     },
     getRowPos(row) {
       const parent = document.querySelector('.memberBet-table')
-      const el = document.querySelector(`.gameResult-${row.id}`)
+      const el = document.querySelector(`.memberBet-table-${row.id}`)
       if (parent && el) {
         this.groupRect = JSON.parse(JSON.stringify(parent.getBoundingClientRect()))
         this.selectElRect = JSON.parse(JSON.stringify(el.getBoundingClientRect()))

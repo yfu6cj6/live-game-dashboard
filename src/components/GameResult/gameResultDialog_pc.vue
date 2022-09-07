@@ -1,7 +1,7 @@
 <template>
   <dragResize
     v-if="visible"
-    class="gameResultDialog gameResultDialogPC"
+    class="gameResultDialog"
     :is-active="true"
     :x="left"
     :y="top"
@@ -256,7 +256,7 @@ export default {
       handler() {
         if (this.visible) {
           this.$nextTick(() => {
-            const el = document.querySelector('.gameResultDialogPC')
+            const el = this.$el
             if (el) {
               const elPos = el.getBoundingClientRect()
               let top = this.selectElRect.top - this.groupRect.top + 30
