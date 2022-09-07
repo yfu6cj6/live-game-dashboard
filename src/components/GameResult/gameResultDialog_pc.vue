@@ -141,33 +141,33 @@
                 <div class="road-card ml-0">
                   <div class="road road-comp is-column w-100">
                     <div class="main">
-                      <div class="pan-container w-100" style="padding-top: 17.6471%;">
+                      <dragScroll class="pan-container w-100" style="padding-top: 17.6471%;">
                         <div class="pan-body" :style="`width: ${bigRoad.roadData[0].length * 2.9}%;`">
                           <svg :viewBox="`0 0 ${bigRoad.roadData[0].length * 10} 60`" class="bigRoad" />
                         </div>
-                      </div>
-                      <div class="pan-container w-100" style="padding-top: 8.82355%;">
+                      </dragScroll>
+                      <dragScroll class="pan-container w-100" style="padding-top: 8.82355%;">
                         <div class="pan-body" :style="`width: ${bigEyeRoad.roadData[0].length * 1.45}%;`">
                           <svg :viewBox="`0 0 ${bigEyeRoad.roadData[0].length * 5} 30`" class="bigEyeRoad" />
                         </div>
-                      </div>
+                      </dragScroll>
                       <div class="d-flex">
-                        <div class="pan-container" style="padding-top: 8.82355%;">
+                        <dragScroll class="pan-container" style="padding-top: 8.82355%;">
                           <div class="pan-body" :style="`width: ${smallEyeRoad.roadData[0].length * 2.9}%;`">
                             <svg :viewBox="`0 0 ${smallEyeRoad.roadData[0].length * 5} 30`" class="smallRoad" />
                           </div>
-                        </div>
-                        <div class="pan-container" style="padding-top: 8.82355%;">
+                        </dragScroll>
+                        <dragScroll class="pan-container" style="padding-top: 8.82355%;">
                           <div class="pan-body" :style="`width: ${cockroachRoad.roadData[0].length * 2.9}%;`">
                             <svg :viewBox="`0 0 ${cockroachRoad.roadData[0].length * 5} 30`" class="cockroachRoad" />
                           </div>
-                        </div>
+                        </dragScroll>
                       </div>
-                      <div class="pan-container w-100" style="padding-top: 35.2942%;">
+                      <dragScroll class="pan-container w-100" style="padding-top: 35.2942%;">
                         <div class="pan-body" :style="`width: ${beadRoad.roadData[0].length * 5.8}%;`">
                           <svg :viewBox="`0 0 ${beadRoad.roadData[0].length * 20} 120`" class="beadRoad" />
                         </div>
-                      </div>
+                      </dragScroll>
                     </div>
                   </div>
                 </div>
@@ -183,6 +183,7 @@
 <script>
 import { getRoadArray } from '@/utils/roadLogic'
 import DragResize from '@/components/DragResize'
+import DragScroll from '@/components/DragScroll'
 
 const road = {
   roadData: [[]],
@@ -192,7 +193,7 @@ const road = {
 
 export default {
   name: 'GameResultDialogPC',
-  components: { DragResize },
+  components: { DragResize, DragScroll },
   props: {
     'visible': {
       type: Boolean,
