@@ -260,13 +260,10 @@
       @editSuccess="handleRespone"
     />
 
-    <agentInfoDialog
-      ref="agentInfoDialog"
+    <agentTreeDialog
+      ref="agentTreeDialog"
       :visible="curDialogIndex === dialogEnum.agentInfo"
-      :form="editForm"
-      :agent-info="agentInfo"
       :agent-level="agentLevel"
-      :show-form-data="false"
       @close="closeDialogEven"
       @agent-click="agentClick"
     />
@@ -285,7 +282,7 @@ import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import OperateDialog from '@/views/agentManagement/operateDialog'
 import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
-import AgentInfoDialog from '@/views/agentManagement/agentInfoDialog'
+import AgentTreeDialog from '@/components/InfoDialog/agentTreeDialog'
 
 const defaultForm = {
   account: '',
@@ -302,7 +299,7 @@ const defaultForm = {
 
 export default {
   name: 'Member',
-  components: { SubAccountEditDialog, OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog, AgentInfoDialog },
+  components: { SubAccountEditDialog, OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog, AgentTreeDialog },
   mixins: [handlePageChange],
   data() {
     return {
@@ -509,14 +506,14 @@ export default {
       this.curDialogIndex = this.dialogEnum.none
     },
     agentInfoClick(rowData) {
-      this.$refs.agentInfoDialog.setDialogLoading(true)
+      this.$refs.agentTreeDialog.setDialogLoading(true)
       this.editForm = JSON.parse(JSON.stringify(rowData))
       subAccountTreeSearch({ accountId: this.editForm.id }).then((res) => {
         this.agentLevel = res
         this.curDialogIndex = this.dialogEnum.agentInfo
-        this.$refs.agentInfoDialog.setDialogLoading(false)
+        this.$refs.agentTreeDialog.setDialogLoading(false)
       }).catch(() => {
-        this.$refs.agentInfoDialog.setDialogLoading(false)
+        this.$refs.agentTreeDialog.setDialogLoading(false)
       })
     },
     async agentClick(agentId) {

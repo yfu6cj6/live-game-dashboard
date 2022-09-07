@@ -31,7 +31,7 @@
                             </div>
                           </div>
                         </div>
-                        <div v-if="showFormData" class="agent-tree-detail">
+                        <div class="agent-tree-detail">
                           <div class="d-flex flex-column border-top padding-top" style="overflow: hidden;">
                             <div class="d-flex flex-wrap">
                               <div class="d-flex  flex-column basis-50">
@@ -230,13 +230,6 @@ export default {
       require: true,
       default() {
         return []
-      }
-    },
-    'showFormData': {
-      type: Boolean,
-      require: true,
-      default() {
-        return true
       }
     }
   },

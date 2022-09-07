@@ -419,13 +419,10 @@
         @close="closeDialogEven"
       />
 
-      <agentInfoDialog
-        ref="agentInfoDialog"
+      <agentTreeDialog
+        ref="agentTreeDialog"
         :visible="curDialogIndex === dialogEnum.agentInfo"
-        :form="editForm"
-        :agent-info="agentInfo"
         :agent-level="agentLevel"
-        :show-form-data="false"
         @close="closeDialogEven"
         @agent-click="agentClick"
       />
@@ -924,13 +921,10 @@
         @close="closeDialogEven"
       />
 
-      <agentInfoDialog
-        ref="agentInfoDialog"
+      <agentTreeDialog
+        ref="agentTreeDialog"
         :visible="curDialogIndex === dialogEnum.agentInfo"
-        :form="editForm"
-        :agent-info="agentInfo"
         :agent-level="agentLevel"
-        :show-form-data="false"
         @close="closeDialogEven"
         @agent-click="agentClick"
       />
@@ -954,7 +948,7 @@ import OperateDialog from '@/views/agentManagement/operateDialog'
 import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
-import AgentInfoDialog from '@/views/agentManagement/agentInfoDialog'
+import AgentTreeDialog from '@/components/InfoDialog/agentTreeDialog'
 import Pagination from '@/components/Pagination'
 
 const defaultForm = {
@@ -980,7 +974,7 @@ const editFormStepEnum = Object.freeze({ 'memberInfo': 0, 'rate': 1, 'limit': 2,
 
 export default {
   name: 'Member',
-  components: { MemberEditDialog, LimitDialog, ModPasswordDialog, BalanceDialog, OperateDialog, PasswordTipDialog, AgentInfoDialog, Pagination },
+  components: { MemberEditDialog, LimitDialog, ModPasswordDialog, BalanceDialog, OperateDialog, PasswordTipDialog, AgentTreeDialog, Pagination },
   mixins: [handlePageChange],
   data() {
     return {
@@ -1305,14 +1299,14 @@ export default {
       this.curDialogIndex = this.dialogEnum.none
     },
     agentInfoClick(rowData) {
-      this.$refs.agentInfoDialog.setDialogLoading(true)
+      this.$refs.agentTreeDialog.setDialogLoading(true)
       this.editForm = JSON.parse(JSON.stringify(rowData))
       memberTreeSearch({ memberId: this.editForm.id }).then((res) => {
         this.agentLevel = res
         this.curDialogIndex = this.dialogEnum.agentInfo
-        this.$refs.agentInfoDialog.setDialogLoading(false)
+        this.$refs.agentTreeDialog.setDialogLoading(false)
       }).catch(() => {
-        this.$refs.agentInfoDialog.setDialogLoading(false)
+        this.$refs.agentTreeDialog.setDialogLoading(false)
       })
     },
     async agentClick(agentId) {

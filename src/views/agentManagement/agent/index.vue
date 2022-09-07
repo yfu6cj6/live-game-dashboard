@@ -444,7 +444,6 @@
         :form="editForm"
         :agent-info="agentInfo"
         :agent-level="agentLevel"
-        :show-form-data="true"
         @close="closeDialogEven"
         @agent-click="agentClick"
       />
@@ -888,7 +887,6 @@
         :form="editForm"
         :agent-info="agentInfo"
         :agent-level="agentLevel"
-        :show-form-data="true"
         @close="closeDialogEven"
         @agent-click="agentClick"
       />
@@ -912,7 +910,7 @@ import LimitDialog from '@/views/agentManagement/limitDialog'
 import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import AgentRateLogDialog from './agentRateLogDialog'
 import AgentEditDialog from './agentEditDialog'
-import AgentInfoDialog from '@/views/agentManagement/agentInfoDialog'
+import AgentInfoDialog from '@/components/InfoDialog/agentInfoDialog'
 import Pagination from '@/components/Pagination'
 
 const defaultForm = {
