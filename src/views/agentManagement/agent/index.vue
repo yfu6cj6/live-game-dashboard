@@ -438,7 +438,7 @@
         @onSubmit="operateSubmit"
       />
 
-      <agentInfoDialog
+      <agentInfoDialogMobile
         ref="agentInfoDialog"
         :visible="curDialogIndex === dialogEnum.agentInfo"
         :form="editForm"
@@ -881,7 +881,7 @@
         @onSubmit="operateSubmit"
       />
 
-      <agentInfoDialog
+      <agentInfoDialogPC
         ref="agentInfoDialog"
         :visible="curDialogIndex === dialogEnum.agentInfo"
         :form="editForm"
@@ -910,7 +910,8 @@ import LimitDialog from '@/views/agentManagement/limitDialog'
 import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import AgentRateLogDialog from './agentRateLogDialog'
 import AgentEditDialog from './agentEditDialog'
-import AgentInfoDialog from '@/components/InfoDialog/agentInfoDialog'
+import AgentInfoDialogMobile from '@/components/InfoDialog/agentInfoDialog_mobile'
+import AgentInfoDialogPC from '@/components/InfoDialog/agentInfoDialog_pc'
 import Pagination from '@/components/Pagination'
 
 const defaultForm = {
@@ -938,7 +939,7 @@ const editFormStepEnum = Object.freeze({ 'agentInfo': 0, 'rate': 1, 'limit': 2, 
 
 export default {
   name: 'Agent',
-  components: { BalanceDialog, OperateDialog, LimitDialog, ModPasswordDialog, AgentRateLogDialog, AgentEditDialog, AgentInfoDialog, Pagination },
+  components: { BalanceDialog, OperateDialog, LimitDialog, ModPasswordDialog, AgentRateLogDialog, AgentEditDialog, AgentInfoDialogMobile, AgentInfoDialogPC, Pagination },
   mixins: [handlePageChange],
   data() {
     return {
