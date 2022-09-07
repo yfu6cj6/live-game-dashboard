@@ -30,7 +30,7 @@
                 <span>
                   <div class="item-inner">
                     <span class="fas">
-                      <svg-icon icon-class="enable" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}" style="height: 1rem;width: 1rem;" />
+                      <svg-icon :icon-class="item.lockLogin ? 'disable' : 'enable'" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}" style="height: 1rem;width: 1rem;" />
                     </span>
                   </div>
                   <div class="item-inner mt-2" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}">
@@ -164,7 +164,7 @@
               </div>
               <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
                 <span class="value" @click.stop="onOperateCheckboxClick(dialogEnum.effectAgentLine, item)">
-                  <span class="el-checkbox green-tick">
+                  <span class="el-checkbox red-tick">
                     <span class="el-checkbox__input" :class="{'is-checked': item.allPermission}">
                       <span class="el-checkbox__inner" />
                     </span>
@@ -337,7 +337,7 @@
                     <span>
                       <div class="item-inner">
                         <span class="fas green">
-                          <svg-icon icon-class="enable" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}" style="height: 1rem;width: 1rem;" />
+                          <svg-icon :icon-class="item.lockLogin ? 'disable' : 'enable'" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}" style="height: 1rem;width: 1rem;" />
                         </span>
                       </div>
                       <div class="item-inner text-green mt-2" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}">
@@ -432,7 +432,7 @@
                 </div>
                 <div v-if="!isAgentSubAccount" class="list-item flex-none align-self-center" style="width: 180px; padding: 1rem 0px;">
                   <span class="value clickable" @click.stop="onOperateCheckboxClick(dialogEnum.effectAgentLine, item)">
-                    <span class="el-checkbox green-tick">
+                    <span class="el-checkbox red-tick">
                       <span class="el-checkbox__input" :class="{'is-checked': item.allPermission}">
                         <span class="el-checkbox__inner" />
                       </span>

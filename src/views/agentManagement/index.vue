@@ -1610,6 +1610,17 @@ export default {
               border-bottom: 0rem solid #f9c901;
             }
           }
+          &.state {
+            text-align: center;
+            -webkit-box-flex: initial;
+            -ms-flex: initial;
+            flex: initial;
+            width: 3.33333rem;
+            .item-inner {
+              font-size: .91667rem;
+              padding: 0 0.41667rem;
+            }
+          }
           &.flex-none {
             -webkit-box-flex: 0;
             -ms-flex: none;
