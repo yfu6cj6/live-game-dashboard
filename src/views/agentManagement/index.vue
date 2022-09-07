@@ -495,6 +495,7 @@
                                 ref="member"
                                 @serverResponse="handleRespone"
                                 @setDataLoading="setDataLoading"
+                                @onChangeTableIndex="onChangeTableIndex"
                               />
 
                               <subAccount
@@ -787,6 +788,9 @@ export default {
       }).catch(() => {
         this.setDataLoading(false)
       })
+    },
+    onChangeTableIndex(tableIndex) {
+      this.curTableIndex = tableIndex
     },
     onTableBtnClick(tableIndex, searchValue) {
       this.curTableIndex = tableIndex

@@ -451,7 +451,7 @@
                       </span>
                     </span>
                   </div>
-                  <div class="list-item flex-none flex-wrap align-self-center text-link text-golden" style="width: 65px; padding-right: 5px; margin-left: -10px;">
+                  <div class="list-item flex-none flex-wrap align-self-center text-link text-golden" style="width: 65px; padding-right: 5px; margin-left: -10px;" @click.stop="changeToAgentTable">
                     <span class="value" style="display: flex; word-break: break-all;">{{ item.agent.nickname }}</span>
                   </div>
                   <div class="list-item flex-none flex-wrap align-self-center" style="width: 200px; padding-right: 10px;">
@@ -781,7 +781,7 @@
           </div>
           <div v-show="tableData.length <= 0">
             <div class="noInformation">
-              <span>{{ `${$t('__noHave')}${$t('__directAgent')}` }}</span>
+              <span>{{ `${$t('__noHave')}${$t('__member')}` }}</span>
             </div>
           </div>
           <div class="force-wrap" />
@@ -1198,6 +1198,9 @@ export default {
 
       this.closeDialogEven()
       this.$emit('serverResponse', JSON.parse(JSON.stringify(res)))
+    },
+    changeToAgentTable() {
+      this.$emit('onChangeTableIndex', 0)
     },
     createDialogEditSuccess(res) {
       this.handleRespone(res)
