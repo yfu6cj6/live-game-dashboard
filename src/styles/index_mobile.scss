@@ -260,19 +260,13 @@
       }
     }
   }
-  
-  .animated {
-    -webkit-animation-duration: 0.5s;
-    animation-duration: 0.5s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-  }
-  
+
   .fadeInUp {
-    -webkit-animation-name: fadeInUp;
-    animation-name: fadeInUp;
+    -webkit-animation-name: fadeInUpMobile;
+    animation-name: fadeInUpMobile;
   }
-  @keyframes fadeInUp {
+  
+  @keyframes fadeInUpMobile {
     0% {
       bottom: -20%;
     }

@@ -732,17 +732,13 @@
       }
     }
   }
-  .animated {
-    -webkit-animation-duration: 0.5s;
-    animation-duration: 0.5s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-  }
+
   .fadeInUp {
-    -webkit-animation-name: fadeInUp;
-    animation-name: fadeInUp;
+    -webkit-animation-name: fadeInUpPC;
+    animation-name: fadeInUpPC;
   }
-  @keyframes fadeInUp {
+  
+  @keyframes fadeInUpPC {
     0% {
       top: 70%;
     }
