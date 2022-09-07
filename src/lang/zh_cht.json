@@ -365,5 +365,6 @@
     "__gong": "共",
     "__bi": "筆",
     "__createIpWhitelist": "新增IP白名單",
-    "__forcedTermination": "強制終止牌局"
+    "__forcedTermination": "強制終止牌局",
+    "__noExceeded": "未超出"
 }
