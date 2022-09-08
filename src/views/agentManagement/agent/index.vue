@@ -440,7 +440,6 @@
         :visible="curDialogIndex === dialogEnum.agentInfo"
         :agent-id="editForm.id"
         @close="closeDialogEven"
-        @agent-click="agentClick"
       />
     </template>
     <template v-else>
@@ -716,7 +715,6 @@
           :agent-id="editForm.id"
           :click-class-name="editForm.className"
           @close="closeDialogEven"
-          @agent-click="agentClick"
         />
         <div class="force-wrap" />
         <div class="w-100" style="height: 40px;" />
@@ -1303,9 +1301,6 @@ export default {
       this.$nextTick(() => {
         this.curDialogIndex = this.dialogEnum.agentInfo
       })
-    },
-    async agentClick(agentId) {
-      await this.$router.push({ path: `/agentManagement/agentManagement/${agentId}` })
     }
   }
 }

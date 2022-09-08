@@ -424,7 +424,6 @@
         :visible="curDialogIndex === dialogEnum.agentInfo"
         :tree-level="agentLevel"
         @close="closeDialogEven"
-        @agent-click="agentClick"
       />
     </template>
     <template v-else>
@@ -788,7 +787,6 @@
             :tree-level="agentLevel"
             :click-class-name="editForm.className"
             @close="closeDialogEven"
-            @agent-click="agentClick"
           />
           <div class="force-wrap" />
           <div class="w-100" style="height: 40px;" />
@@ -1319,9 +1317,6 @@ export default {
       }).catch(() => {
         this.$refs.treeDialog.setDialogLoading(false)
       })
-    },
-    async agentClick(agentId) {
-      await this.$router.push({ path: `/agentManagement/agentManagement/${agentId}` })
     }
   }
 }

@@ -526,7 +526,6 @@
                               :visible="curInfoEnumIndex === infoEnum.agent"
                               :agent-id="selectForm.agent_id"
                               @close="closeInfoEnumEven"
-                              @agent-click="agentClick"
                             />
                           </div>
                         </div>
@@ -1274,7 +1273,6 @@
                         :agent-id="selectForm.agent_id"
                         :click-class-name="selectForm.className"
                         @close="closeInfoEnumEven"
-                        @agent-click="agentClick"
                       />
                     </div>
                   </div>
@@ -1933,9 +1931,6 @@ export default {
       this.$nextTick(() => {
         this.curInfoEnumIndex = this.infoEnum.agent
       })
-    },
-    async agentClick(agentId) {
-      await this.$router.push({ path: `/agentManagement/agentManagement/${agentId}` })
     },
     closeRecordRoadEnumEven() {
       this.curRecordRoadEnumIndex = this.recordRoadEnum.none

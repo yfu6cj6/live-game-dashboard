@@ -322,10 +322,10 @@ export default {
         </span>
       )
     },
-    handleNodeClick(data, node, com) {
+    async handleNodeClick(data, node, com) {
       node.expanded = true
       if (data.AgentId !== null) {
-        this.$emit('agent-click', JSON.parse(JSON.stringify(data.AgentId)))
+        await this.$router.push({ path: `/agentManagement/agentManagement/${data.AgentId}` })
       }
     }
   }
