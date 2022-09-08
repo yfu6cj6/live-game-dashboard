@@ -23,7 +23,7 @@
                 <div class="option">
                   <el-input v-model="searchForm.account" class="input_size" :placeholder="$t('__account')" />
                 </div>
-                <div class="option status">
+                <div class="option status d-flex">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -160,7 +160,7 @@
                   <div class="option">
                     <el-input v-model="searchForm.account" class="input_size" :placeholder="$t('__account')" />
                   </div>
-                  <div class="option status">
+                  <div class="option status d-flex">
                     <span class="prefix-label" />
                     <div class="comp selected-filter custom">
                       <el-select
@@ -202,25 +202,25 @@
                   :key="index"
                   :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
                 >
-                  <span class="custom-number">{{ item.id }}</span>
+                  <span class="custom-number mr-4">{{ item.id }}</span>
                   <div class="photo" style="margin-right: 2rem;">
                     <img v-if="item.photo_url === ''" class="img" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
                     <img v-else :src="item.photo_url" class="img" :alt="$t('__dealerPhoto')">
                   </div>
                   <div class="d-flex">
-                    <div class="item justify-content-center" style="width: 145px">
+                    <div class="item justify-content-center item_w1">
                       <span class="title">{{ $t('__account') }}</span>
                       <span class="value">{{ item.account }}</span>
                     </div>
-                    <div class="item justify-content-center" style="width: 145px">
+                    <div class="item justify-content-center item_w1">
                       <span class="title">{{ $t('__name') }}</span>
                       <span class="value">{{ item.name }}</span>
                     </div>
-                    <div class="item justify-content-center" style="width: 145px">
+                    <div class="item justify-content-center item_w1">
                       <span class="title">{{ $t('__status') }}</span>
                       <span class="value status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
                     </div>
-                    <div class="item justify-content-center" style="width: 145px">
+                    <div class="item justify-content-center item_w1">
                       <span class="title">{{ $t('__creator') }}</span>
                       <span class="value">{{ item.creator }}</span>
                     </div>
@@ -238,6 +238,9 @@
                   @size-change="handleSizeChange"
                   @current-change="handleCurrentChange"
                 />
+              </template>
+              <template v-else>
+                <div class="noInformation">{{ $t("__noInformation") }}</div>
               </template>
             </div>
           </div>

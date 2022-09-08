@@ -355,6 +355,9 @@ table {
 .mr-4, .mx-4 {
   margin-right: 1.5rem!important;
 }
+.mr-5, .mx-5 {
+  margin-right: 2rem!important;
+}
 .mr-auto, .mx-auto {
   margin-right: auto!important;
 }
@@ -563,6 +566,9 @@ table {
 // font
 .strong {
   font-size: 1.16667rem;
+}
+.font-1_5 {
+  font-size: 1.5rem;
 }
 .font-weight-bold {
   font-weight: 700!important;
@@ -1482,6 +1488,7 @@ table {
       width: 3rem;
     }
     .info {
+      position: relative;
       padding-left: 0.5rem;
     }
     .item {
@@ -1500,6 +1507,9 @@ table {
         font-size: 1.16667rem;
         font-weight: bold;
         word-break: break-all;
+      }
+      &.item_w1 {
+        width: 145px;
       }
     }
     .left {

@@ -1,7 +1,7 @@
 <template>
   <div v-if="visible">
     <template v-if="device === 'mobile'">
-      <div v-loading="dialogLoading" class="black_bg dealerEditDialog">
+      <div class="black_bg dealerEditDialog">
         <div class="data_content">
           <div class="titleBar yellow">
             <span class="titleTips">{{ title }}</span>
@@ -71,10 +71,12 @@
         <div class="popup-cover" @click="onClose" />
         <div class="popup-panel animated fadeInUp" style="max-width: 600px; min-width: 380px;">
           <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
-            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="btn_icon" @click="onClose" />
           </div>
           <div class="data_content">
-            <span class="text-yellow ">{{ title }}</span>
+            <div class="w-100 d-flex justify-content-center font-weight-bold font-1_5">
+              <span class="text-yellow ">{{ title }}</span>
+            </div>
             <div class="el-form-item__content item" :class="{'is-error': inputNameState === inputState.error, 'is-success': inputNameState === inputState.success}">
               <div class="label-group">
                 <label class="form-item-label text-yellow font-weight-bold">{{ $t('__name') }}</label>
@@ -135,38 +137,6 @@
           </div>
         </div>
       </div>
-
-      <!-- <Dialog
-        :loading="dialogLoading"
-        :title="title"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <el-form ref="editForm" :model="editForm" :rules="rules">
-          <el-form-item :label="$t('__name')" prop="name">
-            <el-input v-model="editForm.name" />
-          </el-form-item>
-          <el-form-item :label="$t('__dealerPhoto')">
-            <el-upload
-              class="dealerUpload"
-              action=""
-              :http-request="uploadHttpRequest"
-              list-type="picture-card"
-              accept="image/jpeg,image/gif,image/png"
-              :file-list="fileList"
-              :on-change="handleChange"
-              drag
-            >
-              <i class="el-icon-plus" />
-              <div slot="tip" class="el-upload__tip">{{ uploadTip }}</div>
-            </el-upload>
-          </el-form-item>
-        </el-form>
-        <span v-if="!dialogLoading" slot="bodyFooter">
-          <el-button class="bg-gray" @click="onReset">{{ $t("__reset") }}</el-button>
-          <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-        </span>
-      </Dialog> -->
     </template>
   </div>
 </template>
@@ -316,9 +286,6 @@ export default {
       this.fileList = JSON.parse(JSON.stringify(this.imageList))
       this.inputNameState = 0
       this.errorTips = ''
-      this.$nextTick(() => {
-        // this.$refs.editForm.clearValidate()
-      })
     }
   }
 }
@@ -343,12 +310,4 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-#app.pc {
-  .backstage_dialog {
-    .tip {
-      font-size: 70%;
-      float: right;
-    }
-  }
-}
 </style>

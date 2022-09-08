@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 h-100">
+  <div class="w-100 h-100 giftManagement">
     <template v-if="device === 'mobile'">
       <div class="view-container">
         <div class="bg-black">
@@ -19,8 +19,8 @@
               </a>
             </div>
             <div v-show="searchExpand">
-              <div class="options currency">
-                <div class="option options">
+              <div class="options">
+                <div class="option currency d-flex">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -46,8 +46,8 @@
                   <el-input v-model="searchForm.value" type="number" class="input_size" :placeholder="$t('__value')" />
                 </div>
               </div>
-              <div class="options status">
-                <div class="option options">
+              <div class="options">
+                <div class="option status d-flex">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -97,7 +97,7 @@
               <div class="photo">
                 <img :src="item.img_address" class="img" :alt="$t('__giftImage')">
               </div>
-              <div class="info w-100 pos_relative">
+              <div class="info w-100">
                 <div class="item">
                   <span class="title">{{ $t('__giftNickname') }}</span>
                   <span class="value">{{ item.nickname }}</span>
@@ -170,7 +170,165 @@
       />
     </template>
     <template v-else>
-      -
+      <div class="pos-r">
+        <backTop
+          ref="backTop"
+          :inner-class="'.view-container'"
+          :view-class="'.scroll-view'"
+        />
+        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+          <div class="scroll-view">
+            <div class="bg-black">
+              <div class="yellow-border-bottom search-container">
+                <div class="options">
+                  <div class="option">
+                    <el-input v-model="searchForm.id" type="number" class="input_size" placeholder="ID" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.nickname" class="input_size" :placeholder="$t('__giftNickname')" />
+                  </div>
+                  <div class="option currency">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.currency"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="currencyCollapse"
+                        :placeholder="$t('__currency')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.currency"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.value" type="number" class="input_size" :placeholder="$t('__value')" />
+                  </div>
+                  <div class="option status">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.status"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="statusCollapse"
+                        :placeholder="$t('__status')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.status"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div>
+                    <button class="ml-2 el-button bg-yellow el-button--default mr-2 font-weight-bold" @click.stop="onCreateBtnClick()">{{ `${$t('__create')}${$t('__gift')}` }}</button>
+                  </div>
+                  <div>
+                    <button class="ml-2 el-button bg-yellow el-button--default mr-4 font-weight-bold" @click.stop="onSortBtnClick()">{{ `${$t('__sort')}` }}</button>
+                  </div>
+                  <div class="searchBtn">
+                    <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-container">
+              <template v-if="tableData.length > 0">
+                <div
+                  v-for="(item, index) in tableData"
+                  :key="index"
+                  :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+                >
+                  <span class="custom-number mr-4">{{ item.id }}</span>
+                  <div class="photo mr-5">
+                    <img :src="item.img_address" class="img" :alt="$t('__giftImage')">
+                  </div>
+                  <div class="info w-100 d-flex">
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__giftNickname') }}</span>
+                      <span class="value">{{ item.nickname }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__currency') }}</span>
+                      <span class="value">{{ item.currency }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__value') }}</span>
+                      <span class="value">{{ item.valueLabel }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__status') }}</span>
+                      <span class="value" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                    </div>
+                    <div class="operate align-items-center">
+                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    </div>
+                  </div>
+                </div>
+                <pagination
+                  :page-size="pageSize"
+                  :page-sizes="pageSizes"
+                  :total="totalCount"
+                  :current-page.sync="currentPage"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
+              </template>
+              <template v-else>
+                <div class="noInformation">{{ $t("__noInformation") }}</div>
+              </template>
+            </div>
+          </div>
+        </div>
+        <editDialog
+          ref="createDialog"
+          :title="`${$t('__create')}${$t('__gift')}`"
+          :visible="curDialogIndex === dialogEnum.create"
+          :confirm="$t('__confirm')"
+          :form="selectForm"
+          :search-items="searchItems"
+          :image-list="imageList"
+          @close="closeDialogEven"
+          @confirm="createDialogConfirmEven"
+        />
+
+        <editDialog
+          ref="editDialog"
+          :title="$stringFormat(`${$t('__edit')}${$t('__gift')} - ID:{0}`, [selectForm.id])"
+          :visible="curDialogIndex === dialogEnum.edit"
+          :confirm="$t('__revise')"
+          :form="selectForm"
+          :search-items="searchItems"
+          :image-list="imageList"
+          @close="closeDialogEven"
+          @confirm="editDialogConfirmEven"
+        />
+
+        <sortDialog
+          ref="sortDialog"
+          :title="`${$t('__sort')}${$t('__gift')}`"
+          :visible="curDialogIndex === dialogEnum.sort"
+          :confirm="$t('__confirm')"
+          :form="selectForm"
+          :currency="searchItems.currency"
+          @close="closeDialogEven"
+          @confirm="handleRespone"
+        />
+      </div>
     </template>
   </div>
 </template>
@@ -183,10 +341,12 @@ import handlePageChange from '@/mixin/handlePageChange';
 import { numberFormat } from '@/utils/numberFormat';
 import EditDialog from './editDialog';
 import SortDialog from './sortDialog';
+import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'GiftManagement',
-  components: { EditDialog, SortDialog },
+  components: { EditDialog, SortDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -211,6 +371,15 @@ export default {
     }
   },
   watch: {
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.closeDialogEven()
+        this.$nextTick(() => {
+          this.onSearchBtnClick(1);
+          this.addSelectFilter()
+        })
+      }
+    }
   },
   created() {
     this.$nextTick(() => {
@@ -231,14 +400,14 @@ export default {
       this.searchExpand = !this.searchExpand
     },
     addSelectFilter() {
-      this.addSelectDropDownFilter('options currency', () => {
+      this.addSelectDropDownFilter('option currency', () => {
         this.searchForm.currency = JSON.parse(JSON.stringify(this.searchItems.currency)).map(item => item.key)
       }, () => {
         this.searchForm.currency = []
       }, () => {
         this.selectOption.currency = JSON.parse(JSON.stringify(this.searchItems.currency)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
-      this.addSelectDropDownFilter('options status', () => {
+      this.addSelectDropDownFilter('option status', () => {
         this.searchForm.status = JSON.parse(JSON.stringify(this.searchItems.status)).map(item => item.key)
       }, () => {
         this.searchForm.status = []
@@ -340,6 +509,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.giftManagement {
+  .view-container {
+    .table-container {
+      .photo {
+        .img {
+          width: 5.9rem;
+          height: 5.9rem;
+        }
+      }
+    }
+  }
+}
+
 #app.mobile {
   .view-container {
     .option_ctrl_left {
@@ -356,14 +538,6 @@ export default {
       position: absolute;
       right: 0;
       bottom: 0;
-    }
-    .table-container {
-      .photo {
-        .img {
-          width: 5.9rem;
-          height: 5.9rem;
-        }
-      }
     }
   }
 }

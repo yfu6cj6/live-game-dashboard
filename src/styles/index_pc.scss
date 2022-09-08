@@ -825,6 +825,15 @@
     }
   }
 
+  .view-container {
+    .table-container {
+      .even-row,
+      .odd-row{
+        padding: 0.625rem 1.16667rem 0.625rem 2rem;
+      }
+    }
+  }
+
   .backstage_dialog {
     .popup-panel {
       .data_content {
@@ -870,6 +879,13 @@
           margin: auto;
         }
       }
+    }
+    .btn_icon {
+      cursor: pointer;
+    }
+    .tip {
+      font-size: 70%;
+      float: right;
     }
   }
 }
