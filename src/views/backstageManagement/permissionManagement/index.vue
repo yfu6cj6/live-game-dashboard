@@ -332,11 +332,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.option_ctrl_right {
-  justify-content: flex-end;
-  width: 100%;
-  padding: 0 0.5rem;
-}
 .view-container {
   .table-container {
     .base {
@@ -360,37 +355,5 @@ export default {
       padding: 0 1rem;
     }
   }
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-  &-container {
-    &-table {
-      &-row {
-        .base {
-          display: flex;
-          flex-direction: row;
-          .item {
-            width: 420px;
-            min-width: 420px;
-            margin-right: 15px;
-            &.remark {
-              width: 40px;
-              min-width: 40px;
-            }
-            &.id{
-              width: 70px;
-              min-width: 70px;
-            }
-            &.method{
-              width: 100px;
-              min-width: 100px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
 }
 </style>

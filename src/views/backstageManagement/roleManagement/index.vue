@@ -192,9 +192,6 @@ export default {
     }
   },
   watch: {
-    // 'searchForm.type'() {
-    //   this.resizeHandler();
-    // }
   },
   created() {
     this.setHeaderStyle()
@@ -330,56 +327,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view {
-  &-container {
-    &-table {
-      &-row {
-        display: flex;
-        flex-direction: row;
-        .left {
-          display: flex;
-          flex-direction: column;
-          width: 50%;
-        }
-        .right{
-          width: 50%;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          .operate{
-            justify-content: flex-start;
-          }
-        }
-        .item {
-          .header {
-            width: 50px;
-            min-width: 50px;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          flex-direction: row;
-          .item {
-            width: 300px;
-            min-width: 300px;
-            margin-right: 50px;
-          }
-          .operate {
-            .locate {
-              margin-right: 30px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
 </style>

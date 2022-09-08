@@ -248,9 +248,6 @@ export default {
     }
   },
   watch: {
-    // 'searchForm.status'() {
-    //   this.resizeHandler();
-    // }
   },
   created() {
     this.$nextTick(() => {
@@ -436,12 +433,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view-container {
-  .option_ctrl_right {
-    justify-content: flex-end;
-    width: 100%;
-    padding: 0 0.5rem;
-  }
-}
-
 </style>

@@ -608,48 +608,4 @@ export default {
     }
   }
 }
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          display: flex;
-          flex-direction: column;
-          .base {
-            width: 100%;
-            flex-direction: row;
-            .item {
-              width: 250px;
-              min-width: 250px;
-              &.remark {
-                width: 40px;
-                min-width: 40px;
-              }
-              &.id {
-                width: 80px;
-                min-width: 80px;
-              }
-              &.type {
-                width: 150px;
-                min-width: 150px;
-              }
-              &.marquee {
-                width: 100px;
-                min-width: 100px;
-              }
-              &.title {
-                width: 180px;
-                min-width: 180px;
-              }
-              .header {
-                width: 100%;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
 </style>

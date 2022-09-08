@@ -507,48 +507,6 @@
     z-index: 3;
   }
   
-  .agent-tree-detail {
-    white-space: nowrap;
-    line-height: 1.3rem !important;
-    min-height: 40px;
-    width: 100%;
-    cursor: default;
-    .border-top {
-      border-top: 1px solid #f9c901 !important;
-    }
-    .padding-top {
-      padding-top: 15px;
-    }
-    .basis-50 {
-      -ms-flex-preferred-size: 50%;
-      flex-basis: 50%;
-    }
-    .basis-100 {
-      -ms-flex-preferred-size: 100%;
-      flex-basis: 100%;
-    }
-    .title-item {
-      font-size: 1.16667rem;
-      color: #f9c901;
-      font-weight: normal;
-    }
-    .sub-title-item.gray {
-      color: #a3a3a3;
-    }
-    .sub-title-item {
-      font-size: 1.16667rem;
-      color: #fff;
-      font-weight: normal;
-    }
-    .content-item {
-      font-size: 1.16667rem;
-      color: #fff;
-    }
-    .overflow-hidden {
-      overflow: hidden;
-    }
-  }
-
   // index視窗
   .view-container {
     overflow: auto;
@@ -625,7 +583,7 @@
           height: 10.2857rem;
         }
       }
-      .number {
+      .custom-number {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -640,6 +598,7 @@
       .item {
         display: flex;
         flex-direction: column;
+        line-height: 1.5;
         padding-bottom: 0.2rem;
         .title {
           width: 100%;

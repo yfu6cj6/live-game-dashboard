@@ -341,33 +341,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.option_ctrl_right {
-  justify-content: flex-end;
-  width: 100%;
-  padding: 0 0.5rem;
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          flex-direction: row;
-          .item {
-            width: 150px;
-            min-width: 150px;
-            margin-right: 40px;
-          }
-          .operate {
-            width: auto;
-            .locate {
-              margin-right: 20px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
 </style>

@@ -221,9 +221,6 @@ export default {
     .options {
       .option {
         width: 15rem;
-        padding-right: 0;
-        padding-left: 0;
-        padding-top: 0;
       }
     }
   }

@@ -226,29 +226,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.option_ctrl_right {
-  justify-content: flex-end;
-  width: 100%;
-  padding: 0 0.5rem;
-}
-
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          display: flex;
-          .item {
-            width: 510px;
-            min-width: 510px;
-          }
-          .operate {
-            width: 160px;
-            margin-right: 10px;
-          }
-        }
-      }
-    }
-  }
-}
 </style>

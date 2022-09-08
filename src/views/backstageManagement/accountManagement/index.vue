@@ -249,7 +249,6 @@ export default {
       curDialogIndex: 0,
       roles: [],
       agents: [],
-      agentstatus: [],
       timeZones: [],
       searchExpand: false,
       selectOption: JSON.parse(JSON.stringify(defaultForm))
@@ -434,11 +433,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.option_ctrl_right {
-  justify-content: flex-end;
-  width: 100%;
-  padding: 0 0.5rem;
-}
 .view-container {
   .table-container {
     .base {
@@ -462,8 +456,5 @@ export default {
       padding: 0 1rem;
     }
   }
-}
-
-@media screen and (min-width: 992px) {
 }
 </style>

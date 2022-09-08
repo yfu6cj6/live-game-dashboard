@@ -68,7 +68,7 @@
               :key="index"
               :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
             >
-              <span class="number">{{ item.id }}</span>
+              <span class="custom-number">{{ item.id }}</span>
               <div class="photo">
                 <img v-if="item.photo_url === ''" class="img" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
                 <img v-else :src="item.photo_url" class="img" :alt="$t('__dealerPhoto')">
@@ -140,7 +140,137 @@
       />
     </template>
     <template v-else>
-      -
+      <div class="pos-r">
+        <backTop
+          ref="backTop"
+          :inner-class="'.view-container'"
+          :view-class="'.scroll-view'"
+        />
+        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+          <div class="scroll-view">
+            <div class="bg-black">
+              <div class="yellow-border-bottom search-container">
+                <div class="options">
+                  <div class="option">
+                    <el-input v-model="searchForm.id" class="input_size" placeholder="ID" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.account" class="input_size" :placeholder="$t('__account')" />
+                  </div>
+                  <div class="option status">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.status"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="statusCollapse"
+                        :placeholder="$t('__status')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.status"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="d-flex">
+                    <div v-if="!isAgentSubAccount">
+                      <button class="ml-2 el-button bg-yellow el-button--default mr-4 font-weight-bold" @click.stop="onCreateBtnClick()">{{ `${$t('__create')}${$t('__dealer')}` }}</button>
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <div class="searchBtn">
+                      <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-container">
+              <template v-if="tableData.length > 0">
+                <div
+                  v-for="(item, index) in tableData"
+                  :key="index"
+                  :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+                >
+                  <span class="custom-number">{{ item.id }}</span>
+                  <div class="photo" style="margin-right: 2rem;">
+                    <img v-if="item.photo_url === ''" class="img" src="@/assets/unknown.png" :alt="$t('__dealerPhoto')">
+                    <img v-else :src="item.photo_url" class="img" :alt="$t('__dealerPhoto')">
+                  </div>
+                  <div class="d-flex">
+                    <div class="item justify-content-center" style="width: 145px">
+                      <span class="title">{{ $t('__account') }}</span>
+                      <span class="value">{{ item.account }}</span>
+                    </div>
+                    <div class="item justify-content-center" style="width: 145px">
+                      <span class="title">{{ $t('__name') }}</span>
+                      <span class="value">{{ item.name }}</span>
+                    </div>
+                    <div class="item justify-content-center" style="width: 145px">
+                      <span class="title">{{ $t('__status') }}</span>
+                      <span class="value status" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
+                    </div>
+                    <div class="item justify-content-center" style="width: 145px">
+                      <span class="title">{{ $t('__creator') }}</span>
+                      <span class="value">{{ item.creator }}</span>
+                    </div>
+                    <div class="operate align-items-center">
+                      <el-button class="bg-yellow button" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
+                      <el-button class="bg-yellow button" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                    </div>
+                  </div>
+                </div>
+                <pagination
+                  :page-size="pageSize"
+                  :page-sizes="pageSizes"
+                  :total="totalCount"
+                  :current-page.sync="currentPage"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
+              </template>
+            </div>
+          </div>
+        </div>
+        <editDialog
+          ref="createDialog"
+          :title="`${$t('__create')}${$t('__dealer')}`"
+          :visible="curDialogIndex === dialogEnum.create"
+          :confirm="$t('__confirm')"
+          :form="selectForm"
+          :image-list="imageList"
+          @close="closeDialogEven"
+          @confirm="createDialogConfirmEven"
+        />
+
+        <editDialog
+          ref="editDialog"
+          :title="$stringFormat(`${$t('__edit')}${$t('__dealer')} - ID:{0}`, [selectForm.id])"
+          :visible="curDialogIndex === dialogEnum.edit"
+          :confirm="$t('__revise')"
+          :form="selectForm"
+          :image-list="imageList"
+          @close="closeDialogEven"
+          @confirm="editDialogConfirmEven"
+        />
+
+        <loginBarcodeDialog
+          :title="$stringFormat(`${$t('__dealer')}${$t('__loginBarcode')} - {0}`, [selectForm.name])"
+          :visible="curDialogIndex === dialogEnum.loginBarcode"
+          :form="selectForm"
+          @close="closeDialogEven"
+        />
+      </div>
     </template>
   </div>
 </template>
@@ -153,10 +283,12 @@ import handlePageChange from '@/mixin/handlePageChange';
 import EditDialog from './editDialog';
 import LoginBarcodeDialog from './loginBarcodeDialog';
 import { mapGetters } from 'vuex'
+import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'DealerManagement',
-  components: { EditDialog, LoginBarcodeDialog },
+  components: { EditDialog, LoginBarcodeDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -181,9 +313,15 @@ export default {
     }
   },
   watch: {
-    // 'searchForm.status'() {
-    //   this.resizeHandler();
-    // }
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.closeDialogEven()
+        this.$nextTick(() => {
+          this.onSearchBtnClick(1);
+          this.addSelectFilter()
+        })
+      }
+    }
   },
   created() {
     this.$nextTick(() => {
@@ -240,6 +378,9 @@ export default {
         }
       });
       this.handlePageChangeByClient(this.currentPage);
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
 
       this.closeDialogEven();
       this.closeLoading();
@@ -312,35 +453,4 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .dealerPhoto {
-            margin: auto;
-          }
-          .item {
-            min-width: 150px;
-            width: 150px;
-            margin-right: 50px;
-          }
-          .operate {
-            justify-content: flex-start;
-            width: auto;
-            .loginBar {
-              margin-right: 32px;
-            }
-            .download {
-              margin-right: 32px;
-            }
-            .edit {
-              margin-right: 32px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
 </style>

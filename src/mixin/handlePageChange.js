@@ -22,7 +22,7 @@ export default {
   watch: {
     'device': {
       handler() {
-        this.pageSize = (this.device === 'mobile') ? this.pageSize_mobile : this.pageSize = this.pageSize_pc
+        this.pageSize = (this.device === 'mobile') ? this.pageSize_mobile : this.pageSize_pc
         this.currentPage = 1
       },
       immediate: true

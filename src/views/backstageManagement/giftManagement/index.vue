@@ -93,7 +93,7 @@
               :key="index"
               :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
             >
-              <span class="number">{{ item.id }}</span>
+              <span class="custom-number">{{ item.id }}</span>
               <div class="photo">
                 <img :src="item.img_address" class="img" :alt="$t('__giftImage')">
               </div>
@@ -340,65 +340,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view-container {
-  .option_ctrl_left {
-    justify-content: flex-start;
-    .mr-1 {
-      margin-right: 1rem;
-    }
-  }
-  .option_ctrl_right {
-    justify-content: flex-end;
-    width: 100%;
-    padding: 0 0.5rem;
-  }
-
-  .pos_relative {
-    position: relative;
-  }
-
-  .locate_rb {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-  }
-}
-
-.table-container {
-  .photo {
-      width: 9.5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .img {
-        vertical-align: middle;
-        width: 5.9rem;
-        height: 5.9rem;
+#app.mobile {
+  .view-container {
+    .option_ctrl_left {
+      justify-content: flex-start;
+      .mr-1 {
+        margin-right: 1rem;
       }
     }
-}
+    .pos_relative {
+      position: relative;
+    }
 
-@media screen and (min-width: 992px) {
-  .view {
-    &-container {
-      &-table {
-        &-row {
-          .item {
-            min-width: 150px;
-            width: 150px;
-            margin-right: 50px;
-            .giftPhoto {
-              margin: auto;
-            }
-          }
-          .giftPhoto {
-            vertical-align: middle;
-            width: 73px;
-            min-width: 73px;
-          }
-          .operate {
-            width: 110px;
-          }
+    .locate_rb {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+    .table-container {
+      .photo {
+        .img {
+          width: 5.9rem;
+          height: 5.9rem;
         }
       }
     }
