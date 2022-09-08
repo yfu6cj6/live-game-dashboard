@@ -620,8 +620,7 @@
                           :visible="curPlaybackIndex === playbackEnum.pic"
                           :playback-type="playbackEnum.pic"
                           :url="imagePlaybackpic"
-                          :group-rect="groupRect"
-                          :select-el-rect="selectElRect"
+                          :click-class-name="selectForm.className"
                           @close="closePlaybackDialogEven"
                         />
                         <playbackDialogPC
@@ -630,8 +629,7 @@
                           :visible="curPlaybackIndex === playbackEnum.video"
                           :playback-type="playbackEnum.video"
                           :url="videoPlaybackUrl"
-                          :group-rect="groupRect"
-                          :select-el-rect="selectElRect"
+                          :click-class-name="selectForm.className"
                           @close="closePlaybackDialogEven"
                         />
                         <gameResultDialogPC
@@ -639,8 +637,7 @@
                           :round-info="roundInfo"
                           :count-info="countInfo"
                           :score-cards="scoreCards"
-                          :group-rect="groupRect"
-                          :select-el-rect="selectElRect"
+                          :click-class-name="selectForm.className"
                           @close="closeDialogEven"
                         />
                       </div>
@@ -713,9 +710,7 @@ export default {
       scoreCards: [],
       operateDialogMsgParameter: [],
       curPlaybackIndex: 0,
-      searchFormOpen: false,
-      groupRect: {},
-      selectElRect: {}
+      searchFormOpen: false
     }
   },
   computed: {
@@ -836,6 +831,7 @@ export default {
         this.closeDialogEven()
       }
       this.selectForm = JSON.parse(JSON.stringify(row))
+      this.selectForm.className = `.gameResult-table-${this.selectForm.id}`
       this.closeDialogEven()
       gameResultGetScoreCards({ round_id: row.round_id }).then((res) => {
         this.roundInfo = res.roundInfo
@@ -846,7 +842,6 @@ export default {
           this.setHeaderStyle()
         }])
         this.curDialogIndex = this.dialogEnum.resultdialog
-        this.getRowPos(this.selectForm)
         this.setDataLoading(false)
       }).catch(() => {
         this.setDataLoading(false)
@@ -900,30 +895,17 @@ export default {
       this.closePlaybackDialogEven()
       this.setDataLoading(false)
     },
-    getRowPos(row) {
-      const parent = document.querySelector('.gameResult-table')
-      const el = document.querySelector(`.gameResult-table-${row.id}`)
-      if (parent && el) {
-        this.groupRect = JSON.parse(JSON.stringify(parent.getBoundingClientRect()))
-        this.selectElRect = JSON.parse(JSON.stringify(el.getBoundingClientRect()))
-      } else {
-        this.$nextTick(() => {
-          this.groupRect = {}
-          this.selectElRect = {}
-        })
-      }
-    },
     onPlaybackPic(row) {
       this.setDataLoading(true)
       if (this.selectForm.id !== row.id) {
         this.closeDialogEven()
       }
       this.selectForm = JSON.parse(JSON.stringify(row))
+      this.selectForm.className = `.gameResult-table-${this.selectForm.id}`
       this.closePlaybackDialogEven()
       gameResultGetPlaybackPic({ round_id: row.round_id }).then((res) => {
         this.playbackPic = res.playbackPic
         this.curPlaybackIndex = this.playbackEnum.pic
-        this.getRowPos(this.selectForm)
         this.setDataLoading(false)
       }).catch(() => {
         this.setDataLoading(false)
@@ -935,11 +917,11 @@ export default {
         this.closeDialogEven()
       }
       this.selectForm = JSON.parse(JSON.stringify(row))
+      this.selectForm.className = `.gameResult-table-${this.selectForm.id}`
       this.closePlaybackDialogEven()
       gameResultGetPlaybackUrl({ round_id: row.round_id }).then((res) => {
         this.playbackUrl = res.playbackUrl
         this.curPlaybackIndex = this.playbackEnum.video
-        this.getRowPos(this.selectForm)
         this.setDataLoading(false)
       }).catch(() => {
         this.setDataLoading(false)

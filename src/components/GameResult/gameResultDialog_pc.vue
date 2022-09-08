@@ -223,18 +223,11 @@ export default {
         return []
       }
     },
-    'groupRect': {
-      type: Object,
+    'clickClassName': {
+      type: String,
       require: true,
       default() {
-        return {}
-      }
-    },
-    'selectElRect': {
-      type: Object,
-      require: true,
-      default() {
-        return {}
+        return ''
       }
     }
   },
@@ -256,15 +249,21 @@ export default {
       handler() {
         if (this.visible) {
           this.$nextTick(() => {
-            const el = this.$el
-            if (el) {
-              const elPos = el.getBoundingClientRect()
-              let top = this.selectElRect.top - this.groupRect.top + 30
-              if ((top + elPos.height) > this.groupRect.height) {
-                top = top - elPos.height - 40
+            const parentRect = this.$el.parentNode.getBoundingClientRect()
+            const clickEl = document.querySelector(this.clickClassName)
+            if (clickEl) {
+              const clickElRect = clickEl.getBoundingClientRect()
+              const top = clickElRect.top - parentRect.top + 30
+              const elPos = this.$el.getBoundingClientRect()
+              let setTop = top
+              if ((setTop + elPos.height) > parentRect.height) {
+                setTop = setTop - elPos.height - 40
               }
-              this.top = top
-              this.left = this.selectElRect.left - this.groupRect.left - elPos.width - 30
+              if (setTop < parentRect.top) {
+                setTop = top
+              }
+              this.top = setTop
+              this.left = clickElRect.left - parentRect.left - elPos.width - 30
             } else {
               this.top = 0
               this.left = 0

@@ -118,18 +118,11 @@ export default {
         return ''
       }
     },
-    'groupRect': {
-      type: Object,
+    'clickClassName': {
+      type: String,
       require: true,
       default() {
-        return {}
-      }
-    },
-    'selectElRect': {
-      type: Object,
-      require: true,
-      default() {
-        return {}
+        return ''
       }
     }
   },
@@ -146,14 +139,20 @@ export default {
       handler() {
         if (this.visible) {
           this.$nextTick(() => {
-            const el = this.$el
-            if (el) {
-              let top = this.selectElRect.top - this.groupRect.top + 30
-              if ((top + 598.56) > this.groupRect.height) {
-                top = top - 598.56 - 40
+            const parentRect = this.$el.parentNode.getBoundingClientRect()
+            const clickEl = document.querySelector(this.clickClassName)
+            if (clickEl) {
+              const clickElRect = clickEl.getBoundingClientRect()
+              const top = clickElRect.top - parentRect.top + 30
+              let setTop = top
+              if ((setTop + 598.56) > parentRect.height) {
+                setTop = setTop - 598.56 - 40
               }
-              this.top = top
-              this.left = this.selectElRect.left - this.groupRect.left
+              if (setTop < parentRect.top) {
+                setTop = top
+              }
+              this.top = setTop
+              this.left = clickElRect.left - parentRect.left
             } else {
               this.top = 0
               this.left = 0
@@ -196,7 +195,7 @@ export default {
         margin-top: 10px;
           video,
           img {
-            width: 993px;
+            width: 100%;
           }
         }
       }

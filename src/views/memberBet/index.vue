@@ -1243,8 +1243,7 @@
                         :visible="curDialogIndex === dialogEnum.pic"
                         :playback-type="dialogEnum.pic"
                         :url="imagePlaybackpic"
-                        :group-rect="groupRect"
-                        :select-el-rect="selectElRect"
+                        :click-class-name="selectForm.className"
                         @close="closeDialogEven"
                       />
                       <playbackDialogPC
@@ -1253,8 +1252,7 @@
                         :visible="curDialogIndex === dialogEnum.video"
                         :playback-type="dialogEnum.video"
                         :url="videoPlaybackUrl"
-                        :group-rect="groupRect"
-                        :select-el-rect="selectElRect"
+                        :click-class-name="selectForm.className"
                         @close="closeDialogEven"
                       />
                       <gameResultDialogPC
@@ -1262,8 +1260,7 @@
                         :round-info="roundInfo"
                         :count-info="countInfo"
                         :score-cards="scoreCards"
-                        :group-rect="groupRect"
-                        :select-el-rect="selectElRect"
+                        :click-class-name="selectForm.className"
                         @close="setResultdialogActive(false)"
                       />
                     </div>
@@ -1586,9 +1583,7 @@ export default {
       scoreCards: [],
       searchOpen: false,
       selectOption: {},
-      subtotalInfo: {},
-      groupRect: {},
-      selectElRect: {}
+      subtotalInfo: {}
     }
   },
   computed: {
@@ -1756,6 +1751,7 @@ export default {
         this.closeDialogEven()
       }
       this.selectForm = JSON.parse(JSON.stringify(row))
+      this.selectForm.className = `.memberBet-table-${this.selectForm.id}`
       this.setResultdialogActive(false)
       gameResultGetScoreCards({ round_id: row.round_id }).then((res) => {
         this.roundInfo = res.roundInfo
@@ -1766,7 +1762,6 @@ export default {
           this.setHeaderStyle()
         }])
         this.setResultdialogActive(true)
-        this.getRowPos(this.selectForm)
         this.setLoading(false)
       }).catch(() => {
         this.setLoading(false)
@@ -1826,30 +1821,17 @@ export default {
       this.setResultdialogActive(false)
       this.setLoading(false)
     },
-    getRowPos(row) {
-      const parent = document.querySelector('.memberBet-table')
-      const el = document.querySelector(`.memberBet-table-${row.id}`)
-      if (parent && el) {
-        this.groupRect = JSON.parse(JSON.stringify(parent.getBoundingClientRect()))
-        this.selectElRect = JSON.parse(JSON.stringify(el.getBoundingClientRect()))
-      } else {
-        this.$nextTick(() => {
-          this.groupRect = {}
-          this.selectElRect = {}
-        })
-      }
-    },
     onPlaybackPic(row) {
       this.setLoading(true)
       if (this.selectForm.id !== row.id) {
         this.setResultdialogActive(false)
       }
       this.selectForm = JSON.parse(JSON.stringify(row))
+      this.selectForm.className = `.memberBet-table-${this.selectForm.id}`
       this.closeDialogEven()
       gameResultGetPlaybackPic({ round_id: row.round_id }).then((res) => {
         this.playbackPic = res.playbackPic
         this.curDialogIndex = this.dialogEnum.pic
-        this.getRowPos(this.selectForm)
         this.setLoading(false)
       }).catch(() => {
         this.setLoading(false)
@@ -1861,11 +1843,11 @@ export default {
         this.setResultdialogActive(false)
       }
       this.selectForm = JSON.parse(JSON.stringify(row))
+      this.selectForm.className = `.memberBet-table-${this.selectForm.id}`
       this.closeDialogEven()
       gameResultGetPlaybackUrl({ round_id: row.round_id }).then((res) => {
         this.playbackUrl = res.playbackUrl
         this.curDialogIndex = this.dialogEnum.video
-        this.getRowPos(this.selectForm)
         this.setLoading(false)
       }).catch(() => {
         this.setLoading(false)
