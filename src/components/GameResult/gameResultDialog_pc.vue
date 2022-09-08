@@ -152,12 +152,12 @@
                         </div>
                       </dragScroll>
                       <div class="d-flex">
-                        <dragScroll class="pan-container" style="padding-top: 8.82355%;">
+                        <dragScroll class="pan-container" style="padding-top: 9.2%;">
                           <div class="pan-body" :style="`width: ${smallEyeRoad.roadData[0].length * 2.9}%;`">
                             <svg :viewBox="`0 0 ${smallEyeRoad.roadData[0].length * 5} 30`" class="smallRoad" />
                           </div>
                         </dragScroll>
-                        <dragScroll class="pan-container" style="padding-top: 8.82355%;">
+                        <dragScroll class="pan-container" style="padding-top: 9.2%;">
                           <div class="pan-body" :style="`width: ${cockroachRoad.roadData[0].length * 2.9}%;`">
                             <svg :viewBox="`0 0 ${cockroachRoad.roadData[0].length * 5} 30`" class="cockroachRoad" />
                           </div>

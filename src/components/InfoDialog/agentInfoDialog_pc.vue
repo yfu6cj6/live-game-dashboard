@@ -102,7 +102,6 @@
                   </div>
                 </div>
                 <div class="mt-4" />
-                <div class="mt-4" />
               </div>
               <div class="d-flex flex-column" style="max-width: 390px;">
                 <span class="title-item" style="width: 50%; flex: 0 0 auto;">{{ $t('__status') }}</span>

@@ -568,8 +568,8 @@
                               <span class="value gameResultAndVideo text-link" style="line-height: 1.3;" :class="`gameResult-table-${item.id}`">
                                 <span v-if="item.gameResult.result !== -1 && item.game_payment_status !== 8" class="value text-link playback">
                                   <div class="fas videoBtn text-link white">
-                                    <i class="el-icon-picture playbackPic" @click="onPlaybackPic(item)" />
-                                    <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click="onPlaybackUrl(item)">
+                                    <i class="el-icon-picture playbackPic" @click.stop="onPlaybackPic(item)" />
+                                    <img class="playbackIcon" :src="require(`@/assets/gameResult/playbackUrl.png`)" @click.stop="onPlaybackUrl(item)">
                                   </div>
                                   <span>
                                     <span class="border-bottom border-dark" @click.stop="gameResultClick(item)">

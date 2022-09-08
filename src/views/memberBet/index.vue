@@ -1107,9 +1107,9 @@
                           </div>
                           <div class="list-item d-flex align-items-start item-playerIcon">
                             <span class="value d-flex">
-                              <span class="solid-circle align-self-center clickable small">
+                              <span class="solid-circle align-self-center clickable small" :class="`memberBet-member-${item.id}`">
                                 <div class="fas black">
-                                  <svg-icon icon-class="info" style="height: 1.25rem; width: 1.25rem;" />
+                                  <svg-icon icon-class="info" style="height: 1.25rem; width: 1.25rem;" @click.stop="memberInfoClick(item)" />
                                 </div>
                               </span>
                             </span>
@@ -1271,6 +1271,13 @@
                       <agentInfoDialogPC
                         :visible="curInfoEnumIndex === infoEnum.agent"
                         :agent-id="selectForm.agent_id"
+                        :click-class-name="selectForm.className"
+                        @close="closeInfoEnumEven"
+                      />
+                      <memberInfoDialogPC
+                        :visible="curInfoEnumIndex === infoEnum.member"
+                        :agent-id="selectForm.agent_id"
+                        :member-id="selectForm.member_id"
                         :click-class-name="selectForm.className"
                         @close="closeInfoEnumEven"
                       />
@@ -1570,13 +1577,14 @@ import BackTop from '@/components/BackTop'
 import Pagination from '@/components/Pagination'
 import AgentInfoDialogMobile from '@/components/InfoDialog/agentInfoDialog_mobile'
 import AgentInfoDialogPC from '@/components/InfoDialog/agentInfoDialog_pc'
+import MemberInfoDialogPC from '@/components/InfoDialog/memberInfoDialog_pc'
 
 const defaultSearchTimeType = 'betTime'
 const defaultSearchTime = getDayDateTime()
 
 export default {
   name: 'MemberBet',
-  components: { PlaybackDialogPC, PlaybackDialogMobile, GameResultDialogPC, GameResultDialogMobile, BackTop, Pagination, AgentInfoDialogMobile, AgentInfoDialogPC },
+  components: { PlaybackDialogPC, PlaybackDialogMobile, GameResultDialogPC, GameResultDialogMobile, BackTop, Pagination, AgentInfoDialogMobile, AgentInfoDialogPC, MemberInfoDialogPC },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -1930,6 +1938,16 @@ export default {
       this.selectForm.className = `.memberBet-agent-${this.selectForm.id}`
       this.$nextTick(() => {
         this.curInfoEnumIndex = this.infoEnum.agent
+      })
+    },
+    memberInfoClick(rowData) {
+      this.closePlayBackEnumEven()
+      this.closeRecordRoadEnumEven()
+      this.closeInfoEnumEven()
+      this.selectForm = JSON.parse(JSON.stringify(rowData))
+      this.selectForm.className = `.memberBet-member-${this.selectForm.id}`
+      this.$nextTick(() => {
+        this.curInfoEnumIndex = this.infoEnum.member
       })
     },
     closeRecordRoadEnumEven() {
