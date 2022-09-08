@@ -643,8 +643,7 @@ export default {
             break;
           }
         }
-      },
-      immediate: true
+      }
     }
   },
   mounted() {
