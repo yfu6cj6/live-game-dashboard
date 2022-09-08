@@ -355,7 +355,7 @@
                                 <div class="agent-list-basic list-row">
                                   <div class="list-item d-flex align-items-start">
                                     <span class="label">{{ $t('__agent') }}</span>
-                                    <span class="value text-yellow text-link">
+                                    <span class="value text-yellow text-link" @click.stop="agentInfoClick(item)">
                                       <span>{{ item.agent }}</span>
                                     </span>
                                   </div>
@@ -522,6 +522,12 @@
                                 </template>
                               </div>
                             </div>
+                            <agentInfoDialogMobile
+                              :visible="curInfoEnumIndex === infoEnum.agent"
+                              :agent-id="selectForm.agent_id"
+                              @close="closeInfoEnumEven"
+                              @agent-click="agentClick"
+                            />
                           </div>
                         </div>
                       </template>
@@ -534,29 +540,29 @@
           </div>
         </div>
         <playbackDialogMobile
-          v-if="curDialogIndex === dialogEnum.pic"
+          v-if="curPlayBackEnumIndex === playBackEnum.pic"
           :data="selectForm"
-          :visible="curDialogIndex === dialogEnum.pic"
-          :playback-type="dialogEnum.pic"
+          :visible="curPlayBackEnumIndex === playBackEnum.pic"
+          :playback-type="playBackEnum.pic"
           :url="imagePlaybackpic"
-          @close="closeDialogEven"
+          @close="closePlayBackEnumEven"
         />
 
         <playbackDialogMobile
-          v-if="curDialogIndex === dialogEnum.video"
+          v-if="curPlayBackEnumIndex === playBackEnum.video"
           :data="selectForm"
-          :visible="curDialogIndex === dialogEnum.video"
-          :playback-type="dialogEnum.video"
+          :visible="curPlayBackEnumIndex === playBackEnum.video"
+          :playback-type="playBackEnum.video"
           :url="videoPlaybackUrl"
-          @close="closeDialogEven"
+          @close="closePlayBackEnumEven"
         />
 
         <gameResultDialogMobile
-          :visible="openResultdialog"
+          :visible="curRecordRoadEnumIndex === recordRoadEnum.recordRoad"
           :round-info="roundInfo"
           :count-info="countInfo"
           :score-cards="scoreCards"
-          @close="setResultdialogActive(false)"
+          @close="closeRecordRoadEnumEven"
         />
       </div>
     </template>
@@ -1088,9 +1094,9 @@
                           </span>
                           <div class="list-item d-flex align-items-start item-agentIcon">
                             <span class="value d-flex">
-                              <span class="solid-circle align-self-center clickable small">
+                              <span class="solid-circle align-self-center clickable small" :class="`memberBet-agent-${item.id}`">
                                 <div class="fas black">
-                                  <svg-icon icon-class="top" style="height: 1rem; width: 1rem;" />
+                                  <svg-icon icon-class="top" style="height: 1rem; width: 1rem;" @click.stop="agentInfoClick(item)" />
                                 </div>
                               </span>
                             </span>
@@ -1238,30 +1244,37 @@
                         </div>
                       </div>
                       <playbackDialogPC
-                        v-if="curDialogIndex === dialogEnum.pic"
+                        v-if="curPlayBackEnumIndex === playBackEnum.pic"
                         :data="selectForm"
-                        :visible="curDialogIndex === dialogEnum.pic"
-                        :playback-type="dialogEnum.pic"
+                        :visible="curPlayBackEnumIndex === playBackEnum.pic"
+                        :playback-type="playBackEnum.pic"
                         :url="imagePlaybackpic"
                         :click-class-name="selectForm.className"
-                        @close="closeDialogEven"
+                        @close="closePlayBackEnumEven"
                       />
                       <playbackDialogPC
-                        v-if="curDialogIndex === dialogEnum.video"
+                        v-if="curPlayBackEnumIndex === playBackEnum.video"
                         :data="selectForm"
-                        :visible="curDialogIndex === dialogEnum.video"
-                        :playback-type="dialogEnum.video"
+                        :visible="curPlayBackEnumIndex === playBackEnum.video"
+                        :playback-type="playBackEnum.video"
                         :url="videoPlaybackUrl"
                         :click-class-name="selectForm.className"
-                        @close="closeDialogEven"
+                        @close="closePlayBackEnumEven"
                       />
                       <gameResultDialogPC
-                        :visible="openResultdialog"
+                        :visible="curRecordRoadEnumIndex === recordRoadEnum.recordRoad"
                         :round-info="roundInfo"
                         :count-info="countInfo"
                         :score-cards="scoreCards"
                         :click-class-name="selectForm.className"
-                        @close="setResultdialogActive(false)"
+                        @close="closeRecordRoadEnumEven"
+                      />
+                      <agentInfoDialogPC
+                        :visible="curInfoEnumIndex === infoEnum.agent"
+                        :agent-id="selectForm.agent_id"
+                        :click-class-name="selectForm.className"
+                        @close="closeInfoEnumEven"
+                        @agent-click="agentClick"
                       />
                     </div>
                   </div>
@@ -1557,27 +1570,39 @@ import GameResultDialogPC from '@/components/GameResult/gameResultDialog_pc'
 import GameResultDialogMobile from '@/components/GameResult/gameResultDialog_mobile'
 import BackTop from '@/components/BackTop'
 import Pagination from '@/components/Pagination'
+import AgentInfoDialogMobile from '@/components/InfoDialog/agentInfoDialog_mobile'
+import AgentInfoDialogPC from '@/components/InfoDialog/agentInfoDialog_pc'
 
 const defaultSearchTimeType = 'betTime'
 const defaultSearchTime = getDayDateTime()
 
 export default {
   name: 'MemberBet',
-  components: { PlaybackDialogPC, PlaybackDialogMobile, GameResultDialogPC, GameResultDialogMobile, BackTop, Pagination },
+  components: { PlaybackDialogPC, PlaybackDialogMobile, GameResultDialogPC, GameResultDialogMobile, BackTop, Pagination, AgentInfoDialogMobile, AgentInfoDialogPC },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
-      dialogEnum: Object.freeze({
+      playBackEnum: Object.freeze({
         'none': 0,
         'pic': 1,
         'video': 2
       }),
-      openResultdialog: false,
+      recordRoadEnum: Object.freeze({
+        'none': 0,
+        'recordRoad': 1
+      }),
+      infoEnum: Object.freeze({
+        'none': 0,
+        'agent': 1,
+        'member': 2
+      }),
       searchTimeType: defaultSearchTimeType,
       memberId: null,
       playbackPic: undefined,
       playbackUrl: undefined,
-      curDialogIndex: 0,
+      curPlayBackEnumIndex: 0,
+      curRecordRoadEnumIndex: 0,
+      curInfoEnumIndex: 0,
       roundInfo: {},
       countInfo: {},
       scoreCards: [],
@@ -1639,8 +1664,9 @@ export default {
     },
     'device': function() {
       if (this.tempRoute.path === this.$route.path) {
-        this.closeDialogEven()
-        this.setResultdialogActive(false)
+        this.closePlayBackEnumEven()
+        this.closeRecordRoadEnumEven()
+        this.closeInfoEnumEven()
         this.$nextTick(() => {
           this.handleCurrentChange(1)
           this.addSelectFilter()
@@ -1667,7 +1693,7 @@ export default {
     this.setHeaderStyle()
   },
   activated() {
-    this.closeDialogEven()
+    this.closePlayBackEnumEven()
   },
   methods: {
     tapRow(row) {
@@ -1748,20 +1774,21 @@ export default {
     gameResultClick(row) {
       this.setLoading(true)
       if (this.selectForm.id !== row.id) {
-        this.closeDialogEven()
+        this.closePlayBackEnumEven()
       }
       this.selectForm = JSON.parse(JSON.stringify(row))
       this.selectForm.className = `.memberBet-table-${this.selectForm.id}`
-      this.setResultdialogActive(false)
+      this.closeInfoEnumEven()
+      this.closeRecordRoadEnumEven()
       gameResultGetScoreCards({ round_id: row.round_id }).then((res) => {
         this.roundInfo = res.roundInfo
         this.countInfo = res.countInfo
         this.scoreCards = res.scoreCards
         this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameResult'), true, () => {
-          this.setResultdialogActive(false)
+          this.closeRecordRoadEnumEven()
           this.setHeaderStyle()
         }])
-        this.setResultdialogActive(true)
+        this.curRecordRoadEnumIndex = this.recordRoadEnum.recordRoad
         this.setLoading(false)
       }).catch(() => {
         this.setLoading(false)
@@ -1817,21 +1844,23 @@ export default {
       if (this.$refs.backTop) {
         this.$refs.backTop.backTop()
       }
-      this.closeDialogEven()
-      this.setResultdialogActive(false)
+      this.closePlayBackEnumEven()
+      this.closeRecordRoadEnumEven()
+      this.closeInfoEnumEven()
       this.setLoading(false)
     },
     onPlaybackPic(row) {
       this.setLoading(true)
       if (this.selectForm.id !== row.id) {
-        this.setResultdialogActive(false)
+        this.closeRecordRoadEnumEven()
       }
       this.selectForm = JSON.parse(JSON.stringify(row))
       this.selectForm.className = `.memberBet-table-${this.selectForm.id}`
-      this.closeDialogEven()
+      this.closeInfoEnumEven()
+      this.closePlayBackEnumEven()
       gameResultGetPlaybackPic({ round_id: row.round_id }).then((res) => {
         this.playbackPic = res.playbackPic
-        this.curDialogIndex = this.dialogEnum.pic
+        this.curPlayBackEnumIndex = this.playBackEnum.pic
         this.setLoading(false)
       }).catch(() => {
         this.setLoading(false)
@@ -1840,14 +1869,15 @@ export default {
     onPlaybackUrl(row) {
       this.setLoading(true)
       if (this.selectForm.id !== row.id) {
-        this.setResultdialogActive(false)
+        this.closeRecordRoadEnumEven()
       }
       this.selectForm = JSON.parse(JSON.stringify(row))
       this.selectForm.className = `.memberBet-table-${this.selectForm.id}`
-      this.closeDialogEven()
+      this.closeInfoEnumEven()
+      this.closePlayBackEnumEven()
       gameResultGetPlaybackUrl({ round_id: row.round_id }).then((res) => {
         this.playbackUrl = res.playbackUrl
-        this.curDialogIndex = this.dialogEnum.video
+        this.curPlayBackEnumIndex = this.playBackEnum.video
         this.setLoading(false)
       }).catch(() => {
         this.setLoading(false)
@@ -1890,12 +1920,28 @@ export default {
         export_json_to_excel({ header: tHeader, data: data, filename: 'MemberBet_' + getFullDateString(new Date()) })
       })
     },
-    closeDialogEven() {
-      this.curDialogIndex = this.dialogEnum.none
+    closePlayBackEnumEven() {
+      this.curPlayBackEnumIndex = this.playBackEnum.none
       this.setHeaderStyle()
     },
-    setResultdialogActive(active) {
-      this.openResultdialog = active
+    agentInfoClick(rowData) {
+      this.closePlayBackEnumEven()
+      this.closeRecordRoadEnumEven()
+      this.closeInfoEnumEven()
+      this.selectForm = JSON.parse(JSON.stringify(rowData))
+      this.selectForm.className = `.memberBet-agent-${this.selectForm.id}`
+      this.$nextTick(() => {
+        this.curInfoEnumIndex = this.infoEnum.agent
+      })
+    },
+    async agentClick(agentId) {
+      await this.$router.push({ path: `/agentManagement/agentManagement/${agentId}` })
+    },
+    closeRecordRoadEnumEven() {
+      this.curRecordRoadEnumIndex = this.recordRoadEnum.none
+    },
+    closeInfoEnumEven() {
+      this.curInfoEnumIndex = this.infoEnum.none
     },
     setLoading(loading) {
       this.$store.dispatch('app/setLoading', loading)
