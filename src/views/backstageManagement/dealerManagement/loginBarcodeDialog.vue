@@ -20,32 +20,37 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
-        :loading="dialogLoading"
-        :title="title"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <div class="loginBarcode">
-          <img :src="form.dns1d" :alt="$t('__loginBarcode')">
+      <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click="onClose" />
+        <div class="popup-panel animated fadeInUp" style="max-width: 600px; min-width: unset;">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
+          </div>
+          <div class="custom-content">
+            <div class="scroll-view loginBarcode" style="display: block; position: static; max-height: 50vh;">
+              <img :src="form.dns1d" :alt="$t('__loginBarcode')">
+            </div>
+            <div v-if="!dialogLoading" class="d-flex w-100 justify-content-center" style="margin-top: 1.5rem;">
+              <a :href="form.dns1d" :download="form.name">
+                <button type="button" class="el-button bg-yellow common-button el-button--primary" @click.stop="onSubmit">
+                  <span>{{ $t('__loginBarcodeDownload') }}</span>
+                </button>
+              </a>
+            </div>
+          </div>
         </div>
-        <span v-if="!dialogLoading" slot="bodyFooter">
-          <a :href="form.dns1d" :download="form.name">
-            <el-button class="bg-yellow" size="mini">{{ $t("__loginBarcodeDownload") }}</el-button>
-          </a>
-        </span>
-      </Dialog>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
-import Dialog from '@/components/Dialog'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'LoginBarcodeDialog',
-  components: { Dialog },
+  components: {},
   mixins: [dialogCommon],
   props: {
     title: {
@@ -72,6 +77,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
   },
   watch: {
   },
@@ -91,5 +99,12 @@ export default {
   width: 150px;
   height: 40px;
   font-size: 20px;
+}
+
+#app.pc {
+  .custom-content {
+    width: 300px;
+    margin-top: 1rem;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="dealerEditDialog">
+  <div v-if="visible">
     <template v-if="device === 'mobile'">
       <div v-loading="dialogLoading" class="black_bg dealerEditDialog">
         <div class="data_content">
@@ -67,7 +67,76 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
+      <div class="agent-pop-up-panel dealerEditDialog backstage_dialog" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click="onClose" />
+        <div class="popup-panel animated fadeInUp" style="max-width: 600px; min-width: 380px;">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
+          </div>
+          <div class="data_content">
+            <span class="text-yellow ">{{ title }}</span>
+            <div class="el-form-item__content item" :class="{'is-error': inputNameState === inputState.error, 'is-success': inputNameState === inputState.success}">
+              <div class="label-group">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__name') }}</label>
+              </div>
+              <div class="d-flex">
+                <div class="el-input el-input--small">
+                  <input v-model="editForm.name" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkName()" @blur="checkName()">
+                  <span class="el-input__suffix">
+                    <span class="el-input__suffix-inner" />
+                    <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputNameState === inputState.error, 'el-icon-success': inputNameState === inputState.success}" />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item">
+              <div class="label-group">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__dealerPhoto') }}</label>
+                <small class="tip text-white">{{ uploadTip }}</small>
+              </div>
+              <div class="d-flex">
+                <div class="el-input el-input--small">
+                  <el-upload
+                    class="dealerUpload"
+                    action=""
+                    :http-request="uploadHttpRequest"
+                    list-type="picture-card"
+                    accept="image/jpeg,image/gif,image/png"
+                    :file-list="fileList"
+                    :on-change="handleChange"
+                    drag
+                  >
+                    <i class="el-icon-plus" />
+                  </el-upload>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="operate_content">
+            <div class="form-alert">
+              <div v-show="errorTips !== ''" role="alert" class="el-alert el-alert--warning is-light fade show">
+                <i class="el-alert__icon el-icon-warning" />
+                <div class="el-alert__content">
+                  <span class="el-alert__title">{{ errorTips }}</span>
+                  <i class="el-alert__closebtn el-icon-close" style="display: none;" />
+                </div>
+              </div>
+            </div>
+            <div class="form-ctrl">
+              <div class="el-row is-align-middle el-row--flex">
+                <button type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
+                  <span>{{ confirm }}</span>
+                </button>
+                <button type="button" class="el-button bg-gray el-button--primary" @click="onReset">
+                  <span>{{ $t('__reset') }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <Dialog
         :loading="dialogLoading"
         :title="title"
         :on-close-even="onClose"
@@ -97,18 +166,18 @@
           <el-button class="bg-gray" @click="onReset">{{ $t("__reset") }}</el-button>
           <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
         </span>
-      </Dialog>
+      </Dialog> -->
     </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
-import Dialog from '@/components/Dialog'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditDialog',
-  components: { Dialog },
+  components: {},
   mixins: [dialogCommon],
   props: {
     title: {
@@ -166,6 +235,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ]),
     uploadTip() {
       return `jpg/png，Width = ${this.limitImageWidth}px Height = ${this.limitImageHeight}px`
     }
@@ -254,18 +326,16 @@ export default {
 
 <style lang="scss">
 .dealerEditDialog {
-  &.black_bg {
-    .data_content {
-      .dealerUpload {
-        .el-upload {
-          .el-upload-dragger {
-            width: auto;
-            height: auto;
-          }
+  .data_content {
+    .dealerUpload {
+      .el-upload {
+        .el-upload-dragger {
+          width: 100%;
+          height: 100%;
         }
-        .el-upload-list__item-status-label {
-          display: none;
-        }
+      }
+      .el-upload-list__item-status-label {
+        display: none;
       }
     }
   }
@@ -273,18 +343,11 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.black_bg {
-  .data_content {
-    .dealerUpload {
-      .el-upload {
-        .el-upload-dragger {
-          width: auto;
-          height: auto;
-        }
-      }
-      .el-upload-list__item-status-label {
-        display: none;
-      }
+#app.pc {
+  .backstage_dialog {
+    .tip {
+      font-size: 70%;
+      float: right;
     }
   }
 }
