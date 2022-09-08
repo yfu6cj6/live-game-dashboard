@@ -419,10 +419,10 @@
         @close="closeDialogEven"
       />
 
-      <agentTreeDialogMobile
-        ref="agentTreeDialog"
+      <treeDialogMobile
+        ref="treeDialog"
         :visible="curDialogIndex === dialogEnum.agentInfo"
-        :agent-level="agentLevel"
+        :tree-level="agentLevel"
         @close="closeDialogEven"
         @agent-click="agentClick"
       />
@@ -430,7 +430,7 @@
     <template v-else>
       <div class="agent-list is-player">
         <div class="agent-list">
-          <div v-show="tableData.length > 0">
+          <div v-if="tableData.length > 0">
             <div
               v-for="(item, index) in tableData"
               :key="index"
@@ -444,7 +444,7 @@
                   </div>
                   <div class="list-item flex-none flex-wrap align-self-center mr-2">
                     <span class="value" style="display: block; width: 35px; white-space: nowrap; margin-right: 0.5rem;">
-                      <span class="solid-circle align-self-center clickable small solid-circle align-self-center clickable">
+                      <span class="solid-circle align-self-center clickable small solid-circle align-self-center clickable" :class="`agentManagement-member-${item.id}`">
                         <div class="fas black ">
                           <svg-icon class="fas black" icon-class="top" style="height: 1rem; width: 1rem;" @click.stop="agentInfoClick(item)" />
                         </div>
@@ -779,11 +779,17 @@
               <div class="force-wrap" />
             </div>
           </div>
-          <div v-show="tableData.length <= 0">
-            <div class="noInformation">
-              <span>{{ `${$t('__noHave')}${$t('__member')}` }}</span>
-            </div>
+          <div v-else class="noInformation">
+            <span>{{ `${$t('__noHave')}${$t('__member')}` }}</span>
           </div>
+          <treeDialogPC
+            ref="treeDialog"
+            :visible="curDialogIndex === dialogEnum.agentInfo"
+            :tree-level="agentLevel"
+            :click-class-name="editForm.className"
+            @close="closeDialogEven"
+            @agent-click="agentClick"
+          />
           <div class="force-wrap" />
           <div class="w-100" style="height: 40px;" />
           <pagination
@@ -927,14 +933,6 @@
         :form="editForm"
         @close="closeDialogEven"
       />
-
-      <agentTreeDialogPC
-        ref="agentTreeDialog"
-        :visible="curDialogIndex === dialogEnum.agentInfo"
-        :agent-level="agentLevel"
-        @close="closeDialogEven"
-        @agent-click="agentClick"
-      />
     </template>
   </div>
 </template>
@@ -955,8 +953,8 @@ import OperateDialog from '@/views/agentManagement/operateDialog'
 import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
-import AgentTreeDialogMobile from '@/components/InfoDialog/agentTreeDialog_mobile'
-import AgentTreeDialogPC from '@/components/InfoDialog/agentTreeDialog_pc'
+import TreeDialogMobile from '@/components/InfoDialog/treeDialog_mobile'
+import TreeDialogPC from '@/components/InfoDialog/treeDialog_pc'
 import Pagination from '@/components/Pagination'
 
 const defaultForm = {
@@ -982,7 +980,7 @@ const editFormStepEnum = Object.freeze({ 'memberInfo': 0, 'rate': 1, 'limit': 2,
 
 export default {
   name: 'Member',
-  components: { MemberEditDialog, LimitDialog, ModPasswordDialog, BalanceDialog, OperateDialog, PasswordTipDialog, AgentTreeDialogMobile, AgentTreeDialogPC, Pagination },
+  components: { MemberEditDialog, LimitDialog, ModPasswordDialog, BalanceDialog, OperateDialog, PasswordTipDialog, TreeDialogMobile, TreeDialogPC, Pagination },
   mixins: [handlePageChange],
   data() {
     return {
@@ -1310,14 +1308,16 @@ export default {
       this.curDialogIndex = this.dialogEnum.none
     },
     agentInfoClick(rowData) {
-      this.$refs.agentTreeDialog.setDialogLoading(true)
+      this.closeDialogEven()
+      this.$refs.treeDialog.setDialogLoading(true)
       this.editForm = JSON.parse(JSON.stringify(rowData))
+      this.editForm.className = `.agentManagement-member-${this.editForm.id}`
       memberTreeSearch({ memberId: this.editForm.id }).then((res) => {
         this.agentLevel = res
         this.curDialogIndex = this.dialogEnum.agentInfo
-        this.$refs.agentTreeDialog.setDialogLoading(false)
+        this.$refs.treeDialog.setDialogLoading(false)
       }).catch(() => {
-        this.$refs.agentTreeDialog.setDialogLoading(false)
+        this.$refs.treeDialog.setDialogLoading(false)
       })
     },
     async agentClick(agentId) {
@@ -1386,6 +1386,9 @@ export default {
 .pc {
   .api-button {
     display: inline;
+  }
+  .agent-list {
+    position: relative;
   }
 }
 </style>

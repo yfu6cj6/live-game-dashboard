@@ -611,7 +611,7 @@ export default {
       },
       immediate: true
     },
-    'device': function() {
+    device: function() {
       if (this.$route.name === this.tempRoute.name) {
         this.$nextTick(() => {
           if (this.curTableIndex === this.tableEnum.agent) {
@@ -623,6 +623,28 @@ export default {
           }
         })
       }
+    },
+    curTableIndex: {
+      handler() {
+        switch (this.curTableIndex) {
+          case this.tableEnum.agent: {
+            this.$refs.member.closeDialogEven()
+            this.$refs.subAccount.closeDialogEven()
+            break;
+          }
+          case this.tableEnum.member: {
+            this.$refs.agent.closeDialogEven()
+            this.$refs.subAccount.closeDialogEven()
+            break;
+          }
+          case this.tableEnum.subAccount: {
+            this.$refs.agent.closeDialogEven()
+            this.$refs.member.closeDialogEven()
+            break;
+          }
+        }
+      },
+      immediate: true
     }
   },
   mounted() {
@@ -1644,16 +1666,6 @@ export default {
         }
       }
     }
-  }
-
-  .num-pre-page {
-    position: fixed;
-    bottom: 0px;
-    left: 200px;
-    width: calc(100vw - 200px);
-    z-index: 11;
-    padding: 0;
-    height: 30px;
   }
 }
 </style>

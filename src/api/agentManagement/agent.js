@@ -8,6 +8,14 @@ export function agentTreeSearch(data) {
   })
 }
 
+export function agentInfoSearch(data) {
+  return request({
+    url: '/agent/agentInfo',
+    method: 'post',
+    data: data
+  })
+}
+
 export function agentSearch(data) {
   return request({
     url: '/agent/search',

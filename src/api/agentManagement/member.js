@@ -8,6 +8,14 @@ export function memberTreeSearch(data) {
   })
 }
 
+export function memberInfoSearch(data) {
+  return request({
+    url: '/member/memberInfo',
+    method: 'post',
+    data: data
+  })
+}
+
 export function memberSearch(data) {
   return request({
     url: '/member/search',

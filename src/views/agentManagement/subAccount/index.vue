@@ -261,10 +261,10 @@
         @editSuccess="handleRespone"
       />
 
-      <agentTreeDialogMobile
-        ref="agentTreeDialog"
+      <treeDialogMobile
+        ref="treeDialog"
         :visible="curDialogIndex === dialogEnum.agentInfo"
-        :agent-level="agentLevel"
+        :tree-level="agentLevel"
         @close="closeDialogEven"
         @agent-click="agentClick"
       />
@@ -284,14 +284,14 @@
                 </div>
                 <div class="list-item flex-none d-flex flex-wrap align-self-center align-items-center" style="width: auto; white-space: nowrap; flex-wrap: wrap; margin-bottom: 0.5rem;">
                   <span class="value" style="margin-right: 0.5rem;">
-                    <span class="solid-circle align-self-center clickable small solid-circle align-self-center clickable">
-                      <div class="fas black ">
+                    <span class="solid-circle align-self-center clickable small solid-circle align-self-center clickable" :class="`agentManagement-subAccount-${item.id}`">
+                      <div class="fas black">
                         <svg-icon class="fas black" icon-class="top" style="height: 1rem; width: 1rem;" @click.stop="agentInfoClick(item)" />
                       </div>
                     </span>
                   </span>
                 </div>
-                <div class="list-item flex-none align-self-center d-flex justify-content-center mr-2" style="width: 85px; margin-left: -10px;">
+                <div class="list-item flex-none align-self-center d-flex justify-content-center mr-2" style="width: 85px; margin-left: -10px; pointer-events: none;">
                   <span class="value">
                     <span>
                       <div class="two-row-items">
@@ -457,11 +457,17 @@
               <div class="force-wrap" />
             </div>
           </div>
-          <div v-else>
-            <div class="noInformation">
-              <span>{{ `${$t('__noHave')}${$t('__subAccount')}` }}</span>
-            </div>
+          <div v-else class="noInformation">
+            <span>{{ `${$t('__noHave')}${$t('__subAccount')}` }}</span>
           </div>
+          <treeDialogPC
+            ref="treeDialog"
+            :visible="curDialogIndex === dialogEnum.agentInfo"
+            :tree-level="agentLevel"
+            :click-class-name="editForm.className"
+            @close="closeDialogEven"
+            @agent-click="agentClick"
+          />
           <div class="force-wrap" />
           <div class="w-100" style="height: 40px;" />
           <pagination
@@ -547,14 +553,6 @@
         @close="closeDialogEven"
         @editSuccess="handleRespone"
       />
-
-      <agentTreeDialogPC
-        ref="agentTreeDialog"
-        :visible="curDialogIndex === dialogEnum.agentInfo"
-        :agent-level="agentLevel"
-        @close="closeDialogEven"
-        @agent-click="agentClick"
-      />
     </template>
   </div>
 </template>
@@ -571,8 +569,8 @@ import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import OperateDialog from '@/views/agentManagement/operateDialog'
 import PasswordTipDialog from '@/views/agentManagement/passwordTipDialog'
 import { mapGetters } from 'vuex'
-import AgentTreeDialogMobile from '@/components/InfoDialog/agentTreeDialog_mobile'
-import AgentTreeDialogPC from '@/components/InfoDialog/agentTreeDialog_pc'
+import TreeDialogMobile from '@/components/InfoDialog/treeDialog_mobile'
+import TreeDialogPC from '@/components/InfoDialog/treeDialog_pc'
 import Pagination from '@/components/Pagination'
 
 const defaultForm = {
@@ -590,7 +588,7 @@ const defaultForm = {
 
 export default {
   name: 'Member',
-  components: { SubAccountEditDialog, OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog, AgentTreeDialogMobile, AgentTreeDialogPC, Pagination },
+  components: { SubAccountEditDialog, OperateDialog, SubAgentDistributeDialog, ModPasswordDialog, PasswordTipDialog, TreeDialogMobile, TreeDialogPC, Pagination },
   mixins: [handlePageChange],
   data() {
     return {
@@ -800,14 +798,16 @@ export default {
       this.curDialogIndex = this.dialogEnum.none
     },
     agentInfoClick(rowData) {
-      this.$refs.agentTreeDialog.setDialogLoading(true)
+      this.closeDialogEven()
+      this.$refs.treeDialog.setDialogLoading(true)
       this.editForm = JSON.parse(JSON.stringify(rowData))
+      this.editForm.className = `.agentManagement-subAccount-${this.editForm.id}`
       subAccountTreeSearch({ accountId: this.editForm.id }).then((res) => {
         this.agentLevel = res
         this.curDialogIndex = this.dialogEnum.agentInfo
-        this.$refs.agentTreeDialog.setDialogLoading(false)
+        this.$refs.treeDialog.setDialogLoading(false)
       }).catch(() => {
-        this.$refs.agentTreeDialog.setDialogLoading(false)
+        this.$refs.treeDialog.setDialogLoading(false)
       })
     },
     async agentClick(agentId) {
@@ -822,6 +822,12 @@ export default {
 .noInformation {
   margin-top: 1rem;
   text-align: center;
+}
+
+.pc {
+  .agent-list {
+    position: relative;
+  }
 }
 
 </style>

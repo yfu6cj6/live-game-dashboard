@@ -1350,3 +1350,48 @@ table {
 #app .clickable {
   cursor: pointer;
 }
+
+.agent-tree-detail {
+  white-space: nowrap;
+  line-height: 1.3rem !important;
+  min-height: 40px;
+  width: 100%;
+  cursor: default;
+  .border-top {
+    border-top: 1px solid #f9c901 !important;
+  }
+  .padding-top {
+    padding-top: 15px;
+  }
+  .padding-left {
+    padding: 15px;
+  }
+  .basis-50 {
+    -ms-flex-preferred-size: 50%;
+    flex-basis: 50%;
+  }
+  .basis-100 {
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+  }
+  .title-item {
+    font-size: 1.16667rem;
+    color: #f9c901;
+    font-weight: normal;
+  }
+  .sub-title-item.gray {
+    color: #a3a3a3;
+  }
+  .sub-title-item {
+    font-size: 1.16667rem;
+    color: #fff;
+    font-weight: normal;
+  }
+  .content-item {
+    font-size: 1.16667rem;
+    color: #fff;
+  }
+  .overflow-hidden {
+    overflow: hidden;
+  }
+}
