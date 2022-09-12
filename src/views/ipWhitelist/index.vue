@@ -108,7 +108,6 @@
     </template>
     <template v-else>
       <div class="comp common-list ip-white-list">
-        <div class="agent-pop-up-panel" style="display: none;" />
         <div class="w-100">
           <div class="overlay-scroll-wrap scrolling float" style="height: calc((100vh - 6.25rem) - 30px);">
             <backTop ref="backTop" />

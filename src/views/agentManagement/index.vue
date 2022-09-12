@@ -262,9 +262,6 @@
                         </div>
                       </div>
                     </div>
-                    <div style="display: none;" />
-                    <div style="display: none;" />
-                    <div style="display: none;" />
                   </div>
                 </div>
               </div>
@@ -481,7 +478,6 @@
                                       </div>
                                     </template>
                                   </div>
-                                  <div class="agent-pop-up-panel" style="display: none;" />
                                 </div>
                               </div>
                               <agent

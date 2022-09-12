@@ -187,7 +187,6 @@
                           </div>
                         </div>
                       </div>
-                      <div class="agent-pop-up-panel" style="display: none;" />
                     </div>
                     <div class="profit-tabs light el-tabs">
                       <div class="el-tabs__header">

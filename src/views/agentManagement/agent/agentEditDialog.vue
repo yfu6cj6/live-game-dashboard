@@ -4,7 +4,6 @@
       <div v-loading="dialogLoading" class="popup-page">
         <div class="w-100 pt-3 pb-3">
           <el-steps
-            v-if="visible"
             :active="curIndex"
             class="form-step"
             finish-status="success"
@@ -20,7 +19,6 @@
               <i class="el-alert__icon el-icon-warning" />
               <div class="el-alert__content">
                 <span class="el-alert__title">{{ errorTip }}</span>
-                <i class="el-alert__closebtn el-icon-close" style="display: none;" />
               </div>
             </div>
           </div>
@@ -292,13 +290,13 @@
                       </div>
                       <div
                         class="text-field share el-input el-input--small"
-                        :class="{'is-disabled': agentInfo.live_commission_rate === 0 || operationType === operationEnum.edit}"
+                        :class="{'is-disabled': agentInfo.live_commission_rate === 0}"
                       >
                         <input
                           v-model.number="form.live_commission_rate"
                           type="number"
                           autocomplete="off"
-                          :disabled="agentInfo.live_commission_rate === 0 || operationType === operationEnum.edit"
+                          :disabled="agentInfo.live_commission_rate === 0"
                           min="0"
                           class="el-input__inner"
                           @focus="inputFocus(step2.live_commission_rate)"
@@ -337,13 +335,13 @@
                       </div>
                       <div
                         class="text-field share el-input el-input--small"
-                        :class="{'is-disabled': agentInfo.live_rolling_rate === 0 || operationType === operationEnum.edit}"
+                        :class="{'is-disabled': agentInfo.live_rolling_rate === 0}"
                       >
                         <input
                           v-model.number="form.live_rolling_rate"
                           type="number"
                           autocomplete="off"
-                          :disabled="agentInfo.live_rolling_rate === 0 || operationType === operationEnum.edit"
+                          :disabled="agentInfo.live_rolling_rate === 0"
                           min="0"
                           class="el-input__inner"
                           @focus="inputFocus(step2.live_rolling_rate)"
@@ -745,6 +743,114 @@
         </div>
       </div>
     </template>
+    <template v-else>
+      <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" />
+        <div class="popup-panel animated fadeInUp addAgentForm">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" />
+          </div>
+          <div class="popup-title">{{ title }}</div>
+          <div class="agent-form popup-page flex-column flex-fill h-100">
+            <div class="form-fixed step">
+              <div class="w-100 text-left text-white mb-2">{{ `${$t('__superiorAgent')}: ` }}
+                <span class="text-yellow">{{ agentInfo.fullName }}</span>
+              </div>
+              <el-steps
+                :active="curIndex"
+                class="form-step"
+                finish-status="success"
+                align-center
+              >
+                <el-step v-if="hasStep('agentInfo')" :title="$t('__agentInfo')" />
+                <el-step v-if="hasStep('rate')" :title="$t('__rate')" />
+                <el-step v-if="hasStep('limit')" :title="$t('__handicapLimit')" />
+                <el-step v-if="hasStep('balanceConfig')" :title="$t('__balanceConfig')" />
+                <el-step v-if="hasStep('confirm')" :title="$t('__confirm')" />
+              </el-steps>
+              <div class="w-100" style="height: 10px;" />
+            </div>
+            <div class="overlay-scroll-wrap scrolling">
+              <backTop style="width: 25.5px; height: 25.5px; font-size: 20.4px; top: 10.2px;" />
+              <div class="scroll-inner on native">
+                <div class="scroll-view" style="height: 395px; max-height: calc(569px);">
+                  <div class="form-step-content">
+                    <div
+                      v-show="curIndex === stepEnum.agentInfo"
+                    >
+                      <form class="el-form el-form--label-left">
+                        <div class="step-content">
+                          <div v-if="operationType === operationEnum.create" class="el-form-item el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label mr-3">{{ $t('__accountGenerateMode') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <el-switch
+                                  v-model="autoGenerateAccount"
+                                  :active-text="$t('__auto')"
+                                  :inactive-text="$t('__manual')"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step1.account.hasError,
+                              'is-success': step1.account.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__account') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                    :class="{'is-disabled': operationType === operationEnum.edit}"
+                                  >
+                                    <input
+                                      v-model="form.account"
+                                      type="text"
+                                      autocomplete="off"
+                                      :disabled="operationType===operationEnum.edit"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step1.account)"
+                                      @blur="passwordChange(step1.account, form.account)"
+                                      @change="passwordChange(step1.account, form.account)"
+                                    >
+                                    <span v-if="step1.account.hasError || step1.account.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i
+                                          v-if="step1.account.hasError"
+                                          class="el-input__icon el-input__validateIcon el-icon-error has-error"
+                                        />
+                                        <i
+                                          v-if="step1.account.isSuccess"
+                                          class="el-input__icon el-input__validateIcon el-icon-success no-error"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <small class="tip">
+                                    {{ operationType === operationEnum.edit ? '' : `5-8${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}
+                                  </small>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -754,9 +860,11 @@ import common from '@/mixin/common'
 import { agentCreateAccount, agentGetSetBalanceInfo, agentCreate, agentEdit } from '@/api/agentManagement/agent'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
+import BackTop from '@/components/BackTop'
 
 export default {
   name: 'AgentEditDialog',
+  components: { BackTop },
   mixins: [dialogCommon, common],
   props: {
     'title': {
@@ -883,7 +991,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'accountStatusType'
+      'accountStatusType',
+      'sidebar'
     ]),
     previousBtnVisible() {
       return this.curIndex > this.stepEnum.agentInfo

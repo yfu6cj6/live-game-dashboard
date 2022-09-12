@@ -875,6 +875,9 @@ export default {
     },
     agentInfoClick(rowData, type) {
       this.closeInfoEnumEven()
+      if (type === 'superiorAgent' && rowData.superiorAgentId === 0) {
+        return;
+      }
       this.selectForm = JSON.parse(JSON.stringify(rowData))
       this.selectForm.className = `.agentBalanceRecord-${type}-${this.selectForm.id}`
       this.$nextTick(() => {

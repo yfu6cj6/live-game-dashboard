@@ -1044,8 +1044,6 @@
     .el-step__line {
       height: 0.2rem;
       top: 1.1rem;
-      left: 0;
-      right: 0;
     }
   }
   &:last-of-type.is-flex {
@@ -1056,6 +1054,54 @@
     -webkit-box-flex: 0;
     -ms-flex-positive: 0;
     flex-grow: 0;
+  }
+  .el-step__head {
+    .el-step__icon {
+      -webkit-transform: scale(1.2);
+      transform: scale(1.2);
+      width: 2rem;
+      height: 2rem;
+      font-size: 1.16667rem;
+    }
+    .el-step__line {
+      top: 0.91667rem;
+    }
+    &.is-process {
+      .el-step__icon {
+        color: #000;
+        border-color: #000;
+        background-color: #f9c901;
+      }
+    }
+    &.is-wait {
+      .el-step__icon {
+        color: #000;
+        border-color: #000;
+        background-color: #a3a3a3;
+      }
+    }
+    &.is-success {
+      color: #000;
+      .el-step__icon {
+        background-color: #f9c901;
+        border-color: #000;
+      }
+      .el-step__line {
+        background-color: #f9c901;
+        border-color: #f9c901;
+      }
+      .el-step__line_inner {
+        background-color: #f9c901;
+        border-color: #f9c901;
+      }
+    }
+  }
+  .el-step__title {
+    font-size: .91667rem;
+    &.is-process,
+    &.is-success {
+      color: #f9c901 !important;
+    }
   }
 }
 

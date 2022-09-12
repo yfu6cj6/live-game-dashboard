@@ -476,7 +476,6 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           />
-          <div class="agent-pop-up-panel" style="display: none;" />
         </div>
       </div>
 

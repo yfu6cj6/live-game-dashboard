@@ -88,7 +88,6 @@
                         <i class="el-alert__icon el-icon-warning" />
                         <div class="el-alert__content">
                           <span class="el-alert__title">{{ errorTips }}</span>
-                          <i class="el-alert__closebtn el-icon-close" style="display: none;" />
                         </div>
                       </div>
                     </div>
@@ -195,7 +194,6 @@
                           <i class="el-alert__icon el-icon-warning" />
                           <div class="el-alert__content">
                             <span class="el-alert__title">{{ errorTips }}</span>
-                            <i class="el-alert__closebtn el-icon-close" style="display: none;" />
                           </div>
                         </div>
                       </div>

@@ -290,7 +290,6 @@
                             </div>
                           </div>
                         </div>
-                        <div style="display: none;" />
                       </div>
                       <div v-show="tableData.length <= 0">
                         <div class="noInformation">
@@ -650,7 +649,6 @@
                       @size-change="handleSizeChange"
                       @current-change="handleCurrentChange"
                     />
-                    <div class="agent-pop-up-panel" style="display: none;" />
                   </template>
                   <template v-else>
                     <div class="no-result">{{ $t('__noInformation') }}</div>

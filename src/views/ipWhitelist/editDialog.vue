@@ -50,7 +50,6 @@
                     <i class="el-alert__icon el-icon-info" />
                     <div class="el-alert__content">
                       <span v-if="errorTips !== ''" class="el-alert__title">{{ errorTips }}</span>
-                      <i class="el-alert__closebtn el-icon-close" style="display: none;" />
                     </div>
                   </div>
                 </div>
@@ -108,7 +107,6 @@
                 <i class="el-alert__icon el-icon-info" />
                 <div class="el-alert__content">
                   <span v-if="errorTips !== ''" class="el-alert__title">{{ errorTips }}</span>
-                  <i class="el-alert__closebtn el-icon-close" style="display: none;" />
                 </div>
               </div>
             </div>

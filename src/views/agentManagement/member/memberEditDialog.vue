@@ -20,7 +20,6 @@
               <i class="el-alert__icon el-icon-warning" />
               <div class="el-alert__content">
                 <span class="el-alert__title">{{ errorTip }}</span>
-                <i class="el-alert__closebtn el-icon-close" style="display: none;" />
               </div>
             </div>
           </div>
@@ -272,14 +271,12 @@
                       </div>
                       <div
                         class="text-field share el-input el-input--small"
-                        :class="{'is-disabled': operationType === operationEnum.edit}"
                       >
                         <input
                           v-model.number="form.live_rolling_rate"
                           type="number"
                           autocomplete="off"
                           min="0"
-                          :disabled="operationType===operationEnum.edit"
                           class="el-input__inner"
                           @focus="inputFocus(step2.live_rolling_rate)"
                           @blur="specialInputChange('live_rolling_rate')"

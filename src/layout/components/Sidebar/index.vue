@@ -54,20 +54,6 @@
                   </button>
                 </div>
               </div>
-              <div style="display: none;">
-                <div class="fadeOutUp pp notice animated">
-                  <div class="scroll-wrap float">
-                    <div id="scroll-inner" class="scroll-inner off">
-                      <div class="scroll-view" style="display: block; position: static; max-height: 50vh;" />
-                    </div>
-                  </div>
-                  <div class="d-flex w-100 justify-content-center p-buttons" style="margin-top: 1.5rem;">
-                    <button type="button" class="el-button bg-gray common-button w-50 el-button--primary">
-                      <span>{{ $t('__close') }}</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </form>
         </div>
@@ -163,20 +149,6 @@
                       </div>
                     </span>
                   </button>
-                </div>
-              </div>
-              <div style="display: none;">
-                <div class="fadeOutUp pp notice animated">
-                  <div class="scroll-wrap float">
-                    <div id="scroll-inner" class="scroll-inner off">
-                      <div class="scroll-view" style="display: block; position: static; max-height: 50vh;" />
-                    </div>
-                  </div>
-                  <div class="d-flex w-100 justify-content-center p-buttons" style="margin-top: 1.5rem;">
-                    <button type="button" class="el-button bg-gray common-button w-50 el-button--primary">
-                      <span>{{ $t('__close') }}</span>
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>

@@ -186,7 +186,6 @@
                         </div>
                       </div>
                     </div>
-                    <div style="display: none;" />
                   </span>
                 </div>
                 <div v-if="!isAgentSubAccount" class="list-item" style="width: 50%; margin-top: 1rem;">
@@ -273,7 +272,6 @@
                 <span class="view-more border-bottom border-dark mb-1" @click="moreInfoByClient">{{ $t('__searchMoreValue') }}</span>
               </div>
             </div>
-            <div style="display: none;" />
           </div>
           <div v-else class="noInformation">
             <span>{{ `${$t('__noHave')}${$t('__directAgent')}` }}</span>
@@ -596,7 +594,6 @@
                         </div>
                       </div>
                     </div>
-                    <div class="agent-pop-up-panel" style="display: none;" />
                   </span>
                 </div>
               </div>
@@ -726,7 +723,6 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         />
-        <div class="agent-pop-up-panel" style="display: none;" />
       </div>
       <agentEditDialog
         ref="editDialog"
