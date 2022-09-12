@@ -1464,6 +1464,69 @@ export default {
       align-items: center;
     }
     .agent-form {
+      .preview {
+        width: 100%;
+        .preview-item {
+          color: #fff;
+          padding: 0;
+          .title {
+            width: 100%;
+            margin: auto;
+            padding: 10px 15px 5px 15px;
+            color: #f9c901;
+          }
+          .v-line {
+            border-bottom: 0.08333rem solid #f9c901;
+            width: 100%;
+            height: 1px;
+          }
+          .content {
+            width: 100%;
+            margin: auto;
+            padding: 10px 10px 0px 10px;
+            font-size: 12px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            .item {
+              padding-top: 5px;
+              display: -webkit-box;
+              display: -ms-flexbox;
+              display: flex;
+              width: 100%;
+            }
+            .handicap-item {
+              margin: auto;
+              word-break: break-all;
+              width: auto;
+              &.lowerLimit {
+                width: 100px;
+              }
+              &.to {
+                width: 30px;
+              }
+              &.upperLimit {
+                width: 100px;
+              }
+              &.default {
+                width: 60px;
+              }
+              &:nth-child(1) {
+                width: 60px;
+              }
+              &:nth-child(2) {
+                width: 120px;
+                margin-right: auto;
+              }
+            }
+          }
+        }
+      }
       .form-step-content {
         margin-top: 0rem;
         width: 500px;

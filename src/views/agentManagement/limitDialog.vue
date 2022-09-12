@@ -51,45 +51,85 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
-        v-if="visible"
-        :loading="dialogLoading"
-        :title="title"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <div class="limit">
-          <table>
-            <thead>
-              <tr>
-                <th align="center">{{ $t('__nickname') }}</th>
-                <th align="center">{{ $t('__betMin') }}</th>
-                <th align="center">{{ $t('__betMax') }}</th>
-                <th align="center">{{ $t('__currency') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in form.handicaps" :key="index">
-                <td align="center" class="nickname">{{ item.nickname }}</td>
-                <td align="center" class="bet_min">{{ item.bet_minLabel }}</td>
-                <td align="center" class="bet_max">{{ item.bet_maxLabel }}</td>
-                <td align="center" class="currency">{{ item.currency }}</td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click="onClose" />
+        <div class="popup-panel animated fadeInUp subAgentHandicapsList" style="max-width: 600px;">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
+          </div>
+          <div class="popup-title">{{ title }}</div>
+          <div class="handicaps-cont">
+            <div class="item w-100">
+              <label class="text-white">{{ `${$t('__agentAccount')}:` }}</label>
+              <span class="text-yellow">{{ agentName }}</span>
+            </div>
+            <div id="subAgentScroller" class="overlay-scroll-wrap scrolling">
+              <backTop
+                :inner-class="'.scroll-inner.limitDialog'"
+              />
+              <div id="scroll-inner" class="scroll-inner on native limitDialog">
+                <div class="scroll-view" style="max-height: 70vh;">
+                  <div class="w-100 agent-form" style="max-height: calc(100vh - 300px);">
+                    <div class="preview">
+                      <div class="preview-item">
+                        <div class="title">{{ $t('__handicapLimit') }}</div>
+                        <div class="v-line" />
+                        <div class="content">
+                          <div class="item w-100">
+                            <span class="handicap-item">ID</span>
+                            <span class="handicap-item">{{ $t('__handicapLimit') }}</span>
+                            <span class="handicap-item text-right lowerLimit">{{ $t('__lowerLimit') }}</span>
+                            <span class="handicap-item text-center to" />
+                            <span class="handicap-item text-right upperLimit">{{ $t('__upperLimit') }}</span>
+                            <span class="handicap-item text-center default">{{ $t('__currency') }}</span>
+                          </div>
+                          <div
+                            v-for="(item, index) in form.handicaps"
+                            :key="index"
+                            class="item w-100"
+                          >
+                            <span class="handicap-item">{{ item.id }}</span>
+                            <span class="handicap-item">{{ item.nickname }}</span>
+                            <span class="handicap-item text-right lowerLimit">
+                              <span class="">{{ item.bet_minLabel }}</span>
+                            </span>
+                            <span class="handicap-item text-center to">-</span>
+                            <span class="handicap-item text-right upperLimit">
+                              <span class="">{{ item.bet_maxLabel }}</span>
+                            </span>
+                            <span class="handicap-item text-center default">
+                              <span>
+                                {{ item.currency }}
+                              </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex w-100 justify-content-center popup-buttons" style="margin-top: 20px;">
+            <button type="button" class="el-button bg-gray common-button el-button--primary" @click="onClose">
+              <span>{{ $t('__close') }}</span>
+            </button>
+          </div>
         </div>
-      </Dialog>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
-import Dialog from '@/components/Dialog'
+import BackTop from '@/components/BackTop'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'LimitDialog',
-  components: { Dialog },
+  components: { BackTop },
   mixins: [dialogCommon],
   props: {
     'title': {
@@ -121,6 +161,11 @@ export default {
   data: function() {
     return {
     }
+  },
+  computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
   },
   methods: {
   }

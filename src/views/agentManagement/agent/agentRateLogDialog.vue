@@ -43,44 +43,63 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
-        :loading="dialogLoading"
-        :title="title"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <div class="rate">
-          <table>
-            <thead>
-              <tr>
-                <th align="center">{{ $t('__operator') }}</th>
-                <th align="center">{{ title }}</th>
-                <th align="center">{{ $t('__createdAt') }}</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in listData" :key="index">
-                <td align="center" class="user">{{ item.user }}</td>
-                <td v-if="operationType === operationEnum.liveCommissionRate" align="center" class="commission_rate">{{ item.commission_rate }}</td>
-                <td v-if="operationType === operationEnum.liveRollingRate" align="center" class="rolling_rate">{{ item.rolling_rate }}</td>
-                <td v-if="operationType === operationEnum.liveGiftRate" align="center" class="gift_rate">{{ item.gift_rate }}</td>
-                <td align="center" class="created_at">{{ item.created_at }}</td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="agent-pop-up-panel">
+        <div class="popup-cover" @click="onClose" />
+        <div class="popup-panel animated fadeInUp">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
+          </div>
+          <div class="text-yellow p-2">{{ title }}</div>
+          <div class="overlay-scroll-wrap scrolling pos-r">
+            <backTop
+              :inner-class="'.scroll-inner.rateDialog'"
+            />
+            <div id="scroll-inner" class="scroll-inner on native rateDialog">
+              <div class="scroll-view" style="max-height: 70vh">
+                <div class="history-list">
+                  <div class="w-100 list-row">
+                    <span class="w-25 cell">{{ $t('__index') }}</span>
+                    <span class="w-25 cell">{{ `${$t('__rate')}%` }}</span>
+                    <span class="w-50 cell">{{ $t('__updateDate') }}</span>
+                  </div>
+                  <div>
+                    <div
+                      v-for="(item, index) in listData"
+                      :key="index"
+                      class="w-100 list-row"
+                    >
+                      <span class="w-25 cell">{{ (index+1) }}</span>
+                      <span v-if="operationType === operationEnum.liveCommissionRate" class="w-25 cell">
+                        <span>{{ `${item.commission_rate}` }}</span>
+                      </span>
+                      <span v-if="operationType === operationEnum.liveRollingRate" class="w-25 cell">
+                        <span>{{ `${item.rolling_rate}` }}</span>
+                      </span>
+                      <span class="w-50 cell">{{ item.created_at }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex w-100 justify-content-center popup-buttons" style="margin-top: 20px;">
+            <button type="button" class="el-button bg-gray common-button el-button--primary" @click="onClose">
+              <span>{{ $t('__close') }}</span>
+            </button>
+          </div>
         </div>
-      </Dialog>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
-import Dialog from '@/components/Dialog'
+import BackTop from '@/components/BackTop'
 
 export default {
   name: 'AgentRateLogDialog',
-  components: { Dialog },
+  components: { BackTop },
   mixins: [dialogCommon],
   props: {
     'title': {
