@@ -1511,6 +1511,11 @@ table {
       }
       &.item_w1 {
         width: 145px;
+        min-width: 145px;
+      }
+      &.item_w2 {
+        width: 295px;
+        min-width: 295px;
       }
     }
     .left {
@@ -1526,6 +1531,10 @@ table {
       .button {
         margin-right: 0.5rem;
         margin-top: 0.5rem;
+      }
+      &.item_w1 {
+        width: 260px;
+        min-width: 260px;
       }
     }
     .more_btn_space {

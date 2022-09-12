@@ -827,6 +827,9 @@
 
   .view-container {
     .table-container {
+      .item {
+        margin-right: 1rem;
+      }
       .even-row,
       .odd-row{
         padding: 0.625rem 1.16667rem 0.625rem 2rem;

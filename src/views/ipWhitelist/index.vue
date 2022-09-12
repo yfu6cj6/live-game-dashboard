@@ -291,6 +291,16 @@ export default {
       'isAgentSubAccount'
     ])
   },
+  watch: {
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.closeDialogEven()
+        this.$nextTick(() => {
+          this.onSearchBtnClick(1);
+        })
+      }
+    }
+  },
   created() {
     this.onSearchBtnClick(1)
     this.setHeaderStyle()

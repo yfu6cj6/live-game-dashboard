@@ -27,11 +27,11 @@
                   <el-input v-model="searchForm.app_name" class="input_size" placeholder="app_name" />
                 </div>
               </div>
-              <div class="options status">
+              <div class="option status">
                 <div class="option">
                   <el-input v-model="searchForm.streaming_name" class="input_size" placeholder="streaming_name" />
                 </div>
-                <div class="option options">
+                <div class="d-flex option status">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -206,7 +206,188 @@
       />
     </template>
     <template v-else>
-      -
+      <div class="pos-r">
+        <backTop
+          ref="backTop"
+          :inner-class="'.view-container'"
+          :view-class="'.scroll-view'"
+        />
+        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+          <div class="scroll-view">
+            <div class="bg-black">
+              <div class="yellow-border-bottom search-container">
+                <div class="options">
+                  <div class="option">
+                    <el-input v-model="searchForm.id" type="number" class="input_size" :placeholder="$t('__tableId')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.streaming_url" class="input_size" :placeholder="$t('__streamingUrl')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.app_name" class="input_size" placeholder="app_name" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.streaming_name" class="input_size" placeholder="streaming_name" />
+                  </div>
+                  <div class="d-flex option status">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.status"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="statusCollapse"
+                        :placeholder="$t('__status')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.status"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.description" class="input_size" :placeholder="$t('__description')" />
+                  </div>
+                  <div class="d-flex">
+                    <div>
+                      <button class="ml-2 el-button bg-yellow el-button--default mr-4 font-weight-bold" @click.stop="onCreateBtnClick()">{{ `${$t('__create')}${$t('__gameTable')}` }}</button>
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <div class="searchBtn">
+                      <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-container">
+              <template v-if="tableData.length > 0">
+                <div
+                  v-for="(item, index) in tableData"
+                  :key="index"
+                  :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+                >
+                  <div class="d-flex">
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__tableId') }}</span>
+                      <span class="value">{{ item.id }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__name') }}</span>
+                      <span class="value">{{ item.name }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__status') }}</span>
+                      <span class="value" :class="{'text-red': item.status === '0', 'text-green': item.status === '1'}">{{ item.statusLabel }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__idleRounds') }}</span>
+                      <span class="value">{{ item.idle_rounds }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w2">
+                      <span class="title">{{ $t('__streamingUrl') }}</span>
+                      <span class="value">{{ item.streaming_url }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">app_name</span>
+                      <span class="value">{{ item.app_name }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">streaming_name</span>
+                      <span class="value">{{ item.streaming_name }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__description') }}</span>
+                      <span class="value">{{ item.description }}</span>
+                    </div>
+                    <div class="operate align-items-center item_w1">
+                      <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
+                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                      <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                    </div>
+                  </div>
+                </div>
+                <pagination
+                  :page-size="pageSize"
+                  :page-sizes="pageSizes"
+                  :total="totalCount"
+                  :current-page.sync="currentPage"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
+              </template>
+              <template v-else>
+                <div class="noInformation">{{ $t("__noInformation") }}</div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <editDialog
+        ref="createDialog"
+        :title="`${$t('__create')}${$t('__gameTable')}`"
+        :visible="curDialogIndex === dialogEnum.create"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        :status="searchItems.status"
+        :is-edit="false"
+        @close="closeDialogEven"
+        @confirm="createDialogConfirmEven"
+      />
+
+      <editDialog
+        ref="editDialog"
+        :title="$stringFormat(`${$t('__revise')}${$t('__gameTable')} - ID:{0}`, [selectForm.id])"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :confirm="$t('__revise')"
+        :form="selectForm"
+        :status="searchItems.status"
+        :is-edit="true"
+        @close="closeDialogEven"
+        @confirm="editDialogConfirmEven"
+      />
+
+      <chipSettingDialog
+        ref="chipSettingDialog"
+        :title="$stringFormat($t('__chipsSetting'), [selectForm.name])"
+        :visible="curDialogIndex === dialogEnum.chipsSetting"
+        :chips-data="chipsData"
+        @search="chipSearch"
+        @create="chipCreate"
+        @edit="chipEdit"
+        @delete="chipDelete"
+        @close="closeDialogEven"
+      />
+
+      <chipEditDialog
+        ref="chipCreateDialog"
+        :title="$stringFormat($t('__createChips'), [selectForm.name])"
+        :visible="curDialogIndex === dialogEnum.chipsCreate"
+        :confirm="$t('__confirm')"
+        :form="chipEditForm"
+        @close="chipEditCloseDialogEven"
+        @confirm="chipCreateDialogConfirmEven"
+      />
+
+      <chipEditDialog
+        ref="chipEditDialog"
+        :title="$stringFormat($t('__editChips'), [selectForm.name])"
+        :visible="curDialogIndex === dialogEnum.chipsEdit"
+        :confirm="$t('__revise')"
+        :form="chipEditForm"
+        @close="chipEditCloseDialogEven"
+        @confirm="chipEditDialogConfirmEven"
+      />
     </template>
   </div>
 </template>

@@ -289,7 +289,7 @@
                       <span class="title">{{ $t('__betMax') }}</span>
                       <span class="value">{{ item.bet_maxLabel }}</span>
                     </div>
-                    <div class="operate">
+                    <div class="operate align-items-center">
                       <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                       <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                     </div>
