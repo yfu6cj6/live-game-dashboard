@@ -89,42 +89,112 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
-        v-if="visible"
-        :loading="dialogLoading"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <div class="agentInfo">
-          <span class="agentInfo-header">{{ nameLabel }}</span>
-          <span class="agentInfo-content">{{ form.fullName }}</span>
+      <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click="onClose" />
+        <div class="popup-panel animated fadeInUp">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
+          </div>
+          <div class="overlay-scroll-wrap scrolling">
+            <div id="scroll-inner" class="scroll-inner on native">
+              <div class="scroll-view" style="max-height: 70vh;">
+                <div class="w-100 agent-form">
+                  <div class="notice-tip text-white pb-3">{{ `${$t('__account')} : ${form.account}` }}</div>
+                  <div class="step-content">
+                    <form class="el-form el-form--label-left">
+                      <div class="el-form-item custom-psw el-form-item--small" :class="{'is-error': inputData.newPassword.state === inputState.error, 'is-success': inputData.newPassword.state === inputState.success}">
+                        <div class="el-form-item__content">
+                          <div class="label-group">
+                            <label class="form-item-label w-100 text-yellow">{{ $t('__newPassword') }}</label>
+                          </div>
+                          <div class="value-group">
+                            <div class="el-input el-input--small el-input--suffix">
+                              <input v-model="form.newPassword" :type="inputData.newPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.newPassword)" @change="checkNewPassword()" @blur="checkNewPassword()">
+                              <span class="el-input__suffix">
+                                <span class="el-input__suffix-inner">
+                                  <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                  <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                  <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': inputData.newPassword.inputType !== 'password'}" @click.stop="showUserPasswordType(inputData.newPassword)" />
+                                </span>
+                              </span>
+                            </div>
+                            <div class="tip text-white pb-0" style="width: 300px">{{ `${$t('__lengthLess')}5` }}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="el-form-item custom-psw el-form-item--small" :class="{'is-error': inputData.confirmPassword.state === inputState.error, 'is-success': inputData.confirmPassword.state === inputState.success}">
+                        <div class="el-form-item__content">
+                          <div class="label-group">
+                            <label class="form-item-label text-yellow">{{ $t('__confirmPassword') }}</label>
+                          </div>
+                          <div class="value-group">
+                            <div class="el-input el-input--small el-input--suffix">
+                              <input v-model="form.newPassword_confirmation" :type="inputData.confirmPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
+                              <span class="el-input__suffix">
+                                <span class="el-input__suffix-inner">
+                                  <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                  <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                  <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': inputData.confirmPassword.inputType !== 'password'}" @click.stop="showUserPasswordType(inputData.confirmPassword)" />
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="el-form-item custom-psw el-form-item--small" :class="{'is-error': inputData.operatePassword.state === inputState.error, 'is-success': inputData.operatePassword.state === inputState.success}">
+                        <div class="el-form-item__content">
+                          <div class="label-group">
+                            <label class="form-item-label text-yellow">{{ $t('__userPassword') }}</label>
+                          </div>
+                          <div class="value-group">
+                            <div class="el-input el-input--small el-input--suffix">
+                              <input v-model="form.userPassword" :type="inputData.operatePassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.operatePassword)" @change="checkOperatePassword()" @blur="checkOperatePassword()">
+                              <span class="el-input__suffix">
+                                <span class="el-input__suffix-inner">
+                                  <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                  <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                  <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': inputData.operatePassword.inputType !== 'password'}" @click.stop="showUserPasswordType(inputData.operatePassword)" />
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="form-alert">
+                    <div v-if="errorTips !== ''" role="alert" class="el-alert el-alert--error is-light">
+                      <i class="el-alert__icon el-icon-error" />
+                      <div class="el-alert__content">
+                        <span class="el-alert__title">{{ errorTips }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex w-100 justify-content-center popup-buttons" style="margin-top: 20px;">
+            <button type="button" class="el-button bg-yellow common-button el-button--primary" @click.stop="onSubmit">
+              <span>{{ $t('__submit') }}</span>
+            </button>
+            <button type="button" class="el-button bg-gray common-button el-button--primary" @click="onClose">
+              <span>{{ $t('__cancel') }}</span>
+            </button>
+          </div>
         </div>
-        <el-form ref="form" :model="form" :rules="rules">
-          <el-form-item v-if="visible" :label="$t('__newPassword')" prop="newPassword">
-            <el-input v-model="form.newPassword" show-password />
-          </el-form-item>
-          <el-form-item v-if="visible" :label="$t('__confirmPassword')" prop="newPassword_confirmation">
-            <el-input v-model="form.newPassword_confirmation" show-password />
-          </el-form-item>
-          <el-form-item v-if="visible" :label="$t('__userPassword')" prop="userPassword">
-            <el-input v-model="form.userPassword" show-password />
-          </el-form-item>
-        </el-form>
-        <span v-if="!dialogLoading" slot="bodyFooter">
-          <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-        </span>
-      </Dialog>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
-import Dialog from '@/components/Dialog'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ModPasswordDialog',
-  components: { Dialog },
+  components: {},
   mixins: [dialogCommon],
   props: {
     'title': {
@@ -161,31 +231,6 @@ export default {
     }
   },
   data: function() {
-    const validate = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else if (value.trim().length < 5) {
-        callback(new Error(this.$t('__lengthLess') + '5'))
-      } else {
-        callback()
-      }
-    }
-    const validateConfirmPassword = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else if (this.form.newPassword !== this.form.newPassword_confirmation) {
-        callback(new Error(`${this.$t('__confirmPassword')}${this.$t('__and')}${this.$t('__password')}${this.$t('__inconsistent')}`))
-      } else {
-        callback()
-      }
-    }
     return {
       inputData: {
         newPassword: {
@@ -201,19 +246,18 @@ export default {
           state: 0
         }
       },
-      rules: {
-        newPassword: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        newPassword_confirmation: [{ required: true, trigger: 'blur', validator: validateConfirmPassword }],
-        userPassword: [{ required: true, trigger: 'blur', validator: validate }]
-      },
       dialogLoading: false,
       errorTips: ''
     }
   },
+  computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
+  },
   watch: {
     visible() {
       if (!this.visible) {
-        // this.$refs.form.clearValidate()
         this.inputData.newPassword.inputType = 'password'
         this.inputData.confirmPassword.inputType = 'password'
         this.inputData.operatePassword.inputType = 'password'
@@ -271,15 +315,6 @@ export default {
 
       const data = JSON.parse(JSON.stringify(this.form))
       this.$emit('modPassword', data)
-
-      // this.$refs.form.validate((valid) => {
-      //   if (valid) {
-      //     this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-      //       const data = JSON.parse(JSON.stringify(this.form))
-      //       this.$emit('modPassword', data)
-      //     })
-      //   }
-      // })
     }
   }
 }
@@ -301,12 +336,6 @@ export default {
     .el-form-item__content {
       font-size: 1rem;
       line-height: 1.66667rem;
-    }
-    .tip {
-      font-size: .83333rem;
-      color: #fff;
-      line-height: 1.5 !important;
-      padding-bottom: 10px;
     }
     .custom-psw {
       &.is-error{
@@ -341,4 +370,27 @@ export default {
     padding-bottom: 0.41667rem;
   }
 }
+
+#app.pc {
+  .tip {
+    font-size: 12px;
+    line-height: 1.5 !important;
+    padding-bottom: 10px;
+  }
+  .notice-tip {
+    font-size: 16px;
+  }
+
+  .custom-psw {
+    max-width: 400px;
+    margin-bottom: 15px !important;
+    .el-input__icon {
+      display: none;
+    }
+    .el-icon-view {
+      display: inline-block;
+    }
+  }
+}
+
 </style>
