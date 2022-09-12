@@ -111,62 +111,124 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
-        :loading="dialogLoading"
-        :title="title"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <div class="info">
-          <div class="info-item">
-            <span class="yellow-color info-header">{{ $t('__superiorAgent') }}</span>
-            <span class="info-content">{{ agentBalanceInfo.parent }}</span>
+      <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click="onClose" />
+        <div class="popup-panel animated fadeInUp">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
           </div>
-          <div class="info-item">
-            <span class="yellow-color info-header">{{ $t('__superiorBalance') }}</span>
-            <span class="info-content">{{ parentBalance }}</span>
-          </div>
-          <div v-if="modeType===modeEnum.agent" class="info-item">
-            <span class="yellow-color info-header">{{ $t('__agent') }}</span>
-            <span class="info-content">{{ agentBalanceInfo.agent }}</span>
-          </div>
-          <div v-if="modeType===modeEnum.agent" class="info-item">
-            <span class="yellow-color info-header">{{ $t('__agentBalance') }}</span>
-            <span class="info-content">{{ agentBalanceInfo.agentBalance }}</span>
-          </div>
-          <div v-if="modeType===modeEnum.member" class="info-item">
-            <span class="yellow-color info-header">{{ $t('__member') }}</span>
-            <span class="info-content">{{ agentBalanceInfo.member }}</span>
-          </div>
-          <div v-if="modeType===modeEnum.member" class="info-item">
-            <span class="yellow-color info-header">{{ $t('__memberBalance') }}</span>
-            <span class="info-content">{{ agentBalanceInfo.memberBalance }}</span>
+          <div class="overlay-scroll-wrap scrolling">
+            <div class="back-top" />
+            <div id="scroll-inner" class="scroll-inner on native">
+              <div class="scroll-view" style="max-height: calc(779px);">
+                <div class="detail-credit-form" belongto="subAgent">
+                  <div class="detail-credit">
+                    <div class="credit-item-group">
+                      <div class="credit-item strong w-100">
+                        <div class="label">{{ `${$t('__superiorAgent')} :` }}</div>
+                        <div class="value yellow">{{ agentBalanceInfo.parent }}</div>
+                      </div>
+                      <div class="credit-item w-100 pl-3 pr-3">
+                        <div class="label text-yellow fixed-size">{{ `${$t('__liveGame')}${$t('__balance')}` }}</div>
+                        <div class="value fixed-size">
+                          <span class="">{{ parentBalance }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="credit-item-group">
+                      <div class="credit-item strong w-100">
+                        <div class="label">{{ `${accountTitle} :` }}</div>
+                        <div class="value yellow">{{ operateName }}</div>
+                      </div>
+                      <div class="credit-item w-100 pl-3 pr-3">
+                        <div class="label text-yellow fixed-size">{{ `${$t('__liveGame')}${$t('__balance')}` }}</div>
+                        <div class="value fixed-size">
+                          <span class="">{{ balance }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <form class="el-form el-form--label-left">
+                      <div class="credit-item-group">
+                        <div class="credit-item">
+                          <div class="label fixed-size yellow">{{ `${balanceLabelTitle} :` }}</div>
+                          <div class="value" style="width: 200px;">
+                            <div class="el-form-item el-form-item--feedback el-form-item--small">
+                              <div class="el-form-item__content">
+                                <div class="el-input el-input--small">
+                                  <input v-model="form.amount" type="text" :disabled="!enoughBalance" autocomplete="off" step="0.01" min="0.1" max="10" class="el-input__inner" @focus="inputFocus_balance()">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="credit-item">
+                          <div class="label fixed-size" />
+                          <div class="value">
+                            <small class="tip">{{ $t('__range') }}:<span class="">1.00</span> - <span class="">{{ parentBalance }}</span></small>
+                            <small v-if="!enoughBalance" class="tip text-red">{{ $t('__noEnoughBalance') }}</small>
+                          </div>
+                        </div>
+                        <div class="credit-item h-auto">
+                          <div class="label fixed-size yellow">{{ `${$t('__userPassword')}: ` }} :</div>
+                          <div class="value" style="width: 200px;">
+                            <div class="el-form-item operator-psw custom-psw el-form-item--feedback el-form-item--small" :class="{'is-error': passwordState === inputState.error, 'is-success': passwordState === inputState.success}">
+                              <div class="el-form-item__content">
+                                <div class="el-input el-input--small el-input--suffix">
+                                  <input v-model="form.userPassword" :type="inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus_password()" @change="checkPassword()" @blur="checkPassword()">
+                                  <span class="el-input__suffix">
+                                    <span class="el-input__suffix-inner">
+                                      <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                      <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                      <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': inputType !== 'password'}" @click.stop="showPasswordType()" />
+                                    </span>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="credit-item-group">
+                      <div v-if="errorTips !== ''" class="form-alert">
+                        <div role="alert" class="el-alert el-alert--warning is-light fade show">
+                          <i class="el-alert__icon el-icon-warning" />
+                          <div class="el-alert__content">
+                            <span class="el-alert__title">{{ errorTips }}</span>
+                            <i class="el-alert__closebtn el-icon-close" style="display: none;" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="credit-item-group mb-0">
+                      <div class="d-flex w-100 justify-content-center">
+                        <button type="button" class="el-button el-button--primary bg-yellow common-button" @click.stop="onSubmit">
+                          <span>{{ `${$t('__submit')}` }}</span>
+                        </button>
+                        <button type="button" class="el-button bg-gray common-button el-button--primary" @click.stop="onClose">
+                          <span>{{ `${$t('__cancel')}` }}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <el-form ref="form" :model="form" :rules="rules">
-          <el-form-item :label="balanceLabelTitle" prop="amount">
-            <el-input v-model="form.amount" type="number" :disabled="balanceDisable" min="0" />
-          </el-form-item>
-          <el-form-item v-if="visible" :label="$t('__userPassword')" prop="userPassword">
-            <el-input v-model="form.userPassword" show-password />
-          </el-form-item>
-        </el-form>
-        <span v-if="!dialogLoading" slot="bodyFooter">
-          <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-        </span>
-      </Dialog>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
-import Dialog from '@/components/Dialog'
 import { numberFormat } from '@/utils/numberFormat'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'BalanceDialog',
-  components: { Dialog },
+  components: {},
   mixins: [dialogCommon],
   props: {
     'title': {
@@ -254,6 +316,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ]),
     balanceLabelTitle() {
       return this.operationType === this.operationEnum.depositBalance ? this.$t('__depositBalance') : this.$t('__withdrawBalance')
     },
@@ -455,6 +520,30 @@ export default {
     display: block;
     background-color: rgba(0,0,0,0.5);
     z-index: 3;
+  }
+}
+#app.pc {
+  .detail-credit-form {
+    border-top: 0;
+    .detail-credit {
+      z-index: 3;
+      width: auto;
+      padding: 0px;
+      color: #fff !important;
+      .credit-item-group {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-bottom: 0.83333rem;
+        .credit-item {
+          .value {
+            margin-right: 1.66667rem;
+          }
+        }
+      }
+    }
   }
 }
 </style>

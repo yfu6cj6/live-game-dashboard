@@ -1467,24 +1467,30 @@ export default {
       -ms-flex-align: center;
       align-items: center;
     }
-    .agent-pop-up-panel {
-      position: fixed;
-      top: 75px;
-      left: 200px;
-      width: calc(100vw - 200px);
-      height: calc(100vh - 75px);
-      z-index: 3;
-      background: rgba(0,0,0,0.5);
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center;
-      line-height: 1.2;
+  }
+
+  .agent-pop-up-panel {
+    .el-form {
+      .el-form-item {
+        .el-form-item__content {
+          display: block;
+          -webkit-box-align: start;
+          -ms-flex-align: start;
+          align-items: start;
+          line-height: 1;
+          .label-group {
+            display: block;
+            color: #f9c901;
+            width: auto;
+            font-size: 14px;
+            padding-top: 5px;
+            -webkit-box-flex: 0;
+            -ms-flex: none;
+            flex: none;
+            margin-bottom: 10px;
+          }
+        }
+      }
     }
   }
 

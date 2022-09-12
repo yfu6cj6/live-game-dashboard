@@ -42,39 +42,61 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
-        :loading="dialogLoading"
-        :title="title"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-        class="operateDialog"
-      >
-        <el-form ref="form" :model="form" :rules="rules">
-          <el-form-item :label="$t('__userPassword')" prop="userPassword" class="disableRequiredIcon">
-            <el-input ref="userPassword" v-model="form.userPassword" :type="userPasswordType" class="custom-psw">
-              <template slot="suffix">
-                <i class="el-input__icon el-icon-view clickable" :class="{'text-black': userPasswordType !== 'password', 'text-line-gray-shallow': userPasswordType === 'password'}" @click="showUserPasswordType" />
-              </template>
-            </el-input>
-          </el-form-item>
-        </el-form>
-        <span slot="bodyFooter">
-          <el-button class="bg-yellow font-weight-bold" @click="onSubmit">{{ $t('__confirm') }}</el-button>
-          <el-button class="bg-gray font-weight-bold" @click="onClose">{{ $t('__cancel') }}</el-button>
-        </span>
-      </Dialog>
+      <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click.stop="onClose" />
+        <div class="popup-panel animated fadeInUp" style="width: auto; min-width: 300px;">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
+          </div>
+          <div class="text-white d-flex" style="max-width: 295px;">
+            <div class="m-auto text-left">{{ title }}</div>
+          </div>
+          <div class="text-red pt-3 pb-3 w-100 mt-1 ml-auto mr-auto" style="max-width: 295px;">
+            <form class="el-form el-form--label-left">
+              <div class="el-form-item operator-psw custom-psw m-auto el-form-item--small" style="max-width: 340px;" :class="{'is-error': hasError, 'is-success': isSuccess}">
+                <div class="el-form-item__content">
+                  <div class="label-group w-100">
+                    <label class="form-item-label text-yellow">{{ $t('__userPassword') }}</label>
+                  </div>
+                  <div class="value-group">
+                    <div class="el-input el-input--small el-input--suffix">
+                      <input v-model="form.userPassword" :type="userPasswordType" autocomplete="off" class="el-input__inner" @focus="passwordFocus" @blur="passwordChange" @change="passwordChange">
+                      <span class="el-input__suffix">
+                        <span class="el-input__suffix-inner">
+                          <i class="el-input__icon el-icon-error el-input__validateIcon has-error" />
+                          <i class="el-input__icon el-icon-success el-input__validateIcon no-error" />
+                          <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': userPasswordType!=='password'}" @click="showUserPasswordType" />
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="text-red ml-auto mr-auto w-100" style="max-width: 340px;" />
+          <div class="d-flex w-100 justify-content-center popup-buttons" style="margin-top: 20px;">
+            <button type="button" class="el-button bg-yellow common-button el-button--primary" @click.stop="onSubmit">
+              <span>{{ $t('__confirm') }}</span>
+            </button>
+            <button type="button" class="el-button bg-gray common-button el-button--primary" @click.stop="onClose">
+              <span>{{ $t('__cancel') }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
-import Dialog from '@/components/Dialog'
 import dialogCommon from '@/mixin/dialogCommon'
 import common from '@/mixin/common'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'OperateDialog',
-  components: { Dialog },
+  components: {},
   mixins: [dialogCommon, common],
   props: {
     'title': {
@@ -97,22 +119,17 @@ export default {
     }
   },
   data: function() {
-    const validateCurrentPassword = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else {
-        callback()
-      }
-    }
     return {
-      rules: {
-        userPassword: [{ required: true, validator: validateCurrentPassword, trigger: 'blur' }]
-      },
       userPasswordType: 'password',
       hasError: false,
       errorTip: '',
       isSuccess: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
   },
   watch: {
     visible() {
