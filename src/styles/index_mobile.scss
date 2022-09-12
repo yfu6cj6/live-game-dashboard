@@ -220,46 +220,6 @@
       }
     }
   }
-  
-  .el-form {
-    .el-form-item {
-      .el-form-item__content {
-        .custom-psw {
-          .el-icon-view {
-            display: inline-block;
-          }
-          .el-input__inner {
-            height: 100%;
-          }
-          &.el-input {
-            height: 3rem;
-          }
-          .el-input__suffix {
-            display: flex;
-            align-items: center;
-          }
-        }
-      }
-    }
-    .custom-psw {
-      .el-input__icon {
-        display: none;
-      }
-      .el-icon-view {
-        display: inline-block;
-      }
-      &.is-error {
-        .has-error {
-          display: inline-block;
-        }
-      }
-      &.is-success {
-        .no-error {
-          display: inline-block;
-        }
-      }
-    }
-  }
 
   .fadeInUp {
     -webkit-animation-name: fadeInUpMobile;

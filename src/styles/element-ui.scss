@@ -1335,3 +1335,7 @@
     margin-bottom: 0;
   }
 }
+
+.el-button+.el-button {
+  margin-left: 1rem;
+}
