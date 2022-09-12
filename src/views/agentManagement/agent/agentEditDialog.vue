@@ -770,13 +770,25 @@
               </el-steps>
               <div class="w-100" style="height: 10px;" />
             </div>
-            <div class="form-wrap">
-              <backTop style="width: 25.5px; height: 25.5px; font-size: 20.4px; top: 10.2px;" />
-              <div class="form-inner">
-                <div class="form-view">
-                  <div class="form-step-content">
+            <div class="overlay-scroll-wrap">
+              <div class="scroll-inner">
+                <div class="scroll-view">
+                  <backTop
+                    v-if="curIndex === stepEnum.agentInfo"
+                    :inner-class="'.form-step-content'"
+                    :view-class="'.step_agentInfo'"
+                    style="width: 25.5px; height: 25.5px; font-size: 20.4px; top: 10.2px;"
+                  />
+                  <backTop
+                    v-if="curIndex === stepEnum.limit"
+                    :inner-class="'.form-step-content'"
+                    :view-class="'.step_limit'"
+                    style="width: 25.5px; height: 25.5px; font-size: 20.4px; top: 10.2px;"
+                  />
+                  <div class="form-step-content" style="height: 395px; max-height: calc(100vh - 30rem); overflow: auto;">
                     <div
                       v-show="curIndex === stepEnum.agentInfo"
+                      class="step_agentInfo"
                     >
                       <form class="el-form el-form--label-left">
                         <div class="step-content">
@@ -1054,6 +1066,253 @@
                                   </div>
                                 </div>
                                 <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      v-show="curIndex === stepEnum.rate"
+                    >
+                      <form class="el-form el-form--label-left">
+                        <div class="step-content">
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step2.live_commission_rate.hasError,
+                              'is-success': step2.live_commission_rate.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group" style="width: 200px;">
+                                <label class="form-item-label">{{ `${$t('__liveGame')} ${$t('__commissionRate')}` }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                    :class="{'is-disabled': agentInfo.live_commission_rate === 0}"
+                                  >
+                                    <input
+                                      v-model.number="form.live_commission_rate"
+                                      type="number"
+                                      autocomplete="off"
+                                      :disabled="agentInfo.live_commission_rate === 0"
+                                      min="0"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step2.live_commission_rate)"
+                                      @blur="specialInputChange('live_commission_rate')"
+                                      @change="specialInputChange('live_commission_rate')"
+                                    >
+                                    <span v-if="step2.live_commission_rate.hasError || step2.live_commission_rate.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i
+                                          v-if="step2.live_commission_rate.hasError"
+                                          class="el-input__icon el-input__validateIcon el-icon-error has-error"
+                                        />
+                                        <i
+                                          v-if="step2.live_commission_rate.isSuccess"
+                                          class="el-input__icon el-input__validateIcon el-icon-success no-error"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip">
+                                  {{ `${$t('__range')} : 0 % - ${agentInfo.live_commission_rate} %` }}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step2.live_rolling_rate.hasError,
+                              'is-success': step2.live_rolling_rate.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group" style="width: 200px;">
+                                <label class="form-item-label">{{ `${$t('__liveGame')} ${$t('__rollingRate')}` }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                    :class="{'is-disabled': agentInfo.live_rolling_rate === 0}"
+                                  >
+                                    <input
+                                      v-model.number="form.live_rolling_rate"
+                                      type="number"
+                                      autocomplete="off"
+                                      :disabled="agentInfo.live_rolling_rate === 0"
+                                      min="0"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step2.live_rolling_rate)"
+                                      @blur="specialInputChange('live_rolling_rate')"
+                                      @change="specialInputChange('live_rolling_rate')"
+                                    >
+                                    <span v-if="step2.live_rolling_rate.hasError || step2.live_rolling_rate.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i
+                                          v-if="step2.live_rolling_rate.hasError"
+                                          class="el-input__icon el-input__validateIcon el-icon-error has-error"
+                                        />
+                                        <i
+                                          v-if="step2.live_rolling_rate.isSuccess"
+                                          class="el-input__icon el-input__validateIcon el-icon-success no-error"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip">
+                                  {{ `${$t('__range')} : 0 % - ${agentInfo.live_rolling_rate} %` }}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      v-show="curIndex === stepEnum.limit"
+                      class="step_limit"
+                    >
+                      <form class="el-form el-form--label-left">
+                        <label class="form-item-title">
+                          {{ `${$t('__choose')}${$t('__handicapLimit')}` }}
+                        </label>
+                        <div class="step-content">
+                          <div class="el-form-item small el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="w-100 handicap-table" style="position: relative;">
+                                <table class="el-table">
+                                  <tbody>
+                                    <tr class="el-table__row head">
+                                      <td class="ww-3">
+                                        <div class="cell checkbox text-center h-100">
+                                          <span
+                                            class="el-checkbox green-tick pl-0"
+                                            @click="changeAllHandicaps"
+                                          >
+                                            <span
+                                              :class="{
+                                                'unchecked': !selectAllHandicaps,
+                                                'is-checked': selectAllHandicaps}"
+                                            >
+                                              <span class="el-checkbox__inner" />
+                                            </span>
+                                          </span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-5">
+                                        <div class="cell d-flex align-items-center justify-content-center text-black">
+                                          ID
+                                          <i
+                                            :class="{
+                                              'el-icon-d-caret': !step3.id.sortable,
+                                              'el-icon-caret-top': step3.id.sortable && step3.id.increment,
+                                              'el-icon-caret-bottom': step3.id.sortable && !step3.id.increment,
+                                              'text-black': !step3.id.sortable,
+                                              'text-blue': step3.id.sortable}"
+                                            @click="handicapLimitSort('id')"
+                                          />
+                                        </div>
+                                      </td>
+                                      <td class="ww-7">
+                                        <div class="cell d-flex align-items-center justify-content-center">
+                                          {{ $t('__handicapLimit') }}
+                                          <i
+                                            :class="{
+                                              'el-icon-d-caret': !step3.nickname.sortable,
+                                              'el-icon-caret-top': step3.nickname.sortable && step3.nickname.increment,
+                                              'el-icon-caret-bottom': step3.nickname.sortable && !step3.nickname.increment,
+                                              'text-black': !step3.nickname.sortable,
+                                              'text-blue': step3.nickname.sortable}"
+                                            @click="handicapLimitSort('nickname')"
+                                          />
+                                        </div>
+                                      </td>
+                                      <td class="ww-7">
+                                        <div class="cell d-flex align-items-center justify-content-end lower-limit">
+                                          {{ $t('__lowerLimit') }}
+                                          <i
+                                            :class="{
+                                              'el-icon-d-caret': !step3.bet_min.sortable,
+                                              'el-icon-caret-top': step3.bet_min.sortable && step3.bet_min.increment,
+                                              'el-icon-caret-bottom': step3.bet_min.sortable && !step3.bet_min.increment,
+                                              'text-black': !step3.bet_min.sortable,
+                                              'text-blue': step3.bet_min.sortable}"
+                                            @click="handicapLimitSort('bet_min')"
+                                          />
+                                        </div>
+                                      </td>
+                                      <td class="ww-3" />
+                                      <td class="ww-7">
+                                        <div class="cell d-flex align-items-center justify-content-end upper-limit">
+                                          {{ $t('__upperLimit') }}
+                                          <i
+                                            :class="{
+                                              'el-icon-d-caret': !step3.bet_max.sortable,
+                                              'el-icon-caret-top': step3.bet_max.sortable && step3.bet_max.increment,
+                                              'el-icon-caret-bottom': step3.bet_max.sortable && !step3.bet_max.increment,
+                                              'text-black': !step3.bet_max.sortable,
+                                              'text-blue': step3.bet_max.sortable}"
+                                            @click="handicapLimitSort('bet_max')"
+                                          />
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr
+                                      v-for="(item, index) in handicaps"
+                                      :key="index"
+                                      class="el-table__row"
+                                    >
+                                      <td class="ww-3">
+                                        <div class="cell checkbox text-center h-100">
+                                          <span
+                                            class="el-checkbox green-tick pl-0"
+                                            @click="handleHandicapsChange(item)"
+                                          >
+                                            <span
+                                              class="el-checkbox__input"
+                                              :class="{
+                                                'unchecked': !item.exist,
+                                                'is-checked': item.exist}"
+                                            >
+                                              <span class="el-checkbox__inner" />
+                                            </span>
+                                          </span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-5">
+                                        <div class="cell">
+                                          <span class="table-item-label">{{ item.id }}</span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-7">
+                                        <div class="cell name">
+                                          <span class="table-item-label yellow">{{ item.nickname }}</span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-7">
+                                        <div class="cell lower-limit">
+                                          <span>{{ item.betMinLabel }}</span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-3">
+                                        <div class="cell">
+                                          <span>-</span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-7">
+                                        <div class="cell upper-limit">
+                                          <span>{{ item.betMaxLabel }}</span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
                               </div>
                             </div>
                           </div>

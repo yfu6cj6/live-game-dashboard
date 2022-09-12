@@ -53,8 +53,8 @@ export default {
       const inner = document.querySelector(this.innerClass)
       if (inner) {
         const timer = setInterval(() => {
-          const ispeed = Math.floor(-this.scrollTop / 5)
-          inner.scrollTop = this.scrollTop + ispeed
+          const ispeed = Math.floor(this.scrollTop / 5)
+          inner.scrollTop = -this.scrollTop + ispeed
           if (inner.scrollTop === 0) {
             clearInterval(timer)
           }
@@ -67,8 +67,9 @@ export default {
         const view = inner.querySelector(this.viewClass)
         if (view) {
           const scrollTop = view.getBoundingClientRect().y
-          this.scrollTop = -scrollTop
-          if (this.scrollTop > 0) {
+          const innerTop = inner.getBoundingClientRect().y
+          this.scrollTop = scrollTop - innerTop
+          if (this.scrollTop < 0) {
             this.active = true
             if (this.timeOutKey) {
               clearTimeout(this.timeOutKey)

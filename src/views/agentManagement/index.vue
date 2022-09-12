@@ -1566,9 +1566,6 @@ export default {
       .form-step-content {
         margin-top: 0rem;
         width: 500px;
-        .stepEnum {
-          position: relative;
-        }
         .form-item-title {
           width: 100%;
           text-align: left;
