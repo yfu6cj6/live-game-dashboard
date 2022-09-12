@@ -74,7 +74,7 @@
               </div>
             </form>
           </div>
-          <div class="text-red ml-auto mr-auto w-100" style="max-width: 340px;" />
+          <div class="text-red ml-auto mr-auto w-100" style="max-width: 340px;">{{ errorTip }}</div>
           <div class="d-flex w-100 justify-content-center popup-buttons" style="margin-top: 20px;">
             <button type="button" class="el-button bg-yellow common-button el-button--primary" @click.stop="onSubmit">
               <span>{{ $t('__confirm') }}</span>

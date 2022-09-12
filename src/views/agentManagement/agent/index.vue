@@ -894,7 +894,7 @@ import handlePageChange from '@/mixin/handlePageChange';
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
 import BalanceDialog from '@/views/agentManagement/balanceDialog'
-import OperateDialog from '@/views/agentManagement/operateDialog'
+import OperateDialog from '@/components/OperateDialog'
 import LimitDialog from '@/views/agentManagement/limitDialog'
 import ModPasswordDialog from '@/views/agentManagement/modPasswordDialog'
 import AgentRateLogDialog from './agentRateLogDialog'

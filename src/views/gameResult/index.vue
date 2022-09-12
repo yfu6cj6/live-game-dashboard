@@ -608,7 +608,7 @@
                         <operateDialog
                           ref="invalidRoundDialog"
                           :visible="curDialogIndex === dialogEnum.billingStatus"
-                          :content="$stringFormat($t('__gameRoundInvalidMsg'), operateDialogMsgParameter)"
+                          :title="$stringFormat($t('__gameRoundInvalidMsg'), operateDialogMsgParameter)"
                           :form="selectForm"
                           @close="closeDialogEven"
                           @onSubmit="operateSubmit"
@@ -671,7 +671,7 @@ import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
 import { getFullDate, getDayDateTime } from '@/utils/transDate'
 import { mapGetters } from 'vuex'
-import OperateDialog from '@/views/gameResult/operateDialog'
+import OperateDialog from '@/components/OperateDialog'
 import PlaybackDialogPC from '@/components/GameResult/playbackDialog_pc'
 import PlaybackDialogMobile from '@/components/GameResult/playbackDialog_mobile'
 import GameResultDialogPC from '@/components/GameResult/gameResultDialog_pc'
