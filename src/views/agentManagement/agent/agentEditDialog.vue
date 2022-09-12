@@ -833,10 +833,227 @@
                                       </span>
                                     </span>
                                   </div>
-                                  <small class="tip">
-                                    {{ operationType === operationEnum.edit ? '' : `5-8${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}
-                                  </small>
                                 </div>
+                                <small class="tip">
+                                  {{ operationType === operationEnum.edit ? '' : `5-8${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step1.nickname.hasError,
+                              'is-success': step1.nickname.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__name') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                  >
+                                    <input
+                                      v-model="form.nickname"
+                                      type="text"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step1.nickname)"
+                                      @blur="inputChange(step1.nickname, form.nickname)"
+                                      @change="inputChange(step1.nickname, form.nickname)"
+                                    >
+                                    <span v-if="step1.nickname.hasError || step1.nickname.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i
+                                          v-if="step1.nickname.hasError"
+                                          class="el-input__icon el-input__validateIcon el-icon-error has-error"
+                                        />
+                                        <i
+                                          v-if="step1.nickname.isSuccess"
+                                          class="el-input__icon el-input__validateIcon el-icon-success no-error"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            v-if="operationType === operationEnum.create && visible"
+                            class="el-form-item custom-psw el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step1.password.hasError,
+                              'is-success': step1.password.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__password') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small el-input--suffix"
+                                  >
+                                    <input
+                                      v-model="form.password"
+                                      :type="step1.password.type"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step1.password)"
+                                      @blur="passwordChange(step1.password, form.password)"
+                                      @change="passwordChange(step1.password, form.password)"
+                                    >
+                                    <span class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                        <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                        <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': step1.password.type!=='password'}" @click="showPassword(step1.password)" />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip">
+                                  {{ `5-8${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            v-if="operationType === operationEnum.create && visible"
+                            class="el-form-item custom-psw el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step1.confirmPassword.hasError,
+                              'is-success': step1.confirmPassword.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__confirmPassword') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small el-input--suffix"
+                                  >
+                                    <input
+                                      v-model="form.confirmPassword"
+                                      :type="step1.confirmPassword.type"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step1.confirmPassword)"
+                                      @blur="confirmPasswordChange"
+                                      @change="confirmPasswordChange"
+                                    >
+                                    <span class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                        <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                        <i
+                                          class="el-input__icon el-icon-view"
+                                          style="cursor: pointer;"
+                                          :class="{'text-black': step1.confirmPassword.type!=='password'}"
+                                          @click="showPassword(step1.confirmPassword)"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__accountStatus') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <select v-model="form.status" class="el-select w-100">
+                                    <option
+                                      v-for="item in accountStatusType"
+                                      :key="item.key"
+                                      :value="item.key"
+                                    >
+                                      {{ $t(item.nickname) }}
+                                    </option>
+                                  </select>
+                                </div>
+                                <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__timeZone') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <select v-model="form.time_zone" class="el-select w-100">
+                                    <option
+                                      v-for="item in time_zone"
+                                      :key="item.id"
+                                      :value="item.id"
+                                    >
+                                      {{ $t(item.city_name) }}
+                                    </option>
+                                  </select>
+                                </div>
+                                <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            v-if="showCurrency"
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__currency') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <select v-model="form.currency" class="el-select w-100">
+                                    <option
+                                      v-for="item in currency"
+                                      :key="item.id"
+                                      :value="item.id"
+                                    >
+                                      {{ $t(item.name) }}
+                                    </option>
+                                  </select>
+                                </div>
+                                <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__remark') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div class="el-textarea el-input--small">
+                                    <textarea
+                                      v-model="form.remark"
+                                      autocomplete="off"
+                                      class="el-textarea__inner"
+                                      style="min-height: 48.0625px;"
+                                    />
+                                  </div>
+                                </div>
+                                <small class="tip" />
                               </div>
                             </div>
                           </div>

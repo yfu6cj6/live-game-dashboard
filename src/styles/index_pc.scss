@@ -705,6 +705,24 @@
           line-height: 1 !important;
         }
       }
+      .el-switch {
+        margin-left: auto;
+        .el-switch__label {
+          color: #fff;
+          &.is-active {
+            color: #f9c901;
+          }
+          * {
+            line-height: 1;
+            font-size: 1.4rem;
+            display: inline-block;
+          }
+        }
+        .el-switch__core {
+          border-color: #f9c901 !important;
+          background-color: #f9c901 !important;
+        }
+      }
     }
   }
   .icon-close {

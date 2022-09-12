@@ -1463,6 +1463,49 @@ export default {
       -ms-flex-align: center;
       align-items: center;
     }
+    .agent-form {
+      .form-step-content {
+        margin-top: 0rem;
+        width: 500px;
+        .step-content {
+          .el-form-item {
+            width: 100%;
+            .el-form-item__content {
+              display: -webkit-box;
+              display: -ms-flexbox;
+              display: flex;
+              -webkit-box-align: start;
+              -ms-flex-align: start;
+              align-items: flex-start;
+              line-height: 1;
+              .label-group {
+                display: block;
+                color: #f9c901;
+                width: 100px;
+                font-size: 14px;
+                padding-top: 5px;
+                -webkit-box-flex: 0;
+                -ms-flex: none;
+                flex: none;
+                margin-bottom: 10px;
+              }
+              .value-group {
+                width: auto;
+                display: inline-block;
+                -webkit-box-flex: 1;
+                -ms-flex: auto;
+                flex: auto;
+                .tip {
+                  display: block;
+                  margin-top: 7px;
+                  color: #bbb;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   .agent-pop-up-panel {

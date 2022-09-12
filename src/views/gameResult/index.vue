@@ -236,7 +236,7 @@
                                 <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__status') }}</span>
                                 <span class="value">
                                   <span>
-                                    <span :class="{'text-blue': [2, 3, 4, 6, 7, 8].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ item.game_payment_status_name }}</span>
+                                    <span :class="{'text-blue': [2, 3, 4, 6, 7, 8].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ $t(item.gamePaymentStatusLabel) }}</span>
                                   </span>
                                 </span>
                               </div>
@@ -585,7 +585,7 @@
                             <div class="list-item d-flex align-items-start" style="width: 100px; flex-wrap: wrap;">
                               <span class="label" style="width: 100%; padding-bottom: 0.5rem;">{{ $t('__status') }}</span>
                               <span class="value">
-                                <span :class="{'text-blue': [2, 3, 4, 6, 7, 8].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ item.game_payment_status_name }}</span>
+                                <span :class="{'text-blue': [2, 3, 4, 6, 7, 8].includes(item.game_payment_status), 'text-green': [1, 5].includes(item.game_payment_status)}">{{ $t(item.gamePaymentStatusLabel) }}</span>
                               </span>
                             </div>
                             <div class="list-item d-flex align-items-start" style="width: 10%; flex-wrap: wrap;">
@@ -713,7 +713,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'gameResultTimeType'
+      'gameResultTimeType',
+      'gamePaymentStatusType'
     ]),
     imagePlaybackpic() {
       return this.playbackPic
@@ -813,6 +814,10 @@ export default {
               element.game_payment_status = res.game_payment_status
               element.game_payment_status_name = res.game_payment_status_name
               element.invalidRound = element.game_payment_status === 1
+              const game_payment_status = this.gamePaymentStatusType.find(item => item.key === element.game_payment_status)
+              if (game_payment_status) {
+                element.gamePaymentStatusLabel = game_payment_status.nickname
+              }
             }
             this.$refs.invalidRoundDialog.setDialogLoading(false)
             this.closeDialogEven()
@@ -883,6 +888,10 @@ export default {
         }
 
         element.invalidRound = element.game_payment_status === 1
+        const game_payment_status = this.gamePaymentStatusType.find(item => item.key === element.game_payment_status)
+        if (game_payment_status) {
+          element.gamePaymentStatusLabel = game_payment_status.nickname
+        }
         element.tap = false
       })
       this.totalCount = res.totalCount

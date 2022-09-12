@@ -271,11 +271,13 @@
                       </div>
                       <div
                         class="text-field share el-input el-input--small"
+                        :class="{'is-disabled': agentInfo.live_commission_rate === 0}"
                       >
                         <input
                           v-model.number="form.live_rolling_rate"
                           type="number"
                           autocomplete="off"
+                          :disabled="agentInfo.live_commission_rate === 0"
                           min="0"
                           class="el-input__inner"
                           @focus="inputFocus(step2.live_rolling_rate)"
