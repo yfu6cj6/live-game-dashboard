@@ -19,11 +19,11 @@
               </a>
             </div>
             <div v-show="searchExpand === true">
-              <div class="options currency">
+              <div class="options">
                 <div class="option">
                   <el-input v-model="searchForm.area" type="number" class="input_size" :placeholder="$t('__value')" />
                 </div>
-                <div class="option">
+                <div class="d-flex option currency">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -46,8 +46,8 @@
                   <span class="suffix-label" />
                 </div>
               </div>
-              <div class="options status">
-                <div class="option">
+              <div class="options">
+                <div class="d-flex option status">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -173,7 +173,167 @@
       />
     </template>
     <template v-else>
-      -
+      <div class="pos-r">
+        <backTop
+          ref="backTop"
+          :inner-class="'.view-container'"
+          :view-class="'.scroll-view'"
+        />
+        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+          <div class="scroll-view">
+            <div class="bg-black">
+              <div class="yellow-border-bottom search-container">
+                <div class="options">
+                  <div class="option">
+                    <el-input v-model="searchForm.id" type="number" class="input_size" placeholder="ID" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.account" class="input_size" :placeholder="$t('__account')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.area" type="number" class="input_size" :placeholder="$t('__value')" />
+                  </div>
+                  <div class="option currency">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.currency"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="currencyCollapse"
+                        :placeholder="$t('__currency')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.currency"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="option status">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.activated"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="activatedCollapse"
+                        :placeholder="$t('__status')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.activated"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="d-flex">
+                    <div>
+                      <button class="ml-2 el-button bg-yellow el-button--default mr-4 font-weight-bold" @click.stop="onCreateBtnClick()">{{ `${$t('__create')}${$t('__liveGame')}` }}</button>
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <div class="searchBtn">
+                      <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-container">
+              <template v-if="tableData.length > 0">
+                <div
+                  v-for="(item, index) in tableData"
+                  :key="index"
+                  :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+                >
+                  <div class="d-flex">
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">ID</span>
+                      <span class="value">{{ item.id }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__name') }}</span>
+                      <span class="value">{{ item.area_name }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__code') }}</span>
+                      <span class="value">{{ item.area }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__status') }}</span>
+                      <span class="value" :class="{'text-red': item.activated === '0', 'text-green': item.activated === '1'}">{{ item.activatedLabel }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__currency') }}</span>
+                      <span class="value">{{ item.currency }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__betMin') }}</span>
+                      <span class="value">{{ item.bet_minLabel }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__betMax') }}</span>
+                      <span class="value">{{ item.bet_maxLabel }}</span>
+                    </div>
+                    <div class="operate">
+                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
+                      <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                    </div>
+                  </div>
+                </div>
+                <pagination
+                  :page-size="pageSize"
+                  :page-sizes="pageSizes"
+                  :total="totalCount"
+                  :current-page.sync="currentPage"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
+              </template>
+              <template v-else>
+                <div class="noInformation">{{ $t("__noInformation") }}</div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <editDialog
+        ref="createDialog"
+        :title="`${$t('__create')}${$t('__liveBetAreaId')}`"
+        :visible="curDialogIndex === dialogEnum.create"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        :currency="currency"
+        :activated="activated"
+        @close="closeDialogEven"
+        @confirm="createDialogConfirmEven"
+      />
+
+      <editDialog
+        ref="editDialog"
+        :title="$stringFormat(`${$t('__edit')}${$t('__liveBetAreaId')} - ID:{0}`, [selectForm.id])"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :confirm="$t('__revise')"
+        :form="selectForm"
+        :currency="currency"
+        :activated="activated"
+        @close="closeDialogEven"
+        @confirm="editDialogConfirmEven"
+      />
     </template>
   </div>
 </template>
@@ -185,10 +345,12 @@ import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
 import EditDialog from './editDialog';
 import { numberFormat } from '@/utils/numberFormat';
+import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'LiveBetAreaManagement',
-  components: { EditDialog },
+  components: { EditDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -213,6 +375,15 @@ export default {
     }
   },
   watch: {
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.closeDialogEven()
+        this.$nextTick(() => {
+          this.onSearchBtnClick(1);
+          this.addSelectFilter()
+        })
+      }
+    }
   },
   created() {
     this.$nextTick(() => {
@@ -233,14 +404,14 @@ export default {
       this.searchExpand = !this.searchExpand
     },
     addSelectFilter() {
-      this.addSelectDropDownFilter('options currency', () => {
+      this.addSelectDropDownFilter('option currency', () => {
         this.searchForm.currency = JSON.parse(JSON.stringify(this.searchItems.currency)).map(item => item.key)
       }, () => {
         this.searchForm.currency = []
       }, () => {
         this.selectOption.currency = JSON.parse(JSON.stringify(this.searchItems.currency)).filter(item => item.nickname.match(new RegExp(`${event.target.value}`, 'i')))
       })
-      this.addSelectDropDownFilter('options status', () => {
+      this.addSelectDropDownFilter('option status', () => {
         this.searchForm.activated = JSON.parse(JSON.stringify(this.searchItems.activated)).map(item => item.key)
       }, () => {
         this.searchForm.activated = []
