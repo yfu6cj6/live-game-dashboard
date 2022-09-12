@@ -298,17 +298,6 @@
       padding: 0 1.66667rem;
       position: relative;
       z-index: 0;
-      .form-ctrl {
-        padding-top: 0.41667rem;
-        padding-bottom: 0.41667rem;
-        width: calc(100vw - 3.33333rem);
-        height: 3.33333rem;
-        background: #000;
-        button {
-          width: 150px;
-          margin: auto;
-        }
-      }
     }
     .el-form {
       .form-item-title {
@@ -490,17 +479,6 @@
       flex-direction: column;
       justify-content: flex-end;
       align-items: center;
-      .form-ctrl {
-        padding-top: 0.41667rem;
-        padding-bottom: 0.41667rem;
-        width: calc(100vw - 3.33333rem);
-        height: 3.33333rem;
-        background: #000;
-        button {
-          width: 150px;
-          margin: auto;
-        }
-      }
     }
   
     .el-select {
@@ -517,6 +495,18 @@
       color: #f56c6c;
       margin-left: 0.3rem;
       font-size: 1.5rem;
+    }
+  }
+
+  .form-ctrl {
+    padding-top: 0.41667rem;
+    padding-bottom: 0.41667rem;
+    width: calc(100vw - 3.33333rem);
+    height: 3.33333rem;
+    background: #000;
+    button {
+      width: 150px;
+      margin: auto;
     }
   }
   

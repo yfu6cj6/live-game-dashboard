@@ -1527,6 +1527,22 @@ export default {
           }
         }
       }
+      .form-wrap {
+        .form-inner {
+          .form-view {
+            .el-form {
+              overflow: auto;
+              height: 395px;
+              max-height: calc(100vh - 30rem);
+              .el-form-item {
+                &:last-child {
+                  margin-bottom: 0;
+                }
+              }
+            }
+          }
+        }
+      }
       .form-step-content {
         margin-top: 0rem;
         width: 500px;

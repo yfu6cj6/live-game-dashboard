@@ -770,10 +770,10 @@
               </el-steps>
               <div class="w-100" style="height: 10px;" />
             </div>
-            <div class="overlay-scroll-wrap scrolling">
+            <div class="form-wrap">
               <backTop style="width: 25.5px; height: 25.5px; font-size: 20.4px; top: 10.2px;" />
-              <div class="scroll-inner on native">
-                <div class="scroll-view" style="height: 395px; max-height: calc(569px);">
+              <div class="form-inner">
+                <div class="form-view">
                   <div class="form-step-content">
                     <div
                       v-show="curIndex === stepEnum.agentInfo"
@@ -1062,6 +1062,27 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div v-if="hasError" class="form-alert p-0" style="height: 30px;">
+              <div role="alert" class="el-alert el-alert--warning is-light fade show justify-content-center">
+                <i class="el-alert__icon el-icon-warning" />
+                <div class="el-alert__content">
+                  <span class="el-alert__title">{{ errorTip }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-ctrl">
+              <div class="el-row is-align-middle el-row--flex">
+                <button v-if="previousBtnVisible" type="button" class="el-button bg-gray el-button--primary" @click="onPreviousBtnClick">
+                  <span>{{ $t('__previous') }}</span>
+                </button>
+                <button v-if="nextBtnVisible" type="button" class="el-button bg-yellow el-button--primary" @click="onNextBtnClick">
+                  <span>{{ $t('__nextStep') }}</span>
+                </button>
+                <button v-if="confirmBtnVisible" type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
+                  <span>{{ confirm }}</span>
+                </button>
               </div>
             </div>
           </div>
