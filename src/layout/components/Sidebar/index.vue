@@ -105,10 +105,8 @@
             <div v-if="isOpened" class="small-item collapse-hidden-flex">
               <announcement @toggleClick="announcement" />
             </div>
-            <div v-if="isOpened" class="small-item collapse-hidden-flex">
-              <div>
-                <language :lang="curLang" @changLang="language" />
-              </div>
+            <div v-if="isOpened" class="small-item collapse-hidden-flex" style="position: relative;">
+              <language style="position: absolute; top: 0;" :lang="curLang" @changLang="language" />
             </div>
             <div class="small-item hamburger">
               <hamburger :is-active="isOpened" @toggleClick="toggleSideBar" />

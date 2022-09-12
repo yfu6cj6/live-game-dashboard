@@ -34,6 +34,9 @@ const mutations = {
   SET_AGENT_SEARCH: (state, [key, value]) => {
     state.agentSearchKey = key
     state.agentSearchValue = value
+  },
+  SET_AGENT_LEVEL_CURRENT_KEYS: (state, key) => {
+    state.agentLevelCurrentKey = key
   }
 }
 
@@ -66,6 +69,9 @@ const actions = {
   },
   setAgentSearch({ commit }, [key, value]) {
     commit('SET_AGENT_SEARCH', [key, value])
+  },
+  setAgentLevelCurrentKey({ commit }, key) {
+    commit('SET_AGENT_LEVEL_CURRENT_KEYS', key)
   }
 }
 

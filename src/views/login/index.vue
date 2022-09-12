@@ -427,6 +427,7 @@ export default {
             } else {
               this.$store.dispatch("login/setLoginTip", '')
               this.$store.dispatch("user/login", res)
+              this.$store.dispatch("agentManagement/setAgentLevelCurrentKey", res.user.agent_id)
               await this.$store.dispatch("backstageManagement/getAnnouncement")
               this.$router.push({ path: '/home' })
             }
