@@ -1079,7 +1079,7 @@
                 </div>
                 <div class="flex-nowrap report-list flex-fill bg-new-dark-white has-index">
                   <div class="w-100">
-                    <div class="agent-group memberBet-table">
+                    <div class="agent-group">
                       <div
                         v-for="(item, index) in tableData"
                         :key="index"

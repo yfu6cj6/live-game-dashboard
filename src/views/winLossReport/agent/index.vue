@@ -25,7 +25,9 @@
                         </router-link>
                         <span>
                           {{ `[${$t('__level')}:` }}
-                          <span class="text-link">{{ `${$t('__agent')}` }}</span>
+                          <router-link :to="`/winLossReport/winLossReport/${item.agentId}`">
+                            <span class="text-link" @click.stop="setSearchTime(item.agentId)">{{ `${$t('__agent')}` }}</span>
+                          </router-link>
                           {{ ']' }}
                         </span>
                       </span>
@@ -410,7 +412,9 @@
                         </router-link>
                         <div class="w-100">
                           {{ `[${$t('__level')}:` }}
-                          <span class="text-link">{{ `${$t('__agent')}` }}</span>
+                          <router-link :to="`/winLossReport/winLossReport/${item.agentId}`">
+                            <span class="text-link" @click.stop="setSearchTime(item.agentId)">{{ `${$t('__agent')}` }}</span>
+                          </router-link>
                           {{ ']' }}
                         </div>
                       </div>

@@ -48,8 +48,8 @@
           </div>
         </div>
         <div class="videoPlayer">
-          <img v-if="playbackType === 1" class="playbackPic" :src="url">
-          <video v-else-if="playbackType === 2" controls controlslist="nodownload" autoplay>
+          <img v-if="playbackType === 1" class="playbackPic" :class="{autoSize: startMove}" :src="url">
+          <video v-else-if="playbackType === 2" :class="{autoSize: startMove}" controls controlslist="nodownload" autoplay>
             <source :src="url" type="video/mp4">
             Your browser does not support HTML5 video.
           </video>
@@ -129,7 +129,8 @@ export default {
   data: function() {
     return {
       top: 0,
-      left: 0
+      left: 0,
+      startMove: false
     }
   },
   computed: {
@@ -168,6 +169,7 @@ export default {
     stickDown(ev) {
       this.$refs.dragResize.bodyDown(ev)
       this.$refs.dragResize.up(ev)
+      this.startMove = true
       this.$nextTick(() => {
         this.$refs.dragResize.stickDown('br', ev)
       })
@@ -195,7 +197,10 @@ export default {
         margin-top: 10px;
           video,
           img {
-            width: 100%;
+            width: 993px;
+            &.autoSize {
+              width: 100%;
+            }
           }
         }
       }

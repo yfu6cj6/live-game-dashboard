@@ -134,11 +134,11 @@
                     </div>
                     <div class="d-flex flex-colum field">
                       <span class="title">{{ $t('__agent') }}</span>
-                      <span class="news text-yellow">{{ item.agent }}</span>
+                      <span class="news text-yellow" @click.stop="agentInfoClick(item, 'agent')">{{ item.agent }}</span>
                     </div>
                     <div class="d-flex flex-colum field">
                       <span class="title">{{ $t('__superiorAgent') }}</span>
-                      <span class="news text-yellow">{{ item.superiorAgent }}</span>
+                      <span class="news text-yellow" @click.stop="agentInfoClick(item, 'superiorAgent')">{{ item.superiorAgent }}</span>
                     </div>
                     <div class="d-flex flex-colum field">
                       <span class="title">{{ $t('__recordType') }}</span>
@@ -247,6 +247,16 @@
                   </div>
                 </div>
               </div>
+              <agentInfoDialogMobile
+                :visible="curInfoEnumIndex === infoEnum.superiorAgent"
+                :agent-id="selectForm.agent_id"
+                @close="closeInfoEnumEven"
+              />
+              <agentInfoDialogMobile
+                :visible="curInfoEnumIndex === infoEnum.agent"
+                :agent-id="selectForm.agent_id"
+                @close="closeInfoEnumEven"
+              />
             </div>
             <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
           </div>
@@ -469,9 +479,9 @@
                             </div>
                             <div class="list-item d-flex align-items-start" style="width: 30px; min-width: 40px; flex-wrap: wrap;">
                               <span class="value d-flex">
-                                <span class="solid-circle align-self-center clickable small">
+                                <span class="solid-circle align-self-center clickable small" :class="`agentBalanceRecord-agent-${item.id}`">
                                   <div class="fas black">
-                                    <svg-icon class="fas black" icon-class="top" style="height: 1rem; width: 1rem;" />
+                                    <svg-icon class="fas black" icon-class="top" style="height: 1rem; width: 1rem;" @click.stop="agentInfoClick(item, 'agent')" />
                                   </div>
                                 </span>
                                 <span />
@@ -524,6 +534,12 @@
                             </div>
                           </div>
                         </div>
+                        <agentInfoDialogPC
+                          :visible="curInfoEnumIndex === infoEnum.agent"
+                          :agent-id="selectForm.agent_id"
+                          :click-class-name="selectForm.className"
+                          @close="closeInfoEnumEven"
+                        />
                       </div>
                     </div>
                     <pagination
@@ -673,21 +689,29 @@ import { getFullDate, getFullDateString, getTodayDateTime } from '@/utils/transD
 import { numberFormat } from '@/utils/numberFormat'
 import BackTop from '@/components/BackTop'
 import Pagination from '@/components/Pagination'
+import AgentInfoDialogMobile from '@/components/InfoDialog/agentInfoDialog_mobile'
+import AgentInfoDialogPC from '@/components/InfoDialog/agentInfoDialog_pc'
 
 const defaultSearchTime = getTodayDateTime()
 
 export default {
   name: 'AgentBalanceRecord',
-  components: { BackTop, Pagination },
+  components: { BackTop, Pagination, AgentInfoDialogMobile, AgentInfoDialogPC },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
+      infoEnum: Object.freeze({
+        'none': 0,
+        'superiorAgent': 1,
+        'agent': 2
+      }),
       fuzzyMatchingByOrderNumber: false,
       searchFormOpen: false,
       subtotalInfo: {},
       totalInfo: {},
       selectOption: {},
-      totalCountLabel: ''
+      totalCountLabel: '',
+      curInfoEnumIndex: 0
     }
   },
   computed: {
@@ -701,6 +725,7 @@ export default {
   watch: {
     'device': function() {
       if (this.$route.name === this.tempRoute.name) {
+        this.closeInfoEnumEven()
         this.$nextTick(() => {
           this.search()
           this.addSelectFilter()
@@ -848,8 +873,19 @@ export default {
         this.setDataLoading(false)
       })
     },
+    agentInfoClick(rowData, type) {
+      this.closeInfoEnumEven()
+      this.selectForm = JSON.parse(JSON.stringify(rowData))
+      this.selectForm.className = `.agentBalanceRecord-${type}-${this.selectForm.id}`
+      this.$nextTick(() => {
+        this.curInfoEnumIndex = this.infoEnum[type]
+      })
+    },
     setDataLoading(loading) {
       this.$store.dispatch('app/setLoading', loading)
+    },
+    closeInfoEnumEven() {
+      this.curInfoEnumIndex = this.infoEnum.none
     }
   }
 }
@@ -1215,6 +1251,9 @@ export default {
         left: calc(100% + 50px);
         white-space: nowrap;
       }
+    }
+    .agent-group {
+      position: relative;
     }
     .el-checkbox__input.is-checked + .el-checkbox__label {
       margin-right: 0;

@@ -311,7 +311,7 @@
                                 <div class="agent-list-basic list-row">
                                   <div class="list-item d-flex align-items-start item-agent">
                                     <span class="label">{{ $t('__agent') }}</span>
-                                    <span class="value text-yellow text-link">
+                                    <span class="value text-yellow text-link" @click.stop="agentInfoClick(item)">
                                       <span>{{ item.agent }}</span>
                                     </span>
                                   </div>
@@ -436,6 +436,11 @@
                                 </template>
                               </div>
                             </div>
+                            <agentInfoDialogMobile
+                              :visible="curInfoEnumIndex === infoEnum.agent"
+                              :agent-id="selectForm.agent_id"
+                              @close="closeInfoEnumEven"
+                            />
                           </div>
                         </div>
                       </template>
@@ -816,23 +821,23 @@
                           </span>
                           <div class="list-item d-flex align-items-start item-agentIcon">
                             <span class="value d-flex">
-                              <span class="solid-circle align-self-center clickable small">
+                              <span class="solid-circle align-self-center clickable small" :class="`giftRecord-agent-${item.id}`">
                                 <div class="fas black">
-                                  <svg-icon class="fas black" icon-class="top" style="height: 1rem; width: 1rem;" />
+                                  <svg-icon class="fas black" icon-class="top" style="height: 1rem; width: 1rem;" @click.stop="agentInfoClick(item)" />
                                 </div>
                               </span>
                             </span>
                           </div>
                           <div class="list-item d-flex align-items-start item-agent">
-                            <span class="value  text-yellow">
+                            <span class="value">
                               <span>{{ item.agent }}</span>
                             </span>
                           </div>
                           <div class="list-item d-flex align-items-start item-playerIcon">
                             <span class="value d-flex">
-                              <span class="solid-circle align-self-center clickable small">
+                              <span class="solid-circle align-self-center clickable small" :class="`giftRecord-member-${item.id}`">
                                 <div class="fas black">
-                                  <svg-icon class="fas black" icon-class="info" style="height: 1.25rem; width: 1.25rem;" />
+                                  <svg-icon class="fas black" icon-class="info" style="height: 1.25rem; width: 1.25rem;" @click.stop="memberInfoClick(item)" />
                                 </div>
                               </span>
                               <span />
@@ -905,6 +910,19 @@
                           </div>
                         </div>
                       </div>
+                      <agentInfoDialogPC
+                        :visible="curInfoEnumIndex === infoEnum.agent"
+                        :agent-id="selectForm.agent_id"
+                        :click-class-name="selectForm.className"
+                        @close="closeInfoEnumEven"
+                      />
+                      <memberInfoDialogPC
+                        :visible="curInfoEnumIndex === infoEnum.member"
+                        :agent-id="selectForm.agent_id"
+                        :member-id="selectForm.member_id"
+                        :click-class-name="selectForm.className"
+                        @close="closeInfoEnumEven"
+                      />
                     </div>
                   </div>
                   <pagination
@@ -937,18 +955,27 @@ import { getFullDate, getFullDateString, getDayDateTime } from '@/utils/transDat
 import { numberFormat } from '@/utils/numberFormat'
 import BackTop from '@/components/BackTop'
 import Pagination from '@/components/Pagination'
+import AgentInfoDialogMobile from '@/components/InfoDialog/agentInfoDialog_mobile'
+import AgentInfoDialogPC from '@/components/InfoDialog/agentInfoDialog_pc'
+import MemberInfoDialogPC from '@/components/InfoDialog/memberInfoDialog_pc'
 
 const defaultSearchTime = getDayDateTime()
 
 export default {
   name: 'GiftRecord',
-  components: { BackTop, Pagination },
+  components: { BackTop, Pagination, AgentInfoDialogMobile, AgentInfoDialogPC, MemberInfoDialogPC },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
+      infoEnum: Object.freeze({
+        'none': 0,
+        'agent': 1,
+        'member': 2
+      }),
       memberId: null,
       searchOpen: false,
-      selectOption: {}
+      selectOption: {},
+      curInfoEnumIndex: 0
     }
   },
   computed: {
@@ -993,6 +1020,7 @@ export default {
     },
     'device': function() {
       if (this.$route.name === this.tempRoute.name) {
+        this.closeInfoEnumEven()
         this.$nextTick(() => {
           this.handleCurrentChange(1)
           this.addSelectFilter()
@@ -1162,6 +1190,25 @@ export default {
         export_json_to_excel({ header: tHeader, data: data, filename: 'MemberBet_' + getFullDateString(new Date()) })
       })
     },
+    agentInfoClick(rowData) {
+      this.closeInfoEnumEven()
+      this.selectForm = JSON.parse(JSON.stringify(rowData))
+      this.selectForm.className = `.giftRecord-agent-${this.selectForm.id}`
+      this.$nextTick(() => {
+        this.curInfoEnumIndex = this.infoEnum.agent
+      })
+    },
+    memberInfoClick(rowData) {
+      this.closeInfoEnumEven()
+      this.selectForm = JSON.parse(JSON.stringify(rowData))
+      this.selectForm.className = `.giftRecord-member-${this.selectForm.id}`
+      this.$nextTick(() => {
+        this.curInfoEnumIndex = this.infoEnum.member
+      })
+    },
+    closeInfoEnumEven() {
+      this.curInfoEnumIndex = this.infoEnum.none
+    },
     setDataLoading(loading) {
       this.$store.dispatch('app/setLoading', loading)
     }
@@ -1258,5 +1305,8 @@ export default {
     }
   }
 
+  .agent-group {
+    position: relative;
+  }
 }
 </style>
