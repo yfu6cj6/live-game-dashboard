@@ -1615,6 +1615,9 @@ export default {
   }
 
   .agent-pop-up-panel {
+    .popup-panel {
+      overflow: hidden;
+    }
     .el-form {
       .el-form-item {
         .el-form-item__content {
