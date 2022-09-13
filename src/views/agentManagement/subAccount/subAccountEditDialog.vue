@@ -701,7 +701,7 @@ export default {
           display: flex;
           -webkit-box-align: start;
           -ms-flex-align: start;
-          align-items: start;
+          align-items: flex-start;
           line-height: 1;
           .label-group {
             display: inline-block;
