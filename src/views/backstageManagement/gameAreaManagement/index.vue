@@ -372,6 +372,15 @@ export default {
       if (this.searchForm.live_bet_area_id && this.searchForm.live_bet_area_id.length > 0) {
         this.searchFormOpen = true;
       }
+    },
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.closeDialogEven()
+        this.$nextTick(() => {
+          this.onSearchBtnClick(1);
+          this.addSelectFilter()
+        })
+      }
     }
   },
   created() {
