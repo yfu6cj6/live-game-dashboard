@@ -907,6 +907,17 @@
       flex-direction: column;
       justify-content: flex-end;
       align-items: center;
+      .form-ctrl {
+        padding-top: 0.41667rem;
+        padding-bottom: 0.41667rem;
+        width: 100%;
+        height: 3.33333rem;
+        background: #000;
+        button {
+          width: 140px;
+          margin: auto;
+        }
+      }
     }
     .btn_icon {
       cursor: pointer;
@@ -925,18 +936,6 @@
     z-index: 1;
     width: 100%;
     background-color: #000;
-  }
-
-  .form-ctrl {
-    padding-top: 0.41667rem;
-    padding-bottom: 0.41667rem;
-    width: 100%;
-    height: 3.33333rem;
-    background: #000;
-    button {
-      width: 140px;
-      margin: auto;
-    }
   }
 }
 

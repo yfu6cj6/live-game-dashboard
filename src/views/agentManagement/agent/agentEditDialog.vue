@@ -567,7 +567,12 @@
                       <div class="label-group">
                         <label class="form-item-label">{{ $t('__depositBalance') }}</label>
                         <small class="tip small">
-                          {{ `${$t('__range')} : 0 - ${(agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.agentBalanceLabel)}` }}
+                          {{ `${$t('__range')} : 0 - ` }}
+                          <span
+                            :style="`letter-spacing: ${(agentBalanceInfo.parentId === 1) ? '-0.2' : '0'}rem`"
+                          >
+                            {{ `${(agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.agentBalanceLabel)}` }}
+                          </span>
                         </small>
                       </div>
                       <div
@@ -783,6 +788,12 @@
                     v-if="curIndex === stepEnum.limit"
                     :inner-class="'.form-step-content'"
                     :view-class="'.step_limit'"
+                    style="width: 25.5px; height: 25.5px; font-size: 20.4px; top: 10.2px;"
+                  />
+                  <backTop
+                    v-if="curIndex === stepEnum.confirm"
+                    :inner-class="'.form-step-content'"
+                    :view-class="'.step_confirm'"
                     style="width: 25.5px; height: 25.5px; font-size: 20.4px; top: 10.2px;"
                   />
                   <div class="form-step-content" style="height: 395px; max-height: calc(100vh - 30rem); overflow: auto;">
@@ -1319,6 +1330,235 @@
                         </div>
                       </form>
                     </div>
+                    <div
+                      v-show="curIndex === stepEnum.balanceConfig"
+                    >
+                      <form class="el-form el-form--label-left">
+                        <div class="step-content">
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__superiorAgent') }}</label>
+                              </div>
+                              <div class="value-group" style="padding-top: 3px;">
+                                <label class="form-item-label text-white">{{ agentBalanceInfo.parent }}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__balance') }}</label>
+                              </div>
+                              <div class="value-group" style="padding-top: 3px;" :style="`letter-spacing: ${(agentBalanceInfo.parentId === 1) ? '-0.2' : '0'}rem`">
+                                <label class="form-item-label text-white">{{ (agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.parentBalanceLabel) }}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__agentAccount') }}</label>
+                              </div>
+                              <div class="value-group" style="padding-top: 3px;">
+                                <label class="form-item-label text-white">{{ agentBalanceInfo.agent }}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__balance') }}</label>
+                              </div>
+                              <div class="value-group" style="padding-top: 3px;">
+                                <label class="form-item-label text-white">{{ agentBalanceInfo.agentBalanceLabel }}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step4.balance.hasError,
+                              'is-success': step4.balance.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__depositBalance') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                    :class="{'is-disabled': balanceDisable}"
+                                  >
+                                    <input
+                                      v-model.number="form.balance"
+                                      type="number"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      min="0"
+                                      :disabled="balanceDisable"
+                                      @focus="inputFocus(step4.balance)"
+                                      @blur="specialInputChange('balance')"
+                                      @change="specialInputChange('balance')"
+                                    >
+                                    <span v-if="step4.balance.hasError || step4.balance.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i v-if="step4.balance.hasError" class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                        <i v-if="step4.balance.isSuccess" class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip">
+                                  {{ `${$t('__range')} : 0 - ` }}
+                                  <span
+                                    :style="`letter-spacing: ${(agentBalanceInfo.parentId === 1) ? '-0.2' : '0'}rem`"
+                                  >
+                                    {{ `${(agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.agentBalanceLabel)}` }}
+                                  </span>
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      v-show="curIndex === stepEnum.confirm"
+                      class="step_confirm"
+                    >
+                      <form class="el-form el-form--label-left">
+                        <div class="preview">
+                          <div class="preview-item d-inline-block" style="width: calc(50% - 10px); margin-right: 10px;">
+                            <div class="title">{{ $t('__agentInfo') }}</div>
+                            <div class="v-line" />
+                            <div class="content">
+                              <div class="item">
+                                <label class="preview-item-label">{{ $t('__agentAccount') }}</label>
+                                <span class="preview-item-value">{{ form.account }}</span>
+                              </div>
+                              <div class="item">
+                                <label class="preview-item-label">{{ $t('__agentNickname') }}</label>
+                                <span class="preview-item-value">{{ form.nickname }}</span>
+                              </div>
+                              <div class="item">
+                                <label class="preview-item-label">{{ $t('__password') }}</label>
+                                <span class="preview-item-value">{{ form.password }}</span>
+                              </div>
+                              <div class="item">
+                                <label class="preview-item-label">{{ $t('__timeZone') }}</label>
+                                <span class="preview-item-value">{{ timeZoneCityName }}</span>
+                              </div>
+                              <div v-if="showCurrency" class="item">
+                                <label class="preview-item-label">{{ $t('__currency') }}</label>
+                                <span class="preview-item-value">{{ currencyName }}</span>
+                              </div>
+                              <div class="item">
+                                <label class="preview-item-label">{{ $t('__balance') }}</label>
+                                <span class="preview-item-value">{{ balanceStr }}</span>
+                              </div>
+                              <div v-if="form.remark" class="item d-block">
+                                <label class="preview-item-label">{{ $t('__remark') }}</label>
+                                <span class="preview-item-value ml-3" style="display: block;">{{ form.remark }}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="preview-item d-inline-block" style="width: calc(50% - 10px);">
+                            <div class="title">{{ $t('__rate') }}</div>
+                            <div class="v-line" />
+                            <div class="content">
+                              <div class="item">
+                                <label class="preview-item-label">{{ `${$t('__liveGame')} ${$t('__commissionRate')}` }}</label>
+                                <span class="preview-item-value">
+                                  <span>{{ `${liveCommissionRateStr}%` }}</span>
+                                </span>
+                              </div>
+                              <div class="item">
+                                <label class="preview-item-label">{{ `${$t('__liveGame')} ${$t('__rollingRate')}` }}</label>
+                                <span class="preview-item-value">
+                                  <span>{{ `${liveRollingRateStr}%` }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="preview-item">
+                            <div class="title">{{ $t('__handicapLimit') }}</div>
+                            <div class="v-line" />
+                            <div class="content">
+                              <table class="w-100">
+                                <tr>
+                                  <td class="handicap-item text-left preview-item-label">ID</td>
+                                  <td class="handicap-item text-left preview-item-label">{{ $t('__handicapLimit') }}</td>
+                                  <td class="handicap-item text-right preview-item-label">{{ $t('__lowerLimit') }}</td>
+                                  <td class="handicap-item text-center preview-item-label" />
+                                  <td class="handicap-item text-right preview-item-label">{{ $t('__upperLimit') }}</td>
+                                </tr>
+                                <tr
+                                  v-for="(item, index) in existHandicaps"
+                                  :key="index"
+                                >
+                                  <td class="handicap-item text-left">{{ item.id }}</td>
+                                  <td class="handicap-item ww-7 text-left">{{ item.nickname }}</td>
+                                  <td class="handicap-item text-right">
+                                    <span>{{ item.betMinLabel }}</span>
+                                  </td>
+                                  <td class="handicap-item text-center">-</td>
+                                  <td class="handicap-item text-right">
+                                    <span>{{ item.betMaxLabel }}</span>
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="d-flex flex-wrap">
+                            <div
+                              class="el-form-item operator-psw custom-psw mr-auto ml-0 el-form-item--small"
+                              :class="{
+                                'is-error': step5.userPassword.hasError,
+                                'is-success': step5.userPassword.isSuccess}"
+                            >
+                              <div class="el-form-item__content">
+                                <div class="label-group d-flex w-100">
+                                  <label class="form-item-label mr-3">{{ $t('__userPassword') }}</label>
+                                  <div class="el-input el-input--small el-input--suffix">
+                                    <input
+                                      v-model="form.userPassword"
+                                      :type="step5.userPassword.type"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step5.userPassword)"
+                                      @blur="inputChange(step5.userPassword, form.userPassword)"
+                                      @change="inputChange(step5.userPassword, form.userPassword)"
+                                    >
+                                    <span class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                        <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                        <i
+                                          class="el-input__icon el-icon-view"
+                                          style="cursor: pointer;"
+                                          :class="{'text-black': step5.userPassword.type!=='password'}"
+                                          @click="showPassword(step5.userPassword)"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1332,17 +1572,15 @@
               </div>
             </div>
             <div class="form-ctrl">
-              <div class="el-row is-align-middle el-row--flex">
-                <button v-if="previousBtnVisible" type="button" class="el-button bg-gray el-button--primary" @click="onPreviousBtnClick">
-                  <span>{{ $t('__previous') }}</span>
-                </button>
-                <button v-if="nextBtnVisible" type="button" class="el-button bg-yellow el-button--primary" @click="onNextBtnClick">
-                  <span>{{ $t('__nextStep') }}</span>
-                </button>
-                <button v-if="confirmBtnVisible" type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
-                  <span>{{ confirm }}</span>
-                </button>
-              </div>
+              <button v-if="previousBtnVisible" type="button" class="el-button bg-gray el-button--primary" @click="onPreviousBtnClick">
+                <span>{{ $t('__previous') }}</span>
+              </button>
+              <button v-if="nextBtnVisible" type="button" class="el-button bg-yellow el-button--primary" @click="onNextBtnClick">
+                <span>{{ $t('__nextStep') }}</span>
+              </button>
+              <button v-if="confirmBtnVisible" type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
+                <span>{{ confirm }}</span>
+              </button>
             </div>
           </div>
         </div>
@@ -1911,42 +2149,6 @@ export default {
 
 <style lang="scss" scoped>
 .popup-page {
-  #step-1 {
-    &.step-content {
-      padding: 0 1.66667rem;
-      position: relative;
-      z-index: 0;
-      .form-item-inner {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        margin: 0;
-        .label-group {
-          display: block;
-          margin: 0.83333rem 0;
-          width: 60%;
-          -webkit-box-flex: 0;
-          -ms-flex: none;
-          flex: none;
-          .tip {
-            margin-left: 0;
-            width: 100%;
-            margin-top: 0.41667rem;
-            font-size: .91667rem;
-          }
-          label {
-            width: 100%;
-          }
-        }
-        .el-input__inner {
-          text-align: center;
-        }
-      }
-    }
-  }
   .step-content {
     .is-disabled {
       .el-input__inner {
@@ -2019,21 +2221,8 @@ export default {
     }
   }
   .preview-item {
-    color: #fff;
-    padding: 0;
-    .title {
-      padding: 0.83333rem 1.66667rem 0.41667rem 1.66667rem;
-      border-bottom: 0.08333rem solid #f9c901;
-      color: #f9c901;
-    }
     .content {
-      padding: 0.83333rem 1.66667rem 0 1.66667rem;
-      font-size: 1rem;
       .item {
-        padding: 0.41667rem;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
         .preview-item-label {
           color: #f9c901;
         }
@@ -2042,12 +2231,199 @@ export default {
           word-break: break-all;
         }
       }
-      table {
-        td {
-          font-size: .91667rem;
-          padding: 0.41667rem;
-          word-break: break-all;
+    }
+  }
+}
+#app.mobile {
+  .popup-page {
+    #step-1 {
+      &.step-content {
+        padding: 0 1.66667rem;
+        position: relative;
+        z-index: 0;
+        .form-item-inner {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          margin: 0;
+          .label-group {
+            display: block;
+            margin: 0.83333rem 0;
+            width: 60%;
+            -webkit-box-flex: 0;
+            -ms-flex: none;
+            flex: none;
+            .tip {
+              margin-left: 0;
+              width: 100%;
+              margin-top: 0.41667rem;
+              font-size: .91667rem;
+            }
+            label {
+              width: 100%;
+            }
+          }
+          .el-input__inner {
+            text-align: center;
+          }
         }
+      }
+    }
+    .preview-item {
+      color: #fff;
+      padding: 0;
+      .title {
+        padding: 0.83333rem 1.66667rem 0.41667rem 1.66667rem;
+        border-bottom: 0.08333rem solid #f9c901;
+        color: #f9c901;
+      }
+      .content {
+        padding: 0.83333rem 1.66667rem 0 1.66667rem;
+        font-size: 1rem;
+        .item {
+          padding: 0.41667rem;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          .preview-item-label {
+            color: #f9c901;
+          }
+          .preview-item-value {
+            margin-left: auto;
+            word-break: break-all;
+          }
+        }
+        table {
+          td {
+            font-size: .91667rem;
+            padding: 0.41667rem;
+            word-break: break-all;
+          }
+        }
+      }
+    }
+  }
+}
+
+#app.pc {
+  .popup-page {
+    .form-step-content {
+      margin-top: 0rem;
+      width: 500px;
+      .form-item-title {
+        width: 100%;
+        text-align: left;
+        font-size: 12px;
+        line-height: 1.25;
+        color: #bbb;
+      }
+      .step-content {
+        .el-form-item {
+          width: 100%;
+          .el-form-item__content {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start;
+            line-height: 1;
+            .value-group {
+              width: auto;
+              display: inline-block;
+              -webkit-box-flex: 1;
+              -ms-flex: auto;
+              flex: auto;
+              .tip {
+                display: block;
+                margin-top: 7px;
+                color: #bbb;
+              }
+            }
+            .label-group {
+              display: inline-block;
+              color: #f9c901;
+              width: 100px;
+              font-size: 14px;
+              padding-top: 5px;
+              -webkit-box-flex: 0;
+              -ms-flex: none;
+              flex: none;
+            }
+          }
+        }
+      }
+    }
+    .preview {
+      .preview-item {
+        .content {
+          .item {
+            .preview-item-label {
+              margin-bottom: 2px;
+            }
+            .preview-item-value {
+              width: auto;
+              text-align: left;
+            }
+          }
+          table {
+            td {
+              font-size: 11px;
+              padding-top: 5px;
+              word-break: break-all;
+            }
+          }
+        }
+      }
+      .operator-psw {
+        color: #fff;
+        margin: auto;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding: 10px;
+        .el-form-item__content {
+          width: 100%;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          .form-item-label {
+            white-space: nowrap;
+            font-size: 14px;
+            color: #f9c901;
+          }
+          .el-input {
+            height: 30px;
+            width: auto;
+            position: relative;
+            .el-input__inner {
+              border-radius: 3px;
+              border: 1px solid #f9c901;
+              background-color: #fff;
+              line-height: 1;
+              height: 30px;
+              font-size: 14px;
+              color: #000;
+            }
+          }
+        }
+      }
+    }
+    .form-ctrl {
+      padding-top: 0.41667rem;
+      width: 100%;
+      height: auto;
+      background: #000;
+      z-index: 4;
+      text-align: center;
+      button {
+        margin: 5px;
+        width: 150px;
       }
     }
   }
