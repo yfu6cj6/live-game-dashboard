@@ -183,4 +183,32 @@ export default {
   padding-top: 0.41667rem;
   padding-bottom: 0.41667rem;
 }
+
+.agent-pop-up-panel {
+  .popup-panel {
+    overflow: hidden;
+  }
+  .el-form {
+    .el-form-item {
+      .el-form-item__content {
+        display: block;
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        line-height: 1;
+        .label-group {
+          display: block;
+          color: #f9c901;
+          width: auto;
+          font-size: 14px;
+          padding-top: 5px;
+          -webkit-box-flex: 0;
+          -ms-flex: none;
+          flex: none;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}
 </style>
