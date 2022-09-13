@@ -323,6 +323,9 @@ table {
 #app .pos-r {
   position: relative;
 }
+#app .pos-a {
+  position: absolute;
+}
 
 // margin
 .m-0 {
@@ -569,6 +572,9 @@ table {
 // font
 .strong {
   font-size: 1.16667rem;
+}
+.font-1 {
+  font-size: 1rem;
 }
 .font-1_5 {
   font-size: 1.5rem;
@@ -1602,6 +1608,10 @@ table {
         font-size: 1.16667rem;
         font-weight: bold;
         word-break: break-all;
+      }
+      &.item_w0 {
+        width: 100px;
+        min-width: 100px;
       }
       &.item_w1 {
         width: 145px;

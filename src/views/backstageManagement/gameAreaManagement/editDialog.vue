@@ -125,51 +125,145 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
-        v-if="visible"
-        :loading="dialogLoading"
-        :title="title"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <el-form ref="editForm" :model="editForm" :rules="rules">
-          <el-form-item v-if="!isEdit" :label="$t('__tableId')" prop="table_id">
-            <el-select v-model="editForm.table_id">
-              <el-option v-for="item in tables" :key="item.key" :label="item.nickname" :value="item.key" />
-            </el-select>
-          </el-form-item>
-          <el-form-item v-if="!isEdit" :label="$t('__liveBetAreaId')" prop="live_bet_area_id">
-            <el-select v-model="editForm.live_bet_area_id">
-              <el-option v-for="item in liveBetArea" :key="item.key" :label="item.nickname" :value="item.key" />
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t('__betMin')" prop="bet_min">
-            <el-input v-model="editForm.bet_min" type="number" />
-          </el-form-item>
-          <el-form-item :label="$t('__betMax')" prop="bet_max">
-            <el-input v-model="editForm.bet_max" type="number" />
-          </el-form-item>
-          <el-form-item class="totalBetMax" :label="$t('__totalBetMax')" prop="total_bet_max">
-            <span class="zeroMeansNoLimit">{{ `${$t('__zeroMeansNoLimit')}` }}</span>
-            <el-input v-model="editForm.total_bet_max" type="number" />
-          </el-form-item>
-        </el-form>
-        <span v-if="!dialogLoading" slot="bodyFooter">
-          <el-button class="bg-gray" @click="onReset">{{ $t("__reset") }}</el-button>
-          <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-        </span>
-      </Dialog>
+      <div class="agent-pop-up-panel giftEditDialog backstage_dialog" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click="onClose" />
+        <div class="popup-panel animated fadeInUp">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="btn_icon" @click="onClose" />
+          </div>
+          <div class="data_content">
+            <div class="w-100 d-flex justify-content-center font-weight-bold font-1_5">
+              <span class="text-yellow ">{{ title }}</span>
+            </div>
+            <div v-if="!isEdit" class="el-form-item__content item">
+              <div class="label-group">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__tableId') }}</label>
+              </div>
+              <div class="option">
+                <div class="comp selected-filter">
+                  <select v-model="editForm.table_id" class="el-select">
+                    <option v-for="item in tables" :key="item.key" :value="item.key">
+                      {{ $t(item.nickname) }}
+                    </option>
+                  </select>
+                  <div class="fas gray-deep">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 63 63"
+                      style="height: 0.916667rem; width: 0.916667rem;"
+                    >
+                      <title>arrow_2</title>
+                      <g id="hGqiqI.tif">
+                        <path d="M63,10.44,31.74,52.56,0,10.44Z" />
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="!isEdit" class="el-form-item__content item">
+              <div class="label-group">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__liveBetAreaId') }}</label>
+              </div>
+              <div class="option">
+                <div class="comp selected-filter">
+                  <select v-model="editForm.live_bet_area_id" class="el-select">
+                    <option v-for="item in liveBetArea" :key="item.key" :value="item.key">
+                      {{ $t(item.nickname) }}
+                    </option>
+                  </select>
+                  <div class="fas gray-deep">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 63 63"
+                      style="height: 0.916667rem; width: 0.916667rem;"
+                    >
+                      <title>arrow_2</title>
+                      <g id="hGqiqI.tif">
+                        <path d="M63,10.44,31.74,52.56,0,10.44Z" />
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item" :class="{'is-error': inputData.min_bet === inputState.error, 'is-success': inputData.min_bet === inputState.success}">
+              <div class="label-group required">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__betMin') }}</label>
+              </div>
+              <div class="d-flex">
+                <div class="el-input el-input--small">
+                  <input v-model="editForm.bet_min" type="number" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('min_bet')" @blur="checkValidInput('min_bet')">
+                  <span class="el-input__suffix">
+                    <span class="el-input__suffix-inner" />
+                    <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.min_bet === inputState.error, 'el-icon-success': inputData.min_bet === inputState.success}" />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item" :class="{'is-error': inputData.max_bet === inputState.error, 'is-success': inputData.max_bet === inputState.success}">
+              <div class="label-group required">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__betMax') }}</label>
+              </div>
+              <div class="d-flex">
+                <div class="el-input el-input--small">
+                  <input v-model="editForm.bet_max" type="number" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('max_bet')" @blur="checkValidInput('max_bet')">
+                  <span class="el-input__suffix">
+                    <span class="el-input__suffix-inner" />
+                    <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.max_bet === inputState.error, 'el-icon-success': inputData.max_bet === inputState.success}" />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item" :class="{'is-error': inputData.total_bet === inputState.error, 'is-success': inputData.total_bet === inputState.success}">
+              <div class="label-group required">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__totalBetMax') }}</label>
+                <small class="tip zeroMeansNoLimit">{{ `${$t('__zeroMeansNoLimit')}` }}</small>
+              </div>
+              <div class="d-flex mb-2">
+                <div class="el-input el-input--small">
+                  <input v-model="editForm.total_bet_max" type="number" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput('total_bet')" @blur="checkValidInput('total_bet')">
+                  <span class="el-input__suffix">
+                    <span class="el-input__suffix-inner" />
+                    <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.total_bet === inputState.error, 'el-icon-success': inputData.total_bet === inputState.success}" />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="operate_content">
+            <div class="form-alert">
+              <div v-show="errorTips !== ''" role="alert" class="el-alert el-alert--warning is-light fade show">
+                <i class="el-alert__icon el-icon-warning" />
+                <div class="el-alert__content">
+                  <span class="el-alert__title">{{ errorTips }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-ctrl">
+              <div class="el-row is-align-middle el-row--flex">
+                <button type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
+                  <span>{{ confirm }}</span>
+                </button>
+                <button type="button" class="el-button bg-gray el-button--primary" @click="onReset">
+                  <span>{{ $t('__reset') }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
-import Dialog from '@/components/Dialog'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditDialog',
-  components: { Dialog },
+  components: {},
   mixins: [dialogCommon],
   props: {
     'title': {
@@ -217,19 +311,7 @@ export default {
     }
   },
   data: function() {
-    const validate = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else {
-        callback()
-      }
-    }
     return {
-      rules: {
-        bet_min: [{ required: true, trigger: 'blur', validator: validate }],
-        bet_max: [{ required: true, trigger: 'blur', validator: validate }],
-        total_bet_max: [{ required: true, trigger: 'blur', validator: validate }]
-      },
       editForm: {},
       dialogLoading: false,
       inputData: {
@@ -241,6 +323,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
   },
   watch: {
     visible() {

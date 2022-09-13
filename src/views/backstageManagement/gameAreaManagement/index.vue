@@ -168,7 +168,163 @@
       />
     </template>
     <template v-else>
-      -
+      <div class="pos-r">
+        <backTop
+          ref="backTop"
+          :inner-class="'.view-container'"
+          :view-class="'.scroll_view'"
+        />
+        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+          <div class="scroll_view">
+            <div class="bg-black">
+              <div class="yellow-border-bottom search-container">
+                <div class="options">
+                  <div class="option table">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.table_id"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="tableIdCollapse"
+                        :placeholder="$t('__tableId')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.tables"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="option betarea">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.live_bet_area_id"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="liveBetAreaIdCollapse"
+                        :placeholder="$t('__liveBetAreaId')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.liveBetArea"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.bet_min" type="number" class="input_size" :placeholder="$t('__betMin')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.bet_max" type="number" class="input_size" :placeholder="$t('__betMax')" />
+                  </div>
+                  <div class="option pos-r">
+                    <el-input v-model="searchForm.total_bet_max" type="number" class="input_size" :placeholder="$t('__totalBetMax')" />
+                    <span class="zeroMeansNoLimit mt-2 pos-a font-1" style="top: -22px;">{{ `${$t('__totalBetMax')}${$t('__zeroMeansNoLimit')}` }}</span>
+                  </div>
+                  <div class="d-flex">
+                    <div>
+                      <button class="ml-2 el-button bg-yellow el-button--default mr-4 font-weight-bold" @click.stop="onCreateBtnClick()">{{ `${$t('__create')}${$t('__gameArea')}` }}</button>
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <div class="searchBtn">
+                      <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-container">
+              <template v-if="tableData.length > 0">
+                <div
+                  v-for="(item, index) in tableData"
+                  :key="index"
+                  :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+                >
+                  <div class="d-flex">
+                    <div class="item justify-content-center item_w0">
+                      <span class="title">ID</span>
+                      <span class="value">{{ item.id }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__tableId') }}</span>
+                      <span class="value">{{ item.table_id }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__liveBetAreaId') }}</span>
+                      <span class="value">{{ item.live_bet_area_id }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__totalBetMax') }}</span>
+                      <span class="value" :class="{'text-red': item.total_bet_max === '0.00'}">{{ item.totalBetMaxLabel }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w2">
+                      <span class="title">{{ $t('__betMin') }}</span>
+                      <span class="value">{{ item.bet_min }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w2">
+                      <span class="title">{{ $t('__betMax') }}</span>
+                      <span class="value">{{ item.bet_max }}</span>
+                    </div>
+                    <div class="operate align-items-center operate_w1">
+                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__revise") }}</el-button>
+                      <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                    </div>
+                  </div>
+                </div>
+                <pagination
+                  :page-size="pageSize"
+                  :page-sizes="pageSizes"
+                  :total="totalCount"
+                  :current-page.sync="currentPage"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
+              </template>
+              <template v-else>
+                <div class="noInformation">{{ $t("__noInformation") }}</div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <editDialog
+        ref="createDialog"
+        :title="`${$t('__create')}${$t('__gameArea')}`"
+        :visible="curDialogIndex === dialogEnum.create"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        :tables="searchItems.tables"
+        :live-bet-area="searchItems.liveBetArea"
+        :is-edit="false"
+        @close="closeDialogEven"
+        @confirm="createDialogConfirmEven"
+      />
+
+      <editDialog
+        ref="editDialog"
+        :title="$stringFormat(`${$t('__revise')}${$t('__gameArea')} - {0}`, [selectForm.table_id])"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :confirm="$t('__revise')"
+        :form="selectForm"
+        :tables="searchItems.tables"
+        :live-bet-area="searchItems.liveBetArea"
+        :is-edit="true"
+        @close="closeDialogEven"
+        @confirm="editDialogConfirmEven"
+      />
     </template>
   </div>
 </template>
@@ -179,10 +335,12 @@ import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
 import EditDialog from './editDialog'
+import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'GameAreaManagement',
-  components: { EditDialog },
+  components: { EditDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
