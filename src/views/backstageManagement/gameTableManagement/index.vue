@@ -27,7 +27,7 @@
                   <el-input v-model="searchForm.app_name" class="input_size" placeholder="app_name" />
                 </div>
               </div>
-              <div class="option status">
+              <div class="options">
                 <div class="option">
                   <el-input v-model="searchForm.streaming_name" class="input_size" placeholder="streaming_name" />
                 </div>
@@ -210,10 +210,10 @@
         <backTop
           ref="backTop"
           :inner-class="'.view-container'"
-          :view-class="'.scroll-view'"
+          :view-class="'.scroll_view'"
         />
         <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
-          <div class="scroll-view">
+          <div class="scroll_view">
             <div class="bg-black">
               <div class="yellow-border-bottom search-container">
                 <div class="options">
@@ -310,7 +310,7 @@
                       <span class="title">{{ $t('__description') }}</span>
                       <span class="value">{{ item.description }}</span>
                     </div>
-                    <div class="operate align-items-center item_w1">
+                    <div class="operate align-items-center operate_w2">
                       <el-button class="bg-yellow" size="mini" @click="onChipsSettingBtnClick(item)">{{ `${$t("__chips")}${$t("__setting")}` }}</el-button>
                       <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                       <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
@@ -401,10 +401,12 @@ import handlePageChange from '@/mixin/handlePageChange';
 import EditDialog from './editDialog'
 import ChipSettingDialog from './chipSettingDialog'
 import ChipEditDialog from './chipEditDialog'
+import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'GameTableManagement',
-  components: { EditDialog, ChipSettingDialog, ChipEditDialog },
+  components: { EditDialog, ChipSettingDialog, ChipEditDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -429,6 +431,15 @@ export default {
     }
   },
   watch: {
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.closeDialogEven()
+        this.$nextTick(() => {
+          this.onSearchBtnClick(1);
+          this.addSelectFilter()
+        })
+      }
+    }
   },
   created() {
     this.$nextTick(() => {
@@ -449,7 +460,7 @@ export default {
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__gameTableManagement'), false, () => { }])
     },
     addSelectFilter() {
-      this.addSelectDropDownFilter('options status', () => {
+      this.addSelectDropDownFilter('option status', () => {
         this.searchForm.status = JSON.parse(JSON.stringify(this.searchItems.status)).map(item => item.key)
       }, () => {
         this.searchForm.status = []
