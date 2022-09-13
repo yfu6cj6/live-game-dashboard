@@ -91,19 +91,141 @@
       </div>
     </template>
     <template v-else>
-      -
+      <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click="onClose" />
+        <div class="popup-panel animated fadeInUp subAccountFormAllocations">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="icon" @click="onClose" />
+          </div>
+          <div class="popup-title">{{ `${$t('__subAgentDistribute')}` }}</div>
+          <div id="subAccountFormAllocations" class="others agent-form">
+            <div class="step-content">
+              <div class="page-title ml-auto p-0" style="font-size: 14px;">{{ `${$t('__agent')}` }}
+                <span class="user-name">{{ ` ${account} ` }}</span>
+              </div>
+            </div>
+            <div class="overlay-scroll-wrap scrolling">
+              <backTop
+                :inner-class="'.scroll-inner.distributeDialog'"
+              />
+              <div id="scroll-inner" class="scroll-inner on native distributeDialog">
+                <div class="scroll-view" style="max-height: 70vh;">
+                  <form class="el-form el-form--label-left">
+                    <div class="step-content d-block" style="padding: 0px !important;">
+                      <div class="w-100 handicap-table" style="position: relative;">
+                        <table class="el-table w-100">
+                          <tbody>
+                            <tr class="el-table__row head">
+                              <td class="w2">
+                                <div class="cell checkbox">
+                                  <label class="el-checkbox all-check" :class="{'is-checked': selectAll}">
+                                    <span class="el-checkbox__input" :class="{'is-indeterminate': hadSelectedButNotAll, 'is-checked': selectAll}">
+                                      <span class="el-checkbox__inner" />
+                                      <input type="checkbox" aria-hidden="false" class="el-checkbox__original" value="" @click="selection">
+                                    </span>
+                                  </label>
+                                </div>
+                              </td>
+                              <td class="w2">
+                                <div class="cell name">{{ $t('__index') }}</div>
+                              </td>
+                              <td class="w6">
+                                <div class="cell name long">{{ $t('__agentAccount') }}</div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="w-100">
+                          <div role="group" aria-label="checkbox-group" class="el-checkbox-group">
+                            <table class="el-table w-100">
+                              <tbody>
+                                <tr style="visibility: hidden;" />
+                                <tr
+                                  v-for="(item, index) in selectSubAgents"
+                                  :key="index"
+                                  class="el-table__row"
+                                >
+                                  <td class="w2">
+                                    <div class="cell checkbox">
+                                      <label class="el-checkbox" :class="{'is-checked': item.exist}">
+                                        <span class="el-checkbox__input" :class="{'is-checked': item.exist}">
+                                          <span class="el-checkbox__inner" />
+                                          <input v-model="item.exist" type="checkbox" aria-hidden="false" name="agent" class="el-checkbox__original" value="374568" @change="handleCheckboxChange">
+                                        </span>
+                                      </label>
+                                    </div>
+                                  </td>
+                                  <td class="w2">
+                                    <div class="cell name">{{ (index+1) }}</div>
+                                  </td>
+                                  <td class="w6">
+                                    <div class="cell name long">{{ item.nickname }}</div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="form-alert p-0" style="height: 30px;">
+              <div v-if="errorTips !== ''" role="alert" class="el-alert el-alert--warning is-light fade justify-content-center show">
+                <i class="el-alert__icon el-icon-warning" />
+                <div class="el-alert__content">
+                  <span class="el-alert__title">{{ errorTips }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-red w-100 mt-1 ml-auto mr-auto pt-2">
+              <form class="el-form el-form--label-left">
+                <div class="el-form-item operator-psw custom-psw m-auto el-form-item--small" :class="{'is-error': userInputState === inputState.error, 'is-success': userInputState === inputState.success}">
+                  <div class="el-form-item__content">
+                    <div class="d-flex justify-content-center">
+                      <div class="label-group w-auto" style="margin-right: 10px;">
+                        <label class="form-item-label text-yellow">{{ $t('__userPassword') }}</label>
+                      </div>
+                      <div class="value-group w-auto">
+                        <div class="el-input el-input--small el-input--suffix">
+                          <input v-model="form.userPassword" :type="userPasswordType" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkPassword()" @blur="checkPassword()">
+                          <span class="el-input__suffix">
+                            <span class="el-input__suffix-inner">
+                              <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                              <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                              <i title="显示密码" class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': userPasswordType !== 'password'}" @click.stop="showUserPasswordType()" />
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="d-flex w-100 justify-content-center popup-buttons" style="margin-top: 20px;">
+            <button type="button" class="el-button bg-yellow common-button el-button--primary">
+              <span>{{ $t('__submit') }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
-// import Dialog from '@/components/Dialog'
 import dialogCommon from '@/mixin/dialogCommon'
 import common from '@/mixin/common'
+import BackTop from '@/components/BackTop'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SubAgentDistributeDialog',
-  // components: { Dialog },
+  components: { BackTop },
   mixins: [dialogCommon, common],
   props: {
     'account': {
@@ -133,17 +255,7 @@ export default {
     }
   },
   data: function() {
-    const validate = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else {
-        callback()
-      }
-    }
     return {
-      rules: {
-        userPassword: [{ required: true, trigger: 'blur', validator: validate }]
-      },
       userPasswordType: 'password',
       selectAll: false,
       selectSubAgents: [],
@@ -152,6 +264,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ]),
     hadSelectedButNotAll() {
       const itemIdx = this.selectSubAgents.findIndex(element => element.exist)
       return !this.selectAll && itemIdx >= 0
@@ -189,12 +304,14 @@ export default {
     },
     selection() {
       this.selectAll = !this.selectAll
+      console.log('selection: ' + this.selectAll);
       this.selectSubAgents.forEach(element => {
         element.exist = this.selectAll
       });
       this.selectSubAgents = JSON.parse(JSON.stringify(this.selectSubAgents))
     },
     handleCheckboxChange(select) {
+      console.log('handleCheckboxChange: ' + select);
       if (select) {
         this.selectAll = !this.selectSubAgents.some(subAgent => subAgent.exist === false)
       } else {
@@ -308,6 +425,90 @@ export default {
       .user-name {
         color: #f9c901;
       }
+    }
+  }
+}
+#app.pc {
+  .agent-form {
+    .step-content {
+      max-width: 100%;
+      .handicap-table {
+        transform: translateZ(0);
+        .el-table {
+          font-size: 12px;
+          line-height: 1;
+          .head {
+            .cell {
+              word-break: break-word;
+            }
+          }
+          .cell {
+            white-space: normal;
+            overflow-x: visible;
+            font-size: 12px;
+            line-height: 1;
+            height: 100%;
+            text-align: left;
+            padding: 0;
+            width: 30px;
+            padding-right: 10px;
+            &.checkbox {
+              padding-left: 10px;
+              width: 60px;
+            }
+            &.name {
+              width: 100px;
+            }
+            &.long {
+              width: 180px !important;
+            }
+          }
+          tbody {
+            tr {
+              transform: translateZ(0);
+              &:nth-child(odd) {
+                background: #e9e9e9;
+              }
+            }
+          }
+        }
+      }
+    }
+    .el-form {
+      .operator-psw {
+        .el-input__inner {
+          height: 2.8rem;
+          max-width: 190px;
+        }
+        .form-item-label {
+          font-size: 15px;
+        }
+      }
+    }
+    &.others {
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+      overflow: auto;
+      .page-title {
+        font-size: 1rem;
+        color: #fff;
+        text-align: left;
+        padding: 1rem;
+        margin-top: 1.66667rem;
+        margin-bottom: 0.83333rem;
+        .user-name {
+          color: #f9c901;
+        }
+      }
+      .el-alert__title {
+        font-size: 1rem;
+      }
+    }
+  }
+  .subAccountFormAllocations {
+    .popup-buttons {
+      margin-top: 5px !important;
     }
   }
 }
