@@ -214,7 +214,198 @@
       />
     </template>
     <template v-else>
-      -
+      <div class="pos-r">
+        <backTop
+          ref="backTop"
+          :inner-class="'.view-container'"
+          :view-class="'.scroll_view'"
+        />
+        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+          <div class="scroll_view">
+            <div class="bg-black">
+              <div class="yellow-border-bottom search-container">
+                <div class="options">
+                  <div class="option">
+                    <el-input v-model="searchForm.account" type="text" class="input_size" :placeholder="$t('__account')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.nickname" type="text" class="input_size" :placeholder="$t('__nickname')" />
+                  </div>
+                  <div class="option roles">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.roles"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="rolesCollapse"
+                        :placeholder="$t('__role')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.roles"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="option agents">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.agent"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="agentCollapse"
+                        :placeholder="$t('__agentName')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.agent"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="option status">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.status"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="statusCollapse"
+                        :placeholder="$t('__accountStatus')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.status"
+                          :key="item.key"
+                          :label="$t(item.nickname)"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="d-flex">
+                    <div>
+                      <button class="ml-2 el-button bg-yellow el-button--default mr-4 font-weight-bold" @click.stop="onCreateBtnClick()">{{ `${$t('__create')}${$t('__account')}` }}</button>
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <div class="searchBtn">
+                      <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-container">
+              <template v-if="tableData.length > 0">
+                <div
+                  v-for="(item, index) in tableData"
+                  :key="index"
+                  :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+                >
+                  <div class="d-flex">
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__account') }}</span>
+                      <span class="value">{{ item.account }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__nickname') }}</span>
+                      <span class="value">{{ item.nickname }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__role') }}</span>
+                      <span v-for="(role, roleIndex) in item.rolesNickname" :key="roleIndex" class="value">{{ role }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__agentName') }}</span>
+                      <span class="value">{{ item.agentName }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w0">
+                      <span class="title">{{ $t('__cityName') }}</span>
+                      <span class="value">{{ item.cityNameLabel }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w0">
+                      <span class="title">{{ $t('__accountStatus') }}</span>
+                      <span class="value">{{ item.statusLabel }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w2">
+                      <span class="title">{{ $t('__remark') }}</span>
+                      <span class="value">{{ item.remark }}</span>
+                    </div>
+                    <div class="operate align-items-center operate_w1">
+                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__revise") }}</el-button>
+                      <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
+                    </div>
+                  </div>
+                </div>
+                <pagination
+                  :page-size="pageSize"
+                  :page-sizes="pageSizes"
+                  :total="totalCount"
+                  :current-page.sync="currentPage"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
+              </template>
+              <template v-else>
+                <div class="noInformation">{{ $t("__noInformation") }}</div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <editDialog
+        ref="editDialog"
+        :title="$stringFormat(`${$t('__revise')}${$t('__account')} - {0}`, [selectForm.account])"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :confirm="$t('__revise')"
+        :form="selectForm"
+        :roles="roles"
+        :agents="agents"
+        :account-status-type="accountStatusType"
+        :time-zones="timeZones"
+        :has-password="false"
+        @close="closeDialogEven"
+        @confirm="editDialogConfirmEven"
+      />
+
+      <editDialog
+        ref="createDialog"
+        :title="`${$t('__create')}${$t('__account')}`"
+        :visible="curDialogIndex === dialogEnum.create"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        :roles="roles"
+        :agents="agents"
+        :account-status-type="accountStatusType"
+        :time-zones="timeZones"
+        :has-password="true"
+        @close="closeDialogEven"
+        @confirm="createDialogConfirmEven"
+      />
+
+      <resetPasswordDialog
+        ref="resetDialog"
+        :title="$t('__tip')"
+        :visible="curDialogIndex === dialogEnum.reset"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        @close="closeDialogEven"
+      />
     </template>
   </div>
 </template>
@@ -227,6 +418,8 @@ import handlePageChange from '@/mixin/handlePageChange';
 import { mapGetters } from 'vuex'
 import EditDialog from './editDialog'
 import ResetPasswordDialog from './resetPasswordDialog'
+import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 const defaultForm = {
   roles: [],
@@ -236,7 +429,7 @@ const defaultForm = {
 
 export default {
   name: 'AccountManagement',
-  components: { EditDialog, ResetPasswordDialog },
+  components: { EditDialog, ResetPasswordDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -269,6 +462,15 @@ export default {
     }
   },
   watch: {
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.closeDialogEven()
+        this.$nextTick(() => {
+          this.onSearchBtnClick(1);
+          this.addSelectFilter()
+        })
+      }
+    }
   },
   created() {
     this.$nextTick(() => {
