@@ -177,10 +177,10 @@
         <backTop
           ref="backTop"
           :inner-class="'.view-container'"
-          :view-class="'.scroll-view'"
+          :view-class="'.scroll_view'"
         />
         <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
-          <div class="scroll-view">
+          <div class="scroll_view">
             <div class="bg-black">
               <div class="yellow-border-bottom search-container">
                 <div class="options">
@@ -289,7 +289,7 @@
                       <span class="title">{{ $t('__betMax') }}</span>
                       <span class="value">{{ item.bet_maxLabel }}</span>
                     </div>
-                    <div class="operate align-items-center">
+                    <div class="operate align-items-center operate_w1">
                       <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                       <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                     </div>

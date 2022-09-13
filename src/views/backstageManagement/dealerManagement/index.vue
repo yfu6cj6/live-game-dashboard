@@ -144,10 +144,10 @@
         <backTop
           ref="backTop"
           :inner-class="'.view-container'"
-          :view-class="'.scroll-view'"
+          :view-class="'.scroll_view'"
         />
         <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
-          <div class="scroll-view">
+          <div class="scroll_view">
             <div class="bg-black">
               <div class="yellow-border-bottom search-container">
                 <div class="options">
@@ -224,7 +224,7 @@
                       <span class="title">{{ $t('__creator') }}</span>
                       <span class="value">{{ item.creator }}</span>
                     </div>
-                    <div class="operate align-items-center">
+                    <div class="operate align-items-center operate_w1">
                       <el-button class="bg-yellow button" size="mini" @click="onLoginBarcodeBtnClick(item)">{{ $t("__loginBarcode") }}</el-button>
                       <el-button class="bg-yellow button" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                     </div>

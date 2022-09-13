@@ -1626,7 +1626,15 @@ table {
         margin-right: 0.5rem;
         margin-top: 0.5rem;
       }
-      &.item_w1 {
+      &.operate_w0 {
+        width: 100px;
+        min-width: 100px;
+      }
+      &.operate_w1 {
+        width: 180px;
+        min-width: 180px;
+      }
+      &.operate_w2 {
         width: 260px;
         min-width: 260px;
       }

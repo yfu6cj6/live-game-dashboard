@@ -174,10 +174,10 @@
         <backTop
           ref="backTop"
           :inner-class="'.view-container'"
-          :view-class="'.scroll-view'"
+          :view-class="'.scroll_view'"
         />
         <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
-          <div class="scroll-view">
+          <div class="scroll_view">
             <div class="bg-black">
               <div class="yellow-border-bottom search-container">
                 <div class="options">
@@ -274,7 +274,7 @@
                       <span class="title">{{ $t('__status') }}</span>
                       <span class="value" :class="{'statusOpen': item.status === '1' }">{{ item.statusLabel }}</span>
                     </div>
-                    <div class="operate align-items-center">
+                    <div class="operate align-items-center operate_w0">
                       <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                     </div>
                   </div>
