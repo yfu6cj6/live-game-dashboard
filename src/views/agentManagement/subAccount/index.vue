@@ -696,6 +696,7 @@ export default {
     },
     // 父物件呼叫
     async create() {
+      this.setDataLoading(true)
       const timezone = await timezoneSearch({})
       this.$refs.createDialog.setTimeZone(timezone)
       this.editForm = JSON.parse(JSON.stringify(defaultForm))
@@ -706,6 +707,7 @@ export default {
         this.closeDialogEven()
         this.$store.dispatch('common/setHeaderStyle', [this.$t('__subAccountManagement'), false, () => { }])
       }])
+      this.setDataLoading(false)
     },
     // 父物件呼叫
     setAgentInfo(agentInfo) {
