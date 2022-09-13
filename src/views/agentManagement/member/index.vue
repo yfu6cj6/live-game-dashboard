@@ -108,7 +108,7 @@
                     <span class="h-t">{{ item.handicaps_info }}</span>
                   </span>
                   <span class="label ml-2">
-                    <div class="fas yellow">
+                    <div class="fas yellow" @click.stop="onLimitBtnClick(item)">
                       <img src="@/assets/agentManagement/updown.png" style="height: 1.33333rem; width: 1.33333rem;">
                     </div>
                   </span>
@@ -532,7 +532,7 @@
                           <span class="h-t">{{ item.handicaps_info }}</span>
                         </span>
                         <span class="label ml-2">
-                          <div class="fas clickable yellow">
+                          <div class="fas clickable yellow" @click.stop="onLimitBtnClick(item)">
                             <img src="@/assets/agentManagement/updown.png" style="height: 1.16667rem; width: 1.16667rem;">
                           </div>
                         </span>
