@@ -602,6 +602,10 @@ export default {
           this.errorTips = `${this.$t('__confirmPassword')}${this.$t('__and')}${this.$t('__password')}${this.$t('__inconsistent')}`
           return
         }
+        if (!this.form.userPassword) {
+          this.errorTips = this.$t('__pleaseEnterUserPassword')
+          return
+        }
         if (this.inputData.account.state !== this.inputState.success ||
             this.inputData.nickname.state !== this.inputState.success ||
             this.inputData.password.state !== this.inputState.success ||
@@ -623,12 +627,17 @@ export default {
           this.errorTips = `${this.$t('__nickname')}` + `${this.$t('__lengthLess')}1`
           return
         }
+        if (!this.form.userPassword) {
+          this.errorTips = this.$t('__pleaseEnterUserPassword')
+          return
+        }
         this.dialogLoading = true
         subAccountEdit(data).then((res) => {
           this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
           this.dialogLoading = false
-        }).catch(() => {
+        }).catch((res) => {
           this.dialogLoading = false
+          this.errorTips = res.data.message.userPassword[0] || 'Error'
         })
       }
     },

@@ -300,16 +300,10 @@ export default {
       }
 
       this.$emit('confirm', JSON.parse(JSON.stringify(this.editForm)))
-      // this.$refs.editForm.validate((valid) => {
-      //   if (valid) {
-      //     this.$emit('confirm', JSON.parse(JSON.stringify(this.editForm)))
-      //   }
-      // })
     },
     onReset() {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.$nextTick(() => {
-        // this.$refs.editForm.clearValidate()
         this.inputData.min_bet = this.inputState.none
         this.inputData.max_bet = this.inputState.none
         this.inputData.total_bet = this.inputState.none
