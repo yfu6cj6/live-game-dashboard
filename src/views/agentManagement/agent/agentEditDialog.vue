@@ -2122,14 +2122,12 @@ export default {
             this.dialogLoading = false
           })
         } else if (this.operationType === this.operationEnum.edit) {
-          this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-            this.dialogLoading = true
-            agentEdit(data).then((res) => {
-              this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
-              this.dialogLoading = false
-            }).catch(() => {
-              this.dialogLoading = false
-            })
+          this.dialogLoading = true
+          agentEdit(data).then((res) => {
+            this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
+            this.dialogLoading = false
+          }).catch(() => {
+            this.dialogLoading = false
           })
         }
       } else {

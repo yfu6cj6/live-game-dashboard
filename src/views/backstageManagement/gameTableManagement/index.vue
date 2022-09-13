@@ -522,25 +522,21 @@ export default {
       }])
     },
     editDialogConfirmEven(data) {
-      this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-        this.$refs.editDialog.setDialogLoading(true)
-        data.table_id = undefined
-        data.live_bet_area_id = undefined
-        gameTableEdit(data).then((res) => {
-          this.handleRespone(res)
-        }).catch(() => {
-          this.closeLoading()
-        })
+      this.$refs.editDialog.setDialogLoading(true)
+      data.table_id = undefined
+      data.live_bet_area_id = undefined
+      gameTableEdit(data).then((res) => {
+        this.handleRespone(res)
+      }).catch(() => {
+        this.closeLoading()
       })
     },
     onDeleteBtnClick(item) {
-      this.confirmMsg(this.$stringFormat(`${this.$t('__confirmDeletion')}?`, [`"ID: ${item.id}"`]), () => {
-        this.setDataLoading(true)
-        gameTableDelete(item.id).then((res) => {
-          this.handleRespone(res)
-        }).catch(() => {
-          this.closeLoading()
-        })
+      this.setDataLoading(true)
+      gameTableDelete(item.id).then((res) => {
+        this.handleRespone(res)
+      }).catch(() => {
+        this.closeLoading()
       })
     },
     onChipsSettingBtnClick(item) {

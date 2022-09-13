@@ -113,9 +113,7 @@ export default {
       this.$emit('edit', JSON.parse(JSON.stringify(item)))
     },
     onDeleteBtnClick(item) {
-      this.confirmMsg(this.$stringFormat(`${this.$t('__confirmDeletion')}?`, [`"${this.$t('__amount')}: ${item.amount}"`]), () => {
-        this.$emit('delete', JSON.parse(JSON.stringify(item)))
-      })
+      this.$emit('delete', JSON.parse(JSON.stringify(item)))
     }
   }
 }

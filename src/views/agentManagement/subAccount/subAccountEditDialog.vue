@@ -623,14 +623,12 @@ export default {
           this.errorTips = `${this.$t('__nickname')}` + `${this.$t('__lengthLess')}1`
           return
         }
-        this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-          this.dialogLoading = true
-          subAccountEdit(data).then((res) => {
-            this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
-            this.dialogLoading = false
-          }).catch(() => {
-            this.dialogLoading = false
-          })
+        this.dialogLoading = true
+        subAccountEdit(data).then((res) => {
+          this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
+          this.dialogLoading = false
+        }).catch(() => {
+          this.dialogLoading = false
         })
       }
     },

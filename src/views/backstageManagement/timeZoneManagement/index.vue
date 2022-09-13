@@ -196,23 +196,19 @@ export default {
       this.curDialogIndex = this.dialogEnum.edit
     },
     editDialogConfirmEven(data) {
-      this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-        this.$refs.editDialog.setDialogLoading(true)
-        timezoneEdit(data).then((res) => {
-          this.handleRespone(res)
-        }).catch(() => {
-          this.closeLoading()
-        })
+      this.$refs.editDialog.setDialogLoading(true)
+      timezoneEdit(data).then((res) => {
+        this.handleRespone(res)
+      }).catch(() => {
+        this.closeLoading()
       })
     },
     onDeleteBtnClick(item) {
-      this.confirmMsg(this.$stringFormat(`${this.$t('__confirmDeletion')}?`, [`"ID: ${item.id}"`]), () => {
-        this.setDataLoading(true)
-        timezoneDelete(item.id).then((res) => {
-          this.handleRespone(res)
-        }).catch(() => {
-          this.closeLoading()
-        })
+      this.setDataLoading(true)
+      timezoneDelete(item.id).then((res) => {
+        this.handleRespone(res)
+      }).catch(() => {
+        this.closeLoading()
       })
     },
     closeDialogEven() {

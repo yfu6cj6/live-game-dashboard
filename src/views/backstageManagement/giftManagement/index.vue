@@ -484,13 +484,11 @@ export default {
       this.curDialogIndex = this.dialogEnum.edit;
     },
     editDialogConfirmEven(data) {
-      this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-        this.$refs.editDialog.setDialogLoading(true);
-        giftEdit(data).then((res) => {
-          this.handleRespone(res)
-        }).catch(() => {
-          this.closeLoading()
-        });
+      this.$refs.editDialog.setDialogLoading(true);
+      giftEdit(data).then((res) => {
+        this.handleRespone(res)
+      }).catch(() => {
+        this.closeLoading()
       });
     },
     onSortBtnClick() {

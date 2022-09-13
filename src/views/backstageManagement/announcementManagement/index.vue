@@ -424,26 +424,22 @@ export default {
       }])
     },
     editDialogConfirmEven(data) {
-      this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-        this.$refs.editDialog.setDialogLoading(true)
-        this.handleRequest(data)
-        announcementEdit(data).then((res) => {
-          this.handleRespone(res)
-          this.$store.dispatch('backstageManagement/setAnnouncement', res)
-        }).catch(() => {
-          this.closeLoading()
-        })
+      this.$refs.editDialog.setDialogLoading(true)
+      this.handleRequest(data)
+      announcementEdit(data).then((res) => {
+        this.handleRespone(res)
+        this.$store.dispatch('backstageManagement/setAnnouncement', res)
+      }).catch(() => {
+        this.closeLoading()
       })
     },
     onDeleteBtnClick(item) {
-      this.confirmMsg(this.$stringFormat(`${this.$t('__confirmDeletion')}?`, [`"ID: ${item.id}"`]), () => {
-        this.setDataLoading(true)
-        announcementDelete(item.id).then((res) => {
-          this.handleRespone(res)
-          this.$store.dispatch('backstageManagement/setAnnouncement', res)
-        }).catch(() => {
-          this.closeLoading()
-        })
+      this.setDataLoading(true)
+      announcementDelete(item.id).then((res) => {
+        this.handleRespone(res)
+        this.$store.dispatch('backstageManagement/setAnnouncement', res)
+      }).catch(() => {
+        this.closeLoading()
       })
     },
     closeDialogEven() {

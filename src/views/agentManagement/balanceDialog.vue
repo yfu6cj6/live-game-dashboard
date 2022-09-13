@@ -425,19 +425,6 @@ export default {
       } else if (this.operationType === this.operationEnum.withdrawBalance) {
         this.$emit('withdrawBalance', data)
       }
-
-      // this.$refs.form.validate((valid) => {
-      //   if (valid) {
-      //     this.confirmMsg(`${this.$t('__confirmOperation')}?`, () => {
-      //       const data = JSON.parse(JSON.stringify(this.form))
-      //       if (this.operationType === this.operationEnum.depositBalance) {
-      //         this.$emit('depositBalance', data)
-      //       } else if (this.operationType === this.operationEnum.withdrawBalance) {
-      //         this.$emit('withdrawBalance', data)
-      //       }
-      //     })
-      //   }
-      // })
     },
     setBalanceInfo(balanceInfo) {
       this.agentBalanceInfo = balanceInfo

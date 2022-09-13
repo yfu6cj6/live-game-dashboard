@@ -40,17 +40,6 @@ export default {
     }
   },
   methods: {
-    confirmMsg(msg, callBack) {
-      this.$confirm(msg, {
-        closeOnClickModal: false,
-        closeOnPressEscape: false,
-        confirmButtonClass: 'bg-yellow font-weight-bold w-35',
-        cancelButtonClass: 'bg-gray font-weight-bold w-35'
-      }).then(_ => {
-        callBack()
-      }).catch(() => {
-      })
-    },
     handleChangePickerClass() {
       this.$nextTick(() => {
         const datePicker = document.getElementsByClassName('ams-timeslot-popper')

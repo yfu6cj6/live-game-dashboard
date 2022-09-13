@@ -298,26 +298,22 @@ export default {
       }])
     },
     editDialogConfirmEven(data) {
-      this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-        this.$refs.editDialog.setDialogLoading(true)
-        if (data.method !== 'None') {
-          data.methodType = data.method
-        }
-        permissionEdit(data).then((res) => {
-          this.handleRespone(res)
-        }).catch(() => {
-          this.closeLoading()
-        })
+      this.$refs.editDialog.setDialogLoading(true)
+      if (data.method !== 'None') {
+        data.methodType = data.method
+      }
+      permissionEdit(data).then((res) => {
+        this.handleRespone(res)
+      }).catch(() => {
+        this.closeLoading()
       })
     },
     onDeleteBtnClick(item) {
-      this.confirmMsg(this.$stringFormat(`${this.$t('__confirmDeletion')}?`, [`"ID: ${item.id}"`]), () => {
-        this.setDataLoading(true)
-        permissionDelete(item.id).then((res) => {
-          this.handleRespone(res)
-        }).catch(() => {
-          this.closeLoading()
-        })
+      this.setDataLoading(true)
+      permissionDelete(item.id).then((res) => {
+        this.handleRespone(res)
+      }).catch(() => {
+        this.closeLoading()
       })
     },
     closeDialogEven() {

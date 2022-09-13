@@ -399,26 +399,22 @@ export default {
       }])
     },
     editDialogConfirmEven(data) {
-      this.confirmMsg(`${this.$t('__confirmChanges')}?`, () => {
-        this.$refs.editDialog.setDialogLoading(true)
-        accountEdit(data).then((res) => {
-          this.handleRespone(res)
-        }).catch(() => {
-          this.closeLoading()
-        })
+      this.$refs.editDialog.setDialogLoading(true)
+      accountEdit(data).then((res) => {
+        this.handleRespone(res)
+      }).catch(() => {
+        this.closeLoading()
       })
     },
     onPasswordResetBtnClick(item) {
-      this.confirmMsg(`${this.$t('__confirmReset')}${this.$t('__account')}:${item.account} ${this.$t('__of')}${this.$t('__password')}?`, () => {
-        this.selectForm = {}
-        this.curDialogIndex = this.dialogEnum.reset
-        this.$refs.resetDialog.setDialogLoading(true)
-        resetPassword(item).then((res) => {
-          this.selectForm = { account: item.account, password: res.password, isCreate: false }
-          this.$refs.resetDialog.setDialogLoading(false)
-        }).catch(() => {
-          this.closeLoading()
-        })
+      this.selectForm = {}
+      this.curDialogIndex = this.dialogEnum.reset
+      this.$refs.resetDialog.setDialogLoading(true)
+      resetPassword(item).then((res) => {
+        this.selectForm = { account: item.account, password: res.password, isCreate: false }
+        this.$refs.resetDialog.setDialogLoading(false)
+      }).catch(() => {
+        this.closeLoading()
       })
     },
     closeDialogEven() {
