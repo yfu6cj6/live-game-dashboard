@@ -2126,7 +2126,9 @@ export default {
           agentEdit(data).then((res) => {
             this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
             this.dialogLoading = false
-          }).catch(() => {
+          }).catch((response) => {
+            this.hasError = true
+            this.errorTip = response.data.message.userPassword[0] || 'Error'
             this.dialogLoading = false
           })
         }
