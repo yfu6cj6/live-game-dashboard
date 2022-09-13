@@ -266,18 +266,18 @@
                       <div class="label-group">
                         <label class="form-item-label">{{ `${$t('__liveGame')} ${$t('__rollingRate')}` }}</label>
                         <small class="tip small">
-                          {{ `${$t('__range')} : 0 % - ${agentInfo.live_rolling_rate} %` }}
+                          {{ `${$t('__range')} : 0 % - ${agentInfo.liveRollingRateLabel} %` }}
                         </small>
                       </div>
                       <div
                         class="text-field share el-input el-input--small"
-                        :class="{'is-disabled': agentInfo.live_commission_rate === 0}"
+                        :class="{'is-disabled': agentInfo.live_rolling_rate === 0}"
                       >
                         <input
                           v-model.number="form.live_rolling_rate"
                           type="number"
                           autocomplete="off"
-                          :disabled="agentInfo.live_commission_rate === 0"
+                          :disabled="agentInfo.live_rolling_rate === 0"
                           min="0"
                           class="el-input__inner"
                           @focus="inputFocus(step2.live_rolling_rate)"
@@ -585,7 +585,12 @@
                       <div class="label-group">
                         <label class="form-item-label">{{ $t('__depositBalance') }}</label>
                         <small class="tip small">
-                          {{ `${$t('__range')} : 0 - ${(agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.agentBalanceLabel)}` }}
+                          {{ `${$t('__range')} : 0 - ` }}
+                          <span
+                            :style="`letter-spacing: ${(agentBalanceInfo.parentId === 1) ? '-0.2' : '0'}rem`"
+                          >
+                            {{ `${(agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.agentBalanceLabel)}` }}
+                          </span>
                         </small>
                       </div>
                       <div
@@ -635,7 +640,7 @@
                       <label class="preview-item-label">{{ $t('__memberNickname') }}</label>
                       <span class="preview-item-value">{{ form.nick_name }}</span>
                     </div>
-                    <div class="item">
+                    <div v-if="operationType === operationEnum.create" class="item">
                       <label class="preview-item-label">{{ $t('__password') }}</label>
                       <span class="preview-item-value">{{ form.password }}</span>
                     </div>
@@ -768,6 +773,871 @@
         </div>
       </div>
     </template>
+    <template v-else>
+      <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" />
+        <div class="popup-panel animated fadeInUp addAgentForm">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;" @click.stop="onClose">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" />
+          </div>
+          <div class="popup-title">{{ title }}</div>
+          <div class="agent-form popup-page flex-column flex-fill h-100">
+            <div class="form-fixed step">
+              <div class="w-100 text-left text-white mb-2">{{ `${$t('__superiorAgent')}: ` }}
+                <span class="text-yellow">{{ agentInfo.fullName }}</span>
+              </div>
+              <el-steps
+                :active="curIndex"
+                class="form-step"
+                finish-status="success"
+                align-center
+              >
+                <el-step v-if="hasStep('memberInfo')" :title="$t('__memberInfo')" />
+                <el-step v-if="hasStep('rate')" :title="$t('__rate')" />
+                <el-step v-if="hasStep('limit')" :title="$t('__handicapLimit')" />
+                <el-step v-if="hasStep('balanceConfig')" :title="$t('__balanceConfig')" />
+                <el-step v-if="hasStep('confirm')" :title="$t('__confirm')" />
+              </el-steps>
+              <div class="w-100" style="height: 10px;" />
+            </div>
+            <div class="overlay-scroll-wrap">
+              <div class="scroll-inner">
+                <div class="scroll-view">
+                  <backTop
+                    v-if="curIndex === stepEnum.memberInfo"
+                    :inner-class="'.form-step-content'"
+                    :view-class="'.step_memberInfo'"
+                    style="width: 25.5px; height: 25.5px; font-size: 20.4px; top: 10.2px;"
+                  />
+                  <backTop
+                    v-if="curIndex === stepEnum.limit"
+                    :inner-class="'.form-step-content'"
+                    :view-class="'.step_limit'"
+                    style="width: 25.5px; height: 25.5px; font-size: 20.4px; top: 10.2px;"
+                  />
+                  <backTop
+                    v-if="curIndex === stepEnum.confirm"
+                    :inner-class="'.form-step-content'"
+                    :view-class="'.step_confirm'"
+                    style="width: 25.5px; height: 25.5px; font-size: 20.4px; top: 10.2px;"
+                  />
+                  <div class="form-step-content" style="height: 395px; max-height: calc(100vh - 30rem); overflow: auto;">
+                    <div
+                      v-show="curIndex === stepEnum.memberInfo"
+                      class="step_memberInfo"
+                    >
+                      <form class="el-form el-form--label-left">
+                        <div class="step-content">
+                          <div v-if="operationType === operationEnum.create" class="el-form-item el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label mr-3">{{ $t('__accountGenerateMode') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <el-switch
+                                  v-model="autoGenerateAccount"
+                                  :active-text="$t('__auto')"
+                                  :inactive-text="$t('__manual')"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step1.name.hasError,
+                              'is-success': step1.name.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__memberAccount') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                    :class="{'is-disabled': operationType === operationEnum.edit}"
+                                  >
+                                    <input
+                                      v-model="form.name"
+                                      type="text"
+                                      autocomplete="off"
+                                      :disabled="operationType===operationEnum.edit"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step1.name)"
+                                      @blur="nameChange(step1.name, form.name)"
+                                      @change="nameChange(step1.name, form.name)"
+                                    >
+                                    <span v-if="step1.name.hasError || step1.name.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i
+                                          v-if="step1.name.hasError"
+                                          class="el-input__icon el-input__validateIcon el-icon-error has-error"
+                                        />
+                                        <i
+                                          v-if="step1.name.isSuccess"
+                                          class="el-input__icon el-input__validateIcon el-icon-success no-error"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip">
+                                  {{ operationType === operationEnum.edit ? '' : `5-8${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step1.nick_name.hasError,
+                              'is-success': step1.nick_name.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__memberNickname') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                  >
+                                    <input
+                                      v-model="form.nick_name"
+                                      type="text"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step1.nick_name)"
+                                      @blur="inputChange(step1.nick_name, form.nick_name)"
+                                      @change="inputChange(step1.nick_name, form.nick_name)"
+                                    >
+                                    <span v-if="step1.nick_name.hasError || step1.nick_name.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i
+                                          v-if="step1.nick_name.hasError"
+                                          class="el-input__icon el-input__validateIcon el-icon-error has-error"
+                                        />
+                                        <i
+                                          v-if="step1.nick_name.isSuccess"
+                                          class="el-input__icon el-input__validateIcon el-icon-success no-error"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            v-if="operationType === operationEnum.create && visible"
+                            class="el-form-item custom-psw el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step1.password.hasError,
+                              'is-success': step1.password.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__password') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small el-input--suffix"
+                                  >
+                                    <input
+                                      v-model="form.password"
+                                      :type="step1.password.type"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step1.password)"
+                                      @blur="passwordChange(step1.password, form.password)"
+                                      @change="passwordChange(step1.password, form.password)"
+                                    >
+                                    <span class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                        <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                        <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': step1.password.type!=='password'}" @click="showPassword(step1.password)" />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip">
+                                  {{ `${$t('__atLeast')}5${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            v-if="operationType === operationEnum.create && visible"
+                            class="el-form-item custom-psw el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step1.confirmPassword.hasError,
+                              'is-success': step1.confirmPassword.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__confirmPassword') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small el-input--suffix"
+                                  >
+                                    <input
+                                      v-model="form.confirmPassword"
+                                      :type="step1.confirmPassword.type"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step1.confirmPassword)"
+                                      @blur="confirmPasswordChange"
+                                      @change="confirmPasswordChange"
+                                    >
+                                    <span class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                        <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                        <i
+                                          class="el-input__icon el-icon-view"
+                                          style="cursor: pointer;"
+                                          :class="{'text-black': step1.confirmPassword.type!=='password'}"
+                                          @click="showPassword(step1.confirmPassword)"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__accountStatus') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <select v-model="form.status" class="el-select w-100">
+                                    <option
+                                      v-for="item in accountStatusType"
+                                      :key="item.key"
+                                      :value="item.key"
+                                    >
+                                      {{ $t(item.nickname) }}
+                                    </option>
+                                  </select>
+                                </div>
+                                <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__timeZone') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <select v-model="form.time_zone" class="el-select w-100">
+                                    <option
+                                      v-for="item in time_zone"
+                                      :key="item.id"
+                                      :value="item.id"
+                                    >
+                                      {{ $t(item.city_name) }}
+                                    </option>
+                                  </select>
+                                </div>
+                                <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__remark') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div class="el-textarea el-input--small">
+                                    <textarea
+                                      v-model="form.remark"
+                                      autocomplete="off"
+                                      class="el-textarea__inner"
+                                      style="min-height: 48.0625px;"
+                                    />
+                                  </div>
+                                </div>
+                                <small class="tip" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      v-show="curIndex === stepEnum.rate"
+                    >
+                      <form class="el-form el-form--label-left">
+                        <div class="step-content">
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step2.live_rolling_rate.hasError,
+                              'is-success': step2.live_rolling_rate.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group" style="width: 200px;">
+                                <label class="form-item-label">{{ `${$t('__liveGame')} ${$t('__rollingRate')}` }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                    :class="{'is-disabled': agentInfo.live_rolling_rate === 0}"
+                                  >
+                                    <input
+                                      v-model.number="form.live_rolling_rate"
+                                      type="number"
+                                      autocomplete="off"
+                                      :disabled="agentInfo.live_rolling_rate === 0"
+                                      min="0"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step2.live_rolling_rate)"
+                                      @blur="specialInputChange('live_rolling_rate')"
+                                      @change="specialInputChange('live_rolling_rate')"
+                                    >
+                                    <span v-if="step2.live_rolling_rate.hasError || step2.live_rolling_rate.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i
+                                          v-if="step2.live_rolling_rate.hasError"
+                                          class="el-input__icon el-input__validateIcon el-icon-error has-error"
+                                        />
+                                        <i
+                                          v-if="step2.live_rolling_rate.isSuccess"
+                                          class="el-input__icon el-input__validateIcon el-icon-success no-error"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip">
+                                  {{ `${$t('__range')} : 0 % - ${agentInfo.liveRollingRateLabel} %` }}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step2.max_win_amount_limit.hasError,
+                              'is-success': step2.max_win_amount_limit.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group" style="width: 200px;">
+                                <label class="form-item-label">{{ $t('__maxWinAmountLimit') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                  >
+                                    <input
+                                      v-model.number="form.max_win_amount_limit"
+                                      type="number"
+                                      autocomplete="off"
+                                      min="0"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step2.max_win_amount_limit)"
+                                      @blur="specialInputChange('max_win_amount_limit')"
+                                      @change="specialInputChange('max_win_amount_limit')"
+                                    >
+                                    <span v-if="step2.max_win_amount_limit.hasError || step2.max_win_amount_limit.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i
+                                          v-if="step2.max_win_amount_limit.hasError"
+                                          class="el-input__icon el-input__validateIcon el-icon-error has-error"
+                                        />
+                                        <i
+                                          v-if="step2.max_win_amount_limit.isSuccess"
+                                          class="el-input__icon el-input__validateIcon el-icon-success no-error"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip">
+                                  {{ $t('__zeroMeansNoLimit') }}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step2.max_lose_amount_limit.hasError,
+                              'is-success': step2.max_lose_amount_limit.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group" style="width: 200px;">
+                                <label class="form-item-label">{{ $t('__maxLoseAmountLimit') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                  >
+                                    <input
+                                      v-model.number="form.max_lose_amount_limit"
+                                      type="number"
+                                      autocomplete="off"
+                                      min="0"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step2.max_lose_amount_limit)"
+                                      @blur="specialInputChange('max_lose_amount_limit')"
+                                      @change="specialInputChange('max_lose_amount_limit')"
+                                    >
+                                    <span v-if="step2.max_lose_amount_limit.hasError || step2.max_lose_amount_limit.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i
+                                          v-if="step2.max_lose_amount_limit.hasError"
+                                          class="el-input__icon el-input__validateIcon el-icon-error has-error"
+                                        />
+                                        <i
+                                          v-if="step2.max_lose_amount_limit.isSuccess"
+                                          class="el-input__icon el-input__validateIcon el-icon-success no-error"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip">
+                                  {{ $t('__zeroMeansNoLimit') }}
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      v-show="curIndex === stepEnum.limit"
+                      class="step_limit"
+                    >
+                      <form class="el-form el-form--label-left">
+                        <label class="form-item-title">
+                          {{ `${$t('__choose')}${$t('__handicapLimit')}` }}
+                        </label>
+                        <div class="step-content">
+                          <div class="el-form-item small el-form-item--feedback el-form-item--small">
+                            <div class="el-form-item__content">
+                              <div class="w-100 handicap-table" style="position: relative;">
+                                <table class="el-table">
+                                  <tbody>
+                                    <tr class="el-table__row head">
+                                      <td class="ww-3">
+                                        <div class="cell checkbox text-center h-100">
+                                          <span
+                                            class="el-checkbox green-tick pl-0"
+                                            @click="changeAllHandicaps"
+                                          >
+                                            <span
+                                              :class="{
+                                                'unchecked': !selectAllHandicaps,
+                                                'is-checked': selectAllHandicaps}"
+                                            >
+                                              <span class="el-checkbox__inner" />
+                                            </span>
+                                          </span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-5">
+                                        <div class="cell d-flex align-items-center justify-content-center text-black">
+                                          ID
+                                          <i
+                                            :class="{
+                                              'el-icon-d-caret': !step3.id.sortable,
+                                              'el-icon-caret-top': step3.id.sortable && step3.id.increment,
+                                              'el-icon-caret-bottom': step3.id.sortable && !step3.id.increment,
+                                              'text-black': !step3.id.sortable,
+                                              'text-blue': step3.id.sortable}"
+                                            @click="handicapLimitSort('id')"
+                                          />
+                                        </div>
+                                      </td>
+                                      <td class="ww-7">
+                                        <div class="cell d-flex align-items-center justify-content-center">
+                                          {{ $t('__handicapLimit') }}
+                                          <i
+                                            :class="{
+                                              'el-icon-d-caret': !step3.nickname.sortable,
+                                              'el-icon-caret-top': step3.nickname.sortable && step3.nickname.increment,
+                                              'el-icon-caret-bottom': step3.nickname.sortable && !step3.nickname.increment,
+                                              'text-black': !step3.nickname.sortable,
+                                              'text-blue': step3.nickname.sortable}"
+                                            @click="handicapLimitSort('nickname')"
+                                          />
+                                        </div>
+                                      </td>
+                                      <td class="ww-7">
+                                        <div class="cell d-flex align-items-center justify-content-end lower-limit">
+                                          {{ $t('__lowerLimit') }}
+                                          <i
+                                            :class="{
+                                              'el-icon-d-caret': !step3.bet_min.sortable,
+                                              'el-icon-caret-top': step3.bet_min.sortable && step3.bet_min.increment,
+                                              'el-icon-caret-bottom': step3.bet_min.sortable && !step3.bet_min.increment,
+                                              'text-black': !step3.bet_min.sortable,
+                                              'text-blue': step3.bet_min.sortable}"
+                                            @click="handicapLimitSort('bet_min')"
+                                          />
+                                        </div>
+                                      </td>
+                                      <td class="ww-3" />
+                                      <td class="ww-7">
+                                        <div class="cell d-flex align-items-center justify-content-end upper-limit">
+                                          {{ $t('__upperLimit') }}
+                                          <i
+                                            :class="{
+                                              'el-icon-d-caret': !step3.bet_max.sortable,
+                                              'el-icon-caret-top': step3.bet_max.sortable && step3.bet_max.increment,
+                                              'el-icon-caret-bottom': step3.bet_max.sortable && !step3.bet_max.increment,
+                                              'text-black': !step3.bet_max.sortable,
+                                              'text-blue': step3.bet_max.sortable}"
+                                            @click="handicapLimitSort('bet_max')"
+                                          />
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    <tr
+                                      v-for="(item, index) in handicaps"
+                                      :key="index"
+                                      class="el-table__row"
+                                    >
+                                      <td class="ww-3">
+                                        <div class="cell checkbox text-center h-100">
+                                          <span
+                                            class="el-checkbox green-tick pl-0"
+                                            @click="handleHandicapsChange(item)"
+                                          >
+                                            <span
+                                              class="el-checkbox__input"
+                                              :class="{
+                                                'unchecked': !item.exist,
+                                                'is-checked': item.exist}"
+                                            >
+                                              <span class="el-checkbox__inner" />
+                                            </span>
+                                          </span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-5">
+                                        <div class="cell">
+                                          <span class="table-item-label">{{ item.id }}</span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-7">
+                                        <div class="cell name">
+                                          <span class="table-item-label yellow">{{ item.nickname }}</span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-7">
+                                        <div class="cell lower-limit">
+                                          <span>{{ item.betMinLabel }}</span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-3">
+                                        <div class="cell">
+                                          <span>-</span>
+                                        </div>
+                                      </td>
+                                      <td class="ww-7">
+                                        <div class="cell upper-limit">
+                                          <span>{{ item.betMaxLabel }}</span>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      v-show="curIndex === stepEnum.balanceConfig"
+                    >
+                      <form class="el-form el-form--label-left">
+                        <div class="step-content">
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__superiorAgent') }}</label>
+                              </div>
+                              <div class="value-group" style="padding-top: 3px;">
+                                <label class="form-item-label text-white">{{ agentBalanceInfo.parent }}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__balance') }}</label>
+                              </div>
+                              <div class="value-group" style="padding-top: 3px;" :style="`letter-spacing: ${(agentBalanceInfo.parentId === 1) ? '-0.2' : '0'}rem`">
+                                <label class="form-item-label text-white">{{ (agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.parentBalanceLabel) }}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__agentAccount') }}</label>
+                              </div>
+                              <div class="value-group" style="padding-top: 3px;">
+                                <label class="form-item-label text-white">{{ agentBalanceInfo.agent }}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__balance') }}</label>
+                              </div>
+                              <div class="value-group" style="padding-top: 3px;">
+                                <label class="form-item-label text-white">{{ agentBalanceInfo.agentBalanceLabel }}</label>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item el-form-item--feedback el-form-item--small"
+                            :class="{
+                              'is-error': step4.balance.hasError,
+                              'is-success': step4.balance.isSuccess}"
+                          >
+                            <div class="el-form-item__content">
+                              <div class="label-group">
+                                <label class="form-item-label">{{ $t('__depositBalance') }}</label>
+                              </div>
+                              <div class="value-group">
+                                <div class="d-flex align-items-center">
+                                  <div
+                                    class="el-input el-input--small"
+                                    :class="{'is-disabled': balanceDisable}"
+                                  >
+                                    <input
+                                      v-model.number="form.balance"
+                                      type="number"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      min="0"
+                                      :disabled="balanceDisable"
+                                      @focus="inputFocus(step4.balance)"
+                                      @blur="specialInputChange('balance')"
+                                      @change="specialInputChange('balance')"
+                                    >
+                                    <span v-if="step4.balance.hasError || step4.balance.isSuccess" class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i v-if="step4.balance.hasError" class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                        <i v-if="step4.balance.isSuccess" class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                                <small class="tip">
+                                  {{ `${$t('__range')} : 0 - ` }}
+                                  <span
+                                    :style="`letter-spacing: ${(agentBalanceInfo.parentId === 1) ? '-0.2' : '0'}rem`"
+                                  >
+                                    {{ `${(agentBalanceInfo.parentId === 1 ? 'oo' : agentBalanceInfo.agentBalanceLabel)}` }}
+                                  </span>
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div
+                      v-show="curIndex === stepEnum.confirm"
+                      class="step_confirm"
+                    >
+                      <form class="el-form el-form--label-left">
+                        <div class="preview">
+                          <div class="preview-item d-inline-block" style="width: calc(50% - 10px); margin-right: 10px;">
+                            <div class="title">{{ $t('__agentInfo') }}</div>
+                            <div class="v-line" />
+                            <div class="content">
+                              <div class="item">
+                                <label class="preview-item-label">{{ $t('__memberAccount') }}</label>
+                                <span class="preview-item-value">{{ form.name }}</span>
+                              </div>
+                              <div class="item">
+                                <label class="preview-item-label">{{ $t('__memberNickname') }}</label>
+                                <span class="preview-item-value">{{ form.nick_name }}</span>
+                              </div>
+                              <div v-if="operationType === operationEnum.create" class="item">
+                                <label class="preview-item-label">{{ $t('__password') }}</label>
+                                <span class="preview-item-value">{{ form.password }}</span>
+                              </div>
+                              <div class="item">
+                                <label class="preview-item-label">{{ $t('__timeZone') }}</label>
+                                <span class="preview-item-value">{{ timeZoneCityName }}</span>
+                              </div>
+                              <div class="item">
+                                <label class="preview-item-label">{{ $t('__balance') }}</label>
+                                <span class="preview-item-value">{{ balanceStr }}</span>
+                              </div>
+                              <div v-if="form.remark" class="item d-block">
+                                <label class="preview-item-label">{{ $t('__remark') }}</label>
+                                <span class="preview-item-value ml-3" style="display: block;">{{ form.remark }}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="preview-item d-inline-block" style="width: calc(50% - 10px);">
+                            <div class="title">{{ $t('__rollingRate') }}</div>
+                            <div class="v-line" />
+                            <div class="content">
+                              <div class="item">
+                                <label class="preview-item-label">{{ `${$t('__liveGame')} ${$t('__rollingRate')}` }}</label>
+                                <span class="preview-item-value">
+                                  <span>{{ `${liveRollingRateStr}%` }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="preview-item">
+                            <div class="title">{{ $t('__limit') }}</div>
+                            <div class="v-line" />
+                            <div class="content d-flex">
+                              <div class="item" style="width: calc(50% - 10px);">
+                                <label class="preview-item-label">{{ `${$t('__liveGame')} ${$t('__maxWinAmountLimit')}` }}</label>
+                                <span class="preview-item-value">
+                                  <span>{{ maxWinAmountLimitStr }}</span>
+                                </span>
+                              </div>
+                              <div class="item" style="width: calc(50% - 10px);">
+                                <label class="preview-item-label">{{ `${$t('__liveGame')} ${$t('__maxLoseAmountLimit')}` }}</label>
+                                <span class="preview-item-value">
+                                  <span>{{ maxLoseAmountLimitStr }}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="preview-item">
+                            <div class="title">{{ $t('__handicapLimit') }}</div>
+                            <div class="v-line" />
+                            <div class="content">
+                              <table class="w-100">
+                                <tr>
+                                  <td class="handicap-item text-left preview-item-label">ID</td>
+                                  <td class="handicap-item text-left preview-item-label">{{ $t('__handicapLimit') }}</td>
+                                  <td class="handicap-item text-right preview-item-label">{{ $t('__lowerLimit') }}</td>
+                                  <td class="handicap-item text-center preview-item-label" />
+                                  <td class="handicap-item text-right preview-item-label">{{ $t('__upperLimit') }}</td>
+                                </tr>
+                                <tr
+                                  v-for="(item, index) in existHandicaps"
+                                  :key="index"
+                                >
+                                  <td class="handicap-item text-left">{{ item.id }}</td>
+                                  <td class="handicap-item ww-7 text-left">{{ item.nickname }}</td>
+                                  <td class="handicap-item text-right">
+                                    <span>{{ item.betMinLabel }}</span>
+                                  </td>
+                                  <td class="handicap-item text-center">-</td>
+                                  <td class="handicap-item text-right">
+                                    <span>{{ item.betMaxLabel }}</span>
+                                  </td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="d-flex flex-wrap">
+                            <div
+                              class="el-form-item operator-psw custom-psw mr-auto ml-0 el-form-item--small"
+                              :class="{
+                                'is-error': step5.userPassword.hasError,
+                                'is-success': step5.userPassword.isSuccess}"
+                            >
+                              <div class="el-form-item__content">
+                                <div class="label-group d-flex w-100">
+                                  <label class="form-item-label mr-3">{{ $t('__userPassword') }}</label>
+                                  <div class="el-input el-input--small el-input--suffix">
+                                    <input
+                                      v-model="form.userPassword"
+                                      :type="step5.userPassword.type"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(step5.userPassword)"
+                                      @blur="inputChange(step5.userPassword, form.userPassword)"
+                                      @change="inputChange(step5.userPassword, form.userPassword)"
+                                    >
+                                    <span class="el-input__suffix">
+                                      <span class="el-input__suffix-inner">
+                                        <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                        <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                        <i
+                                          class="el-input__icon el-icon-view"
+                                          style="cursor: pointer;"
+                                          :class="{'text-black': step5.userPassword.type!=='password'}"
+                                          @click="showPassword(step5.userPassword)"
+                                        />
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="hasError" class="form-alert p-0" style="height: 30px;">
+              <div role="alert" class="el-alert el-alert--warning is-light fade show justify-content-center">
+                <i class="el-alert__icon el-icon-warning" />
+                <div class="el-alert__content">
+                  <span class="el-alert__title">{{ errorTip }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-ctrl">
+              <button v-if="previousBtnVisible" type="button" class="el-button bg-gray el-button--primary" @click="onPreviousBtnClick">
+                <span>{{ $t('__previous') }}</span>
+              </button>
+              <button v-if="nextBtnVisible" type="button" class="el-button bg-yellow el-button--primary" @click="onNextBtnClick">
+                <span>{{ $t('__nextStep') }}</span>
+              </button>
+              <button v-if="confirmBtnVisible" type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
+                <span>{{ confirm }}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -778,9 +1648,11 @@ import { memberCreateAccount, memberCreate, memberEdit } from '@/api/agentManage
 import { agentGetSetBalanceInfo } from '@/api/agentManagement/agent'
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
+import BackTop from '@/components/BackTop'
 
 export default {
   name: 'MemberEditDialog',
+  components: { BackTop },
   mixins: [dialogCommon, common],
   props: {
     'title': {
@@ -910,7 +1782,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'accountStatusType'
+      'accountStatusType',
+      'sidebar'
     ]),
     previousBtnVisible() {
       return this.curIndex > this.stepEnum.memberInfo
@@ -1039,7 +1912,7 @@ export default {
         }).catch(() => {
           this.autoGenerateAccount = false
         })
-      } else {
+      } else if (this.visible && !this.autoGenerateAccount) {
         this.form.name = ''
         this.inputChange(this.step1.name, this.form.name)
       }
@@ -1354,42 +2227,6 @@ export default {
 
 <style lang="scss" scoped>
 .popup-page {
-  #step-1 {
-    &.step-content {
-      padding: 0 1.66667rem;
-      position: relative;
-      z-index: 0;
-      .form-item-inner {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        margin: 0;
-        .label-group {
-          display: block;
-          margin: 0.83333rem 0;
-          width: 60%;
-          -webkit-box-flex: 0;
-          -ms-flex: none;
-          flex: none;
-          .tip {
-            margin-left: 0;
-            width: 100%;
-            margin-top: 0.41667rem;
-            font-size: .91667rem;
-          }
-          label {
-            width: 100%;
-          }
-        }
-        .el-input__inner {
-          text-align: center;
-        }
-      }
-    }
-  }
   .step-content {
     .is-disabled {
       .el-input__inner {
@@ -1462,21 +2299,8 @@ export default {
     }
   }
   .preview-item {
-    color: #fff;
-    padding: 0;
-    .title {
-      padding: 0.83333rem 1.66667rem 0.41667rem 1.66667rem;
-      border-bottom: 0.08333rem solid #f9c901;
-      color: #f9c901;
-    }
     .content {
-      padding: 0.83333rem 1.66667rem 0 1.66667rem;
-      font-size: 1rem;
       .item {
-        padding: 0.41667rem;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
         .preview-item-label {
           color: #f9c901;
         }
@@ -1485,12 +2309,200 @@ export default {
           word-break: break-all;
         }
       }
-      table {
-        td {
-          font-size: .91667rem;
-          padding: 0.41667rem;
-          word-break: break-all;
+    }
+  }
+}
+
+#app.mobile {
+  .popup-page {
+    #step-1 {
+      &.step-content {
+        padding: 0 1.66667rem;
+        position: relative;
+        z-index: 0;
+        .form-item-inner {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          margin: 0;
+          .label-group {
+            display: block;
+            margin: 0.83333rem 0;
+            width: 60%;
+            -webkit-box-flex: 0;
+            -ms-flex: none;
+            flex: none;
+            .tip {
+              margin-left: 0;
+              width: 100%;
+              margin-top: 0.41667rem;
+              font-size: .91667rem;
+            }
+            label {
+              width: 100%;
+            }
+          }
+          .el-input__inner {
+            text-align: center;
+          }
         }
+      }
+    }
+    .preview-item {
+      color: #fff;
+      padding: 0;
+      .title {
+        padding: 0.83333rem 1.66667rem 0.41667rem 1.66667rem;
+        border-bottom: 0.08333rem solid #f9c901;
+        color: #f9c901;
+      }
+      .content {
+        padding: 0.83333rem 1.66667rem 0 1.66667rem;
+        font-size: 1rem;
+        .item {
+          padding: 0.41667rem;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          .preview-item-label {
+            color: #f9c901;
+          }
+          .preview-item-value {
+            margin-left: auto;
+            word-break: break-all;
+          }
+        }
+        table {
+          td {
+            font-size: .91667rem;
+            padding: 0.41667rem;
+            word-break: break-all;
+          }
+        }
+      }
+    }
+  }
+}
+
+#app.pc {
+  .popup-page {
+    .form-step-content {
+      margin-top: 0rem;
+      width: 500px;
+      .form-item-title {
+        width: 100%;
+        text-align: left;
+        font-size: 12px;
+        line-height: 1.25;
+        color: #bbb;
+      }
+      .step-content {
+        .el-form-item {
+          width: 100%;
+          .el-form-item__content {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start;
+            line-height: 1;
+            .value-group {
+              width: auto;
+              display: inline-block;
+              -webkit-box-flex: 1;
+              -ms-flex: auto;
+              flex: auto;
+              .tip {
+                display: block;
+                margin-top: 7px;
+                color: #bbb;
+              }
+            }
+            .label-group {
+              display: inline-block;
+              color: #f9c901;
+              width: 100px;
+              font-size: 14px;
+              padding-top: 5px;
+              -webkit-box-flex: 0;
+              -ms-flex: none;
+              flex: none;
+            }
+          }
+        }
+      }
+    }
+    .preview {
+      .preview-item {
+        .content {
+          .item {
+            .preview-item-label {
+              margin-bottom: 2px;
+            }
+            .preview-item-value {
+              width: auto;
+              text-align: left;
+            }
+          }
+          table {
+            td {
+              font-size: 11px;
+              padding-top: 5px;
+              word-break: break-all;
+            }
+          }
+        }
+      }
+      .operator-psw {
+        color: #fff;
+        margin: auto;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding: 10px;
+        .el-form-item__content {
+          width: 100%;
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          .form-item-label {
+            white-space: nowrap;
+            font-size: 14px;
+            color: #f9c901;
+          }
+          .el-input {
+            height: 30px;
+            width: auto;
+            position: relative;
+            .el-input__inner {
+              border-radius: 3px;
+              border: 1px solid #f9c901;
+              background-color: #fff;
+              line-height: 1;
+              height: 30px;
+              font-size: 14px;
+              color: #000;
+            }
+          }
+        }
+      }
+    }
+    .form-ctrl {
+      padding-top: 0.41667rem;
+      width: 100%;
+      height: auto;
+      background: #000;
+      z-index: 4;
+      text-align: center;
+      button {
+        margin: 5px;
+        width: 150px;
       }
     }
   }

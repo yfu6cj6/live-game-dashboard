@@ -285,7 +285,7 @@
                       <div class="label-group">
                         <label class="form-item-label">{{ `${$t('__liveGame')} ${$t('__commissionRate')}` }}</label>
                         <small class="tip small">
-                          {{ `${$t('__range')} : 0 % - ${agentInfo.live_commission_rate} %` }}
+                          {{ `${$t('__range')} : 0 % - ${agentInfo.liveCommissionRateLabel} %` }}
                         </small>
                       </div>
                       <div
@@ -330,7 +330,7 @@
                       <div class="label-group">
                         <label class="form-item-label">{{ `${$t('__liveGame')} ${$t('__rollingRate')}` }}</label>
                         <small class="tip small">
-                          {{ `${$t('__range')} : 0 % - ${agentInfo.live_rolling_rate} %` }}
+                          {{ `${$t('__range')} : 0 % - ${agentInfo.liveRollingRateLabel} %` }}
                         </small>
                       </div>
                       <div
@@ -622,7 +622,7 @@
                       <label class="preview-item-label">{{ $t('__agentNickname') }}</label>
                       <span class="preview-item-value">{{ form.nickname }}</span>
                     </div>
-                    <div class="item">
+                    <div v-if="operationType === operationEnum.create" class="item">
                       <label class="preview-item-label">{{ $t('__password') }}</label>
                       <span class="preview-item-value">{{ form.password }}</span>
                     </div>
@@ -752,7 +752,7 @@
       <div class="agent-pop-up-panel" :class="{'sidebar_open': sidebar.opened}">
         <div class="popup-cover" />
         <div class="popup-panel animated fadeInUp addAgentForm">
-          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;" @click.stop="onClose">
             <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" />
           </div>
           <div class="popup-title">{{ title }}</div>
@@ -1130,7 +1130,7 @@
                                   </div>
                                 </div>
                                 <small class="tip">
-                                  {{ `${$t('__range')} : 0 % - ${agentInfo.live_commission_rate} %` }}
+                                  {{ `${$t('__range')} : 0 % - ${agentInfo.liveCommissionRateLabel} %` }}
                                 </small>
                               </div>
                             </div>
@@ -1177,7 +1177,7 @@
                                   </div>
                                 </div>
                                 <small class="tip">
-                                  {{ `${$t('__range')} : 0 % - ${agentInfo.live_rolling_rate} %` }}
+                                  {{ `${$t('__range')} : 0 % - ${agentInfo.liveRollingRateLabel} %` }}
                                 </small>
                               </div>
                             </div>
@@ -1450,7 +1450,7 @@
                                 <label class="preview-item-label">{{ $t('__agentNickname') }}</label>
                                 <span class="preview-item-value">{{ form.nickname }}</span>
                               </div>
-                              <div class="item">
+                              <div v-if="operationType === operationEnum.create" class="item">
                                 <label class="preview-item-label">{{ $t('__password') }}</label>
                                 <span class="preview-item-value">{{ form.password }}</span>
                               </div>
@@ -1857,7 +1857,7 @@ export default {
         }).catch(() => {
           this.autoGenerateAccount = false
         })
-      } else {
+      } else if (this.visible && !this.autoGenerateAccount) {
         this.form.account = ''
         this.inputChange(this.step1.account, this.form.account)
       }
@@ -2234,6 +2234,7 @@ export default {
     }
   }
 }
+
 #app.mobile {
   .popup-page {
     #step-1 {
