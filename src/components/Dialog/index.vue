@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="dialog" :class="{'sidebar_open': sidebar.opened}">
     <div class="mask" @click.stop="onClickMask" />
-    <div v-loading="loading" class="dialog">
-      <div class="dialog-header">
-        <i v-if="showClose" class="el-icon-close dialog-header-close" @click.stop="onCloseEven" />
-        <div>{{ title }}</div>
+    <div v-loading="loading" class="dialog-wrap">
+      <div v-if="showClose" class="dialog-close-icon" style="height: 1.77778rem; width: 1.77778rem;" @click.stop="onClose">
+        <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" />
       </div>
+      <div class="dialog-title">{{ title }}</div>
       <div class="dialog-body">
         <slot />
-        <div v-if="$slots.bodyFooter" class="dialog-body-footer">
+        <div v-if="$slots.bodyFooter" class="dialog-footer">
           <slot name="bodyFooter" />
         </div>
       </div>
@@ -21,6 +21,7 @@
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Dialog',
@@ -62,6 +63,11 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
+  },
   methods: {
     onClickMask() {
       if (this.closeOnClickModal) {
@@ -74,76 +80,141 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/variables.scss";
-
-.mask {
-  width: 100vw;
-  height: 100vh;
-  background-color: #000;
-  opacity: .5;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10;
-}
-
 .dialog {
-  position: absolute;
-  width: calc(100% - 20px);
-  max-width: 80%;
-  max-height: calc(100% - 160px);
-  border: 2px solid $yellow;
-  display: flex;
-  display: -ms-flex; /* 兼容IE */
-  flex-direction: column;
-  -ms-flex-direction: column; /* 兼容IE */
-  background: #000;
-  margin: 0 auto !important;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  color: #fff;
-  .dialog-header {
-    text-align: center;
-    font-size: 1.4rem;
-    padding: 2rem 1rem 1rem;
-    word-break: break-all;
-    .dialog-header-close {
-      position: fixed;
-      top: 5px;
-      right: 10px;
-      border-radius: 50%;
+  .dialog-wrap {
+    .dialog-close-icon {
+      position: absolute;
+      top: 0.83333rem;
+      right: 0.83333rem;
+      z-index: 5;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      margin-left: auto;
       &:hover {
         background-color: #666;
+        border-radius: 50%;
       }
     }
-  }
-  .dialog-body {
-    padding: 0 3rem;
-    overflow-y: auto;
-    word-break: break-all;
-    .dialog-body-footer {
+    .dialog-title {
+      position: absolute;
+      font-size: 16px;
       text-align: center;
-      padding: .7rem 1.4rem 1.4rem;
+      color: #fff;
+      top: 10px;
+      right: 0;
+      line-height: 20px;
+      width: 100%;
+      z-index: 4;
+    }
+    .dialog-body {
+      padding-top: 0.41667rem;
+      word-break: break-all;
+    }
+    .dialog-footer {
+      text-align: center;
+      padding-top: 2rem;
       word-break: break-all;
       .el-button {
         width: 18rem;
       }
     }
   }
-  .dialog-footer {
-    text-align: center;
-    padding: .7rem 1.4rem 1.4rem;
-    word-break: break-all;
-    .el-button {
-      width: 18rem;
+}
+#app.mobile {
+  .dialog {
+    position: fixed;
+    z-index: 3;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    .mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 3;
+      background: rgba(0,0,0,0.5);
+    }
+    .dialog-wrap {
+      position: relative;
+      height: auto;
+      width: calc(100% - 20px);
+      max-width: 80%;
+      max-height: calc(100% - 60px);
+      background-color: #000;
+      padding: 30px 20px 20px 20px;
+      border-style: solid;
+      border-color: #f9c901;
+      border-width: 1.5px 1.5px;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      margin: 0 auto;
+      z-index: 4;
+      top: 80px;
+      .dialog-close-icon {
+        color: #fff;
+      }
     }
   }
 }
 
-@media (max-width: 992px) {
+#app.pc {
   .dialog {
-    max-width: 50%;
+    position: fixed;
+    z-index: 3;
+    top: 75px;
+    left: 50px;
+    width: calc(100vw - 50px);
+    height: calc(100vh - 75px);
+    transition: all .3s;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    &.sidebar_open {
+      left: 200px;
+      width: calc(100vw - 200px);
+      transition: all .5s;
+    }
+    .mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      background: rgba(0,0,0,0.5);
+    }
+    .dialog-wrap {
+      position: relative;
+      width: auto;
+      height: auto;
+      min-width: 400px;
+      max-width: 100%;
+      max-height: calc(100% - 60px);
+      background-color: #000;
+      padding: 30px 20px 20px 20px;
+      border-style: solid;
+      border-color: #f9c901;
+      border-width: 1.5px 1.5px;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      margin: 0 auto;
+      z-index: 4;
+      top: -10px;
+      left: 0;
+    }
   }
 }
 </style>
