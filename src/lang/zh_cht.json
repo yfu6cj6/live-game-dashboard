@@ -368,5 +368,6 @@
     "__forcedTermination": "強制終止牌局",
     "__noExceeded": "未超出",
     "__addAgent": "新增代理",
-    "__checkNewPassword": "重複輸入新密碼"
+    "__checkNewPassword": "重複輸入新密碼",
+    "__chineseCharacterLimit": "一個中文字為2個字符"
 }

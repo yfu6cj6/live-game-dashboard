@@ -40,6 +40,9 @@ export default {
     }
   },
   methods: {
+    getStringLength(str) {
+      return str.replace(/[^\x00-\xff]/g, "xx").length
+    },
     handleChangePickerClass() {
       this.$nextTick(() => {
         const datePicker = document.getElementsByClassName('ams-timeslot-popper')
