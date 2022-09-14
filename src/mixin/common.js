@@ -41,6 +41,9 @@ export default {
   },
   methods: {
     getStringLength(str) {
+      if (str === null || str === undefined) {
+        return 0
+      }
       return str.replace(/[^\x00-\xff]/g, "xx").length
     },
     handleChangePickerClass() {

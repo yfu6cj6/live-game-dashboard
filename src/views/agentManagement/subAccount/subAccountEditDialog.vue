@@ -41,11 +41,11 @@
                             <div class="el-form-item__content">
                               <div class="label-group">
                                 <label class="form-item-label">{{ $t('__account') }}</label>
-                                <small v-if="operationType === operationEnum.create" class="tip">{{ `${$t('__lengthLess')}5` }}</small>
+                                <small v-if="operationType === operationEnum.create" class="tip">{{ operationType === operationEnum.edit ? '' : `5-8${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}</small>
                               </div>
                               <div class="d-flex">
                                 <div class="el-input el-input--small" :class="{'is-disabled': operationType === operationEnum.edit}">
-                                  <input v-if="operationType === operationEnum.create" v-model="form.account" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkAccount()" @blur="checkAccount()">
+                                  <input v-if="operationType === operationEnum.create" v-model="form.account" onkeyup="value=value.replace(/[\W]/g,'')" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkAccount()" @blur="checkAccount()">
                                   <input v-if="operationType === operationEnum.edit" v-model="form.account" disabled="disabled" type="text" autocomplete="off" class="el-input__inner">
                                   <span v-if="operationType === operationEnum.create" class="el-input__suffix">
                                     <span class="el-input__suffix-inner" />
@@ -59,7 +59,7 @@
                             <div class="el-form-item__content">
                               <div class="label-group">
                                 <label class="form-item-label">{{ $t('__nickname') }}</label>
-                                <small class="tip">{{ `${$t('__lengthLess')}1` }}</small>
+                                <small class="tip">{{ `16${$t('__indivual')}${$t('__character')} (${$t('__chineseCharacterLimit')})` }}</small>
                               </div>
                               <div class="el-input el-input--small">
                                 <input v-model="form.nickname" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.nickname)" @change="checkNickName()" @blur="checkNickName()">
@@ -74,10 +74,10 @@
                             <div class="el-form-item__content">
                               <div class="label-group">
                                 <label class="form-item-label">{{ $t('__password') }}</label>
-                                <small class="tip">{{ `${$t('__lengthLess')}5` }}</small>
+                                <small class="tip">{{ `${$t('__atLeast')}5${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}</small>
                               </div>
                               <div class="el-input el-input--small el-input--suffix">
-                                <input v-model="form.password" :type="inputData.password.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.password)" @change="checkPassword()" @blur="checkPassword()">
+                                <input v-model="form.password" :type="inputData.password.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.password)" @change="checkPassword()" @blur="checkPassword()">
                                 <span class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
                                     <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -95,7 +95,7 @@
                                 <label class="form-item-label">{{ $t('__confirmPassword') }}</label>
                               </div>
                               <div class="el-input el-input--small el-input--suffix">
-                                <input v-model="form.confirmPassword" :type="inputData.confirmPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
+                                <input v-model="form.confirmPassword" :type="inputData.confirmPassword.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
                                 <span class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
                                     <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -254,7 +254,7 @@
                               <div class="value-group">
                                 <div class="d-flex align-items-center">
                                   <div class="el-input el-input--small" :class="{'is-disabled': operationType === operationEnum.edit}">
-                                    <input v-if="operationType === operationEnum.create" v-model="form.account" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkAccount()" @blur="checkAccount()">
+                                    <input v-if="operationType === operationEnum.create" v-model="form.account" onkeyup="value=value.replace(/[\W]/g,'')" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkAccount()" @blur="checkAccount()">
                                     <input v-if="operationType === operationEnum.edit" v-model="form.account" disabled="disabled" type="text" autocomplete="off" class="el-input__inner">
                                     <span v-if="operationType === operationEnum.create" class="el-input__suffix">
                                       <span class="el-input__suffix-inner" />
@@ -262,7 +262,7 @@
                                     </span>
                                   </div>
                                 </div>
-                                <small v-if="operationType === operationEnum.create" class="tip">{{ `${$t('__lengthLess')}5` }}</small>
+                                <small v-if="operationType === operationEnum.create" class="tip">{{ operationType === operationEnum.edit ? '' : `5-8${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}</small>
                               </div>
                             </div>
                           </div>
@@ -279,7 +279,7 @@
                                     <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.nickname.state === inputState.error, 'el-icon-success': inputData.nickname.state === inputState.success}" />
                                   </span>
                                 </div>
-                                <small class="tip">{{ `${$t('__lengthLess')}1` }}</small>
+                                <small class="tip">{{ `16${$t('__indivual')}${$t('__character')} (${$t('__chineseCharacterLimit')})` }}</small>
                               </div>
                             </div>
                           </div>
@@ -290,7 +290,7 @@
                               </div>
                               <div class="value-group">
                                 <div class="w-100 el-input el-input--small el-input--suffix">
-                                  <input v-model="form.password" :type="inputData.password.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.password)" @change="checkPassword()" @blur="checkPassword()">
+                                  <input v-model="form.password" :type="inputData.password.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.password)" @change="checkPassword()" @blur="checkPassword()">
                                   <span class="el-input__suffix">
                                     <span class="el-input__suffix-inner">
                                       <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -300,7 +300,7 @@
                                     <i class="el-input__icon el-input__validateIcon el-icon-error" />
                                   </span>
                                 </div>
-                                <small class="tip">{{ `${$t('__lengthLess')}5` }}</small>
+                                <small class="tip">{{ `${$t('__atLeast')}5${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}</small>
                               </div>
                             </div>
                           </div>
@@ -311,7 +311,7 @@
                               </div>
                               <div class="value-group">
                                 <div class="w-100 el-input el-input--small el-input--suffix">
-                                  <input v-model="form.confirmPassword" :type="inputData.confirmPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
+                                  <input v-model="form.confirmPassword" :type="inputData.confirmPassword.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
                                   <span class="el-input__suffix">
                                     <span class="el-input__suffix-inner">
                                       <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -557,18 +557,20 @@ export default {
       this.errorTips = ''
     },
     checkAccount() {
-      var valid = this.checkInputFormat(this.form.account)
+      var valid = this.checkInputFormat(this.form.account) && this.getStringLength(this.form.account) >= 5 && this.getStringLength(this.form.account) <= 8
       this.inputData.account.state = valid ? this.inputState.success : this.inputState.error
     },
     checkNickName() {
-      this.inputData.nickname.state = (this.form.nickname && this.form.nickname.length > 0) ? this.inputState.success : this.inputState.error
+      console.log();
+      var valid = this.form.nickname && this.form.nickname.length > 0 && this.getStringLength(this.form.nickname) <= 16
+      this.inputData.nickname.state = valid ? this.inputState.success : this.inputState.error
     },
     checkPassword() {
-      var valid = this.checkInputFormat(this.form.password)
+      var valid = this.checkInputFormat(this.form.password) && this.getStringLength(this.form.password) >= 5
       this.inputData.password.state = valid ? this.inputState.success : this.inputState.error
     },
     checkConfirmPassword() {
-      var valid = this.checkInputFormat(this.form.confirmPassword)
+      var valid = this.checkInputFormat(this.form.confirmPassword) && this.getStringLength(this.form.confirmPassword) >= 5
       if (!valid) {
         this.inputData.confirmPassword.state = this.inputState.error
         return
@@ -590,12 +592,19 @@ export default {
     onSubmit() {
       const data = JSON.parse(JSON.stringify(this.form))
       if (this.operationType === this.operationEnum.create) {
-        if (this.form.account.length < 5) {
-          this.errorTips = `${this.$t('__account')}` + `${this.$t('__lengthLess') + '5'}`
+        var strLength = this.getStringLength(this.form.account);
+        if (strLength < 5 || strLength > 8) {
+          this.errorTips = `${this.$t('__account')}` + `${this.$t('__formatInvalid')}`
           return
         }
-        if (this.form.nickname.length < 1) {
-          this.errorTips = `${this.$t('__nickname')}` + `${this.$t('__lengthLess') + '1'}`
+        strLength = this.getStringLength(this.form.nickname);
+        if (strLength < 1) {
+          this.errorTips = `${this.$t('__nickname')}` + `${this.$t('__formatInvalid')}`
+          return
+        }
+        strLength = this.getStringLength(this.form.password);
+        if (strLength < 5) {
+          this.errorTips = `${this.$t('__password')}` + `${this.$t('__formatInvalid')}`
           return
         }
         if (this.form.password !== this.form.confirmPassword) {

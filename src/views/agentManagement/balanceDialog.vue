@@ -39,8 +39,8 @@
                         <div class="value">
                           <div class="el-form-item el-form-item--feedback el-form-item--small">
                             <div class="el-form-item__content">
-                              <div class="yellow el-input el-input--small" :class="{'is-disabled': !enoughBalance}">
-                                <input v-model="form.amount" type="text" :disabled="!enoughBalance" autocomplete="off" step="0.01" min="0.1" max="10" class="el-input__inner" @focus="inputFocus_balance()">
+                              <div class="yellow el-input el-input--small" :class="{'is-disabled': balanceDisable}">
+                                <input v-model="form.amount" type="number" :disabled="balanceDisable" autocomplete="off" min="0" class="el-input__inner" @focus="inputFocus_balance()">
                                 <span v-if="errorTips !== ''" class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
                                     <i class="el-input__icon el-input__validateIcon el-icon-circle-close" style="color: rgb(245, 108, 108);" />
@@ -54,11 +54,11 @@
                       <div class="credit-item">
                         <div class="label fixed-size" />
                         <div class="value">
-                          <small v-show="enoughBalance" class="tip">
+                          <small v-show="!balanceDisable" class="tip">
                             {{ $t('__range') }}
                             <span class="">1.00</span> - <span class="">{{ parentBalance }}</span>
                           </small>
-                          <small v-show="!enoughBalance" class="tip text-red">{{ $t('__noEnoughBalance') }}</small>
+                          <small v-show="balanceDisable" class="tip text-red">{{ $t('__noEnoughBalance') }}</small>
                         </div>
                       </div>
                       <div class="credit-item big h-auto">
@@ -94,7 +94,7 @@
                   </div>
                   <div class="credit-item-group">
                     <div class="d-flex w-100 ">
-                      <button v-if="enoughBalance" type="button" class="el-button el-button--primary bg-yellow w-100" @click.stop="onSubmit">
+                      <button v-if="!balanceDisable" type="button" class="el-button el-button--primary bg-yellow w-100" @click.stop="onSubmit">
                         <span>{{ `${$t('__submit')}` }}</span>
                       </button>
                       <button type="button" class="el-button bg-gray w-100 el-button--primary" @click.stop="onClose">
@@ -153,8 +153,8 @@
                           <div class="value" style="width: 200px;">
                             <div class="el-form-item el-form-item--feedback el-form-item--small">
                               <div class="el-form-item__content">
-                                <div class="el-input el-input--small">
-                                  <input v-model="form.amount" type="text" :disabled="!enoughBalance" autocomplete="off" step="0.01" min="0.1" max="10" class="el-input__inner" @focus="inputFocus_balance()">
+                                <div class="el-input el-input--small" :class="{'is-disabled': balanceDisable}">
+                                  <input v-model="form.amount" type="number" :disabled="balanceDisable" autocomplete="off" min="0" class="el-input__inner" @focus="inputFocus_balance()">
                                 </div>
                               </div>
                             </div>
@@ -164,7 +164,7 @@
                           <div class="label fixed-size" />
                           <div class="value">
                             <small class="tip">{{ $t('__range') }}:<span class="">1.00</span> - <span class="">{{ parentBalance }}</span></small>
-                            <small v-if="!enoughBalance" class="tip text-red">{{ $t('__noEnoughBalance') }}</small>
+                            <small v-if="balanceDisable" class="tip text-red">{{ $t('__noEnoughBalance') }}</small>
                           </div>
                         </div>
                         <div class="credit-item h-auto">
@@ -200,7 +200,7 @@
                     </div>
                     <div class="credit-item-group mb-0">
                       <div class="d-flex w-100 justify-content-center">
-                        <button type="button" class="el-button el-button--primary bg-yellow common-button" @click.stop="onSubmit">
+                        <button v-if="!balanceDisable" type="button" class="el-button el-button--primary bg-yellow common-button" @click.stop="onSubmit">
                           <span>{{ `${$t('__submit')}` }}</span>
                         </button>
                         <button type="button" class="el-button bg-gray common-button el-button--primary" @click.stop="onClose">
@@ -270,41 +270,7 @@ export default {
     }
   },
   data: function() {
-    const validate = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else {
-        callback()
-      }
-    }
-    const validateBlance = (rule, value, callback) => {
-      if (!value && value !== 0) {
-        callback(new Error(this.$t('__requiredField')))
-      } else if (this.form.amount < 0) {
-        callback(new Error(this.$t('__lowerMin')))
-      } else if (Number(this.form.amount) === 0) {
-        callback(new Error(this.$t('__meaningless')))
-      } else if (this.operationType === this.operationEnum.depositBalance) {
-        if (this.agentBalanceInfo.parentId !== 1 && Number(this.form.amount) > Number(this.agentBalanceInfo.parentBalance)) {
-          callback(new Error(this.$t('__overMax')))
-        } else {
-          callback()
-        }
-      } else if (this.operationType === this.operationEnum.withdrawBalance) {
-        if (Number(this.form.amount) > Number(this.agentBalanceInfo.agentBalance)) {
-          callback(new Error(this.$t('__overMax')))
-        } else {
-          callback()
-        }
-      } else {
-        callback()
-      }
-    }
     return {
-      rules: {
-        amount: [{ required: true, trigger: 'blur', validator: validateBlance }],
-        userPassword: [{ required: true, trigger: 'blur', validator: validate }]
-      },
       passwordState: 0,
       inputType: 'password',
       operationEnum: Object.freeze({ 'depositBalance': 1, 'withdrawBalance': 2 }),
@@ -328,7 +294,11 @@ export default {
           return Number(this.agentBalanceInfo.parentBalance) === 0
         }
       } else {
-        return Number(this.agentBalanceInfo.agentBalance) === 0
+        if (this.modeType === this.modeEnum.agent) {
+          return Number(this.agentBalanceInfo.agentBalance) === 0
+        } else {
+          return Number(this.agentBalanceInfo.memberBalance) === 0
+        }
       }
     },
     parentBalance() {
@@ -356,17 +326,6 @@ export default {
         return numberFormat(this.agentBalanceInfo.memberBalance)
       }
     },
-    enoughBalance() {
-      if (this.operationType === this.operationEnum.depositBalance) {
-        return Number(this.agentBalanceInfo.parentBalance) > 0
-      } else {
-        if (this.modeType === this.modeEnum.agent) {
-          return Number(this.agentBalanceInfo.agentBalance) > 0
-        } else {
-          return Number(this.agentBalanceInfo.memberBalance) > 0
-        }
-      }
-    },
     accountTitle() {
       if (this.modeType === this.modeEnum.agent) {
         return this.$t('__agentAccount')
@@ -378,7 +337,6 @@ export default {
   watch: {
     visible() {
       if (!this.visible) {
-        // this.$refs.form.clearValidate()
         this.inputType = 'password'
         this.passwordState = this.inputState.none
         this.errorTips = ''

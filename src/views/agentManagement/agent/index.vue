@@ -1220,10 +1220,10 @@ export default {
     },
     onDepositBtnClick(rowData) {
       this.editForm = { agentId: rowData.id, amount: numberFormat(0) }
-      this.curDialogIndex = this.dialogEnum.depositBalance
       this.$refs.depositBalanceDialog.setDialogLoading(true)
       agentGetSetBalanceInfo({ agentId: rowData.id }).then((res) => {
         this.$refs.depositBalanceDialog.setBalanceInfo(res.rows)
+        this.curDialogIndex = this.dialogEnum.depositBalance
         this.$refs.depositBalanceDialog.setDialogLoading(false)
       }).catch(() => {
         this.$refs.depositBalanceDialog.setDialogLoading(false)
@@ -1231,10 +1231,10 @@ export default {
     },
     onWithdrawBtnClick(rowData) {
       this.editForm = { agentId: rowData.id, amount: numberFormat(0) }
-      this.curDialogIndex = this.dialogEnum.withdrawBalance
       this.$refs.withdrawBalanceDialog.setDialogLoading(true)
       agentGetSetBalanceInfo({ agentId: rowData.id }).then((res) => {
         this.$refs.withdrawBalanceDialog.setBalanceInfo(res.rows)
+        this.curDialogIndex = this.dialogEnum.withdrawBalance
         this.$refs.withdrawBalanceDialog.setDialogLoading(false)
       }).catch(() => {
         this.$refs.withdrawBalanceDialog.setDialogLoading(false)
