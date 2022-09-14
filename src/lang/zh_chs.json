@@ -354,5 +354,20 @@
     "__backToHome": "回首页",
     "__oops": "糟糕",
     "__checkUrl": "请检查您输入的网址是否正确，或点击下方按钮返回首页。",
-    "__gameTable": "游戏桌"
+    "__gameTable": "游戏桌",
+    "__mustBeGreaterOrEqual": "必须大于等于{0}",
+    "__gameArea": "游戱区",
+    "__expand": "展开",
+    "__gross": "合计",
+    "__display": "显示",
+    "__bar": "条",
+    "__total": "总共",
+    "__gong": "共",
+    "__bi": "笔",
+    "__createIpWhitelist": "新增IP白名单",
+    "__forcedTermination": "强制终止牌局",
+    "__noExceeded": "未超出",
+    "__addAgent": "新增代理",
+    "__checkNewPassword": "重复输入新密码",
+    "__chineseCharacterLimit": "一个中文爲2个字符"
 }
