@@ -45,7 +45,17 @@
                               </div>
                               <div class="d-flex">
                                 <div class="el-input el-input--small" :class="{'is-disabled': operationType === operationEnum.edit}">
-                                  <input v-if="operationType === operationEnum.create" v-model="form.account" onkeyup="value=value.replace(/[\W]/g,'')" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkAccount()" @blur="checkAccount()">
+                                  <input
+                                    v-if="operationType === operationEnum.create"
+                                    v-model="form.account"
+                                    onkeyup="value=value.replace(/[\W]/g,'')"
+                                    type="text"
+                                    autocomplete="off"
+                                    class="el-input__inner"
+                                    @focus="inputFocus(inputData.account)"
+                                    @change="checkAccount()"
+                                    @blur="checkAccount()"
+                                  >
                                   <input v-if="operationType === operationEnum.edit" v-model="form.account" disabled="disabled" type="text" autocomplete="off" class="el-input__inner">
                                   <span v-if="operationType === operationEnum.create" class="el-input__suffix">
                                     <span class="el-input__suffix-inner" />
@@ -77,7 +87,16 @@
                                 <small class="tip">{{ `${$t('__atLeast')}5${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}</small>
                               </div>
                               <div class="el-input el-input--small el-input--suffix">
-                                <input v-model="form.password" :type="inputData.password.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.password)" @change="checkPassword()" @blur="checkPassword()">
+                                <input
+                                  v-model="form.password"
+                                  :type="inputData.password.inputType"
+                                  onkeyup="value=value.replace(/[\W]/g,'')"
+                                  autocomplete="off"
+                                  class="el-input__inner"
+                                  @focus="inputFocus(inputData.password)"
+                                  @change="checkPassword()"
+                                  @blur="checkPassword()"
+                                >
                                 <span class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
                                     <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -95,7 +114,16 @@
                                 <label class="form-item-label">{{ $t('__confirmPassword') }}</label>
                               </div>
                               <div class="el-input el-input--small el-input--suffix">
-                                <input v-model="form.confirmPassword" :type="inputData.confirmPassword.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
+                                <input
+                                  v-model="form.confirmPassword"
+                                  :type="inputData.confirmPassword.inputType"
+                                  onkeyup="value=value.replace(/[\W]/g,'')"
+                                  autocomplete="off"
+                                  class="el-input__inner"
+                                  @focus="inputFocus(inputData.confirmPassword)"
+                                  @change="checkConfirmPassword()"
+                                  @blur="checkConfirmPassword()"
+                                >
                                 <span class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
                                     <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -173,7 +201,16 @@
                                 <label class="form-item-label">{{ $t('__userPassword') }}</label>
                               </div>
                               <div class="el-input el-input--small el-input--suffix">
-                                <input v-model="form.userPassword" :type="inputData.operatePassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.operatePassword)" @change="checkOperatePassword()" @blur="checkOperatePassword()">
+                                <input
+                                  v-model="form.userPassword"
+                                  :type="inputData.operatePassword.inputType"
+                                  autocomplete="off"
+                                  class="el-input__inner"
+                                  onkeyup="value=value.replace(/[\W]/g,'')"
+                                  @focus="inputFocus(inputData.operatePassword)"
+                                  @change="checkOperatePassword()"
+                                  @blur="checkOperatePassword()"
+                                >
                                 <span class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
                                     <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -254,7 +291,17 @@
                               <div class="value-group">
                                 <div class="d-flex align-items-center">
                                   <div class="el-input el-input--small" :class="{'is-disabled': operationType === operationEnum.edit}">
-                                    <input v-if="operationType === operationEnum.create" v-model="form.account" onkeyup="value=value.replace(/[\W]/g,'')" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.account)" @change="checkAccount()" @blur="checkAccount()">
+                                    <input
+                                      v-if="operationType === operationEnum.create"
+                                      v-model="form.account"
+                                      onkeyup="value=value.replace(/[\W]/g,'')"
+                                      type="text"
+                                      autocomplete="off"
+                                      class="el-input__inner"
+                                      @focus="inputFocus(inputData.account)"
+                                      @change="checkAccount()"
+                                      @blur="checkAccount()"
+                                    >
                                     <input v-if="operationType === operationEnum.edit" v-model="form.account" disabled="disabled" type="text" autocomplete="off" class="el-input__inner">
                                     <span v-if="operationType === operationEnum.create" class="el-input__suffix">
                                       <span class="el-input__suffix-inner" />
@@ -290,7 +337,16 @@
                               </div>
                               <div class="value-group">
                                 <div class="w-100 el-input el-input--small el-input--suffix">
-                                  <input v-model="form.password" :type="inputData.password.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.password)" @change="checkPassword()" @blur="checkPassword()">
+                                  <input
+                                    v-model="form.password"
+                                    :type="inputData.password.inputType"
+                                    onkeyup="value=value.replace(/[\W]/g,'')"
+                                    autocomplete="off"
+                                    class="el-input__inner"
+                                    @focus="inputFocus(inputData.password)"
+                                    @change="checkPassword()"
+                                    @blur="checkPassword()"
+                                  >
                                   <span class="el-input__suffix">
                                     <span class="el-input__suffix-inner">
                                       <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -311,7 +367,16 @@
                               </div>
                               <div class="value-group">
                                 <div class="w-100 el-input el-input--small el-input--suffix">
-                                  <input v-model="form.confirmPassword" :type="inputData.confirmPassword.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
+                                  <input
+                                    v-model="form.confirmPassword"
+                                    :type="inputData.confirmPassword.inputType"
+                                    onkeyup="value=value.replace(/[\W]/g,'')"
+                                    autocomplete="off"
+                                    class="el-input__inner"
+                                    @focus="inputFocus(inputData.confirmPassword)"
+                                    @change="checkConfirmPassword()"
+                                    @blur="checkConfirmPassword()"
+                                  >
                                   <span class="el-input__suffix">
                                     <span class="el-input__suffix-inner">
                                       <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -387,7 +452,16 @@
                               </div>
                               <div class="value-group">
                                 <div class="w-100 el-input el-input--small el-input--suffix">
-                                  <input v-model="form.userPassword" :type="inputData.operatePassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.operatePassword)" @change="checkOperatePassword()" @blur="checkOperatePassword()">
+                                  <input
+                                    v-model="form.userPassword"
+                                    :type="inputData.operatePassword.inputType"
+                                    onkeyup="value=value.replace(/[\W]/g,'')"
+                                    autocomplete="off"
+                                    class="el-input__inner"
+                                    @focus="inputFocus(inputData.operatePassword)"
+                                    @change="checkOperatePassword()"
+                                    @blur="checkOperatePassword()"
+                                  >
                                   <span class="el-input__suffix">
                                     <span class="el-input__suffix-inner">
                                       <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />

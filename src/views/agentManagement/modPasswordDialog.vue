@@ -15,10 +15,10 @@
                         <div class="el-form-item__content">
                           <div class="label-group">
                             <label class="form-item-label w-100 text-yellow">{{ $t('__newPassword') }}</label>
-                            <div class="tip">{{ `${$t('__lengthLess')}5` }}</div>
+                            <div class="tip">{{ `${$t('__atLeast')}5${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}</div>
                           </div>
                           <div class="el-input el-input--small el-input--suffix">
-                            <input v-model="form.newPassword" :type="inputData.newPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.newPassword)" @change="checkNewPassword()" @blur="checkNewPassword()">
+                            <input v-model="form.newPassword" :type="inputData.newPassword.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.newPassword)" @change="checkNewPassword()" @blur="checkNewPassword()">
                             <span class="el-input__suffix">
                               <span class="el-input__suffix-inner">
                                 <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -35,7 +35,7 @@
                             <label class="form-item-label text-yellow">{{ $t('__confirmPassword') }}</label>
                           </div>
                           <div class="el-input el-input--small el-input--suffix">
-                            <input v-model="form.newPassword_confirmation" :type="inputData.confirmPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
+                            <input v-model="form.newPassword_confirmation" :type="inputData.confirmPassword.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
                             <span class="el-input__suffix">
                               <span class="el-input__suffix-inner">
                                 <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -52,7 +52,7 @@
                             <label class="form-item-label text-yellow">{{ $t('__userPassword') }}</label>
                           </div>
                           <div class="el-input el-input--small el-input--suffix">
-                            <input v-model="form.userPassword" :type="inputData.operatePassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.operatePassword)" @change="checkOperatePassword()" @blur="checkOperatePassword()">
+                            <input v-model="form.userPassword" :type="inputData.operatePassword.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.operatePassword)" @change="checkOperatePassword()" @blur="checkOperatePassword()">
                             <span class="el-input__suffix">
                               <span class="el-input__suffix-inner">
                                 <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -109,7 +109,7 @@
                           </div>
                           <div class="value-group">
                             <div class="el-input el-input--small el-input--suffix">
-                              <input v-model="form.newPassword" :type="inputData.newPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.newPassword)" @change="checkNewPassword()" @blur="checkNewPassword()">
+                              <input v-model="form.newPassword" :type="inputData.newPassword.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.newPassword)" @change="checkNewPassword()" @blur="checkNewPassword()">
                               <span class="el-input__suffix">
                                 <span class="el-input__suffix-inner">
                                   <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -118,7 +118,7 @@
                                 </span>
                               </span>
                             </div>
-                            <div class="tip text-white pb-0" style="width: 300px">{{ `${$t('__lengthLess')}5` }}</div>
+                            <div class="tip text-white pb-0" style="width: 300px">{{ `${$t('__atLeast')}5${$t('__indivual')}${$t('__character')} (${$t('__includeEnglishAlphabetNumberBottomLine')})` }}</div>
                           </div>
                         </div>
                       </div>
@@ -129,7 +129,7 @@
                           </div>
                           <div class="value-group">
                             <div class="el-input el-input--small el-input--suffix">
-                              <input v-model="form.newPassword_confirmation" :type="inputData.confirmPassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
+                              <input v-model="form.newPassword_confirmation" :type="inputData.confirmPassword.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.confirmPassword)" @change="checkConfirmPassword()" @blur="checkConfirmPassword()">
                               <span class="el-input__suffix">
                                 <span class="el-input__suffix-inner">
                                   <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -148,7 +148,7 @@
                           </div>
                           <div class="value-group">
                             <div class="el-input el-input--small el-input--suffix">
-                              <input v-model="form.userPassword" :type="inputData.operatePassword.inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.operatePassword)" @change="checkOperatePassword()" @blur="checkOperatePassword()">
+                              <input v-model="form.userPassword" :type="inputData.operatePassword.inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.operatePassword)" @change="checkOperatePassword()" @blur="checkOperatePassword()">
                               <span class="el-input__suffix">
                                 <span class="el-input__suffix-inner">
                                   <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />

@@ -63,7 +63,16 @@
                             </div>
                             <div class="value-group w-auto">
                               <div class="el-input el-input--small el-input--suffix">
-                                <input v-model="form.userPassword" :type="userPasswordType" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkPassword()" @blur="checkPassword()">
+                                <input
+                                  v-model="form.userPassword"
+                                  :type="userPasswordType"
+                                  onkeyup="value=value.replace(/[\W]/g,'')"
+                                  autocomplete="off"
+                                  class="el-input__inner"
+                                  @focus="inputFocus()"
+                                  @change="checkPassword()"
+                                  @blur="checkPassword()"
+                                >
                                 <span class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
                                     <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -190,7 +199,16 @@
                       </div>
                       <div class="value-group w-auto">
                         <div class="el-input el-input--small el-input--suffix">
-                          <input v-model="form.userPassword" :type="userPasswordType" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkPassword()" @blur="checkPassword()">
+                          <input
+                            v-model="form.userPassword"
+                            :type="userPasswordType"
+                            onkeyup="value=value.replace(/[\W]/g,'')"
+                            autocomplete="off"
+                            class="el-input__inner"
+                            @focus="inputFocus()"
+                            @change="checkPassword()"
+                            @blur="checkPassword()"
+                          >
                           <span class="el-input__suffix">
                             <span class="el-input__suffix-inner">
                               <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />

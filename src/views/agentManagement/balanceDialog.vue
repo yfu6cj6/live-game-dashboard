@@ -67,7 +67,7 @@
                           <div class="el-form-item operator-psw custom-psw el-form-item--feedback el-form-item--small" :class="{'is-error': passwordState === inputState.error, 'is-success': passwordState === inputState.success}">
                             <div class="el-form-item__content">
                               <div class="yellow el-input el-input--small el-input--suffix">
-                                <input v-model="form.userPassword" :type="inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus_password()" @change="checkPassword()" @blur="checkPassword()">
+                                <input v-model="form.userPassword" :type="inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus_password()" @change="checkPassword()" @blur="checkPassword()">
                                 <span class="el-input__suffix">
                                   <span class="el-input__suffix-inner">
                                     <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
@@ -173,7 +173,7 @@
                             <div class="el-form-item operator-psw custom-psw el-form-item--feedback el-form-item--small" :class="{'is-error': passwordState === inputState.error, 'is-success': passwordState === inputState.success}">
                               <div class="el-form-item__content">
                                 <div class="el-input el-input--small el-input--suffix">
-                                  <input v-model="form.userPassword" :type="inputType" autocomplete="off" class="el-input__inner" @focus="inputFocus_password()" @change="checkPassword()" @blur="checkPassword()">
+                                  <input v-model="form.userPassword" :type="inputType" onkeyup="value=value.replace(/[\W]/g,'')" autocomplete="off" class="el-input__inner" @focus="inputFocus_password()" @change="checkPassword()" @blur="checkPassword()">
                                   <span class="el-input__suffix">
                                     <span class="el-input__suffix-inner">
                                       <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
