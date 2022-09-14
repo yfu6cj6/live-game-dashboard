@@ -541,7 +541,6 @@ export default {
     onReset() {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.$nextTick(() => {
-        // this.$refs.editForm.clearValidate()
         this.inputTitle = this.inputState.none
         this.errorTips = ''
       })

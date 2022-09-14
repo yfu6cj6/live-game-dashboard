@@ -503,6 +503,14 @@
     padding: 1.66667rem;
     text-align: center;
   }
+
+  .custom-dropdown  {
+    .el-scrollbar {
+      .el-select-dropdown__wrap {
+        margin: 0 !important;
+      }
+    }
+  }
 }
 
 .ams-timeslot-popper.mobilePicker {
