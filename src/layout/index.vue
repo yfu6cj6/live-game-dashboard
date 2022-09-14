@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading" :class="classObj" class="app-container">
     <template v-if="device === 'mobile'">
-      <setPwd v-if="true" />
+      <setPwd v-if="modPwd" />
       <template v-else>
         <navbar class="navbar" />
         <page-tabs class="d-none" />
