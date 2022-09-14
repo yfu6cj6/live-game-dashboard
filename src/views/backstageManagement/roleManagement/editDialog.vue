@@ -278,7 +278,9 @@ export default {
     onReset() {
       this.editForm = JSON.parse(JSON.stringify(this.form))
       this.$nextTick(() => {
-        // this.$refs.editForm.clearValidate()
+        this.inputData.name.state = this.inputState.none
+        this.inputData.nickname.state = this.inputState.none
+        this.errorTips = ''
       })
     }
   }

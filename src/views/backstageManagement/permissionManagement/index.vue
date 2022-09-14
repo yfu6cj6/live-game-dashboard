@@ -19,7 +19,7 @@
               </a>
             </div>
             <div v-show="searchExpand === true">
-              <div class="options currency">
+              <div class="options">
                 <div class="option">
                   <el-input v-model="searchForm.nickname" class="input_size" :placeholder="$t('__nickname')" />
                 </div>
@@ -27,8 +27,8 @@
                   <el-input v-model="searchForm.uri" class="input_size" placeholder="Uri" />
                 </div>
               </div>
-              <div class="options method">
-                <div class="option">
+              <div class="options">
+                <div class="option method">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -159,7 +159,152 @@
       />
     </template>
     <template v-else>
-      -
+      <div class="pos-r">
+        <backTop
+          ref="backTop"
+          :inner-class="'.view-container'"
+          :view-class="'.scroll_view'"
+        />
+        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+          <div class="scroll_view">
+            <div class="bg-black">
+              <div class="yellow-border-bottom search-container">
+                <div class="options">
+                  <div class="option">
+                    <el-input v-model="searchForm.id" type="number" class="input_size" placeholder="ID" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.nickname" class="input_size" :placeholder="$t('__nickname')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.uri" class="input_size" placeholder="Uri" />
+                  </div>
+                  <div class="option method">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.methodType"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="methodTypeCollapse"
+                        :placeholder="$t('__method')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.searchMethodType"
+                          :key="item"
+                          :label="item"
+                          :value="item"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="d-flex">
+                    <div>
+                      <button class="ml-2 el-button bg-yellow el-button--default mr-4 font-weight-bold" @click.stop="onCreateBtnClick()">{{ `${$t('__create')}${$t('__permission')}` }}</button>
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <div class="searchBtn">
+                      <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-container">
+              <template v-if="tableData.length > 0">
+                <div
+                  v-for="(item, index) in tableData"
+                  :key="index"
+                  class="flex-column"
+                  :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+                >
+                  <div class="base">
+                    <div class="d-flex">
+                      <div class="item justify-content-center" style="width: 30px;" @click.stop="remarkExpand(item)">
+                        <svg-icon v-if="item.open" class="fas gold" icon-class="up" style="height: 2rem; width: 2rem;" />
+                        <svg-icon v-else class="fas gold" icon-class="more" style="height: 2rem; width: 2rem;" />
+                      </div>
+                      <div class="item justify-content-center item_w0">
+                        <span class="title">ID</span>
+                        <span class="value">{{ item.id }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w2">
+                        <span class="title">{{ $t('__name') }}</span>
+                        <span class="value">{{ item.name }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w1">
+                        <span class="title">{{ $t('__nickname') }}</span>
+                        <span class="value">{{ item.nickname }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w0">
+                        <span class="title">{{ $t('__method') }}</span>
+                        <span class="value">{{ item.method }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w2">
+                        <span class="title">Uri</span>
+                        <span class="value">{{ item.uri }}</span>
+                      </div>
+                      <div class="operate align-items-center operate_w1">
+                        <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__revise") }}</el-button>
+                        <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-if="item.open" class="flex-column">
+                    <div class="item remark">
+                      <span class="title w-100">request_content</span>
+                      <span class="value w-100">{{ item.request_content }}</span>
+                    </div>
+                    <div class="item remark">
+                      <span class="title w-100">response_content</span>
+                      <span class="value w-100">{{ item.response_content }}</span>
+                    </div>
+                  </div>
+                </div>
+                <pagination
+                  :page-size="pageSize"
+                  :page-sizes="pageSizes"
+                  :total="totalCount"
+                  :current-page.sync="currentPage"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
+              </template>
+              <template v-else>
+                <div class="noInformation">{{ $t("__noInformation") }}</div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <editDialog
+        ref="editDialog"
+        :title="$stringFormat(`${$t('__revise')}${$t('__permission')} - ID:{0}`, [selectForm.id])"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :confirm="$t('__revise')"
+        :form="selectForm"
+        :method-type="methodType"
+        @close="closeDialogEven"
+        @confirm="editDialogConfirmEven"
+      />
+
+      <editDialog
+        ref="createDialog"
+        :title="`${$t('__create')}${$t('__permission')}`"
+        :visible="curDialogIndex === dialogEnum.create"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        :method-type="methodType"
+        @close="closeDialogEven"
+        @confirm="createDialogConfirmEven"
+      />
     </template>
   </div>
 </template>
@@ -170,10 +315,12 @@ import common from '@/mixin/common';
 import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
 import EditDialog from './editDialog'
+import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'PermissionManagement',
-  components: { EditDialog },
+  components: { EditDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -199,6 +346,15 @@ export default {
     }
   },
   watch: {
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.closeDialogEven()
+        this.$nextTick(() => {
+          this.onSearchBtnClick(1);
+          this.addSelectFilter()
+        })
+      }
+    }
   },
   created() {
     this.pageSizeCount = 1
@@ -217,7 +373,7 @@ export default {
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__permissionManagement'), false, () => { }])
     },
     addSelectFilter() {
-      this.addSelectDropDownFilter('options method', () => {
+      this.addSelectDropDownFilter('option method', () => {
         this.searchForm.methodType = JSON.parse(JSON.stringify(this.searchMethodType)).map(item => item)
       }, () => {
         this.searchForm.methodType = []
@@ -239,6 +395,10 @@ export default {
       const open = this.tableData.filter(item => item.open).map(item => item.id)
       res.rows.forEach(element => {
         element.open = open.includes(element.id)
+        element.method = element.method === null || element.method === '' ? '-' : element.method
+        element.uri = element.uri === null || element.uri === '' ? '-' : element.uri
+        element.request_content = element.request_content === null || element.request_content === '' ? '-' : element.request_content
+        element.response_content = element.response_content === null || element.response_content === '' ? '-' : element.response_content
       })
 
       this.allDataByClient = res.rows
@@ -247,6 +407,10 @@ export default {
       this.methodType = ['None'].concat(res.methodType)
       this.selectOption.searchMethodType = JSON.parse(JSON.stringify(this.searchMethodType))
       this.handlePageChangeByClient(this.currentPage)
+
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
 
       this.closeDialogEven()
       this.closeLoading()
