@@ -550,6 +550,10 @@ export default {
       this.totalCount = this.allDataByClient.length
       this.handlePageChangeByClient(this.currentPage)
 
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
+
       this.closeDialogEven()
       this.closeLoading()
     },

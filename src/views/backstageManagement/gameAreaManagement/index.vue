@@ -440,6 +440,10 @@ export default {
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)
 
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
+
       this.closeDialogEven()
       this.closeLoading()
     },

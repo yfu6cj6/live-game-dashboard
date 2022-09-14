@@ -389,6 +389,10 @@ export default {
       })
       this.handlePageChangeByClient(this.currentPage)
 
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
+
       this.closeDialogEven()
       this.closeLoading()
     },
