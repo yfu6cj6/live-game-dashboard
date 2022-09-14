@@ -6,7 +6,6 @@
           <div class="titleBar yellow">
             <span class="titleTips">{{ title }}</span>
           </div>
-
           <div class="table">
             <template v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0">
               <div class="el-form-item small el-form-item--feedback el-form-item--small">
@@ -95,13 +94,110 @@
       </div>
     </template>
     <template v-else>
-      -
+      <div class="agent-pop-up-panel giftEditDialog backstage_dialog" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click="onClose" />
+        <div class="popup-panel animated fadeInUp">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="btn_icon" @click="onClose" />
+          </div>
+          <div class="data_content">
+            <div class="w-100 d-flex justify-content-center font-weight-bold font-1_5">
+              <span class="text-yellow mb-3">{{ title }}</span>
+            </div>
+            <div class="table">
+              <template v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0">
+                <div class="el-form-item small el-form-item--feedback el-form-item--small">
+                  <div class="el-form-item__content">
+                    <div class="w-100 handicap-table" style="position: relative;">
+                      <table class="el-table">
+                        <tbody>
+                          <tr class="el-table__row head">
+                            <td class="ww-2_5">
+                              <div class="cell checkbox text-center h-100">
+                                <span
+                                  class="el-checkbox green-tick pl-0"
+                                  @click="selection(!selectAll)"
+                                >
+                                  <span
+                                    :class="{
+                                      'unchecked': !selectAll,
+                                      'is-checked': selectAll}"
+                                  >
+                                    <span class="el-checkbox__inner" />
+                                  </span>
+                                </span>
+                              </div>
+                            </td>
+                            <td class="ww-12">
+                              <div class="cell d-flex align-items-center justify-content-center">{{ $t('__name') }}</div>
+                            </td>
+                            <td class="ww-4">
+                              <div class="cell d-flex align-items-center justify-content-center lower-limit">{{ $t('__nickname') }}</div>
+                            </td>
+                          </tr>
+                          <tr
+                            v-for="(item, index) in serverData.allPermissions"
+                            :key="index"
+                            class="el-table__row"
+                          >
+                            <td class="ww-2_5">
+                              <div class="cell checkbox text-center h-100">
+                                <span
+                                  class="el-checkbox green-tick pl-0"
+                                  @click="handleCheckboxChange(item)"
+                                >
+                                  <span
+                                    class="el-checkbox__input"
+                                    :class="{
+                                      'unchecked': !item.exist,
+                                      'is-checked': item.exist}"
+                                  >
+                                    <span class="el-checkbox__inner" />
+                                  </span>
+                                </span>
+                              </div>
+                            </td>
+                            <td class="ww-12">
+                              <div class="cell">
+                                <span class="table-item-label">{{ item.name }}</span>
+                              </div>
+                            </td>
+                            <td class="ww-4">
+                              <div class="cell name">
+                                <span class="table-item-label yellow">{{ item.nickname }}</span>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+            </div>
+          </div>
+          <div class="operate_content">
+            <div class="form-ctrl">
+              <div class="el-row is-align-middle el-row--flex">
+                <button type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
+                  <span>{{ confirm }}</span>
+                </button>
+                <button type="button" class="el-button bg-gray el-button--primary" @click="selection(false)">
+                  <span>{{ $t('__cancelSelect') }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'RolePermissionDialog',
@@ -140,6 +236,11 @@ export default {
       administer: {},
       selectAll: false
     }
+  },
+  computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
   },
   methods: {
     setData(data) {
@@ -186,16 +287,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.black_bg {
-  .data_content {
-    overflow: auto;
-    height: calc(100vh - 3.75rem - 1.5rem - 3.5rem);
-  }
-  .operate_content {
-    height: 4.5rem;
-  }
-}
 
 .data_content {
   .is-disabled {
@@ -269,19 +360,23 @@ export default {
   }
 }
 
-@media screen and (min-width: 992px) {
-  .table {
-    .name {
-      word-break: break-all;
-      width: 630px;
-      min-width: 630px;
+#app.mobile {
+  .black_bg {
+    .data_content {
+      overflow: auto;
+      height: calc(100vh - 3.75rem - 1.5rem - 3.5rem);
     }
-    .nickName {
-      word-break: break-all;
-      width: 250px;
-      min-width: 250px;
+    .operate_content {
+      height: 4.5rem;
     }
   }
 }
 
+#app.pc {
+  .backstage_dialog {
+    .operate_content {
+      height: 4.5rem;
+    }
+  }
+}
 </style>

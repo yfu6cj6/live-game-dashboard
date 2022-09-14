@@ -153,7 +153,139 @@
       />
     </template>
     <template v-else>
-      -
+      <div class="pos-r">
+        <backTop
+          ref="backTop"
+          :inner-class="'.view-container'"
+          :view-class="'.scroll_view'"
+        />
+        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+          <div class="scroll_view">
+            <div class="bg-black">
+              <div class="yellow-border-bottom search-container">
+                <div class="options">
+                  <div class="option">
+                    <el-input v-model="searchForm.id" type="number" class="input_size" placeholder="ID" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.name" class="input_size" :placeholder="$t('__name')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.nickname" class="input_size" :placeholder="$t('__nickname')" />
+                  </div>
+                  <div class="option type">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.type"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="typeCollapse"
+                        :placeholder="$t('__type')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.type"
+                          :key="item.key"
+                          :label="item.nickname"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="d-flex">
+                    <div>
+                      <button class="ml-2 el-button bg-yellow el-button--default mr-4 font-weight-bold" @click.stop="onCreateBtnClick()">{{ `${$t('__create')}${$t('__role')}` }}</button>
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <div class="searchBtn">
+                      <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-container">
+              <template v-if="tableData.length > 0">
+                <div
+                  v-for="(item, index) in tableData"
+                  :key="index"
+                  :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+                >
+                  <div class="d-flex">
+                    <div class="item justify-content-center item_w0">
+                      <span class="title">ID</span>
+                      <span class="value">{{ item.id }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__name') }}</span>
+                      <span class="value">{{ item.name }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__nickname') }}</span>
+                      <span class="value">{{ item.nickname }}</span>
+                    </div>
+                    <div class="item justify-content-center item_w1">
+                      <span class="title">{{ $t('__type') }}</span>
+                      <span class="value">{{ item.typeNickname }}</span>
+                    </div>
+                    <div class="operate align-items-center operate_w2">
+                      <el-button class="bg-yellow" size="mini" @click="onPermissionBtnClick(item)">{{ $t("__permission") }}</el-button>
+                      <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__revise") }}</el-button>
+                      <el-button class="bg-red" size="mini" @click="onPasswordResetBtnClick(item)">{{ $t("__resetPassword") }}</el-button>
+                    </div>
+                  </div>
+                </div>
+                <pagination
+                  :page-size="pageSize"
+                  :page-sizes="pageSizes"
+                  :total="totalCount"
+                  :current-page.sync="currentPage"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
+              </template>
+              <template v-else>
+                <div class="noInformation">{{ $t("__noInformation") }}</div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <editDialog
+        ref="createDialog"
+        :title="`${$t('__create')}${$t('__role')}`"
+        :visible="curDialogIndex === dialogEnum.create"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        :types="searchTypes"
+        @close="closeDialogEven"
+        @confirm="createDialogConfirmEven"
+      />
+
+      <editDialog
+        ref="editDialog"
+        :title="$stringFormat(`${$t('__edit')}${$t('__role')} - ID:{0}`, [selectForm.id])"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :confirm="$t('__revise')"
+        :form="selectForm"
+        :types="searchTypes"
+        @close="closeDialogEven"
+        @confirm="editDialogConfirmEven"
+      />
+
+      <rolePermissionDialog
+        ref="permissionDialog"
+        :title="$stringFormat(`${$t('__setPermission')} - ${$t('__name')}:{0}`, [selectForm.name])"
+        :visible="curDialogIndex === dialogEnum.permission"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        @close="closeDialogEven"
+        @confirm="permissionDialogConfirmEven"
+      />
     </template>
   </div>
 </template>
@@ -165,10 +297,12 @@ import viewCommon from '@/mixin/viewCommon';
 import handlePageChange from '@/mixin/handlePageChange';
 import EditDialog from './editDialog'
 import RolePermissionDialog from './rolePermissionDialog'
+import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'RoleManagement',
-  components: { EditDialog, RolePermissionDialog },
+  components: { EditDialog, RolePermissionDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -192,6 +326,15 @@ export default {
     }
   },
   watch: {
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.closeDialogEven()
+        this.$nextTick(() => {
+          this.onSearchBtnClick(1);
+          this.addSelectFilter()
+        })
+      }
+    }
   },
   created() {
     this.setHeaderStyle()
