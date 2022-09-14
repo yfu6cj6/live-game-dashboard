@@ -31,7 +31,7 @@
                     ref="datePicker"
                     v-model="editForm.announcementedAt"
                     type="datetimerange"
-                    popper-class="ams-timeslot-popper dialogAnnouncementData"
+                    popper-class="ams-timeslot-popper dialogAnnouncementData mobilePicker"
                     align="right"
                     :clearable="false"
                     :editable="false"
@@ -62,7 +62,7 @@
                     ref="datePicker"
                     v-model="editForm.maintainedAt"
                     type="datetimerange"
-                    popper-class="ams-timeslot-popper dialogMaintainData"
+                    popper-class="ams-timeslot-popper dialogMaintainData mobilePicker"
                     align="right"
                     :clearable="false"
                     :editable="false"
@@ -168,60 +168,177 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
-        v-if="visible"
-        :loading="dialogLoading"
-        :title="title"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <el-form ref="editForm" :model="editForm" :rules="rules">
-          <el-form-item class="inputTitle" :label="$t('__marquee')" prop="is_marquee">
-            <el-select v-model="editForm.is_marquee">
-              <el-option v-for="item in announcementMarqueeStatusType" :key="item.key" :label="$t(item.nickname)" :value="item.key" />
-            </el-select>
-          </el-form-item>
-          <el-form-item :label="$t('__announcementTitle')" prop="title">
-            <el-input v-model="editForm.title" />
-          </el-form-item>
-          <el-form-item :label="$t('__announcementType')" prop="type">
-            <el-select v-model="editForm.type">
-              <el-option v-for="item in methodType" :key="item.key" :label="$t(item.nickname)" :value="item.key" />
-            </el-select>
-          </el-form-item>
-          <el-form-item class="inputTitle" :label="$t('__announcementDate')" prop="announcementedAt">
-            <el-date-picker
-              v-model="editForm.announcementedAt"
-              type="datetimerange"
-              align="right"
-              unlink-panels
-              :range-separator="$t('__to')"
-              :start-placeholder="$t('__startDate')"
-              :end-placeholder="$t('__endDate')"
-              :picker-options="dialogPickerOptions"
-            />
-          </el-form-item>
-          <el-form-item class="inputTitle" :label="$t('__maintainDate')" prop="maintainedAt">
-            <el-date-picker
-              v-model="editForm.maintainedAt"
-              type="datetimerange"
-              align="right"
-              unlink-panels
-              :range-separator="$t('__to')"
-              :start-placeholder="$t('__startDate')"
-              :end-placeholder="$t('__endDate')"
-              :picker-options="dialogPickerOptions"
-            />
-          </el-form-item>
-          <el-form-item :label="$t('__announcementContent')" prop="content">
-            <el-input v-model="editForm.content" type="textarea" :rows="2" />
-          </el-form-item>
-        </el-form>
-        <span v-if="!dialogLoading" slot="bodyFooter">
-          <el-button class="bg-gray" @click="onReset">{{ $t("__reset") }}</el-button>
-          <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-        </span>
-      </Dialog>
+      <div class="agent-pop-up-panel giftEditDialog backstage_dialog" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click="onClose" />
+        <div class="popup-panel animated fadeInUp">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="btn_icon" @click="onClose" />
+          </div>
+          <div class="data_content">
+            <div class="w-100 d-flex justify-content-center font-weight-bold font-1_5">
+              <span class="text-yellow ">{{ title }}</span>
+            </div>
+            <div class="el-form-item__content item" :class="{'is-error': inputTitle === inputState.error, 'is-success': inputTitle === inputState.success}">
+              <div class="label-group required">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__announcementTitle') }}</label>
+              </div>
+              <div class="d-flex">
+                <div class="el-input el-input--small">
+                  <input v-model="editForm.title" type="text" autocomplete="off" class="el-input__inner" @focus="inputFocus()" @change="checkValidInput()" @blur="checkValidInput()">
+                  <span class="el-input__suffix">
+                    <span class="el-input__suffix-inner" />
+                    <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputTitle === inputState.error, 'el-icon-success': inputTitle === inputState.success}" />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item">
+              <div class="label-group required">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__announcementDate') }}</label>
+              </div>
+              <div class="day-range">
+                <div class="date-time-picker-box">
+                  <div class="picker datetimerange" @click.once="changeInitCalendarPage_announcement">
+                    <el-date-picker
+                      ref="datePicker"
+                      v-model="editForm.announcementedAt"
+                      type="datetimerange"
+                      popper-class="ams-timeslot-popper dialogAnnouncementData pcPicker"
+                      align="right"
+                      :clearable="false"
+                      :editable="false"
+                      time-arrow-control
+                      :range-separator="$t('__to')"
+                      :start-placeholder="$t('__startDate')"
+                      :end-placeholder="$t('__endDate')"
+                      :default-time="['00:00:00', '23:59:59']"
+                      :picker-options="dialogPickerOptions"
+                      :format="'yyyy-MM-dd HH:mm'"
+                      prefix-icon="''"
+                      clear-icon="''"
+                      @change="checkValidDate(editForm.announcementedAt)"
+                      @blur="checkValidDate(editForm.announcementedAt)"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item">
+              <div class="label-group required">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__maintainDate') }}</label>
+              </div>
+              <div class="day-range">
+                <div class="date-time-picker-box">
+                  <div class="picker datetimerange" @click.once="changeInitCalendarPage_maintain">
+                    <el-date-picker
+                      ref="datePicker"
+                      v-model="editForm.maintainedAt"
+                      type="datetimerange"
+                      popper-class="ams-timeslot-popper dialogMaintainData pcPicker"
+                      align="right"
+                      :clearable="false"
+                      :editable="false"
+                      time-arrow-control
+                      :range-separator="$t('__to')"
+                      :start-placeholder="$t('__startDate')"
+                      :end-placeholder="$t('__endDate')"
+                      :default-time="['00:00:00', '23:59:59']"
+                      :picker-options="dialogPickerOptions"
+                      :format="'yyyy-MM-dd HH:mm'"
+                      prefix-icon="''"
+                      clear-icon="''"
+                      @change="checkValidDate(editForm.maintainedAt)"
+                      @blur="checkValidDate(editForm.maintainedAt)"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item">
+              <div class="label-group">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__announcementType') }}</label>
+              </div>
+              <div class="option">
+                <div class="comp selected-filter">
+                  <select v-model="editForm.type" class="el-select">
+                    <option v-for="item in methodType" :key="item.key" :value="item.key">
+                      {{ $t(item.nickname) }}
+                    </option>
+                  </select>
+                  <div class="fas gray-deep">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 63 63"
+                      style="height: 0.916667rem; width: 0.916667rem;"
+                    >
+                      <title>arrow_2</title>
+                      <g id="hGqiqI.tif">
+                        <path d="M63,10.44,31.74,52.56,0,10.44Z" />
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item">
+              <div class="label-group">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__marquee') }}</label>
+              </div>
+              <div class="option">
+                <div class="comp selected-filter">
+                  <select v-model="editForm.is_marquee" class="el-select">
+                    <option v-for="item in announcementMarqueeStatusType" :key="item.key" :value="item.key">
+                      {{ $t(item.nickname) }}
+                    </option>
+                  </select>
+                  <div class="fas gray-deep">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 63 63"
+                      style="height: 0.916667rem; width: 0.916667rem;"
+                    >
+                      <title>arrow_2</title>
+                      <g id="hGqiqI.tif">
+                        <path d="M63,10.44,31.74,52.56,0,10.44Z" />
+                      </g>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item">
+              <div class="label-group">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__announcementContent') }}</label>
+              </div>
+              <div class="d-flex">
+                <div class="el-input el-input--small">
+                  <el-input v-model="editForm.content" type="textarea" :rows="2" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="operate_content">
+            <div class="form-alert">
+              <div v-show="errorTips !== ''" role="alert" class="el-alert el-alert--warning is-light fade show">
+                <i class="el-alert__icon el-icon-warning" />
+                <div class="el-alert__content">
+                  <span class="el-alert__title">{{ errorTips }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-ctrl">
+              <div class="el-row is-align-middle el-row--flex">
+                <button type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
+                  <span>{{ confirm }}</span>
+                </button>
+                <button type="button" class="el-button bg-gray el-button--primary" @click="onReset">
+                  <span>{{ $t('__reset') }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -229,12 +346,12 @@
 <script>
 import common from '@/mixin/common';
 import dialogCommon from '@/mixin/dialogCommon'
-import Dialog from '@/components/Dialog'
 import { getDayDateTime, getWeekDateTime, getMonthDateTime } from '@/utils/transDate'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditDialog',
-  components: { Dialog },
+  components: {},
   mixins: [common, dialogCommon],
   props: {
     'title': {
@@ -317,6 +434,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
   },
   watch: {
     visible() {
@@ -437,6 +557,18 @@ export default {
   }
   .day-range {
     padding: 0;
+  }
+}
+
+#app.pc .backstage_dialog {
+  .day-range {
+    padding: 0;
+    .picker {
+      &.datetimerange {
+        margin: 0;
+        width: auto;
+      }
+    }
   }
 }
 </style>

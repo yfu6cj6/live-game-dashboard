@@ -64,43 +64,88 @@
       </div>
     </template>
     <template v-else>
-      <Dialog
-        v-if="visible"
-        :loading="dialogLoading"
-        :title="title"
-        :on-close-even="onClose"
-        :close-on-click-modal="device === 'mobile'"
-      >
-        <el-form ref="editForm" class="row" :model="editForm" :rules="rules" label-width="80px" label-position="left">
-          <el-form-item label="ID" prop="id">
-            <el-input v-model="editForm.id" :disabled="true" />
-          </el-form-item>
-          <el-form-item :label="$t('__parameter')" prop="parameter">
-            <el-input v-model="editForm.parameter" />
-          </el-form-item>
-          <el-form-item :label="$t('__parameterValue')" prop="value">
-            <el-input v-model="editForm.value" />
-          </el-form-item>
-          <el-form-item :label="$t('__remark')" prop="remark">
-            <el-input v-model="editForm.remark" type="textarea" :rows="2" />
-          </el-form-item>
-        </el-form>
-        <span v-if="!dialogLoading" slot="footer">
-          <el-button class="bg-gray" @click="onReset">{{ $t("__reset") }}</el-button>
-          <el-button class="bg-yellow" @click="onSubmit">{{ confirm }}</el-button>
-        </span>
-      </Dialog>
+      <div class="agent-pop-up-panel giftEditDialog backstage_dialog" :class="{'sidebar_open': sidebar.opened}">
+        <div class="popup-cover" @click="onClose" />
+        <div v-loading="dialogLoading" class="popup-panel animated fadeInUp">
+          <div class="fas icon-close w yellow" style="height: 1.77778rem; width: 1.77778rem;">
+            <svg-icon icon-class="close" style="height: 0.941176rem; width: 0.941176rem;" class="btn_icon" @click="onClose" />
+          </div>
+          <div class="data_content">
+            <div class="w-100 d-flex justify-content-center font-weight-bold font-1_5">
+              <span class="text-yellow ">{{ title }}</span>
+            </div>
+            <div class="el-form-item__content item" :class="{'is-error': inputData.param.state === inputState.error, 'is-success': inputData.param.state === inputState.success}">
+              <div class="label-group required">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__parameter') }}</label>
+              </div>
+              <div class="d-flex">
+                <div class="el-input el-input--small">
+                  <input v-model="editForm.parameter" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.param.state)" @change="checkValidInput('param')" @blur="checkValidInput('param')">
+                  <span class="el-input__suffix">
+                    <span class="el-input__suffix-inner" />
+                    <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.param.state === inputState.error, 'el-icon-success': inputData.param.state === inputState.success}" />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item" :class="{'is-error': inputData.value.state === inputState.error, 'is-success': inputData.value.state === inputState.success}">
+              <div class="label-group required">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__parameterValue') }}</label>
+              </div>
+              <div class="d-flex">
+                <div class="el-input el-input--small">
+                  <input v-model="editForm.value" autocomplete="off" class="el-input__inner" @focus="inputFocus(inputData.value.state)" @change="checkValidInput('value')" @blur="checkValidInput('value')">
+                  <span class="el-input__suffix">
+                    <span class="el-input__suffix-inner" />
+                    <i class="el-input__icon el-input__validateIcon" :class="{'el-icon-error': inputData.value.state === inputState.error, 'el-icon-success': inputData.value.state === inputState.success}" />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="el-form-item__content item">
+              <div class="label-group">
+                <label class="form-item-label text-yellow font-weight-bold">{{ $t('__remark') }}</label>
+              </div>
+              <div class="d-flex">
+                <div class="el-input el-input--small">
+                  <el-input v-model="editForm.remark" type="textarea" :rows="5" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="operate_content">
+            <div class="form-alert">
+              <div v-show="errorTips !== ''" role="alert" class="el-alert el-alert--warning is-light fade show">
+                <i class="el-alert__icon el-icon-warning" />
+                <div class="el-alert__content">
+                  <span class="el-alert__title">{{ errorTips }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-ctrl">
+              <div class="el-row is-align-middle el-row--flex">
+                <button type="button" class="el-button bg-yellow el-button--primary" @click="onSubmit">
+                  <span>{{ confirm }}</span>
+                </button>
+                <button type="button" class="el-button bg-gray el-button--primary" @click="onReset">
+                  <span>{{ $t('__reset') }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <script>
 import dialogCommon from '@/mixin/dialogCommon';
-import Dialog from '@/components/Dialog'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'EditDialog',
-  components: { Dialog },
+  components: {},
   mixins: [dialogCommon],
   props: {
     'title': {
@@ -156,6 +201,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
   },
   watch: {
     visible() {

@@ -228,8 +228,8 @@
                   <div class="base">
                     <div class="d-flex">
                       <div class="item justify-content-center" style="width: 30px;" @click.stop="remarkExpand(item)">
-                        <svg-icon v-if="item.open" class="fas gold" icon-class="up" style="height: 2rem; width: 2rem;" />
-                        <svg-icon v-else class="fas gold" icon-class="more" style="height: 2rem; width: 2rem;" />
+                        <svg-icon v-if="item.open" class="fas yellow" icon-class="up" style="height: 2rem; width: 2rem;" />
+                        <svg-icon v-else class="fas yellow" icon-class="more" style="height: 2rem; width: 2rem;" />
                       </div>
                       <div class="item justify-content-center item_w0">
                         <span class="title">ID</span>

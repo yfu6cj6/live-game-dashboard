@@ -12,8 +12,7 @@
                       ref="datePicker"
                       v-model="searchForm.announcementedAt"
                       type="datetimerange"
-                      popper-class="ams-timeslot-popper announcementData"
-                      align="right"
+                      popper-class="ams-timeslot-popper announcementData mobilePicker"
                       :clearable="false"
                       :editable="false"
                       time-arrow-control
@@ -43,8 +42,7 @@
                     <el-date-picker
                       v-model="searchForm.maintainedAt"
                       type="datetimerange"
-                      popper-class="ams-timeslot-popper maintainData"
-                      align="right"
+                      popper-class="ams-timeslot-popper maintainData mobilePicker"
                       :clearable="false"
                       :editable="false"
                       time-arrow-control
@@ -71,7 +69,7 @@
                 </div>
               </div>
               <div class="options">
-                <div class="option type w-4">
+                <div class="d-flex option type w-4">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -93,7 +91,7 @@
                   </div>
                   <span class="suffix-label" />
                 </div>
-                <div class="option marquee w-4">
+                <div class="d-flex option marquee w-4">
                   <span class="prefix-label" />
                   <div class="comp selected-filter custom">
                     <el-select
@@ -238,7 +236,226 @@
       />
     </template>
     <template v-else>
-      -
+      <div class="pos-r">
+        <backTop
+          ref="backTop"
+          :inner-class="'.view-container'"
+          :view-class="'.scroll_view'"
+        />
+        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+          <div class="scroll_view">
+            <div class="bg-black">
+              <div class="yellow-border-bottom search-container">
+                <div class="options">
+                  <div class="day-range pl-2 pr-2">
+                    <div class="date-time-picker-box">
+                      <div class="picker datetimerange" @click.once="changeInitCalendarPage_announcement">
+                        <el-date-picker
+                          ref="datePicker"
+                          v-model="searchForm.announcementedAt"
+                          type="datetimerange"
+                          popper-class="ams-timeslot-popper announcementData pcPicker"
+                          :clearable="false"
+                          :editable="false"
+                          time-arrow-control
+                          :range-separator="$t('__to')"
+                          :start-placeholder="`${$t('__announcementDate')}(${$t('__start')})`"
+                          :end-placeholder="`${$t('__announcementDate')}(${$t('__end')})`"
+                          :default-time="['00:00:00', '23:59:59']"
+                          :picker-options="pickerOptions"
+                          :format="'yyyy-MM-dd HH:mm'"
+                          prefix-icon="''"
+                          clear-icon="''"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="day-range pl-2 pr-2">
+                    <div class="date-time-picker-box">
+                      <div class="picker datetimerange" @click.once="changeInitCalendarPage_maintain">
+                        <el-date-picker
+                          v-model="searchForm.maintainedAt"
+                          type="datetimerange"
+                          popper-class="ams-timeslot-popper maintainData pcPicker"
+                          :clearable="false"
+                          :editable="false"
+                          time-arrow-control
+                          :range-separator="$t('__to')"
+                          :start-placeholder="`${$t('__maintainDate')}(${$t('__start')})`"
+                          :end-placeholder="`${$t('__maintainDate')}(${$t('__end')})`"
+                          :default-time="['00:00:00', '23:59:59']"
+                          :picker-options="pickerOptions"
+                          :format="'yyyy-MM-dd HH:mm'"
+                          prefix-icon="''"
+                          clear-icon="''"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.title" type="text" class="input_size" :placeholder="$t('__announcementTitle')" />
+                  </div>
+                  <div class="option">
+                    <el-input v-model="searchForm.content" type="text" class="input_size" :placeholder="$t('__announcementContent')" />
+                  </div>
+                  <div class="d-flex option type">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.type"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="typeCollapse"
+                        :placeholder="$t('__announcementType')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.type"
+                          :key="item.key"
+                          :label="$t(item.nickname)"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="d-flex option marquee">
+                    <span class="prefix-label" />
+                    <div class="comp selected-filter custom">
+                      <el-select
+                        v-model="searchForm.is_marquee"
+                        class="d-flex"
+                        multiple
+                        :popper-append-to-body="false"
+                        :collapse-tags="isMarqueeCollapse"
+                        :placeholder="$t('__marquee')"
+                        :popper-class="'custom-dropdown w-auto'"
+                      >
+                        <el-option
+                          v-for="item in selectOption.marquee"
+                          :key="item.key"
+                          :label="$t(item.nickname)"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </div>
+                    <span class="suffix-label" />
+                  </div>
+                  <div class="d-flex">
+                    <div>
+                      <button class="ml-2 el-button bg-yellow el-button--default mr-4 font-weight-bold" @click.stop="onCreateBtnClick()">{{ `${$t('__create')}${$t('__announcement')}` }}</button>
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    <div class="searchBtn">
+                      <svg-icon class="searchIcon" icon-class="search" @click.stop="onSearchBtnClick(1)" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="table-container">
+              <template v-if="tableData.length > 0">
+                <div
+                  v-for="(item, index) in tableData"
+                  :key="index"
+                  class="flex-column"
+                  :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
+                >
+                  <div class="base">
+                    <div class="d-flex">
+                      <div class="item justify-content-center" style="width: 30px;" @click.stop="remarkExpand(item)">
+                        <svg-icon v-if="item.open" class="fas yellow" icon-class="up" style="height: 2rem; width: 2rem;" />
+                        <svg-icon v-else class="fas yellow" icon-class="more" style="height: 2rem; width: 2rem;" />
+                      </div>
+                      <div class="item justify-content-center item_w0">
+                        <span class="title">ID</span>
+                        <span class="value">{{ item.id }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w1">
+                        <span class="title">{{ $t('__announcementTitle') }}</span>
+                        <span class="value">{{ item.title }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w0">
+                        <span class="title">{{ $t('__announcementType') }}</span>
+                        <span class="value">{{ item.typeNickname }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w0">
+                        <span class="title">{{ $t('__marquee') }}</span>
+                        <span class="value" :class="{'text-green': item.is_marquee === '1', 'text-red': item.is_marquee === '0' }">{{ item.marquee }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w3">
+                        <span class="title">{{ `${$t('__announcementDate')}(${$t('__start')})` }}</span>
+                        <span class="value">{{ item.announcement_started_at }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w3">
+                        <span class="title">{{ `${$t('__announcementDate')}(${$t('__end')})` }}</span>
+                        <span class="value">{{ item.announcement_ended_at }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w3">
+                        <span class="title">{{ `${$t('__maintainDate')}(${$t('__start')})` }}</span>
+                        <span class="value">{{ item.maintain_started_at }}</span>
+                      </div>
+                      <div class="item justify-content-center item_w3">
+                        <span class="title">{{ `${$t('__maintainDate')}(${$t('__end')})` }}</span>
+                        <span class="value">{{ item.maintain_ended_at }}</span>
+                      </div>
+                      <div class="operate align-items-center operate_w1">
+                        <el-button class="bg-yellow" size="mini" @click="onEditBtnClick(item)">{{ $t("__revise") }}</el-button>
+                        <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-if="item.open">
+                    <div class="item remark">
+                      <span class="title">{{ $t('__content') }}</span>
+                      <span class="value">{{ item.content }}</span>
+                    </div>
+                  </div>
+                </div>
+                <pagination
+                  :page-size="pageSize"
+                  :page-sizes="pageSizes"
+                  :total="totalCount"
+                  :current-page.sync="currentPage"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
+              </template>
+              <template v-else>
+                <div class="noInformation">{{ $t("__noInformation") }}</div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <editDialog
+        ref="editDialog"
+        :title="$stringFormat(`${$t('__edit')}${$t('__announcement')} - ID:{0}`, [selectForm.id])"
+        :visible="curDialogIndex === dialogEnum.edit"
+        :confirm="$t('__revise')"
+        :dialog-picker-options="pickerOptions"
+        :form="selectForm"
+        :method-type="methodType"
+        :announcement-marquee-status-type="announcementMarqueeStatusType"
+        @close="closeDialogEven"
+        @confirm="editDialogConfirmEven"
+      />
+
+      <editDialog
+        ref="createDialog"
+        :title="`${$t('__create')}${$t('__announcement')}`"
+        :visible="curDialogIndex === dialogEnum.create"
+        :confirm="$t('__confirm')"
+        :form="selectForm"
+        :dialog-picker-options="pickerOptions"
+        :method-type="methodType"
+        :announcement-marquee-status-type="announcementMarqueeStatusType"
+        @close="closeDialogEven"
+        @confirm="createDialogConfirmEven"
+      />
     </template>
   </div>
 </template>
@@ -251,10 +468,12 @@ import handlePageChange from '@/mixin/handlePageChange';
 import EditDialog from './editDialog'
 import { mapGetters } from 'vuex'
 import { getFullDate, getDayDateTime, getWeekDateTime, getMonthDateTime } from '@/utils/transDate'
+import BackTop from '@/components/BackTop'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'AnnouncementManagement',
-  components: { EditDialog },
+  components: { EditDialog, BackTop, Pagination },
   mixins: [common, viewCommon, handlePageChange],
   data() {
     return {
@@ -300,6 +519,15 @@ export default {
     }
   },
   watch: {
+    'device': function() {
+      if (this.$route.name === this.tempRoute.name) {
+        this.closeDialogEven()
+        this.$nextTick(() => {
+          this.onSearchBtnClick(1);
+          this.addSelectFilter()
+        })
+      }
+    }
   },
   created() {
     this.onSearchBtnClick(1)
@@ -370,6 +598,10 @@ export default {
       })
       this.totalCount = res.rows.length
       this.handlePageChangeByClient(this.currentPage)
+
+      if (this.$refs.backTop) {
+        this.$refs.backTop.backTop()
+      }
 
       this.closeDialogEven()
       this.closeLoading()
@@ -560,23 +792,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.search-container {
-  .pl_pt {
-    padding-left: 0.5rem;
-    padding-top: 0.3rem;
-  }
-  .options {
-    .option {
-      &.w-4 {
-        width: 14rem;
-      }
-    }
-  }
 
-  .selected-filter {
-    &.custom {
-      border: 0;
-    }
+.selected-filter {
+  &.custom {
+    border: 0;
   }
 }
 
@@ -602,6 +821,28 @@ export default {
     .remark {
       padding: 0 1rem;
     }
+  }
+}
+
+#app.mobile {
+  .search-container {
+    .pl_pt {
+      padding-left: 0.5rem;
+      padding-top: 0.3rem;
+    }
+    .options {
+      .option {
+        &.w-4 {
+          width: 14rem;
+        }
+      }
+    }
+  }
+}
+
+#app.pc {
+  .day-range {
+    width: auto;
   }
 }
 </style>
