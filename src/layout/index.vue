@@ -12,11 +12,14 @@
       </template>
     </template>
     <template v-else>
-      <navbar class="navbar" />
-      <page-tabs class="page-tabs" :class="{'opened': sidebar.opened}" />
-      <sidebar class="sidebar" />
-      <agent-level class="agentLevel" />
-      <app-main class="appMain" :class="{'opened': sidebar.opened}" />
+      <setPwd v-if="modPwd" />
+      <template v-else>
+        <navbar class="navbar" />
+        <page-tabs class="page-tabs" :class="{'opened': sidebar.opened}" />
+        <sidebar class="sidebar" />
+        <agent-level class="agentLevel" />
+        <app-main class="appMain" :class="{'opened': sidebar.opened}" />
+      </template>
     </template>
   </div>
 </template>

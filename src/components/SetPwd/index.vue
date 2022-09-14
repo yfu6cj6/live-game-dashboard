@@ -266,6 +266,7 @@ export default {
         padding: 2.5rem;
         margin: 0 auto;
         .el-form-item {
+          width: 25rem;
           .el-form-item__label {
             width: 100%;
             text-align: left;
@@ -291,7 +292,6 @@ export default {
                 line-height: 2.5rem;
                 font-size: 1.33333rem;
                 color: #000;
-                min-width: 330px;
               }
               .el-input__suffix {
                 .el-input__suffix-inner {
@@ -300,6 +300,12 @@ export default {
                   }
                 }
               }
+            }
+            .el-button {
+              margin-top: 0.83333rem;
+              margin-bottom: 0.83333rem;
+              font-weight: bold;
+              font-size: 1.16667rem;
             }
           }
         }
