@@ -69,6 +69,7 @@
                         autocomplete="off"
                         :disabled="operationType===operationEnum.edit"
                         class="el-input__inner"
+                        onkeyup="value=value.replace(/[\W]/g,'')"
                         @focus="inputFocus(step1.name)"
                         @blur="nameChange(step1.name, form.name)"
                         @change="nameChange(step1.name, form.name)"
@@ -97,7 +98,9 @@
                   <div class="el-form-item__content">
                     <div class="label-group">
                       <label class="form-item-label">{{ $t('__memberNickname') }}</label>
-                      <small class="tip" />
+                      <small class="tip">
+                        {{ `16${$t('__indivual')}${$t('__character')} (${$t('__chineseCharacterLimit')})` }}
+                      </small>
                     </div>
                     <div class="el-input el-input--small">
                       <input
@@ -106,8 +109,8 @@
                         autocomplete="off"
                         class="el-input__inner"
                         @focus="inputFocus(step1.nick_name)"
-                        @blur="inputChange(step1.nick_name, form.nick_name)"
-                        @change="inputChange(step1.nick_name, form.nick_name)"
+                        @blur="nicknameChange(step1.nick_name, form.nick_name)"
+                        @change="nicknameChange(step1.nick_name, form.nick_name)"
                       >
                       <span v-if="step1.nick_name.hasError || step1.nick_name.isSuccess" class="el-input__suffix">
                         <span class="el-input__suffix-inner">
@@ -144,6 +147,7 @@
                         :type="step1.password.type"
                         autocomplete="off"
                         class="el-input__inner"
+                        onkeyup="value=value.replace(/[\W]/g,'')"
                         @focus="inputFocus(step1.password)"
                         @blur="passwordChange(step1.password, form.password)"
                         @change="passwordChange(step1.password, form.password)"
@@ -175,6 +179,7 @@
                         :type="step1.confirmPassword.type"
                         autocomplete="off"
                         class="el-input__inner"
+                        onkeyup="value=value.replace(/[\W]/g,'')"
                         @focus="inputFocus(step1.confirmPassword)"
                         @blur="confirmPasswordChange"
                         @change="confirmPasswordChange"
@@ -732,6 +737,7 @@
                         :type="step5.userPassword.type"
                         autocomplete="off"
                         class="el-input__inner"
+                        onkeyup="value=value.replace(/[\W]/g,'')"
                         @focus="inputFocus(step5.userPassword)"
                         @blur="inputChange(step5.userPassword, form.userPassword)"
                         @change="inputChange(step5.userPassword, form.userPassword)"
@@ -864,6 +870,7 @@
                                       autocomplete="off"
                                       :disabled="operationType===operationEnum.edit"
                                       class="el-input__inner"
+                                      onkeyup="value=value.replace(/[\W]/g,'')"
                                       @focus="inputFocus(step1.name)"
                                       @blur="nameChange(step1.name, form.name)"
                                       @change="nameChange(step1.name, form.name)"
@@ -909,8 +916,8 @@
                                       autocomplete="off"
                                       class="el-input__inner"
                                       @focus="inputFocus(step1.nick_name)"
-                                      @blur="inputChange(step1.nick_name, form.nick_name)"
-                                      @change="inputChange(step1.nick_name, form.nick_name)"
+                                      @blur="nicknameChange(step1.nick_name, form.nick_name)"
+                                      @change="nicknameChange(step1.nick_name, form.nick_name)"
                                     >
                                     <span v-if="step1.nick_name.hasError || step1.nick_name.isSuccess" class="el-input__suffix">
                                       <span class="el-input__suffix-inner">
@@ -926,7 +933,9 @@
                                     </span>
                                   </div>
                                 </div>
-                                <small class="tip" />
+                                <small class="tip">
+                                  {{ `16${$t('__indivual')}${$t('__character')} (${$t('__chineseCharacterLimit')})` }}
+                                </small>
                               </div>
                             </div>
                           </div>
@@ -951,6 +960,7 @@
                                       :type="step1.password.type"
                                       autocomplete="off"
                                       class="el-input__inner"
+                                      onkeyup="value=value.replace(/[\W]/g,'')"
                                       @focus="inputFocus(step1.password)"
                                       @blur="passwordChange(step1.password, form.password)"
                                       @change="passwordChange(step1.password, form.password)"
@@ -991,6 +1001,7 @@
                                       :type="step1.confirmPassword.type"
                                       autocomplete="off"
                                       class="el-input__inner"
+                                      onkeyup="value=value.replace(/[\W]/g,'')"
                                       @focus="inputFocus(step1.confirmPassword)"
                                       @blur="confirmPasswordChange"
                                       @change="confirmPasswordChange"
@@ -1587,6 +1598,7 @@
                                       :type="step5.userPassword.type"
                                       autocomplete="off"
                                       class="el-input__inner"
+                                      onkeyup="value=value.replace(/[\W]/g,'')"
                                       @focus="inputFocus(step5.userPassword)"
                                       @blur="inputChange(step5.userPassword, form.userPassword)"
                                       @change="inputChange(step5.userPassword, form.userPassword)"
@@ -2024,8 +2036,8 @@ export default {
       this.step1.confirmPassword.hasError = !check
       return check
     },
-    passwordChange(attributes, model) {
-      if (model && model.length >= 5) {
+    nameChange(attributes, model) {
+      if (model && model.length >= 5 && model.length <= 8) {
         attributes.isSuccess = true
         attributes.hasError = false
         return true
@@ -2035,8 +2047,19 @@ export default {
         return false
       }
     },
-    nameChange(attributes, model) {
-      if (model && model.length >= 5 && model.length <= 8) {
+    nicknameChange(attributes, model) {
+      if (model && this.getStringLength(model) <= 16) {
+        attributes.isSuccess = true
+        attributes.hasError = false
+        return true
+      } else {
+        attributes.isSuccess = false
+        attributes.hasError = true
+        return false
+      }
+    },
+    passwordChange(attributes, model) {
+      if (model && model.length >= 5) {
         attributes.isSuccess = true
         attributes.hasError = false
         return true
@@ -2134,7 +2157,7 @@ export default {
     onNextBtnClick() {
       let success = true
       if (this.curIndex === this.stepEnum.memberInfo) {
-        if (!this.inputChange(this.step1.nick_name, this.form.nick_name)) {
+        if (!this.nicknameChange(this.step1.nick_name, this.form.nick_name)) {
           success = false
         }
         if (this.operationType === this.operationEnum.create && this.visible) {
