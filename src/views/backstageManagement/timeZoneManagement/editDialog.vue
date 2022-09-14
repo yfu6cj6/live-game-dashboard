@@ -155,18 +155,7 @@ export default {
     }
   },
   data: function() {
-    const validate = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else {
-        callback()
-      }
-    }
     return {
-      rules: {
-        time_zone: [{ required: true, trigger: 'blur', validator: validate }],
-        city_name: [{ required: true, trigger: 'blur', validator: validate }]
-      },
       editForm: {},
       inputData: {
         zone: {
