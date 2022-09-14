@@ -420,6 +420,9 @@ table {
 .pt-4, .py-4 {
   padding-top: 1.5rem!important;
 }
+.pt-5, .py-5 {
+  padding-top: 3rem!important;
+}
 .pr-1, .px-1 {
   padding-right: 0.25rem!important;
 }
@@ -1097,45 +1100,6 @@ table {
   -o-transition-property: transform;
   transition-property: transform;
   transition-property: transform,-webkit-transform;
-}
-
-.dialog-body {
-  .el-form {
-    .el-form-item {
-      display: flex;
-      flex-direction: column;
-      .el-form-item__label {
-        color: $yellow;
-        min-width: auto;
-        text-align: left;
-        line-height: 2rem;
-      }
-      .el-form-item__content {
-        line-height: 0;
-        .el-input {
-          .el-input__inner {
-            padding: 0, 15px;
-            color: #000;
-            height: 2.83333rem;
-          }
-        }
-      }
-      .el-form-item__error {
-        padding: 0;
-      }
-      &.disableRequiredIcon {
-        &.is-required {
-          &:not(.is-no-asterisk) {
-            &>.el-form-item__label {
-              &:before {
-                content: '';
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 }
 
 .bg-red {

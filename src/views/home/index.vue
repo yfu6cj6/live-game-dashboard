@@ -283,6 +283,7 @@ export default {
     }
   },
   created() {
+    this.$store.dispatch('app/setLoading', false)
   },
   methods: {
     setAgentAnnouncementsExpanded(id) {

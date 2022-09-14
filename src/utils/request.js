@@ -2,7 +2,7 @@ import axios from 'axios'
 import { getToken, setToken, removeToken, getTokenType, setTokenType, removeTokenType } from '@/utils/auth'
 import router from '@/router/index'
 import { Message } from 'element-ui'
-import { i18n } from '@/lang/lang'
+import { getMsg } from './response'
 import store from '@/store'
 
 // create an axios instance
@@ -48,7 +48,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.code === 401 || res.code === 101) {
       router.push({ path: '/logout' })
-      showMsgLog(res.message)
+      Message.error(getMsg(res.message))
       store.dispatch('login/setLoginTip', res.message)
       return Promise.reject(response)
     }
@@ -65,7 +65,7 @@ service.interceptors.response.use(
     }
 
     if (res.code !== 200) {
-      showMsgLog(res.message)
+      Message.error(getMsg(res.message))
       store.dispatch('login/setLoginTip', res.message)
       return Promise.reject(response)
     } else {
@@ -83,19 +83,5 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
-function showMsgLog(message) {
-  let msg
-  if (message) {
-    if (typeof message === 'string' || message instanceof String) {
-      msg = message.toString()
-    } else {
-      msg = message[Object.keys(message)[0]].toString()
-    }
-  } else {
-    msg = i18n.messages[i18n.locale]['__operationField']
-  }
-  Message.error(msg)
-}
 
 export default service

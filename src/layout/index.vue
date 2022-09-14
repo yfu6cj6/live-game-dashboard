@@ -1,13 +1,15 @@
 <template>
   <div v-loading="loading" :class="classObj" class="app-container">
     <template v-if="device === 'mobile'">
-      <navbar class="navbar" />
-      <page-tabs class="d-none" />
-      <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
-      <sidebar class="sidebar" :class="{'opened': sidebar.opened}" />
-      <agent-level class="agentLevel" />
-      <app-main class="appMain" :class="{'opened': sidebar.opened}" />
-      <modPwdDialog v-if="modPwd" />
+      <setPwd v-if="true" />
+      <template v-else>
+        <navbar class="navbar" />
+        <page-tabs class="d-none" />
+        <div class="drawer-bg" :class="{'opened': sidebar.opened}" @click="handleClickOutside" />
+        <sidebar class="sidebar" :class="{'opened': sidebar.opened}" />
+        <agent-level class="agentLevel" />
+        <app-main class="appMain" :class="{'opened': sidebar.opened}" />
+      </template>
     </template>
     <template v-else>
       <navbar class="navbar" />
@@ -15,16 +17,16 @@
       <sidebar class="sidebar" />
       <agent-level class="agentLevel" />
       <app-main class="appMain" :class="{'opened': sidebar.opened}" />
-      <modPwdDialog v-if="modPwd" />
     </template>
   </div>
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain, PageTabs, AgentLevel, ModPwdDialog } from './components'
+import { Navbar, Sidebar, AppMain, PageTabs, AgentLevel } from './components'
 import ResizeMixin from '@/mixin/ResizeHandler'
 import { mapGetters } from 'vuex'
 import defaultSettings from '@/settings'
+import SetPwd from '@/components/SetPwd'
 
 export default {
   name: 'Layout',
@@ -34,15 +36,15 @@ export default {
     AppMain,
     PageTabs,
     AgentLevel,
-    ModPwdDialog
+    SetPwd
   },
   mixins: [ResizeMixin],
   computed: {
     ...mapGetters([
       'sidebar',
       'device',
-      'modPwd',
-      'loading'
+      'loading',
+      'modPwd'
     ]),
     classObj() {
       return {

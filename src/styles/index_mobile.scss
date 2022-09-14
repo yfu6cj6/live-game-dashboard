@@ -177,49 +177,6 @@
       }
     }
   }
-    
-  .modPwd-container {
-    .dialog-body {
-      .account-info {
-        color: $yellow;
-        display: inline-block;
-        padding-bottom: 2rem;
-        font-size: 1.4rem;
-        span {
-          padding-left: .7rem;
-          color: #fff;
-        }
-      }
-      .el-form {
-        margin-bottom: .7rem;
-        .el-form-item {
-          margin-bottom: 0;
-          .el-form-item__content {
-            line-height: 1.5rem;
-            margin-bottom: 2.1rem;
-            .el-form-item__error {
-              top: 100%;
-            }
-            .item {
-              color: $yellow;
-            }
-          }
-          &.newPassword {
-            .el-form-item__content {
-              .item {
-                display: flex;
-                flex-direction: column;
-                .newPasswordTip {
-                  color: #fff;
-                  font-size: 1.1rem;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 
   .fadeInUp {
     -webkit-animation-name: fadeInUpMobile;

@@ -367,5 +367,6 @@
     "__createIpWhitelist": "新增IP白名單",
     "__forcedTermination": "強制終止牌局",
     "__noExceeded": "未超出",
-    "__addAgent": "新增代理"
+    "__addAgent": "新增代理",
+    "__checkNewPassword": "重複輸入新密碼"
 }
