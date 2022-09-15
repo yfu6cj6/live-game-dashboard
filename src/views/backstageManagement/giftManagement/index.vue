@@ -281,7 +281,7 @@
                 </div>
               </template>
               <template v-else>
-                <div class="noInformation">{{ $t("__noInformation") }}</div>
+                <div class="no-result">{{ $t("__noInformation") }}</div>
               </template>
               <pagination
                 :page-size="pageSize"

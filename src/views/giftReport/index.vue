@@ -155,7 +155,7 @@
             </template>
           </div>
         </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        <div v-else class="no-result">{{ $t("__noInformation") }}</div>
       </div>
     </div>
 

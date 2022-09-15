@@ -273,7 +273,7 @@
               </div>
             </div>
           </div>
-          <div v-else class="noInformation">
+          <div v-else class="no-result">
             <span>{{ `${$t('__noHave')}${$t('__directAgent')}` }}</span>
           </div>
         </div>
@@ -704,7 +704,7 @@
             <div class="force-wrap" />
           </div>
         </div>
-        <div v-else class="noInformation">
+        <div v-else class="no-result">
           <span>{{ `${$t('__noHave')}${$t('__directAgent')}` }}</span>
         </div>
         <agentInfoDialogPC
@@ -1324,11 +1324,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.noInformation {
-  margin-top: 1rem;
-  text-align: center;
-}
-
 .mobile {
   .hall-row {
     width: 100vw;

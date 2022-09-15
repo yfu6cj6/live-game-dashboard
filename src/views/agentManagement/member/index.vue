@@ -272,7 +272,7 @@
             </div>
           </div>
           <div v-show="tableData.length <= 0">
-            <div class="noInformation">
+            <div class="no-result">
               <span>{{ `${$t('__noHave')}${$t('__member')}` }}</span>
             </div>
           </div>
@@ -775,7 +775,7 @@
               <div class="force-wrap" />
             </div>
           </div>
-          <div v-else class="noInformation">
+          <div v-else class="no-result">
             <span>{{ `${$t('__noHave')}${$t('__member')}` }}</span>
           </div>
           <treeDialogPC
@@ -1338,12 +1338,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.noInformation {
-  margin-top: 1rem;
-  text-align: center;
-}
-
 .exceeded {
   color: red;
   display: block;

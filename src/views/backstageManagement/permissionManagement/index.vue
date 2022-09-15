@@ -68,7 +68,7 @@
         </div>
         <div class="table-container">
           <template v-if="tableData.length > 0">
-            <dir
+            <div
               v-for="(item, index) in tableData"
               :key="index"
               class="flex-column"
@@ -120,7 +120,7 @@
                   <span class="value">{{ item.response_content }}</span>
                 </div>
               </div>
-            </dir>
+            </div>
             <div v-if="totalCount > pageSize" class="more_btn_space">
               <div v-if="tableData.length >= totalCount" class="search_more">
                 <span>{{ $t("__noMoreInformation") }}</span>
@@ -165,7 +165,7 @@
           :inner-class="'.view-container'"
           :view-class="'.scroll_view'"
         />
-        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+        <div class="view-container" style="height: calc((100vh - 6.25rem) - 30px);">
           <div class="scroll_view">
             <div class="bg-black">
               <div class="yellow-border-bottom search-container">
@@ -268,18 +268,18 @@
                     </div>
                   </div>
                 </div>
-                <pagination
-                  :page-size="pageSize"
-                  :page-sizes="pageSizes"
-                  :total="totalCount"
-                  :current-page.sync="currentPage"
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                />
               </template>
               <template v-else>
-                <div class="noInformation">{{ $t("__noInformation") }}</div>
+                <div class="no-result">{{ $t("__noInformation") }}</div>
               </template>
+              <pagination
+                :page-size="pageSize"
+                :page-sizes="pageSizes"
+                :total="totalCount"
+                :current-page.sync="currentPage"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
             </div>
           </div>
         </div>

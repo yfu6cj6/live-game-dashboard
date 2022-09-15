@@ -1092,10 +1092,6 @@ export default {
         padding-right: 0px !important;
       }
     }
-    .noInformation {
-      margin-top: 1rem;
-      text-align: center;
-    }
     .even-row {
       position: relative;
       background-color: #fff;

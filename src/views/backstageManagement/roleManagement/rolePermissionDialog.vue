@@ -76,7 +76,7 @@
                 </div>
               </div>
             </template>
-            <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+            <div v-else class="no-result">{{ $t("__noInformation") }}</div>
           </div>
         </div>
         <div v-if="(serverData.allPermissions && serverData.allPermissions.length) > 0 && !dialogLoading" class="operate_content">
@@ -174,7 +174,7 @@
                   </div>
                 </div>
               </template>
-              <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+              <div v-else class="no-result">{{ $t("__noInformation") }}</div>
             </div>
           </div>
           <div class="operate_content">
@@ -352,11 +352,6 @@ export default {
         color: #ce9600;
       }
     }
-  }
-  .noInformation {
-    margin-top: 1rem;
-    text-align: center;
-    color: #fff;
   }
 }
 

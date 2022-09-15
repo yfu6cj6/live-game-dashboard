@@ -63,7 +63,7 @@
         </div>
         <div class="table-container">
           <template v-if="tableData.length > 0">
-            <dir
+            <div
               v-for="(item, index) in tableData"
               :key="index"
               :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
@@ -95,7 +95,7 @@
                   <el-button class="bg-yellow button" size="mini" @click="onEditBtnClick(item)">{{ $t("__edit") }}</el-button>
                 </div>
               </div>
-            </dir>
+            </div>
             <div v-if="totalCount > pageSize" class="more_btn_space">
               <div v-if="tableData.length >= totalCount" class="search_more">
                 <span>{{ $t("__noMoreInformation") }}</span>

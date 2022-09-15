@@ -67,7 +67,7 @@
                 </div>
               </div>
             </draggable>
-            <div v-else-if="searched && allDataByClient.length === 0" class="noInformation">{{ $t("__noInformation") }}</div>
+            <div v-else-if="searched && allDataByClient.length === 0" class="no-result">{{ $t("__noInformation") }}</div>
           </div>
         </div>
         <div v-if="allDataByClient.length > 0 && !dialogLoading" class="operate_ctrl">
@@ -149,7 +149,7 @@
                   </div>
                 </div>
               </draggable>
-              <div v-else-if="searched && allDataByClient.length === 0" class="noInformation">{{ $t("__noInformation") }}</div>
+              <div v-else-if="searched && allDataByClient.length === 0" class="no-result">{{ $t("__noInformation") }}</div>
             </div>
           </div>
           <div class="operate_content">
@@ -372,9 +372,6 @@ export default {
     .confirm {
       width: 10rem;
     }
-  }
-  .noInformation {
-    color: #fff;
   }
 }
 </style>

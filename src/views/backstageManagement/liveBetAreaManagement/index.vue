@@ -87,7 +87,7 @@
         </div>
         <div class="table-container">
           <template v-if="tableData.length > 0">
-            <dir
+            <div
               v-for="(item, index) in tableData"
               :key="index"
               :class="{'odd-row': index % 2 === 0, 'even-row': index % 2 !== 0}"
@@ -132,7 +132,7 @@
                   <el-button class="bg-red" size="mini" @click="onDeleteBtnClick(item)">{{ $t("__delete") }}</el-button>
                 </div>
               </div>
-            </dir>
+            </div>
             <div v-if="totalCount > pageSize" class="more_btn_space">
               <div v-if="tableData.length >= totalCount" class="search_more">
                 <span>{{ $t("__noMoreInformation") }}</span>
@@ -297,7 +297,7 @@
                 </div>
               </template>
               <template v-else>
-                <div class="noInformation">{{ $t("__noInformation") }}</div>
+                <div class="no-result">{{ $t("__noInformation") }}</div>
               </template>
               <pagination
                 :page-size="pageSize"

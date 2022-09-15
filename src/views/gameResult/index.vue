@@ -1023,11 +1023,6 @@ export default {
     color: #f9c901;
     margin-right: 0.8rem;
   }
-
-  .noInformation {
-    margin-top: 1rem;
-    text-align: center;
-  }
 }
 
 #app.pc {
