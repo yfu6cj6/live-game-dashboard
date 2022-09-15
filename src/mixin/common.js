@@ -28,10 +28,14 @@ export default {
         }
       },
       disabledDate: (time) => {
+        const newTime = new Date(time)
+        newTime.setHours(0)
+        newTime.setMinutes(0)
+        newTime.setSeconds(0)
         const preThirdDay = new Date()
         preThirdDay.setMonth(preThirdDay.getMonth() - 3)
-        preThirdDay.setDate(preThirdDay.getDate() - 1)
-        return time.getTime() > Date.now() || time.getTime() < preThirdDay
+        preThirdDay.setDate(preThirdDay.getDate())
+        return newTime.getTime() > new Date().getTime() || time.getTime() < preThirdDay
       }
     }
   },
