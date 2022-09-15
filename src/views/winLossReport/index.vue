@@ -3095,7 +3095,7 @@ export default {
             order: 4;
           }
           &:last-child {
-            margin-left: 210px;
+            margin-left: 350px;
             -webkit-box-ordinal-group: 6;
             -ms-flex-order: 5;
             order: 5;

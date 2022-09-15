@@ -1,5 +1,5 @@
-import { getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
-// import { getFullDate, getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
+// import { getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
+import { getFullDate, getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
 
 export default {
   data() {
@@ -15,31 +15,99 @@ export default {
   watch: {
     'device': function() {
       this.handleChangePickerClass()
+    },
+    'searchTime': function() {
+      this.handleCalendarPage()
     }
   },
   created() {
     this.pickerOptions = {
-      // onPick: ({ maxDate, minDate }) => {
-      //   if (maxDate) {
-      //     this.searchTime = [getFullDate(minDate), getFullDate(maxDate)]
-      //     this.$refs.datePicker.picker.handleChangeRange({
-      //       minDate: this.$refs.datePicker.picker.minDate,
-      //       maxDate: this.$refs.datePicker.picker.maxDate,
-      //       rangeState: {
-      //         selecting: true
-      //       }
-      //     })
-      //   }
-      // }
-      // disabledDate: (time) => {
-      //   const preThirdDay = new Date()
-      //   preThirdDay.setMonth(preThirdDay.getMonth() - 3)
-      //   preThirdDay.setDate(preThirdDay.getDate() - 1)
-      //   return time.getTime() > Date.now() || time.getTime() < preThirdDay
-      // }
+      onPick: ({ maxDate, minDate }) => {
+        if (minDate && maxDate) {
+          this.searchTime = [getFullDate(minDate), getFullDate(maxDate)]
+          // this.$refs.datePicker.picker.handleChangeRange({
+          //   minDate: this.$refs.datePicker.picker.minDate,
+          //   maxDate: this.$refs.datePicker.picker.maxDate,
+          //   rangeState: {
+          //     selecting: true
+          //   }
+          // })
+        }
+      },
+      disabledDate: (time) => {
+        const preThirdDay = new Date()
+        preThirdDay.setMonth(preThirdDay.getMonth() - 3)
+        preThirdDay.setDate(preThirdDay.getDate() - 1)
+        return time.getTime() > Date.now() || time.getTime() < preThirdDay
+      }
     }
   },
   methods: {
+    checkMonIndex() {
+      const preEl = document.querySelector('.el-button.el-button--default.preMon.arrow')
+      const nextEl = document.querySelector('.el-button.el-button--default.nextMon.arrow')
+      if (preEl && nextEl) {
+        const thisMonth = new Date().getMonth();
+        const searchMonth = new Date(this.searchTime[0]).getMonth();
+        this.monthIndex = searchMonth - thisMonth
+        if (this.monthIndex < -2) {
+          preEl.classList.add('disable')
+          nextEl.classList.remove('disable')
+        } else if (this.monthIndex >= 0) {
+          nextEl.classList.add('disable')
+          preEl.classList.remove('disable')
+        } else {
+          preEl.classList.remove('disable')
+          nextEl.classList.remove('disable')
+        }
+      }
+    },
+    checkDayIndex() {
+      const preEl = document.querySelector('.el-button.el-button--default.preDay.arrow')
+      const nextEl = document.querySelector('.el-button.el-button--default.nextDay.arrow')
+      if (preEl && nextEl) {
+        const search = new Date(this.searchTime[0]);
+        this.dayIndex = parseInt((search - new Date()) / 1000 / 60 / 60 / 24)
+        const preThirdDay = new Date()
+        preThirdDay.setMonth(preThirdDay.getMonth() - 3)
+        preThirdDay.setDate(preThirdDay.getDate())
+        if (search.getTime() <= preThirdDay) {
+          preEl.classList.add('disable')
+          nextEl.classList.remove('disable')
+        } else if (this.dayIndex >= 0) {
+          nextEl.classList.add('disable')
+          preEl.classList.remove('disable')
+        } else {
+          preEl.classList.remove('disable')
+          nextEl.classList.remove('disable')
+        }
+      }
+    },
+    checkWeekIndex() {
+      const preEl = document.querySelector('.el-button.el-button--default.preWeek.arrow')
+      const nextEl = document.querySelector('.el-button.el-button--default.nextWeek.arrow')
+      if (preEl && nextEl) {
+        const search = new Date(this.searchTime[0]);
+        search.setDate(search.getDate() - search.getDay() + 1)
+        const date = new Date()
+        date.setDate(date.getDate() - date.getDay() + 1)
+        this.weekIndex = parseInt((search - date) / 1000 / 24 / 60 / 60 / 7)
+        const preThirdDay = new Date()
+        preThirdDay.setMonth(preThirdDay.getMonth() - 3)
+        preThirdDay.setDate(preThirdDay.getDate())
+        const min = parseInt((preThirdDay - date) / 1000 / 24 / 60 / 60 / 7)
+        if (this.weekIndex < min) {
+          preEl.classList.add('disable')
+          nextEl.classList.remove('disable')
+        } else if (this.weekIndex >= 0) {
+          nextEl.classList.add('disable')
+          preEl.classList.remove('disable')
+        } else {
+          preEl.classList.remove('disable')
+          nextEl.classList.remove('disable')
+        }
+      }
+    },
     getStringLength(str) {
       if (str === null || str === undefined) {
         return 0
@@ -75,47 +143,57 @@ export default {
         if (el) {
           el.click()
         }
+        this.checkMonIndex()
+        this.checkDayIndex()
+        this.checkWeekIndex()
       })
     },
     // 日期範圍選擇器點開後要做的初始化
     changeInitCalendarPage() {
       this.handleCalendarPage()
       this.addDateTimeOption(() => {
+        if (this.monthIndex < -2) return;
         this.monthIndex--;
-        this.searchTime = getMonthDateTime(this.monthIndex, true)
-        this.handleCalendarPage()
+        this.searchTime = getMonthDateTime(this.monthIndex, false)
       }, () => {
         this.monthIndex = 0;
-        this.searchTime = getMonthDateTime(this.monthIndex, true)
-        this.handleCalendarPage()
+        this.searchTime = getMonthDateTime(this.monthIndex, false)
       }, () => {
+        if (this.monthIndex >= 0) return;
         this.monthIndex++;
-        this.searchTime = getMonthDateTime(this.monthIndex, true)
-        this.handleCalendarPage()
+        this.searchTime = getMonthDateTime(this.monthIndex, false)
       }, () => {
+        const preThirdDay = new Date()
+        preThirdDay.setMonth(preThirdDay.getMonth() - 3)
+        preThirdDay.setDate(preThirdDay.getDate())
+        const search = new Date(this.searchTime[0]);
+        if (search.getTime() <= preThirdDay) return;
         this.dayIndex--;
-        this.searchTime = getDayDateTime(this.dayIndex, true)
-        this.handleCalendarPage()
+        this.searchTime = getDayDateTime(this.dayIndex, false)
       }, () => {
         this.dayIndex = 0;
-        this.searchTime = getDayDateTime(this.dayIndex, true)
-        this.handleCalendarPage()
+        this.searchTime = getDayDateTime(this.dayIndex, false)
       }, () => {
+        if (this.dayIndex >= 0) return;
         this.dayIndex++;
-        this.searchTime = getDayDateTime(this.dayIndex, true);
-        this.handleCalendarPage()
+        this.searchTime = getDayDateTime(this.dayIndex, false);
       }, () => {
+        const date = new Date()
+        date.setDate(date.getDate() - date.getDay() + 1)
+        const preThirdDay = new Date()
+        preThirdDay.setMonth(preThirdDay.getMonth() - 3)
+        preThirdDay.setDate(preThirdDay.getDate())
+        const min = parseInt((preThirdDay - date) / 1000 / 24 / 60 / 60 / 7)
+        if (this.weekIndex < min) return;
         this.weekIndex--;
-        this.searchTime = getWeekDateTime(this.weekIndex, true)
-        this.handleCalendarPage()
+        this.searchTime = getWeekDateTime(this.weekIndex, false)
       }, () => {
         this.weekIndex = 0;
-        this.searchTime = getWeekDateTime(this.weekIndex, true)
-        this.handleCalendarPage()
+        this.searchTime = getWeekDateTime(this.weekIndex, false)
       }, () => {
+        if (this.weekIndex >= 0) return;
         this.weekIndex++;
-        this.searchTime = getWeekDateTime(this.weekIndex, true)
-        this.handleCalendarPage()
+        this.searchTime = getWeekDateTime(this.weekIndex, false)
       })
     },
     // 新增多選過濾器
