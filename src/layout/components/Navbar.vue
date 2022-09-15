@@ -149,11 +149,6 @@
           </div>
           <div class="p-1" />
         </div>
-        <marquee v-if="marqueeMsg.length > 0" class="marquee">
-          <div v-for="item in marqueeMsg" :key="item" class="msg">
-            {{ item }}
-          </div>
-        </marquee>
       </div>
     </div>
   </div>
@@ -528,10 +523,6 @@ export default {
         line-height: normal;
         z-index: 2;
       }
-    }
-    .marquee {
-      color: #fff;
-      max-width: 10%;
     }
   }
 }
