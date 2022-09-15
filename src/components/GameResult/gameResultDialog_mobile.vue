@@ -797,6 +797,7 @@ export default {
           display: flex;
           -ms-flex-wrap: wrap;
           flex-wrap: wrap;
+          padding-bottom: 4rem;
           .info {
             margin-right: 0.83333rem;
             margin-bottom: 0.83333rem;

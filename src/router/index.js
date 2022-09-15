@@ -61,6 +61,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/home',
     meta: { title: '__announcement', icon: 'nails' },
+    pcHidden: true,
     children: [{
       path: 'home',
       name: 'Hhome',
@@ -383,7 +384,8 @@ export const asyncRoutes = [
     path: '/logout',
     name: 'Logout',
     component: () => import('@/views/logout/index'),
-    meta: { title: '__logout', icon: 'logout' }
+    meta: { title: '__logout', icon: 'logout' },
+    pcHidden: true
   },
 
   // 404 pages must be placed at the end !!!

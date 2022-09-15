@@ -29,7 +29,7 @@
           <div
             v-show="curIndex === stepEnum.memberInfo"
             class="flex-column flex-fill scroll-inner"
-            :style="`height: calc(100vh - 3.75rem - 7.5rem - 3.75rem - ${(hasError ? '3.45' : '0')}rem);`"
+            :style="`height: calc(100vh - 3.75rem - 7.5rem - 3.75rem - ${(hasError ? '3.45' : '0')}rem - 4rem);`"
           >
             <form class="el-form flex-column flex-fill el-form--label-left">
               <label class="form-item-title">{{ $t('__memberInfo') }}</label>
@@ -255,7 +255,7 @@
           <div
             v-show="curIndex === stepEnum.rate"
             class="flex-column flex-fill scroll-inner"
-            :style="`height: calc(100vh - 3.75rem - 7.5rem - 3.75rem - ${(hasError ? '3.45' : '0')}rem);`"
+            :style="`height: calc(100vh - 3.75rem - 7.5rem - 3.75rem - ${(hasError ? '3.45' : '0')}rem - 4rem);`"
           >
             <form class="el-form flex-column flex-fill el-form--label-left">
               <label class="form-item-title">{{ $t('__rate') }}</label>
@@ -393,7 +393,7 @@
           <div
             v-show="curIndex === stepEnum.limit"
             class="flex-column flex-fill scroll-inner"
-            :style="`height: calc(100vh - 3.75rem - 7.5rem - 3.75rem - ${(hasError ? '3.45' : '0')}rem);`"
+            :style="`height: calc(100vh - 3.75rem - 7.5rem - 3.75rem - ${(hasError ? '3.45' : '0')}rem - 4rem);`"
           >
             <form class="el-form flex-column flex-fill el-form--label-left">
               <label class="form-item-title">{{ `${$t('__choose')}${$t('__handicapLimit')}` }}</label>
@@ -531,7 +531,7 @@
           <div
             v-show="curIndex === stepEnum.balanceConfig"
             class="flex-column flex-fill scroll-inner"
-            :style="`height: calc(100vh - 3.75rem - 7.5rem - 3.75rem - ${(hasError ? '3.45' : '0')}rem);`"
+            :style="`height: calc(100vh - 3.75rem - 7.5rem - 3.75rem - ${(hasError ? '3.45' : '0')}rem - 4rem);`"
           >
             <form class="el-form flex-column flex-fill el-form--label-left">
               <label class="form-item-title">{{ $t('__balanceConfig') }}</label>
@@ -629,7 +629,7 @@
           <div
             v-show="curIndex === stepEnum.confirm"
             class="flex-column flex-fill scroll-inner"
-            :style="`height: calc(100vh - 3.75rem - 7.5rem - 3.75rem - ${(hasError ? '3.45' : '0')}rem);`"
+            :style="`height: calc(100vh - 3.75rem - 7.5rem - 3.75rem - ${(hasError ? '3.45' : '0')}rem - 4rem);`"
           >
             <form class="el-form flex-column flex-fill el-form--label-left">
               <label class="form-item-title">{{ `${$t('__confirm')}${$t('__member')}${$t('__info')}` }}</label>
