@@ -1,5 +1,5 @@
 <template>
-  <div class="memberBet">
+  <div class="memberBet bg-new-dark-white">
     <template v-if="device === 'mobile'">
       <div class="scroll-wrap flex-column flex-fill">
         <div class="scroll-inner flex-column flex-fill off">
@@ -2124,9 +2124,6 @@ export default {
       .agent-group {
         position: relative;
       }
-    }
-    .no-result {
-      color: #fff;
     }
   }
 }

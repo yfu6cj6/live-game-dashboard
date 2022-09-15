@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 h-100">
+  <div class="w-100 h-100 bg-new-dark-white">
     <template v-if="device === 'mobile'">
       <div class="scroll-wrap memberBalanceRecord">
         <div class="scroll-inner">
@@ -259,7 +259,7 @@
                 @close="closeInfoEnumEven"
               />
             </div>
-            <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+            <div v-else class="no-result">{{ $t("__noInformation") }}</div>
           </div>
         </div>
       </div>
@@ -584,14 +584,6 @@
                         />
                       </div>
                     </div>
-                    <pagination
-                      :page-size="pageSize"
-                      :page-sizes="pageSizes"
-                      :total="totalCount"
-                      :current-page.sync="currentPage"
-                      @size-change="handleSizeChange"
-                      @current-change="handleCurrentChange"
-                    />
                   </div>
                   <div class="page-total2">
                     <div class="agent-break-line" style="border-bottom: 1px solid rgb(206, 150, 0);" />
@@ -717,6 +709,14 @@
                 <template v-else>
                   <div class="no-result">{{ $t('__noInformation') }}</div>
                 </template>
+                <pagination
+                  :page-size="pageSize"
+                  :page-sizes="pageSizes"
+                  :total="totalCount"
+                  :current-page.sync="currentPage"
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                />
               </div>
             </div>
           </div>

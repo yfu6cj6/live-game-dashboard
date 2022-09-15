@@ -8,139 +8,120 @@
               <div class="scroll-wrap flex-column flex-fill">
                 <div class="scroll-inner flex-column flex-fill off">
                   <div class="scroll-view flex-column flex-fill">
-                    <div class="modPwd-container">
-                      <div class="dialog-body">
-                        <div class="account-info">
-                          {{ $t('__account') }}
-                          <span>{{ account }}</span>
-                        </div>
-                        <el-form ref="form" :model="form" :rules="rules">
-                          <el-form-item prop="currentPassword">
-                            <span class="item">{{ $t('__currentPassword') }}</span>
-                            <el-input
-                              ref="currentPassword"
-                              v-model="form.currentPassword"
-                              name="currentPassword"
-                              :type="currentPasswordType"
-                              class="custom-psw"
-                            >
-                              <template slot="suffix">
-                                <i class="el-input__icon el-icon-view clickable" :class="{'text-black': currentPasswordType !== 'password', 'text-line-gray-shallow': currentPasswordType === 'password'}" @click="showCurrentPassword" />
-                              </template>
-                            </el-input>
-                          </el-form-item>
-                          <el-form-item prop="newPassword" class="newPassword">
-                            <span class="item">
-                              <span>{{ $t('__newPassword') }}</span>
-                              <span class="newPasswordTip">{{ `${$t('__lengthLess')}5` }}</span>
-                            </span>
-                            <el-input
-                              :key="newPasswordType"
-                              ref="newPassword"
-                              v-model="form.newPassword"
-                              :type="newPasswordType"
-                              name="newPassword"
-                              class="custom-psw"
-                            >
-                              <template slot="suffix">
-                                <i class="el-input__icon el-icon-view clickable" :class="{'text-black': newPasswordType !== 'password', 'text-line-gray-shallow': newPasswordType === 'password'}" @click="showNewPwd" />
-                              </template>
-                            </el-input>
-                          </el-form-item>
-                          <el-form-item prop="newPassword_confirmation">
-                            <span class="item">{{ $t('__confirmPassword') }}</span>
-                            <el-input
-                              :key="confirmationNewPasswordType"
-                              ref="newPassword_confirmation"
-                              v-model="form.newPassword_confirmation"
-                              :type="confirmationNewPasswordType"
-                              name="newPassword_confirmation"
-                              class="custom-psw"
-                              @keyup.enter.native="onSubmit"
-                            >
-                              <template slot="suffix">
-                                <i class="el-input__icon el-icon-view clickable" :class="{'text-black': confirmationNewPasswordType !== 'password', 'text-line-gray-shallow': confirmationNewPasswordType === 'password'}" @click="showNewConfirmationPwd" />
-                              </template>
-                            </el-input>
-                          </el-form-item>
-                        </el-form>
-                        <el-button class="bg-yellow font-weight-bold" @click.native.prevent="onSubmit">{{ $t('__submit') }}</el-button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </template>
-    <template v-else>
-      <div id="set-psw" class="set-psw">
-        <div class="overlay-scroll-wrap scrolling" style="height: calc((100vh - 6.25rem) - 0px);">
-          <div id="scroll-inner" class="scroll-inner on os-host os-theme-dark os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-scrollbar-vertical-hidden os-host-transition">
-            <div class="os-padding">
-              <div class="os-viewport os-viewport-native-scrollbars-invisible" style="right: 0px; bottom: 0px;">
-                <div class="os-content" style="padding: 0px; height: 100%; width: 100%;">
-                  <div class="scroll-view" style="min-width: 700px;">
                     <div class="form-container">
                       <div class="w-100">
-                        <div class="w-100">
+                        <div class="w-100 pb-4">
                           <span class="text-yellow">{{ $t('__account') }}</span>
                           <span class="text-white ml-3">{{ account }}</span>
                         </div>
-                        <el-form ref="form" :model="form" :rules="rules" style="margin-top:1rem">
-                          <el-form-item prop="currentPassword">
-                            <span class="item text-yellow">{{ $t('__currentPassword') }}</span>
-                            <el-input
-                              ref="currentPassword"
-                              v-model="form.currentPassword"
-                              name="currentPassword"
-                              :type="currentPasswordType"
-                              class="custom_input"
-                            >
-                              <template slot="suffix">
-                                <i class="el-input__icon el-icon-view clickable" :class="{'text-black': currentPasswordType !== 'password', 'text-line-gray-shallow': currentPasswordType === 'password'}" @click="showCurrentPassword" />
-                              </template>
-                            </el-input>
-                          </el-form-item>
-                          <el-form-item prop="newPassword" class="newPassword">
-                            <span class="item flex-column">
-                              <span class="text-yellow">{{ $t('__newPassword') }}</span>
-                              <span class="newPasswordTip">{{ `${$t('__lengthLess')}5` }}</span>
-                            </span>
-                            <el-input
-                              :key="newPasswordType"
-                              ref="newPassword"
-                              v-model="form.newPassword"
-                              :type="newPasswordType"
-                              name="newPassword"
-                              class="custom_input"
-                            >
-                              <template slot="suffix">
-                                <i class="el-input__icon el-icon-view clickable" :class="{'text-black': newPasswordType !== 'password', 'text-line-gray-shallow': newPasswordType === 'password'}" @click="showNewPwd" />
-                              </template>
-                            </el-input>
-                          </el-form-item>
-                          <el-form-item prop="newPassword_confirmation">
-                            <span class="item text-yellow">{{ $t('__confirmPassword') }}</span>
-                            <el-input
-                              :key="confirmationNewPasswordType"
-                              ref="newPassword_confirmation"
-                              v-model="form.newPassword_confirmation"
-                              :type="confirmationNewPasswordType"
-                              name="newPassword_confirmation"
-                              class="custom_input"
-                              @keyup.enter.native="onSubmit"
-                            >
-                              <template slot="suffix">
-                                <i class="el-input__icon el-icon-view clickable" :class="{'text-black': confirmationNewPasswordType !== 'password', 'text-line-gray-shallow': confirmationNewPasswordType === 'password'}" @click="showNewConfirmationPwd" />
-                              </template>
-                            </el-input>
-                          </el-form-item>
-                        </el-form>
-                        <div class="submitBtn">
-                          <el-button class="bg-yellow font-weight-bold" style="width:140px" @click.native.prevent="onSubmit">{{ $t('__submit') }}</el-button>
+                        <form class="el-form">
+                          <div
+                            class="el-form-item custom-psw el-form-item--feedback"
+                            :class="{
+                              'is-error': currentPassword.hasError,
+                              'is-success': currentPassword.isSuccess}"
+                          >
+                            <label class="el-form-item__label">{{ $t('__currentPassword') }}</label>
+                            <div class="el-form-item__content">
+                              <div class="el-input el-input--small el-input--suffix">
+                                <input
+                                  v-model="form.currentPassword"
+                                  :type="currentPassword.type"
+                                  autocomplete="off"
+                                  class="el-input__inner"
+                                  @focus="inputFocus(currentPassword)"
+                                  @blur="inputChange(currentPassword, form.currentPassword)"
+                                  @change="inputChange(currentPassword, form.currentPassword)"
+                                >
+                                <span class="el-input__suffix">
+                                  <span class="el-input__suffix-inner">
+                                    <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                    <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': currentPassword.type!=='password'}" @click="showPassword(currentPassword)" />
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="clear-both" />
+                          <div
+                            class="el-form-item custom-psw el-form-item--feedback"
+                            :class="{
+                              'is-error': newPassword.hasError,
+                              'is-success': newPassword.isSuccess}"
+                          >
+                            <label class="el-form-item__label">{{ $t('__newPassword') }}</label>
+                            <div class="el-form-item__content">
+                              <div class="tips">{{ `${$t('__lengthLess')}5` }}</div>
+                              <div class="el-input el-input--suffix">
+                                <input
+                                  v-model="form.newPassword"
+                                  :type="newPassword.type"
+                                  autocomplete="off"
+                                  class="el-input__inner"
+                                  @focus="inputFocus(newPassword)"
+                                  @blur="inputChange(newPassword, form.newPassword, 5)"
+                                  @change="inputChange(newPassword, form.newPassword, 5)"
+                                >
+                                <span class="el-input__suffix">
+                                  <span class="el-input__suffix-inner">
+                                    <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                    <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': newPassword.type!=='password'}" @click="showPassword(newPassword)" />
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="el-form-item custom-psw el-form-item--feedback"
+                            :class="{
+                              'is-error': newPassword_confirmation.hasError,
+                              'is-success': newPassword_confirmation.isSuccess}"
+                          >
+                            <label class="el-form-item__label">{{ $t('__checkNewPassword') }}</label>
+                            <div class="el-form-item__content">
+                              <div class="el-input el-input--suffix">
+                                <input
+                                  v-model="form.newPassword_confirmation"
+                                  :type="newPassword_confirmation.type"
+                                  autocomplete="off"
+                                  class="el-input__inner"
+                                  @focus="inputFocus(newPassword_confirmation)"
+                                  @blur="confirmPasswordChange"
+                                  @change="confirmPasswordChange"
+                                >
+                                <span class="el-input__suffix">
+                                  <span class="el-input__suffix-inner">
+                                    <i class="el-input__icon el-input__validateIcon el-icon-error has-error" />
+                                    <i class="el-input__icon el-input__validateIcon el-icon-success no-error" />
+                                    <i class="el-input__icon el-icon-view" style="cursor: pointer;" :class="{'text-black': newPassword_confirmation.type!=='password'}" @click="showPassword(newPassword_confirmation)" />
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="clear-both" />
+                          <div class="el-form-item button-group el-form-item--feedback">
+                            <div class="el-form-item__content">
+                              <div class="el-row is-align-middle el-row--flex">
+                                <button type="button" class="el-button bg-yellow w-100 el-button--primary" @click.stop="onSubmit">
+                                  <span>{{ $t('__submit') }}</span>
+                                </button>
+                                <button type="button" class="el-button bg-gray w-100 el-button--primary" @click.stop="onCancel">
+                                  <span>{{ $t('__cancel') }}</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                        <div class="form-alert">
+                          <div v-show="errorTip !== ''" role="alert" class="el-alert el-alert--warning is-light fade show">
+                            <i class="el-alert__icon el-icon-warning" />
+                            <div class="el-alert__content">
+                              <span class="el-alert__title">{{ errorTip }}</span>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -154,119 +135,114 @@
     </template>
   </div>
 </template>
-<script>
 
-import viewCommon from '@/mixin/viewCommon';
+<script>
 import { modifyPassword } from '@/api/user'
 import { mapGetters } from 'vuex'
+import { getMsg } from '@/utils/response'
 
 export default {
   name: 'ModPassword',
-  mixins: [viewCommon],
   data() {
-    const validateCurrentPassword = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else {
-        callback()
-      }
-    }
-    const validateNewPassword = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else if (value.trim().length < 5) {
-        callback(new Error(this.$t('__lengthLess') + '5'))
-      } else {
-        callback()
-      }
-    }
-    const validateConfirmNewPassword = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(this.$t('__requiredField')))
-      } else if (this.form.newPassword !== this.form.newPassword_confirmation) {
-        callback(new Error(`${this.$t('__confirmPassword')}${this.$t('__and')}${this.$t('__password')}${this.$t('__inconsistent')}`))
-      } else {
-        callback()
-      }
-    }
     return {
-      form: {
-        currentPassword: '',
-        newPassword: '',
-        newPassword_confirmation: ''
+      form: {},
+      currentPassword: {
+        hasError: false,
+        isSuccess: false,
+        type: 'password'
       },
-      rules: {
-        currentPassword: [{ required: true, validator: validateCurrentPassword, trigger: 'blur' }],
-        newPassword: [{ required: true, validator: validateNewPassword, trigger: 'blur' }],
-        newPassword_confirmation: [{ required: true, validator: validateConfirmNewPassword, trigger: 'blur' }]
+      newPassword: {
+        hasError: false,
+        isSuccess: false,
+        type: 'password'
       },
-      submitLoading: false,
-      currentPasswordType: 'password',
-      newPasswordType: 'password',
-      confirmationNewPasswordType: 'password'
+      newPassword_confirmation: {
+        hasError: false,
+        isSuccess: false,
+        type: 'password'
+      },
+      errorTip: ''
     }
   },
   computed: {
     ...mapGetters([
-      'account'
+      'account',
+      'device'
     ])
   },
   created() {
     this.setHeaderStyle()
+    this.reset()
   },
   activated() {
     this.setHeaderStyle()
+    this.reset()
   },
   methods: {
     setHeaderStyle() {
       this.$store.dispatch('common/setHeaderStyle', [this.$t('__modPassword'), false, () => { }])
     },
-    showCurrentPassword() {
-      if (this.currentPasswordType === 'password') {
-        this.currentPasswordType = ''
-      } else {
-        this.currentPasswordType = 'password'
-      }
-      this.$nextTick(() => {
-        this.$refs.currentPassword.focus()
-      })
+    inputFocus(attributes) {
+      attributes.hasError = false
     },
-    showNewPwd() {
-      if (this.newPasswordType === 'password') {
-        this.newPasswordType = ''
+    inputChange(attributes, model, min = 1) {
+      if (model && model.length >= min) {
+        attributes.isSuccess = true
+        attributes.hasError = false
+        return true
       } else {
-        this.newPasswordType = 'password'
+        attributes.isSuccess = false
+        attributes.hasError = true
+        return false
       }
-      this.$nextTick(() => {
-        this.$refs.newPassword.focus()
-      })
     },
-    showNewConfirmationPwd() {
-      if (this.confirmationNewPasswordType === 'password') {
-        this.confirmationNewPasswordType = ''
+    showPassword(attributes) {
+      if (attributes.type === 'password') {
+        attributes.type = ''
       } else {
-        this.confirmationNewPasswordType = 'password'
+        attributes.type = 'password'
       }
-      this.$nextTick(() => {
-        this.$refs.newPassword_confirmation.focus()
-      })
+    },
+    confirmPasswordChange() {
+      const check = this.form.newPassword_confirmation && this.form.newPassword === this.form.newPassword_confirmation
+      this.newPassword_confirmation.isSuccess = check
+      this.newPassword_confirmation.hasError = !check
+      return check
     },
     onSubmit() {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.submitLoading = true
-          modifyPassword(this.form).then(() => {
-            this.submitLoading = false
-            this.reset()
-            this.$message({
-              message: 'Modify successfully',
-              type: 'success'
-            })
-          }).catch(() => {
-            this.submitLoading = false
+      let success = true
+      if (!this.inputChange(this.currentPassword, this.form.currentPassword)) {
+        success = false
+      }
+      if (!this.inputChange(this.newPassword, this.form.newPassword, 5)) {
+        success = false
+      }
+      if (!this.confirmPasswordChange()) {
+        success = false
+      }
+      if (success) {
+        this.setDataLoading(true)
+        modifyPassword(this.form).then(() => {
+          this.setDataLoading(false)
+          this.$store.dispatch('user/setModPwdState', false)
+          this.reset()
+          this.$message({
+            message: 'Modify successfully',
+            type: 'success'
           })
-        }
-      })
+        }).catch((response) => {
+          this.errorTip = getMsg(response.data.message)
+          this.setDataLoading(false)
+        })
+      } else {
+        this.errorTip = this.$t('__pleaseCheckFormContent')
+      }
+    },
+    onCancel() {
+      this.$router.push({ path: '/home' })
+    },
+    setDataLoading(loading) {
+      this.$store.dispatch('app/setLoading', loading)
     },
     reset() {
       this.form.currentPassword = ''
@@ -279,67 +255,59 @@ export default {
 
 <style lang="scss">
 #app.mobile .modPassword{
-  .scroll-view {
-    background-color: #000;
-    .modPwd-container {
-      height: 100%;
-      padding: 2.5rem;
-      .el-button {
-        width: 100%;
-      }
-    }
-  }
-}
-#app.pc .modPassword{
   .set-psw {
     .form-container {
-      width: 32.191rem;
-      max-width: 600px;
-      height: 100vh;
-      margin: 0 auto;
+      max-width: 31.25rem;
       padding: 2.5rem;
+      margin: 0 auto;
       .el-form-item {
+        width: 25rem;
+        .el-form-item__label {
+          width: 100%;
+          text-align: left;
+          color: #f9c901;
+          line-height: 1rem;
+          font-size: 1.16667rem;
+        }
         .el-form-item__content {
-          line-height: 2.4rem;
+          line-height: 3.4rem;
+          font-size: 1.16667rem;
+          .tips {
+            color: #fff !important;
+            font-size: 1rem;
+            line-height: 1.2;
+          }
+          .el-input {
+            .el-input__inner {
+              border-radius: 0.25rem;
+              border: 0.08333rem solid #f9c901;
+              background-color: #fff;
+              padding: 0.83333rem;
+              height: 2.91667rem;
+              line-height: 2.5rem;
+              font-size: 1.33333rem;
+              color: #000;
+            }
+            .el-input__suffix {
+              .el-input__suffix-inner {
+                .el-input__icon {
+                  line-height: 3.2rem;
+                }
+              }
+            }
+          }
+          .el-button {
+            margin-top: 0.83333rem;
+            margin-bottom: 0.83333rem;
+            font-weight: bold;
+          }
         }
       }
-      .el-form-item__content {
-        font-size: 1.16667rem;
+      .clear-both {
+        width: 100%;
+        display: block;
+        clear: both;
       }
-    }
-    .custom_input {
-      .el-input__inner{
-        border-radius: 0.25rem;
-        border: 0.08333rem solid #f9c901;
-        background-color: #fff;
-        padding: 0.83333rem;
-        height: 2.91667rem;
-        line-height: 2.5rem;
-        font-size: 1.33333rem;
-        color: #000;
-      }
-      .el-input__icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .el-input__suffix {
-        .el-input__validateIcon {
-          display: none;
-        }
-      }
-    }
-    .item {
-      line-height: 1.5;
-      font-size: 1rem;
-    }
-    .newPasswordTip {
-      color: #fff;
-    }
-    .submitBtn {
-      display: flex;
-      justify-content: center;
-      margin-top: 3rem;
     }
   }
 }

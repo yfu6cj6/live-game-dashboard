@@ -128,7 +128,6 @@ export default {
     height: 100%;
     z-index: 1;
     margin: 0 auto;
-    background-color: #d6d6d6;
   }
 }
 

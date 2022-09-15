@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 h-100">
+  <div class="w-100 h-100 bg-new-dark-white">
     <template v-if="device === 'mobile'">
       <div class="dashboard-container">
         <div class="dashboard-cover" />
@@ -196,7 +196,7 @@
                           </div>
                         </div>
                       </div>
-                      <div v-show="tableData.length > 0" id="report-list" class="common-list flex-column flex-fill report-list flex-column flex-fill bg-new-dark-white">
+                      <div v-if="tableData.length > 0" id="report-list" class="common-list flex-column flex-fill report-list flex-column flex-fill bg-new-dark-white">
                         <div class="agent-group">
                           <div
                             v-for="(item, index) in tableData"
@@ -291,11 +291,7 @@
                           </div>
                         </div>
                       </div>
-                      <div v-show="tableData.length <= 0">
-                        <div class="noInformation">
-                          <span>{{ $t('__noInformation') }}</span>
-                        </div>
-                      </div>
+                      <div v-else class="no-result">{{ $t('__noInformation') }}</div>
                     </div>
                   </div>
                 </div>
@@ -641,18 +637,18 @@
                         />
                       </div>
                     </div>
-                    <pagination
-                      :page-size="pageSize"
-                      :page-sizes="pageSizes"
-                      :total="totalCount"
-                      :current-page.sync="currentPage"
-                      @size-change="handleSizeChange"
-                      @current-change="handleCurrentChange"
-                    />
                   </template>
                   <template v-else>
                     <div class="no-result">{{ $t('__noInformation') }}</div>
                   </template>
+                  <pagination
+                    :page-size="pageSize"
+                    :page-sizes="pageSizes"
+                    :total="totalCount"
+                    :current-page.sync="currentPage"
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                  />
                 </div>
                 <div class="w-100 p-4" />
               </div>

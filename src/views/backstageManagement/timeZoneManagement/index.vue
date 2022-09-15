@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 h-100">
+  <div class="w-100 h-100 bg-new-dark-white">
     <template v-if="device === 'mobile'">
       <div class="view-container">
         <div class="bg-black">
@@ -77,7 +77,7 @@
             </div>
           </template>
           <template v-else>
-            <div class="noInformation">{{ $t("__noInformation") }}</div>
+            <div class="no-result">{{ $t("__noInformation") }}</div>
           </template>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 h-100">
+  <div class="w-100 h-100 bg-new-dark-white">
     <template v-if="device === 'mobile'">
       <div class="logManagement">
         <div class="bg-black">
@@ -90,7 +90,7 @@
             </div>
           </div>
         </div>
-        <div v-else class="noInformation">{{ $t("__noInformation") }}</div>
+        <div v-else class="no-result">{{ $t("__noInformation") }}</div>
       </div>
     </template>
     <template v-else>
@@ -214,19 +214,19 @@
                       </div>
                     </div>
                   </div>
-                  <pagination
-                    :page-size="pageSize"
-                    :page-sizes="pageSizes"
-                    :total="totalCount"
-                    :current-page.sync="currentPage"
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                  />
                 </div>
               </template>
               <template v-else>
                 <div class="no-result">{{ $t('__noInformation') }}</div>
               </template>
+              <pagination
+                :page-size="pageSize"
+                :page-sizes="pageSizes"
+                :total="totalCount"
+                :current-page.sync="currentPage"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
             </div>
           </div>
         </div>

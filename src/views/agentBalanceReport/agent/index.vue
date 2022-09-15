@@ -220,14 +220,6 @@
               </div>
             </div>
           </div>
-          <pagination
-            :page-size="pageSize"
-            :page-sizes="pageSizes"
-            :total="totalCount"
-            :current-page.sync="currentPage"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
         </div>
         <div class="page-total">
           <div class="w-100 list-row">
@@ -311,6 +303,14 @@
       <template v-else>
         <div class="no-result">{{ $t('__noInformation') }}</div>
       </template>
+      <pagination
+        :page-size="pageSize"
+        :page-sizes="pageSizes"
+        :total="totalCount"
+        :current-page.sync="currentPage"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </template>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 h-100">
+  <div class="w-100 h-100 bg-new-dark-white">
     <template v-if="device === 'mobile'">
       <div class="view-container">
         <div class="bg-black">
@@ -143,7 +143,7 @@
             </div>
           </template>
           <template v-else>
-            <div class="noInformation">{{ $t("__noInformation") }}</div>
+            <div class="no-result">{{ $t("__noInformation") }}</div>
           </template>
         </div>
       </div>
@@ -179,7 +179,7 @@
           :inner-class="'.view-container'"
           :view-class="'.scroll_view'"
         />
-        <div class="view-container bg-white" style="height: calc((100vh - 6.25rem) - 30px);">
+        <div class="view-container" style="height: calc((100vh - 6.25rem) - 30px);">
           <div class="scroll_view">
             <div class="bg-black">
               <div class="yellow-border-bottom search-container">
@@ -295,18 +295,18 @@
                     </div>
                   </div>
                 </div>
-                <pagination
-                  :page-size="pageSize"
-                  :page-sizes="pageSizes"
-                  :total="totalCount"
-                  :current-page.sync="currentPage"
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                />
               </template>
               <template v-else>
                 <div class="noInformation">{{ $t("__noInformation") }}</div>
               </template>
+              <pagination
+                :page-size="pageSize"
+                :page-sizes="pageSizes"
+                :total="totalCount"
+                :current-page.sync="currentPage"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+              />
             </div>
           </div>
         </div>
