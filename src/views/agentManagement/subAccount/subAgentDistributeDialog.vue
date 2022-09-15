@@ -2,7 +2,7 @@
   <div v-if="visible">
     <template v-if="device === 'mobile'">
       <div class="flex-column flex-fill popup-view" style="background: rgb(0, 0, 0);">
-        <div class="flex-column flex-fill">
+        <div class="flex-column flex-fill pb-5">
           <div v-loading="dialogLoading" class="flex-column flex-fill">
             <div class="sub-account-allocations flex-column flex-fill">
               <form class="el-form flex-column flex-fill el-form--label-left">

@@ -14,7 +14,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-step-content flex-column flex-fill">
+              <div class="form-step-content flex-column flex-fill pb-5">
                 <form class="el-form flex-column flex-fill el-form--label-left">
                   <div class="scroll-wrap flex-column flex-fill">
                     <div id="scroll-inner" class="scroll-inner flex-column flex-fill off">
@@ -754,7 +754,7 @@ export default {
 
 #app.mobile {
   .el-checkbox:last-of-type {
-      margin-right: 0.5rem;
+    margin-right: 0.5rem;
   }
   .initPswFormat input {
     font-size: 1px;

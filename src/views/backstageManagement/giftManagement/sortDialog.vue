@@ -287,7 +287,7 @@ export default {
 <style lang="scss" scoped>
 #app.mobile .gift_sort_dialog {
   .data_content {
-    height: calc(100vh - 3.75rem - 1.5rem - 3.5rem);
+    height: calc(100vh - 3.75rem - 1.5rem - 7.5rem);
   }
 }
 
