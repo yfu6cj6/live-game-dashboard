@@ -1,4 +1,3 @@
-// import { getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
 import { getFullDate, getMonthDateTime, getDayDateTime, getWeekDateTime } from '@/utils/transDate'
 
 export default {
@@ -9,7 +8,8 @@ export default {
       monthIndex: 0,
       dayIndex: 0,
       weekIndex: 0,
-      pickerOptions: { }
+      pickerOptions: { },
+      pickerPanelClass: ''
     }
   },
   watch: {
@@ -25,13 +25,6 @@ export default {
       onPick: ({ maxDate, minDate }) => {
         if (minDate && maxDate) {
           this.searchTime = [getFullDate(minDate), getFullDate(maxDate)]
-          // this.$refs.datePicker.picker.handleChangeRange({
-          //   minDate: this.$refs.datePicker.picker.minDate,
-          //   maxDate: this.$refs.datePicker.picker.maxDate,
-          //   rangeState: {
-          //     selecting: true
-          //   }
-          // })
         }
       },
       disabledDate: (time) => {
@@ -44,8 +37,9 @@ export default {
   },
   methods: {
     checkMonIndex() {
-      const preEl = document.querySelector('.el-button.el-button--default.preMon.arrow')
-      const nextEl = document.querySelector('.el-button.el-button--default.nextMon.arrow')
+      const pickerPanelEl = document.querySelector(`.${this.pickerPanelClass}`)
+      const preEl = pickerPanelEl.querySelector('.el-button.el-button--default.preMon.arrow')
+      const nextEl = pickerPanelEl.querySelector('.el-button.el-button--default.nextMon.arrow')
       if (preEl && nextEl) {
         const thisMonth = new Date().getMonth();
         const searchMonth = new Date(this.searchTime[0]).getMonth();
@@ -63,8 +57,9 @@ export default {
       }
     },
     checkDayIndex() {
-      const preEl = document.querySelector('.el-button.el-button--default.preDay.arrow')
-      const nextEl = document.querySelector('.el-button.el-button--default.nextDay.arrow')
+      const pickerPanelEl = document.querySelector(`.${this.pickerPanelClass}`)
+      const preEl = pickerPanelEl.querySelector('.el-button.el-button--default.preDay.arrow')
+      const nextEl = pickerPanelEl.querySelector('.el-button.el-button--default.nextDay.arrow')
       if (preEl && nextEl) {
         const search = new Date(this.searchTime[0]);
         this.dayIndex = parseInt((search - new Date()) / 1000 / 60 / 60 / 24)
@@ -84,8 +79,9 @@ export default {
       }
     },
     checkWeekIndex() {
-      const preEl = document.querySelector('.el-button.el-button--default.preWeek.arrow')
-      const nextEl = document.querySelector('.el-button.el-button--default.nextWeek.arrow')
+      const pickerPanelEl = document.querySelector(`.${this.pickerPanelClass}`)
+      const preEl = pickerPanelEl.querySelector('.el-button.el-button--default.preWeek.arrow')
+      const nextEl = pickerPanelEl.querySelector('.el-button.el-button--default.nextWeek.arrow')
       if (preEl && nextEl) {
         const search = new Date(this.searchTime[0]);
         search.setDate(search.getDate() - search.getDay() + 1)
@@ -115,31 +111,31 @@ export default {
       return str.replace(/[^\x00-\xff]/g, "xx").length
     },
     handleChangePickerClass() {
-      this.$nextTick(() => {
-        const datePicker = document.getElementsByClassName('ams-timeslot-popper')
-        if (datePicker && datePicker.length > 0) {
-          if (this.device === 'mobile') {
-            datePicker.forEach(element => {
-              if (element.classList.contains('pcPicker')) {
-                element.classList.remove('pcPicker')
-                element.classList.add('mobilePicker')
-              }
-            })
-          } else {
-            datePicker.forEach(element => {
-              if (element.classList.contains('mobilePicker')) {
-                element.classList.remove('mobilePicker')
-                element.classList.add('pcPicker')
-              }
-            })
-          }
-        }
-      })
+      // 切換device 的時候要做的事情
+      // if (!this.pickerPanelClass) return
+      // this.$nextTick(() => {
+      //   const datePicker = document.querySelector(`.${this.pickerPanelClass}`)
+      //   if (datePicker) {
+      //     if (this.device === 'mobile') {
+      //       if (datePicker.classList.contains('pcPicker')) {
+      //         datePicker.classList.remove('pcPicker')
+      //         datePicker.classList.add('mobilePicker')
+      //       }
+      //     } else {
+      //       if (datePicker.classList.contains('mobilePicker')) {
+      //         datePicker.classList.remove('mobilePicker')
+      //         datePicker.classList.add('pcPicker')
+      //       }
+      //     }
+      //   }
+      // })
     },
     // 點快捷鈕自動將日其放在右邊的table
     handleCalendarPage() {
+      if (!this.pickerPanelClass) return
       this.$nextTick(() => {
-        const el = document.querySelector('button.el-picker-panel__icon-btn.el-icon-arrow-left')
+        const pickerPanelEl = document.querySelector(`.${this.pickerPanelClass}`)
+        const el = pickerPanelEl.querySelector('button.el-picker-panel__icon-btn.el-icon-arrow-left')
         if (el) {
           el.click()
         }
@@ -149,23 +145,24 @@ export default {
       })
     },
     // 日期範圍選擇器點開後要做的初始化
-    changeInitCalendarPage() {
+    changeInitCalendarPage(keyClass) {
+      this.pickerPanelClass = keyClass
       this.handleCalendarPage()
+      const preThirdDay = new Date()
+      preThirdDay.setMonth(preThirdDay.getMonth() - 3)
+      preThirdDay.setDate(preThirdDay.getDate())
       this.addDateTimeOption(() => {
         if (this.monthIndex < -2) return;
         this.monthIndex--;
-        this.searchTime = getMonthDateTime(this.monthIndex, false)
+        this.searchTime = getMonthDateTime(this.monthIndex, false, preThirdDay)
       }, () => {
         this.monthIndex = 0;
-        this.searchTime = getMonthDateTime(this.monthIndex, false)
+        this.searchTime = getMonthDateTime(this.monthIndex, false, preThirdDay)
       }, () => {
         if (this.monthIndex >= 0) return;
         this.monthIndex++;
-        this.searchTime = getMonthDateTime(this.monthIndex, false)
+        this.searchTime = getMonthDateTime(this.monthIndex, false, preThirdDay)
       }, () => {
-        const preThirdDay = new Date()
-        preThirdDay.setMonth(preThirdDay.getMonth() - 3)
-        preThirdDay.setDate(preThirdDay.getDate())
         const search = new Date(this.searchTime[0]);
         if (search.getTime() <= preThirdDay) return;
         this.dayIndex--;
@@ -180,20 +177,17 @@ export default {
       }, () => {
         const date = new Date()
         date.setDate(date.getDate() - date.getDay() + 1)
-        const preThirdDay = new Date()
-        preThirdDay.setMonth(preThirdDay.getMonth() - 3)
-        preThirdDay.setDate(preThirdDay.getDate())
         const min = parseInt((preThirdDay - date) / 1000 / 24 / 60 / 60 / 7)
         if (this.weekIndex < min) return;
         this.weekIndex--;
-        this.searchTime = getWeekDateTime(this.weekIndex, false)
+        this.searchTime = getWeekDateTime(this.weekIndex, false, preThirdDay)
       }, () => {
         this.weekIndex = 0;
-        this.searchTime = getWeekDateTime(this.weekIndex, false)
+        this.searchTime = getWeekDateTime(this.weekIndex, false, preThirdDay)
       }, () => {
         if (this.weekIndex >= 0) return;
         this.weekIndex++;
-        this.searchTime = getWeekDateTime(this.weekIndex, false)
+        this.searchTime = getWeekDateTime(this.weekIndex, false, preThirdDay)
       })
     },
     // 新增多選過濾器

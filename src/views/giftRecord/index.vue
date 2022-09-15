@@ -12,11 +12,11 @@
                       <div class="filter-bar bg-black">
                         <div class="day-range pt-3 pl-2 pr-2">
                           <div class="date-time-picker-box">
-                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
+                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage('giftRecordDatePicker')">
                               <el-date-picker
                                 v-model="searchTime"
                                 type="datetimerange"
-                                popper-class="ams-timeslot-popper mobilePicker"
+                                popper-class="ams-timeslot-popper mobilePicker giftRecordDatePicker"
                                 :clearable="false"
                                 :editable="false"
                                 time-arrow-control
@@ -467,11 +467,11 @@
                       <div class="filter-options">
                         <div class="day-range">
                           <div class="date-time-picker-box">
-                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
+                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage('giftRecordDatePicker')">
                               <el-date-picker
                                 v-model="searchTime"
                                 type="datetimerange"
-                                popper-class="ams-timeslot-popper pcPicker"
+                                popper-class="ams-timeslot-popper pcPicker giftRecordDatePicker"
                                 :clearable="false"
                                 :editable="false"
                                 time-arrow-control

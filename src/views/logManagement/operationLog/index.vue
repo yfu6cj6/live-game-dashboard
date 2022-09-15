@@ -4,12 +4,12 @@
       <div class="logManagement">
         <div class="bg-black">
           <div class="search_frame">
-            <div class="day_frame" @click.once="changeInitCalendarPage">
+            <div class="day_frame" @click.once="changeInitCalendarPage('operationLogDatePicker')">
               <el-date-picker
                 v-model="searchTime"
                 type="datetimerange"
                 class="search_frame_size"
-                popper-class="ams-timeslot-popper mobilePicker"
+                popper-class="ams-timeslot-popper mobilePicker operationLogDatePicker"
                 :clearable="false"
                 :editable="false"
                 time-arrow-control
@@ -106,11 +106,11 @@
                       <div class="filter-options">
                         <div class="day-range">
                           <div class="date-time-picker-box">
-                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
+                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage('operationLogDatePicker')">
                               <el-date-picker
                                 v-model="searchTime"
                                 type="datetimerange"
-                                popper-class="ams-timeslot-popper pcPicker"
+                                popper-class="ams-timeslot-popper pcPicker operationLogDatePicker"
                                 :clearable="false"
                                 :editable="false"
                                 time-arrow-control

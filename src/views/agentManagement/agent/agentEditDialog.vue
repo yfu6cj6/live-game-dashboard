@@ -1607,6 +1607,7 @@ import { agentCreateAccount, agentGetSetBalanceInfo, agentCreate, agentEdit } fr
 import { mapGetters } from 'vuex'
 import { numberFormat } from '@/utils/numberFormat'
 import BackTop from '@/components/BackTop'
+import { getMsg } from '@/utils/response'
 
 export default {
   name: 'AgentEditDialog',
@@ -1731,8 +1732,7 @@ export default {
       },
       handicaps: [],
       selectAllHandicaps: false,
-      errorTip: '',
-      hasError: false
+      errorTip: ''
     }
   },
   computed: {
@@ -1740,6 +1740,9 @@ export default {
       'accountStatusType',
       'sidebar'
     ]),
+    hasError() {
+      return this.errorTip !== ''
+    },
     previousBtnVisible() {
       return this.curIndex > this.stepEnum.agentInfo
     },
@@ -1857,7 +1860,6 @@ export default {
         this.handicaps = []
         this.selectAllHandicaps = false
         this.errorTip = ''
-        this.hasError = false
       }
     },
     autoGenerateAccount() {
@@ -2131,15 +2133,13 @@ export default {
       }
 
       if (success) {
-        this.hasError = false
+        this.errorTip = ''
         this.curIndex++
-      } else {
-        this.hasError = true
       }
     },
     onPreviousBtnClick() {
       this.curIndex--
-      this.hasError = false
+      this.errorTip = ''
     },
     onSubmit() {
       if (this.inputChange(this.step5.userPassword, this.form.userPassword)) {
@@ -2151,7 +2151,8 @@ export default {
           agentCreate(data).then((res) => {
             this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
             this.dialogLoading = false
-          }).catch(() => {
+          }).catch((response) => {
+            this.errorTip = getMsg(response.data.message)
             this.dialogLoading = false
           })
         } else if (this.operationType === this.operationEnum.edit) {
@@ -2160,13 +2161,11 @@ export default {
             this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
             this.dialogLoading = false
           }).catch((response) => {
-            this.hasError = true
-            this.errorTip = response.data.message.userPassword[0] || 'Error'
+            this.errorTip = getMsg(response.data.message)
             this.dialogLoading = false
           })
         }
       } else {
-        this.hasError = true
         this.errorTip = this.$t('__pleaseEnterUserPassword')
       }
     },

@@ -13,12 +13,12 @@
                         <div class="bg-black w-100 pt-4">
                           <div class="day-range">
                             <div class="date-time-picker-box">
-                              <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
+                              <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage('winLossReportDatePicker')">
                                 <el-date-picker
                                   ref="datePicker"
                                   v-model="searchTime"
                                   type="datetimerange"
-                                  popper-class="ams-timeslot-popper mobilePicker"
+                                  popper-class="ams-timeslot-popper mobilePicker winLossReportDatePicker"
                                   :clearable="false"
                                   :editable="false"
                                   time-arrow-control
@@ -836,12 +836,12 @@
                     <div class="mt-4">
                       <div class="day-range">
                         <div class="date-time-picker-box flex-nowrap">
-                          <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
+                          <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage('winLossReportDatePicker')">
                             <el-date-picker
                               ref="datePicker"
                               v-model="searchTime"
                               type="datetimerange"
-                              popper-class="ams-timeslot-popper pcPicker"
+                              popper-class="ams-timeslot-popper pcPicker winLossReportDatePicker"
                               :clearable="false"
                               :editable="false"
                               time-arrow-control

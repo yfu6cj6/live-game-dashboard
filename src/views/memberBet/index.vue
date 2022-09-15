@@ -36,11 +36,11 @@
                         </div>
                         <div class="day-range pl-2 pr-2">
                           <div class="date-time-picker-box">
-                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
+                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage('memberBetDatePicker')">
                               <el-date-picker
                                 v-model="searchTime"
                                 type="datetimerange"
-                                popper-class="ams-timeslot-popper mobilePicker"
+                                popper-class="ams-timeslot-popper mobilePicker memberBetDatePicker"
                                 :clearable="false"
                                 :editable="false"
                                 time-arrow-control
@@ -602,11 +602,11 @@
                         </div>
                         <div class="day-range">
                           <div class="date-time-picker-box">
-                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
+                            <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage('memberBetDatePicker')">
                               <el-date-picker
                                 v-model="searchTime"
                                 type="datetimerange"
-                                popper-class="ams-timeslot-popper pcPicker"
+                                popper-class="ams-timeslot-popper pcPicker memberBetDatePicker"
                                 :clearable="false"
                                 :editable="false"
                                 time-arrow-control

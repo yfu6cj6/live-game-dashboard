@@ -135,7 +135,7 @@ export function getThisMonthDateTime() {
 }
 
 // month 負值為前X月 0為本月 正值為後X月
-export function getMonthDateTime(month = 0, overToday = true) {
+export function getMonthDateTime(month = 0, overToday = false, minDate = null) {
   var date = new Date();
   date.setMonth(date.getMonth() + month)
   let start = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -143,6 +143,10 @@ export function getMonthDateTime(month = 0, overToday = true) {
     if (start.getTime() > Date.now()) {
       start = new Date()
     }
+  }
+  if (minDate !== null && start.getTime() < minDate) {
+    start.setMonth(minDate.getMonth())
+    start.setDate(minDate.getDate())
   }
   start.setHours(0)
   start.setMinutes(0)
@@ -160,7 +164,7 @@ export function getMonthDateTime(month = 0, overToday = true) {
 }
 
 // day 負值為前X天 0為今天 正值為後X天
-export function getDayDateTime(day = 0, overToday = true) {
+export function getDayDateTime(day = 0, overToday = false) {
   let start = new Date()
   start.setDate(start.getDate() + day)
   if (!overToday) {
@@ -185,13 +189,16 @@ export function getDayDateTime(day = 0, overToday = true) {
 }
 
 // week 負值為前X週 0為本週 正值為後X週
-export function getWeekDateTime(week = 0, overToday = true) {
+export function getWeekDateTime(week = 0, overToday = false, minDate = null) {
   let start = new Date()
   start.setDate(start.getDate() + (week * 7) - start.getDay() + 1)
   if (!overToday) {
     if (start.getTime() > Date.now()) {
       start = new Date()
     }
+  }
+  if (minDate !== null && start.getTime() < minDate) {
+    start.setDate(minDate.getDate())
   }
   start.setHours(0)
   start.setMinutes(0)

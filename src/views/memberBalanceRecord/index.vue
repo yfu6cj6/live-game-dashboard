@@ -6,12 +6,12 @@
           <div class="scroll-view">
             <div class="bg-black">
               <div class="search_frame">
-                <div class="d-flex align-items-center day_frame" @click.once="changeInitCalendarPage">
+                <div class="d-flex align-items-center day_frame" @click.once="changeInitCalendarPage('memberBalanceRecordDatePicker')">
                   <el-date-picker
                     v-model="searchTime"
                     type="datetimerange"
                     class="search_frame_size"
-                    popper-class="ams-timeslot-popper mobilePicker"
+                    popper-class="ams-timeslot-popper mobilePicker memberBalanceRecordDatePicker"
                     :clearable="false"
                     :editable="false"
                     time-arrow-control
@@ -278,11 +278,11 @@
                         <div class="filter-options">
                           <div class="day-range">
                             <div class="date-time-picker-box">
-                              <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage">
+                              <div class="picker datetimerange datetimerange" @click.once="changeInitCalendarPage('memberBalanceRecordDatePicker')">
                                 <el-date-picker
                                   v-model="searchTime"
                                   type="datetimerange"
-                                  popper-class="ams-timeslot-popper pcPicker"
+                                  popper-class="ams-timeslot-popper pcPicker memberBalanceRecordDatePicker"
                                   :clearable="false"
                                   :editable="false"
                                   time-arrow-control

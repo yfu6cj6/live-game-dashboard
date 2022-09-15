@@ -40,7 +40,6 @@
                     :start-placeholder="$t('__startDate')"
                     :end-placeholder="$t('__endDate')"
                     :default-time="['00:00:00', '23:59:59']"
-                    :picker-options="dialogPickerOptions"
                     :format="'yyyy-MM-dd HH:mm'"
                     prefix-icon="''"
                     clear-icon="''"
@@ -71,7 +70,6 @@
                     :start-placeholder="$t('__startDate')"
                     :end-placeholder="$t('__endDate')"
                     :default-time="['00:00:00', '23:59:59']"
-                    :picker-options="dialogPickerOptions"
                     :format="'yyyy-MM-dd HH:mm'"
                     prefix-icon="''"
                     clear-icon="''"
@@ -212,7 +210,6 @@
                       :start-placeholder="$t('__startDate')"
                       :end-placeholder="$t('__endDate')"
                       :default-time="['00:00:00', '23:59:59']"
-                      :picker-options="dialogPickerOptions"
                       :format="'yyyy-MM-dd HH:mm'"
                       prefix-icon="''"
                       clear-icon="''"
@@ -243,7 +240,6 @@
                       :start-placeholder="$t('__startDate')"
                       :end-placeholder="$t('__endDate')"
                       :default-time="['00:00:00', '23:59:59']"
-                      :picker-options="dialogPickerOptions"
                       :format="'yyyy-MM-dd HH:mm'"
                       prefix-icon="''"
                       clear-icon="''"
@@ -370,13 +366,6 @@ export default {
       require: true,
       default() {
         return ''
-      }
-    },
-    'dialogPickerOptions': {
-      type: Object,
-      require: true,
-      default() {
-        return {}
       }
     },
     'form': {
