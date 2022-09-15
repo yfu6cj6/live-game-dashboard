@@ -678,6 +678,7 @@ import GameResultDialogPC from '@/components/GameResult/gameResultDialog_pc'
 import GameResultDialogMobile from '@/components/GameResult/gameResultDialog_mobile'
 import BackTop from '@/components/BackTop'
 import Pagination from '@/components/Pagination'
+import { getMsg } from '@/utils/response'
 
 const defaultSearchTimeType = 'startTime'
 const defaultSearchTime = getDayDateTime()
@@ -821,7 +822,9 @@ export default {
             }
             this.$refs.invalidRoundDialog.setDialogLoading(false)
             this.closeDialogEven()
-          }).catch(() => {
+          }).catch((res) => {
+            const errTips = getMsg(res.data.message)
+            this.$refs.invalidRoundDialog.setErrorTips(errTips)
             this.$refs.invalidRoundDialog.setDialogLoading(false)
           })
           break

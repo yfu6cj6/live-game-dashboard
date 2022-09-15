@@ -225,7 +225,7 @@
             </div>
           </div>
           <div class="d-flex w-100 justify-content-center popup-buttons" style="margin-top: 20px;">
-            <button type="button" class="el-button bg-yellow common-button el-button--primary">
+            <button type="button" class="el-button bg-yellow common-button el-button--primary" @click="onSubmit">
               <span>{{ $t('__submit') }}</span>
             </button>
           </div>
@@ -322,14 +322,12 @@ export default {
     },
     selection() {
       this.selectAll = !this.selectAll
-      console.log('selection: ' + this.selectAll);
       this.selectSubAgents.forEach(element => {
         element.exist = this.selectAll
       });
       this.selectSubAgents = JSON.parse(JSON.stringify(this.selectSubAgents))
     },
     handleCheckboxChange(select) {
-      console.log('handleCheckboxChange: ' + select);
       if (select) {
         this.selectAll = !this.selectSubAgents.some(subAgent => subAgent.exist === false)
       } else {
@@ -345,12 +343,12 @@ export default {
       const invalid = this.form.userPassword === undefined || this.form.userPassword.length <= 0
       this.userInputState = invalid ? this.inputState.error : this.inputState.success
       if (invalid) {
-        this.errorTips = this.$t('__pleaseCheckFormContent')
+        this.errorTips = this.$t('__pleaseEnterUserPassword')
       }
     },
     onSubmit() {
-      if (this.userInputState !== this.inputState.success) {
-        this.errorTips = this.$t('__pleaseCheckFormContent')
+      if (this.form.userPassword === undefined || this.form.userPassword === null || this.form.userPassword.length === 0) {
+        this.errorTips = this.$t('__pleaseEnterUserPassword')
         return
       }
 
@@ -360,6 +358,9 @@ export default {
         data.agents.push(element.key)
       })
       this.$emit('onSubmit', data)
+    },
+    setErrorTips(tips) {
+      this.errorTips = tips
     }
   }
 }

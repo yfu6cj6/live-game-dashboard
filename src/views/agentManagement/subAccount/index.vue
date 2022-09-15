@@ -569,6 +569,7 @@ import { mapGetters } from 'vuex'
 import TreeDialogMobile from '@/components/InfoDialog/treeDialog_mobile'
 import TreeDialogPC from '@/components/InfoDialog/treeDialog_pc'
 import Pagination from '@/components/Pagination'
+import { getMsg } from '@/utils/response'
 
 const defaultForm = {
   account: '',
@@ -629,7 +630,9 @@ export default {
         this.handleRespone(res)
         this.$refs.subAgentDistributeDialog.setDialogLoading(false)
         this.$store.dispatch('common/setHeaderStyle', [this.$t('__subAccountManagement'), false, () => { }])
-      }).catch(() => {
+      }).catch((res) => {
+        const errTips = getMsg(res.data.message);
+        this.$refs.subAgentDistributeDialog.setErrorTips(errTips);
         this.$refs.subAgentDistributeDialog.setDialogLoading(false)
       })
     },
@@ -662,7 +665,9 @@ export default {
           subAccountModStatus(data).then((res) => {
             this.handleRespone(res)
             this.$refs.lockLoginDialog.setDialogLoading(false)
-          }).catch(() => {
+          }).catch((res) => {
+            const errTips = getMsg(res.data.message)
+            this.$refs.lockLoginDialog.setErrorTips(errTips)
             this.$refs.lockLoginDialog.setDialogLoading(false)
           })
           break
@@ -672,7 +677,9 @@ export default {
           subAccountModEffectAgentLine(data).then((res) => {
             this.handleRespone(res)
             this.$refs.effectAgentLineDialog.setDialogLoading(false)
-          }).catch(() => {
+          }).catch((res) => {
+            const errTips = getMsg(res.data.message)
+            this.$refs.effectAgentLineDialog.setErrorTips(errTips)
             this.$refs.effectAgentLineDialog.setDialogLoading(false)
           })
           break
@@ -768,8 +775,6 @@ export default {
       this.$refs.editDialog.setTimeZone(timezone)
 
       this.editForm = JSON.parse(JSON.stringify(rowData))
-      // this.editForm.effectAgentLine = this.editForm.effectAgentLine === '1'
-      // this.editForm.isAdmin = this.editForm.isAdmin === '1'
       this.editForm.timeZone = this.editForm.timeZone.id
       this.curDialogIndex = this.dialogEnum.edit
       this.setDataLoading(false)
@@ -789,7 +794,9 @@ export default {
         this.$refs.modPasswordDialog.setDialogLoading(false)
         this.editForm = { accountsInfo: [{ account: this.editForm.account, password: data.newPassword }], isCreate: false }
         this.curDialogIndex = this.dialogEnum.passwordTip
-      }).catch(() => {
+      }).catch((res) => {
+        const errTips = getMsg(res.data.message)
+        this.$refs.modPasswordDialog.setErrorTips(errTips)
         this.$refs.modPasswordDialog.setDialogLoading(false)
       })
     },

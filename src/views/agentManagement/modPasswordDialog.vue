@@ -306,15 +306,22 @@ export default {
         return
       }
 
+      if (this.inputData.operatePassword.state !== this.inputState.success) {
+        this.errorTips = this.$t('__pleaseEnterUserPassword')
+        return
+      }
+
       if (this.inputData.newPassword.state !== this.inputState.success ||
-          this.inputData.confirmPassword.state !== this.inputState.success ||
-          this.inputData.operatePassword.state !== this.inputState.success) {
+          this.inputData.confirmPassword.state !== this.inputState.success) {
         this.errorTips = this.$t('__pleaseCheckFormContent')
         return
       }
 
       const data = JSON.parse(JSON.stringify(this.form))
       this.$emit('modPassword', data)
+    },
+    setErrorTips(tips) {
+      this.errorTips = tips
     }
   }
 }

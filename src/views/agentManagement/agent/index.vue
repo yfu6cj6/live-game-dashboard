@@ -902,6 +902,7 @@ import AgentEditDialog from './agentEditDialog'
 import AgentInfoDialogMobile from '@/components/InfoDialog/agentInfoDialog_mobile'
 import AgentInfoDialogPC from '@/components/InfoDialog/agentInfoDialog_pc'
 import Pagination from '@/components/Pagination'
+import { getMsg } from '@/utils/response'
 
 const defaultForm = {
   parent: 0,
@@ -989,7 +990,9 @@ export default {
           agentModTotallyDisabled(data).then((res) => {
             this.handleRespone(res)
             this.$refs.totallyDisabledDialog.setDialogLoading(false)
-          }).catch(() => {
+          }).catch((res) => {
+            const errTips = getMsg(res.data.message)
+            this.$refs.totallyDisabledDialog.setErrorTips(errTips)
             this.$refs.totallyDisabledDialog.setDialogLoading(false)
           })
           break
@@ -999,7 +1002,9 @@ export default {
           agentModStatus(data).then((res) => {
             this.handleRespone(res)
             this.$refs.lockLoginDialog.setDialogLoading(false)
-          }).catch(() => {
+          }).catch((res) => {
+            const errTips = getMsg(res.data.message)
+            this.$refs.lockLoginDialog.setErrorTips(errTips)
             this.$refs.lockLoginDialog.setDialogLoading(false)
           })
           break
@@ -1009,7 +1014,9 @@ export default {
           agentModBetStatus(data).then((res) => {
             this.handleRespone(res)
             this.$refs.debarBetDialog.setDialogLoading(false)
-          }).catch(() => {
+          }).catch((res) => {
+            const errTips = getMsg(res.data.message)
+            this.$refs.debarBetDialog.setErrorTips(errTips)
             this.$refs.debarBetDialog.setDialogLoading(false)
           })
           break
@@ -1020,7 +1027,9 @@ export default {
           agentBalanceOneClickRecycling(data).then((res) => {
             this.handleRespone(res)
             this.$refs.balanceOneClickRecyclingDialog.setDialogLoading(false)
-          }).catch(() => {
+          }).catch((res) => {
+            const errTips = getMsg(res.data.message)
+            this.$refs.balanceOneClickRecyclingDialog.setErrorTips(errTips)
             this.$refs.balanceOneClickRecyclingDialog.setDialogLoading(false)
           })
           break
@@ -1030,7 +1039,9 @@ export default {
           agentWeeklyLossSettlement(data).then((res) => {
             this.handleRespone(res)
             this.$refs.weeklyLossSettlementDialog.setDialogLoading(false)
-          }).catch(() => {
+          }).catch((res) => {
+            const errTips = getMsg(res.data.message)
+            this.$refs.weeklyLossSettlementDialog.setErrorTips(errTips)
             this.$refs.weeklyLossSettlementDialog.setDialogLoading(false)
           })
           break
@@ -1040,7 +1051,9 @@ export default {
           agentModOneClickRecycling(data).then((res) => {
             this.handleRespone(res)
             this.$refs.oneClickRecyclingDialog.setDialogLoading(false)
-          }).catch(() => {
+          }).catch((res) => {
+            const errTips = getMsg(res.data.message)
+            this.$refs.oneClickRecyclingDialog.setErrorTips(errTips)
             this.$refs.oneClickRecyclingDialog.setDialogLoading(false)
           })
           break
@@ -1050,7 +1063,9 @@ export default {
           agentModGiftStatus(data).then((res) => {
             this.handleRespone(res)
             this.$refs.giftEffectDialog.setDialogLoading(false)
-          }).catch(() => {
+          }).catch((res) => {
+            const errTips = getMsg(res.data.message)
+            this.$refs.giftEffectDialog.setErrorTips(errTips)
             this.$refs.giftEffectDialog.setDialogLoading(false)
           })
           break
@@ -1265,7 +1280,9 @@ export default {
         this.$refs.modPasswordDialog.setDialogLoading(false)
         this.editForm = { accountsInfo: [{ account: this.editForm.account, password: data.newPassword }], isCreate: true }
         this.curDialogIndex = this.dialogEnum.passwordTip
-      }).catch(() => {
+      }).catch((res) => {
+        const errTips = getMsg(res.data.message)
+        this.$refs.modPasswordDialog.setErrorTips(errTips)
         this.$refs.modPasswordDialog.setDialogLoading(false)
       })
     },
@@ -1274,7 +1291,9 @@ export default {
       agentDepositBalance(data).then((res) => {
         this.handleRespone(res)
         this.$refs.depositBalanceDialog.setDialogLoading(false)
-      }).catch(() => {
+      }).catch((res) => {
+        const errTips = getMsg(res.data.message)
+        this.$refs.depositBalanceDialog.setErrorTips(errTips)
         this.$refs.depositBalanceDialog.setDialogLoading(false)
       })
     },
@@ -1283,7 +1302,9 @@ export default {
       agentWithdrawBalance(data).then((res) => {
         this.handleRespone(res)
         this.$refs.withdrawBalanceDialog.setDialogLoading(false)
-      }).catch(() => {
+      }).catch((res) => {
+        const errTips = getMsg(res.data.message)
+        this.$refs.withdrawBalanceDialog.setErrorTips(errTips)
         this.$refs.withdrawBalanceDialog.setDialogLoading(false)
       })
     },

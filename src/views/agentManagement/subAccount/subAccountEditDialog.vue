@@ -510,6 +510,7 @@ import common from '@/mixin/common'
 import BackTop from '@/components/BackTop'
 import { subAccountCreateAccount, subAccountCreate, subAccountEdit } from '@/api/agentManagement/subAccount'
 import { mapGetters } from 'vuex'
+import { getMsg } from '@/utils/response'
 
 export default {
   name: 'SubAccountEditDialog',
@@ -597,6 +598,7 @@ export default {
   watch: {
     visible() {
       if (!this.visible) {
+        this.autoGenerateAccount = false
         this.inputData.password.inputType = 'password'
         this.inputData.confirmPassword.inputType = 'password'
         this.inputData.operatePassword.inputType = 'password'
@@ -618,7 +620,7 @@ export default {
         })
       } else {
         this.form.account = ''
-        this.checkAccount()
+        this.inputData.account.state = this.inputState.none
       }
     }
   },
@@ -702,7 +704,8 @@ export default {
         subAccountCreate(data).then((res) => {
           this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
           this.dialogLoading = false
-        }).catch(() => {
+        }).catch((res) => {
+          this.errorTips = getMsg(res.data.message);
           this.dialogLoading = false
         })
       } else if (this.operationType === this.operationEnum.edit) {
@@ -719,8 +722,8 @@ export default {
           this.$emit('editSuccess', JSON.parse(JSON.stringify(res)))
           this.dialogLoading = false
         }).catch((res) => {
+          this.errorTips = getMsg(res.data.message);
           this.dialogLoading = false
-          this.errorTips = res.data.message.userPassword[0] || 'Error'
         })
       }
     },

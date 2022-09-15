@@ -376,6 +376,10 @@ export default {
           return
         }
       }
+      if (this.form.userPassword === undefined || this.form.userPassword === null || this.form.userPassword.length === 0) {
+        this.setErrorTips(this.$t('__pleaseEnterUserPassword'))
+        return
+      }
 
       const data = JSON.parse(JSON.stringify(this.form))
       if (this.operationType === this.operationEnum.depositBalance) {
@@ -386,6 +390,9 @@ export default {
     },
     setBalanceInfo(balanceInfo) {
       this.agentBalanceInfo = balanceInfo
+    },
+    setErrorTips(tips) {
+      this.errorTips = tips
     }
   }
 }

@@ -167,7 +167,7 @@ export default {
       } else {
         this.isSuccess = false
         this.hasError = true
-        this.errorTip = this.$t('__pleaseCheckFormContent')
+        this.errorTip = this.$t('__pleaseEnterUserPassword')
       }
     },
     passwordFocus() {
@@ -183,7 +183,7 @@ export default {
     },
     onSubmit() {
       if (!this.form.userPassword) {
-        this.errorTip = this.$t('__pleaseCheckFormContent')
+        this.errorTip = this.$t('__pleaseEnterUserPassword')
         this.hasError = true
         this.isSuccess = false
       } else {
@@ -192,6 +192,9 @@ export default {
         const data = JSON.parse(JSON.stringify(this.form))
         this.$emit('onSubmit', data)
       }
+    },
+    setErrorTips(tips) {
+      this.errorTip = tips
     }
   }
 }
